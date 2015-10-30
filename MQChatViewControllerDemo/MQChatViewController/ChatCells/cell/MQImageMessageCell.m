@@ -8,7 +8,7 @@
 
 #import "MQImageMessageCell.h"
 #import "MQImageCellModel.h"
-#import "MQFileUtil.h"
+#import "MQChatFileUtil.h"
 #import "MQImageUtil.h"
 
 @implementation MQImageMessageCell {
@@ -45,7 +45,7 @@
 
     //刷新头像
     if (cellModel.avatarPath.length == 0) {
-        avatarImageView.image = [UIImage imageNamed:[MQFileUtil jointResource:cellModel.avatarLocolImageName]];
+        avatarImageView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:cellModel.avatarLocolImageName]];
     } else {
 #warning 使用SDWebImage或自己写获取远程图片的方法
     }

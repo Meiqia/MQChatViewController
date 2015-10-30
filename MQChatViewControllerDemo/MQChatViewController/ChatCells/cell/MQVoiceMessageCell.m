@@ -8,7 +8,7 @@
 
 #import "MQVoiceMessageCell.h"
 #import "MQVoiceCellModel.h"
-#import "MQFileUtil.h"
+#import "MQChatFileUtil.h"
 
 static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
 
@@ -55,7 +55,7 @@ static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
     
     //刷新头像
     if (cellModel.avatarPath.length == 0) {
-        avatarImageView.image = [UIImage imageNamed:[MQFileUtil jointResource:cellModel.avatarLocolImageName]];
+        avatarImageView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:cellModel.avatarLocolImageName]];
     } else {
 #warning 使用SDWebImage或自己写获取远程图片的方法
     }
@@ -67,7 +67,7 @@ static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
     
     //消息图片
 #warning 这里增加语音动画图片
-    voiceImageView.image = [UIImage imageNamed:[MQFileUtil jointResource:@""]];
+    voiceImageView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@""]];
     NSString *animationImage1 = @"";
     NSString *animationImage2 = @"";
     NSString *animationImage3 = @"";
@@ -77,9 +77,9 @@ static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
         animationImage3 = @"";
     }
     voiceImageView.animationImages = [NSArray arrayWithObjects:
-                                  [UIImage imageNamed:[MQFileUtil jointResource:animationImage1]],
-                                  [UIImage imageNamed:[MQFileUtil jointResource:animationImage2]],
-                                  [UIImage imageNamed:[MQFileUtil jointResource:animationImage3]],nil];
+                                  [UIImage imageNamed:[MQChatFileUtil resourceWithName:animationImage1]],
+                                  [UIImage imageNamed:[MQChatFileUtil resourceWithName:animationImage2]],
+                                  [UIImage imageNamed:[MQChatFileUtil resourceWithName:animationImage3]],nil];
     
     //刷新indicator
     sendMsgIndicator.hidden = true;
