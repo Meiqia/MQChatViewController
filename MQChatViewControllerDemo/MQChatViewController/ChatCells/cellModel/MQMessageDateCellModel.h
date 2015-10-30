@@ -18,7 +18,7 @@
 /**
  * @brief 消息的时间
  */
-@property (nonatomic, readonly, copy) NSString *messageDate;
+@property (nonatomic, readonly, copy) NSString *date;
 
 /**
  * @brief 消息气泡button的frame

@@ -33,4 +33,8 @@
     return [[MQVoiceMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellReuseIdentifer];
 }
 
+- (NSDate *)getCellDate {
+    return self.date;
+}
+
 @end

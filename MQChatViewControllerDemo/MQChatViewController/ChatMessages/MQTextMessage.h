@@ -7,7 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MQBaseMessage.h"
 
-@interface MQTextMessage : NSObject
+@interface MQTextMessage : MQBaseMessage
+
+/** 消息content */
+@property (nonatomic, copy) NSString *content;
+
+/**
+ * 用文字初始化message
+ */
+- (instancetype)initWithContent:(NSString *)content;
 
 @end

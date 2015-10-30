@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "MQChatBaseCell.h"
-#import "MQMessage.h"
+//#import "MQMessage.h"
 
 //定义cell中的布局间距等
 /**
@@ -84,6 +84,11 @@ typedef NS_ENUM(NSUInteger, MQChatCellSendType) {
  *  @return 初始化了一个cell
  */
 - (UITableViewCell *)getCellWithReuseIdentifier:(NSString *)cellReuseIdentifer;
+
+/**
+ *  @return cell的消息时间.
+ */
+- (NSDate *)getCellDate;
 
 
 @end

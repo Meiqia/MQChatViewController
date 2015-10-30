@@ -10,6 +10,9 @@
 #import "MQChatBaseCell.h"
 #import "MQCellModelProtocol.h"
 
+@interface MQChatViewTableDataSource() 
+
+@end
 
 @implementation MQChatViewTableDataSource {
     UITableView *chatTableView;
@@ -43,6 +46,8 @@
     [(MQChatBaseCell*)cell updateCellWithCellModel:cellModel];
     return cell;
 }
+
+
 
 
 @end

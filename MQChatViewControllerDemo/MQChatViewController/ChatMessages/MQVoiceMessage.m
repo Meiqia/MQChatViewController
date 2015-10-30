@@ -10,4 +10,23 @@
 
 @implementation MQVoiceMessage
 
+- (instancetype)init{
+    if (self = [super init]) {
+        self.voicePath = @"";
+    }
+    return self;
+}
+
+- (instancetype)initWithVoicePath:(NSString *)voicePath {
+    self = [self init];
+    self.voicePath = voicePath;
+    return self;
+}
+
+- (instancetype)initWithVoiceData:(NSData *)voice {
+    self = [self init];
+    self.voice = voice;
+    return self;
+}
+
 @end

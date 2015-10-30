@@ -7,7 +7,20 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MQBaseMessage.h"
+#import <UIKit/UIKit.h>
 
-@interface MQVoiceMessage : NSObject
+@interface MQVoiceMessage : MQBaseMessage
+
+/** 消息voice path */
+@property (nonatomic, copy) NSString *voicePath;
+
+/** 消息voice */
+@property (nonatomic, strong) NSData *voice;
+
+- (instancetype)initWithVoicePath:(NSString *)voicePath;
+
+- (instancetype)initWithVoiceData:(NSData *)voice;
+
 
 @end

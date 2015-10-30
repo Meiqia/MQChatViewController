@@ -7,7 +7,19 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MQBaseMessage.h"
+#import <UIKit/UIKit.h>
 
-@interface MQImageMessage : NSObject
+@interface MQImageMessage : MQBaseMessage
+
+/** 消息image path */
+@property (nonatomic, copy) NSString *imagePath;
+
+/** 消息image */
+@property (nonatomic, strong) UIImage *image;
+
+- (instancetype)initWithImagePath:(NSString *)imagePath;
+
+- (instancetype)initWithImage:(UIImage *)image;
 
 @end

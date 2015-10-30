@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "MQCellModelProtocol.h"
+#import "MQImageMessage.h"
 
 /**
  * MQImageCellModel定义了图片消息的基本类型数据，包括产生cell的内部所有view的显示数据，cell内部元素的frame等
@@ -23,7 +24,7 @@
 /**
  * @brief 消息的时间
  */
-@property (nonatomic, readonly, copy) NSDate *messageDate;
+@property (nonatomic, readonly, copy) NSDate *date;
 
 /**
  * @brief 发送者的头像Path
@@ -69,7 +70,7 @@
 /**
  *  根据MQMessage内容来生成cell model
  */
-- (MQImageCellModel *)initCellModelWithMessage:(MQMessage *)message;
+- (MQImageCellModel *)initCellModelWithMessage:(MQImageMessage *)message;
 
 
 @end

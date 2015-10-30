@@ -13,6 +13,7 @@
  * 所有的集成的cell需要满足的协议
  */
 @protocol MQChatCellProtocol <NSObject>
+
 /**
  * 根据cellModel中的数据，来更新cell的界面
  * @param cellModel cell的数据

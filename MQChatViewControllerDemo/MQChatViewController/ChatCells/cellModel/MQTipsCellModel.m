@@ -38,4 +38,8 @@ static CGFloat const kMQMessageTipsLabelHeight = 0.5;
     return [[MQTipsCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellReuseIdentifer];
 }
 
+- (NSDate *)getCellDate {
+    return self.date;
+}
+
 @end

@@ -23,7 +23,7 @@
 /**
  * @brief 事件消息的时间
  */
-@property (nonatomic, readonly, copy) NSDate *eventDate;
+@property (nonatomic, readonly, copy) NSDate *date;
 
 /**
  * @brief 消息气泡button的frame
@@ -34,6 +34,6 @@
 /**
  *  根据MQMessage内容来生成cell model
  */
-- (MQEventCellModel *)initCellModelWithMessage:(MQMessage *)message;
+//- (MQEventCellModel *)initCellModelWithMessage:(MQMessage *)message;
 
 @end

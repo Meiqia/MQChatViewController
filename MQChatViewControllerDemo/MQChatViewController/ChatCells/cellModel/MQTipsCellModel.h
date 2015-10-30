@@ -23,7 +23,7 @@
 /**
  * @brief 提示的时间
  */
-@property (nonatomic, readonly, copy) NSDate *eventDate;
+@property (nonatomic, readonly, copy) NSDate *date;
 
 /**
  * @brief 提示label的frame

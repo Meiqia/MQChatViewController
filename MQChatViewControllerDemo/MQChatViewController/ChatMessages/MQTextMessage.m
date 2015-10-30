@@ -10,4 +10,11 @@
 
 @implementation MQTextMessage
 
+- (instancetype)initWithContent:(NSString *)content {
+    if (self = [super init]) {
+        self.content = content;
+    }
+    return self;
+}
+
 @end

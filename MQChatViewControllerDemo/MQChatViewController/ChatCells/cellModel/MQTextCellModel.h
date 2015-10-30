@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "MQCellModelProtocol.h"
-#import "MQMessage.h"
+#import "MQTextMessage.h"
 
 
 /**
@@ -25,7 +25,7 @@
 /**
  * @brief 消息的时间
  */
-@property (nonatomic, readonly, copy) NSDate *messageDate;
+@property (nonatomic, readonly, copy) NSDate *date;
 
 /**
  * @brief 发送者的头像Path
@@ -90,7 +90,7 @@
 /**
  *  根据MQMessage内容来生成cell model
  */
-- (MQTextCellModel *)initCellModelWithMessage:(MQMessage *)message;
+- (MQTextCellModel *)initCellModelWithMessage:(MQTextMessage *)message;
 
 
 @end

@@ -81,14 +81,14 @@
 
 @implementation MQTextCellModel
 
-- (MQTextCellModel *)initCellModelWithMessage:(MQMessage *)message {
+- (MQTextCellModel *)initCellModelWithMessage:(MQTextMessage *)message {
     if (self = [super init]) {
         self.cellText = message.content;
-        self.messageDate = message.createdOn;
+        self.messageDate = message.messageDate;
         
         //根据消息的来源，进行处理
         NSString *bubbleImageName = @"";
-        if (message.fromType == MQMessageFromTypeClient) {
+        if (message.messageFromType == MQMessageOutgoing) {
             //发送出去的消息
             self.cellFromType = MQChatCellOutgoing;
 #warning 这里要增加图片
@@ -129,6 +129,10 @@
  */
 - (MQChatBaseCell *)getCellWithReuseIdentifier:(NSString *)cellReuseIdentifer {
     return [[MQTextMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellReuseIdentifer];
+}
+
+- (NSDate *)getCellDate {
+    return self.date;
 }
 
 
