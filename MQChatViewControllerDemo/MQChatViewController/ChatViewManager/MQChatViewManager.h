@@ -20,13 +20,13 @@
  * 在一个ViewController中Push出一个客服聊天界面
  * @param viewController 在这个viewController中push出客服聊天界面
  */
-- (MQChatViewController *)pushMQChatViewController:(UIViewController *)viewController;
+- (MQChatViewController *)pushMQChatViewControllerInViewController:(UIViewController *)viewController;
 
 /**
  * 在一个ViewController中Present出一个客服聊天界面的Modal视图
  * @param viewController 在这个viewController中push出客服聊天界面
  */
-- (MQChatViewController *)presentMQChatViewController:(UIViewController *)viewController;
+- (MQChatViewController *)presentMQChatViewControllerInViewController:(UIViewController *)viewController;
 
 /**
  * 将客服聊天界面移除

@@ -54,7 +54,7 @@
     return self;
 }
 
-- (MQChatViewController *)pushMQChatViewController:(UIViewController *)viewController {
+- (MQChatViewController *)pushMQChatViewControllerInViewController:(UIViewController *)viewController {
     if (chatViewController) {
         chatViewController = [[MQChatViewController alloc] init];
     }
@@ -62,7 +62,7 @@
     return chatViewController;
 }
 
-- (MQChatViewController *)presentMQChatViewController:(UIViewController *)viewController {
+- (MQChatViewController *)presentMQChatViewControllerInViewController:(UIViewController *)viewController {
     if (chatViewController) {
         chatViewController = [[MQChatViewController alloc] init];
     }
