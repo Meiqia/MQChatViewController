@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MQDelegate.h"
+//#import "MQDelegate.h"
 
 /**
  * @brief 美洽SDK的配置管理类
@@ -21,7 +21,7 @@
  * @param appkey 在美洽管理后台申请的appkey
  * @param delegate 可空，发生异常时的代理函数：-(void)receivedExpcetionStatus:desc:
  */
-+ (void)initWithAppkey:(NSString*)appkey expcetionDelegate:(id<MQExpcetionDelegate>)delegate;
+//+ (void)initWithAppkey:(NSString*)appkey expcetionDelegate:(id<MQExpcetionDelegate>)delegate;
 
 
 /**

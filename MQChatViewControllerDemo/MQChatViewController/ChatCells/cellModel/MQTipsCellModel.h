@@ -31,6 +31,17 @@
 @property (nonatomic, readonly, assign) CGRect tipLabelFrame;
 
 /**
+ * @brief 上线条的frame
+ */
+@property (nonatomic, readonly, assign) CGRect topLineFrame;
+
+/**
+ * @brief 下线条的frame
+ */
+@property (nonatomic, readonly, assign) CGRect bottomLineFrame;
+
+
+/**
  *  根据tips内容来生成cell model
  */
 - (MQTipsCellModel *)initCellModelWithTips:(NSString *)tips;
