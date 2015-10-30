@@ -2,7 +2,7 @@
 //  MQImageCellModel.h
 //  MeiQiaSDK
 //
-//  Created by dingnan on 15/10/29.
+//  Created by ijinmao on 15/10/29.
 //  Copyright © 2015年 MeiQia Inc. All rights reserved.
 //
 
@@ -23,7 +23,7 @@
 /**
  * @brief 消息的时间
  */
-@property (nonatomic, readonly, copy) NSString *messageDate;
+@property (nonatomic, readonly, copy) NSDate *messageDate;
 
 /**
  * @brief 发送者的头像Path
@@ -33,7 +33,7 @@
 /**
  * @brief 发送者的头像的图片名字 (如果在头像path不存在的情况下，才使用这个属性)
  */
-@property (nonatomic, readonly, copy) NSString *avatarLocolImageName;
+@property (nonatomic, readonly, copy) NSString *avatarLocalImageName;
 
 /**
  * @brief 聊天气泡的image（该气泡image已经进行了resize）

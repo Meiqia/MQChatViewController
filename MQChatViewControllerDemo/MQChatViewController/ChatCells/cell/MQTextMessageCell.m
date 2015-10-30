@@ -2,7 +2,7 @@
 //  MQTextMessageCell.m
 //  MeiQiaSDK
 //
-//  Created by dingnan on 15/10/29.
+//  Created by ijinmao on 15/10/29.
 //  Copyright © 2015年 MeiQia Inc. All rights reserved.
 //
 
@@ -58,7 +58,7 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
     
     //刷新头像
     if (cellModel.avatarPath.length == 0) {
-        avatarImageView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:cellModel.avatarLocolImageName]];
+        avatarImageView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:cellModel.avatarLocalImageName]];
     } else {
 #warning 使用SDWebImage或自己写获取远程图片的方法
     }

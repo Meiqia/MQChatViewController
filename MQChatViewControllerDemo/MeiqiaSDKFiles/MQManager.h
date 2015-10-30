@@ -2,13 +2,12 @@
 //  MQManager.h
 //  MeiQiaSDK
 //
-//  Created by dingnan on 15/10/27.
+//  Created by ijinmao on 15/10/27.
 //  Copyright © 2015年 MeiQia Inc. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import "MQDelegate.h"
-#import "MQMessage.h"
 #import <UIKit/UIKit.h>
 
 /**
@@ -137,6 +136,11 @@
  */
 + (NSString *)getMeiQiaSDKVerstion;
 
+/**
+ * 获取当前正在交流的客服基本信息
+ * @param content 提供给客服看到的内容
+ */
++ (void)getCurrentAgentInfo:(MQAgent *)agentInfo;
 
 
 @end

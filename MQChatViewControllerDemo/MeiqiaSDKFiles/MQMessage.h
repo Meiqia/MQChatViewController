@@ -2,7 +2,7 @@
 //  MQMessage.h
 //  MeiQiaSDK
 //
-//  Created by dingnan on 15/10/23.
+//  Created by ijinmao on 15/10/23.
 //  Copyright © 2015年 MeiQia Inc. All rights reserved.
 //
 
@@ -46,7 +46,7 @@ typedef enum : NSUInteger {
 @interface MQMessage : NSObject
 
 /** 消息id */
-@property (nonatomic, strong) NSString             * messageId;
+@property (nonatomic, copy) NSString             * messageId;
 
 /** 消息内容 */
 @property (nonatomic, copy  ) NSString             * content;
@@ -71,5 +71,11 @@ typedef enum : NSUInteger {
 
 //消息状态
 @property (nonatomic, assign) MQMessageStatus      status;
+
+/** message发送人的姓名 */
+@property (nonatomic, copy  ) NSString             * userName;
+
+/** message发送人的头像path */
+@property (nonatomic, copy  ) NSString             * userAvatarPath;
 
 @end
