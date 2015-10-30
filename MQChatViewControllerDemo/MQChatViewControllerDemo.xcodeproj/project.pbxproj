@@ -38,6 +38,7 @@
 		CC45FD721BE3745700DE0BFB /* MQAgent.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD6B1BE3745700DE0BFB /* MQAgent.m */; };
 		CC45FD731BE3745700DE0BFB /* MQManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD6F1BE3745700DE0BFB /* MQManager.m */; };
 		CC45FD741BE3745700DE0BFB /* MQMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD711BE3745700DE0BFB /* MQMessage.m */; };
+		CC45FD761BE378E900DE0BFB /* MQChatViewBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CC45FD751BE378E900DE0BFB /* MQChatViewBundle.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,6 +124,7 @@
 		CC45FD6F1BE3745700DE0BFB /* MQManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQManager.m; sourceTree = "<group>"; };
 		CC45FD701BE3745700DE0BFB /* MQMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessage.h; sourceTree = "<group>"; };
 		CC45FD711BE3745700DE0BFB /* MQMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessage.m; sourceTree = "<group>"; };
+		CC45FD751BE378E900DE0BFB /* MQChatViewBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MQChatViewBundle.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -222,6 +224,7 @@
 				CC45FD461BE36B3500DE0BFB /* Vendors */,
 				CC45FD4A1BE36B3500DE0BFB /* ViewController */,
 				CC45FD531BE36B3500DE0BFB /* Views */,
+				CC45FD751BE378E900DE0BFB /* MQChatViewBundle.bundle */,
 			);
 			path = MQChatViewController;
 			sourceTree = SOURCE_ROOT;
@@ -446,6 +449,7 @@
 			files = (
 				CC45FCFD1BE36B1900DE0BFB /* LaunchScreen.storyboard in Resources */,
 				CC45FCFA1BE36B1900DE0BFB /* Assets.xcassets in Resources */,
+				CC45FD761BE378E900DE0BFB /* MQChatViewBundle.bundle in Resources */,
 				CC45FCF81BE36B1900DE0BFB /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

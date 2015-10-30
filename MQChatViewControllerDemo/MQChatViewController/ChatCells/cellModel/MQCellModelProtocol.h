@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "MQChatBaseCell.h"
+#import "MQMessage.h"
 
 //定义cell中的布局间距等
 /**
