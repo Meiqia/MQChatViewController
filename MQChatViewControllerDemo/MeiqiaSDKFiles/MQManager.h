@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "MQDelegate.h"
+#import "MQMessage.h"
+#import <UIKit/UIKit.h>
 
 /**
  * @brief 美洽SDK的配置管理类

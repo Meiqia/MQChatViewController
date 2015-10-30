@@ -7,15 +7,15 @@
 //
 
 #import "MQChatBaseCell.h"
-#import "MQFileUtil.h"
+#import "MQChatFileUtil.h"
 
 @implementation MQChatBaseCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
 #warning 这里增加气泡图片
-        self.incomingBubbleImage = [UIImage imageNamed:[MQFileUtil jointResource:@""]];
-        self.outgoingBubbleImage = [UIImage imageNamed:[MQFileUtil jointResource:@""]];
+        self.incomingBubbleImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@""]];
+        self.outgoingBubbleImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@""]];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
     }

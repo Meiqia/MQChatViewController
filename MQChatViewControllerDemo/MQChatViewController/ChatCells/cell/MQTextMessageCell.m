@@ -8,8 +8,7 @@
 
 #import "MQTextMessageCell.h"
 #import "MQTextCellModel.h"
-#import "MQSelectableLabel.h"
-#import "MQFileUtil.h"
+#import "MQChatFileUtil.h"
 
 static const NSInteger kMQTextCellSelectedUrlActionSheetTag = 2000;
 static const NSInteger kMQTextCellSelectedNumberActionSheetTag = 2001;
@@ -59,7 +58,7 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
     
     //刷新头像
     if (cellModel.avatarPath.length == 0) {
-        avatarImageView.image = [UIImage imageNamed:[MQFileUtil jointResource:cellModel.avatarLocolImageName]];
+        avatarImageView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:cellModel.avatarLocolImageName]];
     } else {
 #warning 使用SDWebImage或自己写获取远程图片的方法
     }

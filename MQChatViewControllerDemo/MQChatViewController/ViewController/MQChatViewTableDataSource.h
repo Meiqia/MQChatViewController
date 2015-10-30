@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "MQChatViewModel.h"
+#import <UIKit/UIKit.h>
 
 /**
  * @brief 客服聊天界面中的UITableView的datasource
