@@ -1,0 +1,18 @@
+//
+//  MQEventMessageCell.h
+//  MeiQiaSDK
+//
+//  Created by dingnan on 15/10/29.
+//  Copyright © 2015年 MeiQia Inc. All rights reserved.
+//
+
+#import "MQChatBaseCell.h"
+#import "MQEventCellModel.h"
+/**
+ * MQEventMessageCell定义了客服聊天界面的事件消息cell
+ */
+@interface MQEventMessageCell : MQChatBaseCell
+
+
+
+@end

@@ -1,0 +1,721 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CC45FCEF1BE36B1900DE0BFB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FCEE1BE36B1900DE0BFB /* main.m */; };
+		CC45FCF21BE36B1900DE0BFB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FCF11BE36B1900DE0BFB /* AppDelegate.m */; };
+		CC45FCF51BE36B1900DE0BFB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FCF41BE36B1900DE0BFB /* ViewController.m */; };
+		CC45FCF81BE36B1900DE0BFB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC45FCF61BE36B1900DE0BFB /* Main.storyboard */; };
+		CC45FCFA1BE36B1900DE0BFB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CC45FCF91BE36B1900DE0BFB /* Assets.xcassets */; };
+		CC45FCFD1BE36B1900DE0BFB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CC45FCFB1BE36B1900DE0BFB /* LaunchScreen.storyboard */; };
+		CC45FD081BE36B1900DE0BFB /* MQChatViewControllerDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD071BE36B1900DE0BFB /* MQChatViewControllerDemoTests.m */; };
+		CC45FD131BE36B1900DE0BFB /* MQChatViewControllerDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD121BE36B1900DE0BFB /* MQChatViewControllerDemoUITests.m */; };
+		CC45FD541BE36B3500DE0BFB /* MQChatBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD241BE36B3500DE0BFB /* MQChatBaseCell.m */; };
+		CC45FD551BE36B3500DE0BFB /* MQEventMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD261BE36B3500DE0BFB /* MQEventMessageCell.m */; };
+		CC45FD561BE36B3500DE0BFB /* MQImageMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD281BE36B3500DE0BFB /* MQImageMessageCell.m */; };
+		CC45FD571BE36B3500DE0BFB /* MQMessageDateCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD2A1BE36B3500DE0BFB /* MQMessageDateCell.m */; };
+		CC45FD581BE36B3500DE0BFB /* MQTextMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD2C1BE36B3500DE0BFB /* MQTextMessageCell.m */; };
+		CC45FD591BE36B3500DE0BFB /* MQTipsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD2E1BE36B3500DE0BFB /* MQTipsCell.m */; };
+		CC45FD5A1BE36B3600DE0BFB /* MQVoiceMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD301BE36B3500DE0BFB /* MQVoiceMessageCell.m */; };
+		CC45FD5B1BE36B3600DE0BFB /* MQEventCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD341BE36B3500DE0BFB /* MQEventCellModel.m */; };
+		CC45FD5C1BE36B3600DE0BFB /* MQImageCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD361BE36B3500DE0BFB /* MQImageCellModel.m */; };
+		CC45FD5D1BE36B3600DE0BFB /* MQMessageDateCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD381BE36B3500DE0BFB /* MQMessageDateCellModel.m */; };
+		CC45FD5E1BE36B3600DE0BFB /* MQTextCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD3A1BE36B3500DE0BFB /* MQTextCellModel.m */; };
+		CC45FD5F1BE36B3600DE0BFB /* MQTipsCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD3C1BE36B3500DE0BFB /* MQTipsCellModel.m */; };
+		CC45FD601BE36B3600DE0BFB /* MQVoiceCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD3E1BE36B3500DE0BFB /* MQVoiceCellModel.m */; };
+		CC45FD611BE36B3600DE0BFB /* MQChatViewConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD411BE36B3500DE0BFB /* MQChatViewConfig.m */; };
+		CC45FD621BE36B3600DE0BFB /* MQChatViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD431BE36B3500DE0BFB /* MQChatViewManager.m */; };
+		CC45FD631BE36B3600DE0BFB /* MQManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD451BE36B3500DE0BFB /* MQManager.m */; };
+		CC45FD641BE36B3600DE0BFB /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD491BE36B3500DE0BFB /* TTTAttributedLabel.m */; };
+		CC45FD651BE36B3600DE0BFB /* MQChatTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD4C1BE36B3500DE0BFB /* MQChatTableView.m */; };
+		CC45FD661BE36B3600DE0BFB /* MQChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD4E1BE36B3500DE0BFB /* MQChatViewController.m */; };
+		CC45FD671BE36B3600DE0BFB /* MQChatViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD501BE36B3500DE0BFB /* MQChatViewModel.m */; };
+		CC45FD681BE36B3600DE0BFB /* MQChatViewTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD521BE36B3500DE0BFB /* MQChatViewTableDataSource.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CC45FD041BE36B1900DE0BFB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CC45FCE21BE36B1900DE0BFB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CC45FCE91BE36B1900DE0BFB;
+			remoteInfo = MQChatViewControllerDemo;
+		};
+		CC45FD0F1BE36B1900DE0BFB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CC45FCE21BE36B1900DE0BFB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CC45FCE91BE36B1900DE0BFB;
+			remoteInfo = MQChatViewControllerDemo;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		CC45FCEA1BE36B1900DE0BFB /* MQChatViewControllerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MQChatViewControllerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC45FCEE1BE36B1900DE0BFB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		CC45FCF01BE36B1900DE0BFB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		CC45FCF11BE36B1900DE0BFB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		CC45FCF31BE36B1900DE0BFB /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		CC45FCF41BE36B1900DE0BFB /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		CC45FCF71BE36B1900DE0BFB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		CC45FCF91BE36B1900DE0BFB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CC45FCFC1BE36B1900DE0BFB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		CC45FCFE1BE36B1900DE0BFB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CC45FD031BE36B1900DE0BFB /* MQChatViewControllerDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MQChatViewControllerDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC45FD071BE36B1900DE0BFB /* MQChatViewControllerDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MQChatViewControllerDemoTests.m; sourceTree = "<group>"; };
+		CC45FD091BE36B1900DE0BFB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CC45FD0E1BE36B1900DE0BFB /* MQChatViewControllerDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MQChatViewControllerDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC45FD121BE36B1900DE0BFB /* MQChatViewControllerDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MQChatViewControllerDemoUITests.m; sourceTree = "<group>"; };
+		CC45FD141BE36B1900DE0BFB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CC45FD231BE36B3500DE0BFB /* MQChatBaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQChatBaseCell.h; sourceTree = "<group>"; };
+		CC45FD241BE36B3500DE0BFB /* MQChatBaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQChatBaseCell.m; sourceTree = "<group>"; };
+		CC45FD251BE36B3500DE0BFB /* MQEventMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQEventMessageCell.h; sourceTree = "<group>"; };
+		CC45FD261BE36B3500DE0BFB /* MQEventMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQEventMessageCell.m; sourceTree = "<group>"; };
+		CC45FD271BE36B3500DE0BFB /* MQImageMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQImageMessageCell.h; sourceTree = "<group>"; };
+		CC45FD281BE36B3500DE0BFB /* MQImageMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQImageMessageCell.m; sourceTree = "<group>"; };
+		CC45FD291BE36B3500DE0BFB /* MQMessageDateCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessageDateCell.h; sourceTree = "<group>"; };
+		CC45FD2A1BE36B3500DE0BFB /* MQMessageDateCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageDateCell.m; sourceTree = "<group>"; };
+		CC45FD2B1BE36B3500DE0BFB /* MQTextMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQTextMessageCell.h; sourceTree = "<group>"; };
+		CC45FD2C1BE36B3500DE0BFB /* MQTextMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQTextMessageCell.m; sourceTree = "<group>"; };
+		CC45FD2D1BE36B3500DE0BFB /* MQTipsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQTipsCell.h; sourceTree = "<group>"; };
+		CC45FD2E1BE36B3500DE0BFB /* MQTipsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQTipsCell.m; sourceTree = "<group>"; };
+		CC45FD2F1BE36B3500DE0BFB /* MQVoiceMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQVoiceMessageCell.h; sourceTree = "<group>"; };
+		CC45FD301BE36B3500DE0BFB /* MQVoiceMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQVoiceMessageCell.m; sourceTree = "<group>"; };
+		CC45FD321BE36B3500DE0BFB /* MQCellModelProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQCellModelProtocol.h; sourceTree = "<group>"; };
+		CC45FD331BE36B3500DE0BFB /* MQEventCellModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQEventCellModel.h; sourceTree = "<group>"; };
+		CC45FD341BE36B3500DE0BFB /* MQEventCellModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQEventCellModel.m; sourceTree = "<group>"; };
+		CC45FD351BE36B3500DE0BFB /* MQImageCellModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQImageCellModel.h; sourceTree = "<group>"; };
+		CC45FD361BE36B3500DE0BFB /* MQImageCellModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQImageCellModel.m; sourceTree = "<group>"; };
+		CC45FD371BE36B3500DE0BFB /* MQMessageDateCellModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessageDateCellModel.h; sourceTree = "<group>"; };
+		CC45FD381BE36B3500DE0BFB /* MQMessageDateCellModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageDateCellModel.m; sourceTree = "<group>"; };
+		CC45FD391BE36B3500DE0BFB /* MQTextCellModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQTextCellModel.h; sourceTree = "<group>"; };
+		CC45FD3A1BE36B3500DE0BFB /* MQTextCellModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQTextCellModel.m; sourceTree = "<group>"; };
+		CC45FD3B1BE36B3500DE0BFB /* MQTipsCellModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQTipsCellModel.h; sourceTree = "<group>"; };
+		CC45FD3C1BE36B3500DE0BFB /* MQTipsCellModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQTipsCellModel.m; sourceTree = "<group>"; };
+		CC45FD3D1BE36B3500DE0BFB /* MQVoiceCellModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQVoiceCellModel.h; sourceTree = "<group>"; };
+		CC45FD3E1BE36B3500DE0BFB /* MQVoiceCellModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQVoiceCellModel.m; sourceTree = "<group>"; };
+		CC45FD401BE36B3500DE0BFB /* MQChatViewConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQChatViewConfig.h; sourceTree = "<group>"; };
+		CC45FD411BE36B3500DE0BFB /* MQChatViewConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQChatViewConfig.m; sourceTree = "<group>"; };
+		CC45FD421BE36B3500DE0BFB /* MQChatViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQChatViewManager.h; sourceTree = "<group>"; };
+		CC45FD431BE36B3500DE0BFB /* MQChatViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQChatViewManager.m; sourceTree = "<group>"; };
+		CC45FD441BE36B3500DE0BFB /* MQManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQManager.h; sourceTree = "<group>"; };
+		CC45FD451BE36B3500DE0BFB /* MQManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQManager.m; sourceTree = "<group>"; };
+		CC45FD481BE36B3500DE0BFB /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
+		CC45FD491BE36B3500DE0BFB /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
+		CC45FD4B1BE36B3500DE0BFB /* MQChatTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQChatTableView.h; sourceTree = "<group>"; };
+		CC45FD4C1BE36B3500DE0BFB /* MQChatTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQChatTableView.m; sourceTree = "<group>"; };
+		CC45FD4D1BE36B3500DE0BFB /* MQChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQChatViewController.h; sourceTree = "<group>"; };
+		CC45FD4E1BE36B3500DE0BFB /* MQChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQChatViewController.m; sourceTree = "<group>"; };
+		CC45FD4F1BE36B3500DE0BFB /* MQChatViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQChatViewModel.h; sourceTree = "<group>"; };
+		CC45FD501BE36B3500DE0BFB /* MQChatViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQChatViewModel.m; sourceTree = "<group>"; };
+		CC45FD511BE36B3500DE0BFB /* MQChatViewTableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQChatViewTableDataSource.h; sourceTree = "<group>"; };
+		CC45FD521BE36B3500DE0BFB /* MQChatViewTableDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQChatViewTableDataSource.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CC45FCE71BE36B1900DE0BFB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC45FD001BE36B1900DE0BFB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC45FD0B1BE36B1900DE0BFB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CC45FCE11BE36B1900DE0BFB = {
+			isa = PBXGroup;
+			children = (
+				CC45FCEC1BE36B1900DE0BFB /* MQChatViewControllerDemo */,
+				CC45FD061BE36B1900DE0BFB /* MQChatViewControllerDemoTests */,
+				CC45FD111BE36B1900DE0BFB /* MQChatViewControllerDemoUITests */,
+				CC45FCEB1BE36B1900DE0BFB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CC45FCEB1BE36B1900DE0BFB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CC45FCEA1BE36B1900DE0BFB /* MQChatViewControllerDemo.app */,
+				CC45FD031BE36B1900DE0BFB /* MQChatViewControllerDemoTests.xctest */,
+				CC45FD0E1BE36B1900DE0BFB /* MQChatViewControllerDemoUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CC45FCEC1BE36B1900DE0BFB /* MQChatViewControllerDemo */ = {
+			isa = PBXGroup;
+			children = (
+				CC45FD201BE36B3500DE0BFB /* MQChatViewController */,
+				CC45FCF01BE36B1900DE0BFB /* AppDelegate.h */,
+				CC45FCF11BE36B1900DE0BFB /* AppDelegate.m */,
+				CC45FCF31BE36B1900DE0BFB /* ViewController.h */,
+				CC45FCF41BE36B1900DE0BFB /* ViewController.m */,
+				CC45FCF61BE36B1900DE0BFB /* Main.storyboard */,
+				CC45FCF91BE36B1900DE0BFB /* Assets.xcassets */,
+				CC45FCFB1BE36B1900DE0BFB /* LaunchScreen.storyboard */,
+				CC45FCFE1BE36B1900DE0BFB /* Info.plist */,
+				CC45FCED1BE36B1900DE0BFB /* Supporting Files */,
+			);
+			path = MQChatViewControllerDemo;
+			sourceTree = "<group>";
+		};
+		CC45FCED1BE36B1900DE0BFB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CC45FCEE1BE36B1900DE0BFB /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CC45FD061BE36B1900DE0BFB /* MQChatViewControllerDemoTests */ = {
+			isa = PBXGroup;
+			children = (
+				CC45FD071BE36B1900DE0BFB /* MQChatViewControllerDemoTests.m */,
+				CC45FD091BE36B1900DE0BFB /* Info.plist */,
+			);
+			path = MQChatViewControllerDemoTests;
+			sourceTree = "<group>";
+		};
+		CC45FD111BE36B1900DE0BFB /* MQChatViewControllerDemoUITests */ = {
+			isa = PBXGroup;
+			children = (
+				CC45FD121BE36B1900DE0BFB /* MQChatViewControllerDemoUITests.m */,
+				CC45FD141BE36B1900DE0BFB /* Info.plist */,
+			);
+			path = MQChatViewControllerDemoUITests;
+			sourceTree = "<group>";
+		};
+		CC45FD201BE36B3500DE0BFB /* MQChatViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CC45FD211BE36B3500DE0BFB /* ChatCells */,
+				CC45FD3F1BE36B3500DE0BFB /* ChatViewManager */,
+				CC45FD461BE36B3500DE0BFB /* Vendors */,
+				CC45FD4A1BE36B3500DE0BFB /* ViewController */,
+				CC45FD531BE36B3500DE0BFB /* Views */,
+			);
+			path = MQChatViewController;
+			sourceTree = SOURCE_ROOT;
+		};
+		CC45FD211BE36B3500DE0BFB /* ChatCells */ = {
+			isa = PBXGroup;
+			children = (
+				CC45FD221BE36B3500DE0BFB /* cell */,
+				CC45FD311BE36B3500DE0BFB /* cellModel */,
+			);
+			path = ChatCells;
+			sourceTree = "<group>";
+		};
+		CC45FD221BE36B3500DE0BFB /* cell */ = {
+			isa = PBXGroup;
+			children = (
+				CC45FD231BE36B3500DE0BFB /* MQChatBaseCell.h */,
+				CC45FD241BE36B3500DE0BFB /* MQChatBaseCell.m */,
+				CC45FD251BE36B3500DE0BFB /* MQEventMessageCell.h */,
+				CC45FD261BE36B3500DE0BFB /* MQEventMessageCell.m */,
+				CC45FD271BE36B3500DE0BFB /* MQImageMessageCell.h */,
+				CC45FD281BE36B3500DE0BFB /* MQImageMessageCell.m */,
+				CC45FD291BE36B3500DE0BFB /* MQMessageDateCell.h */,
+				CC45FD2A1BE36B3500DE0BFB /* MQMessageDateCell.m */,
+				CC45FD2B1BE36B3500DE0BFB /* MQTextMessageCell.h */,
+				CC45FD2C1BE36B3500DE0BFB /* MQTextMessageCell.m */,
+				CC45FD2D1BE36B3500DE0BFB /* MQTipsCell.h */,
+				CC45FD2E1BE36B3500DE0BFB /* MQTipsCell.m */,
+				CC45FD2F1BE36B3500DE0BFB /* MQVoiceMessageCell.h */,
+				CC45FD301BE36B3500DE0BFB /* MQVoiceMessageCell.m */,
+			);
+			path = cell;
+			sourceTree = "<group>";
+		};
+		CC45FD311BE36B3500DE0BFB /* cellModel */ = {
+			isa = PBXGroup;
+			children = (
+				CC45FD321BE36B3500DE0BFB /* MQCellModelProtocol.h */,
+				CC45FD331BE36B3500DE0BFB /* MQEventCellModel.h */,
+				CC45FD341BE36B3500DE0BFB /* MQEventCellModel.m */,
+				CC45FD351BE36B3500DE0BFB /* MQImageCellModel.h */,
+				CC45FD361BE36B3500DE0BFB /* MQImageCellModel.m */,
+				CC45FD371BE36B3500DE0BFB /* MQMessageDateCellModel.h */,
+				CC45FD381BE36B3500DE0BFB /* MQMessageDateCellModel.m */,
+				CC45FD391BE36B3500DE0BFB /* MQTextCellModel.h */,
+				CC45FD3A1BE36B3500DE0BFB /* MQTextCellModel.m */,
+				CC45FD3B1BE36B3500DE0BFB /* MQTipsCellModel.h */,
+				CC45FD3C1BE36B3500DE0BFB /* MQTipsCellModel.m */,
+				CC45FD3D1BE36B3500DE0BFB /* MQVoiceCellModel.h */,
+				CC45FD3E1BE36B3500DE0BFB /* MQVoiceCellModel.m */,
+			);
+			path = cellModel;
+			sourceTree = "<group>";
+		};
+		CC45FD3F1BE36B3500DE0BFB /* ChatViewManager */ = {
+			isa = PBXGroup;
+			children = (
+				CC45FD401BE36B3500DE0BFB /* MQChatViewConfig.h */,
+				CC45FD411BE36B3500DE0BFB /* MQChatViewConfig.m */,
+				CC45FD421BE36B3500DE0BFB /* MQChatViewManager.h */,
+				CC45FD431BE36B3500DE0BFB /* MQChatViewManager.m */,
+				CC45FD441BE36B3500DE0BFB /* MQManager.h */,
+				CC45FD451BE36B3500DE0BFB /* MQManager.m */,
+			);
+			path = ChatViewManager;
+			sourceTree = "<group>";
+		};
+		CC45FD461BE36B3500DE0BFB /* Vendors */ = {
+			isa = PBXGroup;
+			children = (
+				CC45FD471BE36B3500DE0BFB /* TTTAttributedLabel */,
+			);
+			path = Vendors;
+			sourceTree = "<group>";
+		};
+		CC45FD471BE36B3500DE0BFB /* TTTAttributedLabel */ = {
+			isa = PBXGroup;
+			children = (
+				CC45FD481BE36B3500DE0BFB /* TTTAttributedLabel.h */,
+				CC45FD491BE36B3500DE0BFB /* TTTAttributedLabel.m */,
+			);
+			path = TTTAttributedLabel;
+			sourceTree = "<group>";
+		};
+		CC45FD4A1BE36B3500DE0BFB /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				CC45FD4B1BE36B3500DE0BFB /* MQChatTableView.h */,
+				CC45FD4C1BE36B3500DE0BFB /* MQChatTableView.m */,
+				CC45FD4D1BE36B3500DE0BFB /* MQChatViewController.h */,
+				CC45FD4E1BE36B3500DE0BFB /* MQChatViewController.m */,
+				CC45FD4F1BE36B3500DE0BFB /* MQChatViewModel.h */,
+				CC45FD501BE36B3500DE0BFB /* MQChatViewModel.m */,
+				CC45FD511BE36B3500DE0BFB /* MQChatViewTableDataSource.h */,
+				CC45FD521BE36B3500DE0BFB /* MQChatViewTableDataSource.m */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		CC45FD531BE36B3500DE0BFB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CC45FCE91BE36B1900DE0BFB /* MQChatViewControllerDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CC45FD171BE36B1900DE0BFB /* Build configuration list for PBXNativeTarget "MQChatViewControllerDemo" */;
+			buildPhases = (
+				CC45FCE61BE36B1900DE0BFB /* Sources */,
+				CC45FCE71BE36B1900DE0BFB /* Frameworks */,
+				CC45FCE81BE36B1900DE0BFB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MQChatViewControllerDemo;
+			productName = MQChatViewControllerDemo;
+			productReference = CC45FCEA1BE36B1900DE0BFB /* MQChatViewControllerDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CC45FD021BE36B1900DE0BFB /* MQChatViewControllerDemoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CC45FD1A1BE36B1900DE0BFB /* Build configuration list for PBXNativeTarget "MQChatViewControllerDemoTests" */;
+			buildPhases = (
+				CC45FCFF1BE36B1900DE0BFB /* Sources */,
+				CC45FD001BE36B1900DE0BFB /* Frameworks */,
+				CC45FD011BE36B1900DE0BFB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CC45FD051BE36B1900DE0BFB /* PBXTargetDependency */,
+			);
+			name = MQChatViewControllerDemoTests;
+			productName = MQChatViewControllerDemoTests;
+			productReference = CC45FD031BE36B1900DE0BFB /* MQChatViewControllerDemoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		CC45FD0D1BE36B1900DE0BFB /* MQChatViewControllerDemoUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CC45FD1D1BE36B1900DE0BFB /* Build configuration list for PBXNativeTarget "MQChatViewControllerDemoUITests" */;
+			buildPhases = (
+				CC45FD0A1BE36B1900DE0BFB /* Sources */,
+				CC45FD0B1BE36B1900DE0BFB /* Frameworks */,
+				CC45FD0C1BE36B1900DE0BFB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CC45FD101BE36B1900DE0BFB /* PBXTargetDependency */,
+			);
+			name = MQChatViewControllerDemoUITests;
+			productName = MQChatViewControllerDemoUITests;
+			productReference = CC45FD0E1BE36B1900DE0BFB /* MQChatViewControllerDemoUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CC45FCE21BE36B1900DE0BFB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0710;
+				ORGANIZATIONNAME = ijinmao;
+				TargetAttributes = {
+					CC45FCE91BE36B1900DE0BFB = {
+						CreatedOnToolsVersion = 7.1;
+					};
+					CC45FD021BE36B1900DE0BFB = {
+						CreatedOnToolsVersion = 7.1;
+						TestTargetID = CC45FCE91BE36B1900DE0BFB;
+					};
+					CC45FD0D1BE36B1900DE0BFB = {
+						CreatedOnToolsVersion = 7.1;
+						TestTargetID = CC45FCE91BE36B1900DE0BFB;
+					};
+				};
+			};
+			buildConfigurationList = CC45FCE51BE36B1900DE0BFB /* Build configuration list for PBXProject "MQChatViewControllerDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CC45FCE11BE36B1900DE0BFB;
+			productRefGroup = CC45FCEB1BE36B1900DE0BFB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CC45FCE91BE36B1900DE0BFB /* MQChatViewControllerDemo */,
+				CC45FD021BE36B1900DE0BFB /* MQChatViewControllerDemoTests */,
+				CC45FD0D1BE36B1900DE0BFB /* MQChatViewControllerDemoUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CC45FCE81BE36B1900DE0BFB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC45FCFD1BE36B1900DE0BFB /* LaunchScreen.storyboard in Resources */,
+				CC45FCFA1BE36B1900DE0BFB /* Assets.xcassets in Resources */,
+				CC45FCF81BE36B1900DE0BFB /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC45FD011BE36B1900DE0BFB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC45FD0C1BE36B1900DE0BFB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CC45FCE61BE36B1900DE0BFB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC45FD651BE36B3600DE0BFB /* MQChatTableView.m in Sources */,
+				CC45FD5B1BE36B3600DE0BFB /* MQEventCellModel.m in Sources */,
+				CC45FD661BE36B3600DE0BFB /* MQChatViewController.m in Sources */,
+				CC45FD5D1BE36B3600DE0BFB /* MQMessageDateCellModel.m in Sources */,
+				CC45FD601BE36B3600DE0BFB /* MQVoiceCellModel.m in Sources */,
+				CC45FD5E1BE36B3600DE0BFB /* MQTextCellModel.m in Sources */,
+				CC45FD631BE36B3600DE0BFB /* MQManager.m in Sources */,
+				CC45FD621BE36B3600DE0BFB /* MQChatViewManager.m in Sources */,
+				CC45FD541BE36B3500DE0BFB /* MQChatBaseCell.m in Sources */,
+				CC45FCF51BE36B1900DE0BFB /* ViewController.m in Sources */,
+				CC45FD591BE36B3500DE0BFB /* MQTipsCell.m in Sources */,
+				CC45FD5F1BE36B3600DE0BFB /* MQTipsCellModel.m in Sources */,
+				CC45FD671BE36B3600DE0BFB /* MQChatViewModel.m in Sources */,
+				CC45FCF21BE36B1900DE0BFB /* AppDelegate.m in Sources */,
+				CC45FD611BE36B3600DE0BFB /* MQChatViewConfig.m in Sources */,
+				CC45FD551BE36B3500DE0BFB /* MQEventMessageCell.m in Sources */,
+				CC45FCEF1BE36B1900DE0BFB /* main.m in Sources */,
+				CC45FD5A1BE36B3600DE0BFB /* MQVoiceMessageCell.m in Sources */,
+				CC45FD681BE36B3600DE0BFB /* MQChatViewTableDataSource.m in Sources */,
+				CC45FD571BE36B3500DE0BFB /* MQMessageDateCell.m in Sources */,
+				CC45FD581BE36B3500DE0BFB /* MQTextMessageCell.m in Sources */,
+				CC45FD561BE36B3500DE0BFB /* MQImageMessageCell.m in Sources */,
+				CC45FD5C1BE36B3600DE0BFB /* MQImageCellModel.m in Sources */,
+				CC45FD641BE36B3600DE0BFB /* TTTAttributedLabel.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC45FCFF1BE36B1900DE0BFB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC45FD081BE36B1900DE0BFB /* MQChatViewControllerDemoTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC45FD0A1BE36B1900DE0BFB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC45FD131BE36B1900DE0BFB /* MQChatViewControllerDemoUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CC45FD051BE36B1900DE0BFB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CC45FCE91BE36B1900DE0BFB /* MQChatViewControllerDemo */;
+			targetProxy = CC45FD041BE36B1900DE0BFB /* PBXContainerItemProxy */;
+		};
+		CC45FD101BE36B1900DE0BFB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CC45FCE91BE36B1900DE0BFB /* MQChatViewControllerDemo */;
+			targetProxy = CC45FD0F1BE36B1900DE0BFB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		CC45FCF61BE36B1900DE0BFB /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CC45FCF71BE36B1900DE0BFB /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		CC45FCFB1BE36B1900DE0BFB /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CC45FCFC1BE36B1900DE0BFB /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CC45FD151BE36B1900DE0BFB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CC45FD161BE36B1900DE0BFB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CC45FD181BE36B1900DE0BFB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = MQChatViewControllerDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = ijinmao.MQChatViewControllerDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		CC45FD191BE36B1900DE0BFB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = MQChatViewControllerDemo/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = ijinmao.MQChatViewControllerDemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		CC45FD1B1BE36B1900DE0BFB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = MQChatViewControllerDemoTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = ijinmao.MQChatViewControllerDemoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MQChatViewControllerDemo.app/MQChatViewControllerDemo";
+			};
+			name = Debug;
+		};
+		CC45FD1C1BE36B1900DE0BFB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = MQChatViewControllerDemoTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = ijinmao.MQChatViewControllerDemoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MQChatViewControllerDemo.app/MQChatViewControllerDemo";
+			};
+			name = Release;
+		};
+		CC45FD1E1BE36B1900DE0BFB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = MQChatViewControllerDemoUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = ijinmao.MQChatViewControllerDemoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = MQChatViewControllerDemo;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		CC45FD1F1BE36B1900DE0BFB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = MQChatViewControllerDemoUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = ijinmao.MQChatViewControllerDemoUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = MQChatViewControllerDemo;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CC45FCE51BE36B1900DE0BFB /* Build configuration list for PBXProject "MQChatViewControllerDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC45FD151BE36B1900DE0BFB /* Debug */,
+				CC45FD161BE36B1900DE0BFB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CC45FD171BE36B1900DE0BFB /* Build configuration list for PBXNativeTarget "MQChatViewControllerDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC45FD181BE36B1900DE0BFB /* Debug */,
+				CC45FD191BE36B1900DE0BFB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		CC45FD1A1BE36B1900DE0BFB /* Build configuration list for PBXNativeTarget "MQChatViewControllerDemoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC45FD1B1BE36B1900DE0BFB /* Debug */,
+				CC45FD1C1BE36B1900DE0BFB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		CC45FD1D1BE36B1900DE0BFB /* Build configuration list for PBXNativeTarget "MQChatViewControllerDemoUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC45FD1E1BE36B1900DE0BFB /* Debug */,
+				CC45FD1F1BE36B1900DE0BFB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CC45FCE21BE36B1900DE0BFB /* Project object */;
+}
