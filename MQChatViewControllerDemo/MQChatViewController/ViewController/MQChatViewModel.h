@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "MQBaseMessage.h"
 #import <UIKit/UIKit.h>
+//是否是调试SDK
+#define INCLUDE_MEIQIA_SDK
 
 @protocol MQChatViewModelDelegate
 
@@ -56,6 +58,11 @@
  * 发送语音消息
  */
 - (void)sendVoiceMessageWithVoice:(NSData *)voiceData;
+
+/**
+ * 发送“用户正在输入”的消息
+ */
+- (void)sendUserInputtingWithContent:(NSString *)content;
 
 
 

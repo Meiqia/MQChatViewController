@@ -47,6 +47,10 @@
 		CC45FD8A1BE3A1B500DE0BFB /* MQImageMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD891BE3A1B500DE0BFB /* MQImageMessage.m */; };
 		CC45FD8D1BE3A1C000DE0BFB /* MQVoiceMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD8C1BE3A1C000DE0BFB /* MQVoiceMessage.m */; };
 		CC45FD901BE3A90600DE0BFB /* MQBaseMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD8F1BE3A90600DE0BFB /* MQBaseMessage.m */; };
+		CC45FFC21BE490B100DE0BFB /* MQInputBar.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FFC11BE490B100DE0BFB /* MQInputBar.m */; };
+		CC45FFC81BE4912200DE0BFB /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FFC51BE4912200DE0BFB /* HPGrowingTextView.m */; };
+		CC45FFC91BE4912200DE0BFB /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FFC71BE4912200DE0BFB /* HPTextViewInternal.m */; };
+		CC45FFCD1BE4962500DE0BFB /* MQToast.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FFCC1BE4962500DE0BFB /* MQToast.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -149,6 +153,14 @@
 		CC45FD8C1BE3A1C000DE0BFB /* MQVoiceMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQVoiceMessage.m; sourceTree = "<group>"; };
 		CC45FD8E1BE3A90600DE0BFB /* MQBaseMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQBaseMessage.h; sourceTree = "<group>"; };
 		CC45FD8F1BE3A90600DE0BFB /* MQBaseMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQBaseMessage.m; sourceTree = "<group>"; };
+		CC45FFC01BE490B100DE0BFB /* MQInputBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQInputBar.h; sourceTree = "<group>"; };
+		CC45FFC11BE490B100DE0BFB /* MQInputBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQInputBar.m; sourceTree = "<group>"; };
+		CC45FFC41BE4912200DE0BFB /* HPGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPGrowingTextView.h; sourceTree = "<group>"; };
+		CC45FFC51BE4912200DE0BFB /* HPGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPGrowingTextView.m; sourceTree = "<group>"; };
+		CC45FFC61BE4912200DE0BFB /* HPTextViewInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPTextViewInternal.h; sourceTree = "<group>"; };
+		CC45FFC71BE4912200DE0BFB /* HPTextViewInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPTextViewInternal.m; sourceTree = "<group>"; };
+		CC45FFCB1BE4962500DE0BFB /* MQToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQToast.h; sourceTree = "<group>"; };
+		CC45FFCC1BE4962500DE0BFB /* MQToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQToast.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -319,6 +331,7 @@
 		CC45FD461BE36B3500DE0BFB /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				CC45FFC31BE4912200DE0BFB /* HPTextView */,
 				CC45FD471BE36B3500DE0BFB /* TTTAttributedLabel */,
 			);
 			path = Vendors;
@@ -351,6 +364,8 @@
 		CC45FD531BE36B3500DE0BFB /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				CC45FFCA1BE4962500DE0BFB /* MQToast */,
+				CC45FFBF1BE490B100DE0BFB /* MQInputBar */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -398,6 +413,35 @@
 				CC45FD8C1BE3A1C000DE0BFB /* MQVoiceMessage.m */,
 			);
 			path = ChatMessages;
+			sourceTree = "<group>";
+		};
+		CC45FFBF1BE490B100DE0BFB /* MQInputBar */ = {
+			isa = PBXGroup;
+			children = (
+				CC45FFC01BE490B100DE0BFB /* MQInputBar.h */,
+				CC45FFC11BE490B100DE0BFB /* MQInputBar.m */,
+			);
+			path = MQInputBar;
+			sourceTree = "<group>";
+		};
+		CC45FFC31BE4912200DE0BFB /* HPTextView */ = {
+			isa = PBXGroup;
+			children = (
+				CC45FFC41BE4912200DE0BFB /* HPGrowingTextView.h */,
+				CC45FFC51BE4912200DE0BFB /* HPGrowingTextView.m */,
+				CC45FFC61BE4912200DE0BFB /* HPTextViewInternal.h */,
+				CC45FFC71BE4912200DE0BFB /* HPTextViewInternal.m */,
+			);
+			path = HPTextView;
+			sourceTree = "<group>";
+		};
+		CC45FFCA1BE4962500DE0BFB /* MQToast */ = {
+			isa = PBXGroup;
+			children = (
+				CC45FFCB1BE4962500DE0BFB /* MQToast.h */,
+				CC45FFCC1BE4962500DE0BFB /* MQToast.m */,
+			);
+			path = MQToast;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -540,12 +584,15 @@
 				CC45FD5E1BE36B3600DE0BFB /* MQTextCellModel.m in Sources */,
 				CC45FD621BE36B3600DE0BFB /* MQChatViewManager.m in Sources */,
 				CC45FD541BE36B3500DE0BFB /* MQChatBaseCell.m in Sources */,
+				CC45FFCD1BE4962500DE0BFB /* MQToast.m in Sources */,
 				CC45FD871BE3A19F00DE0BFB /* MQTextMessage.m in Sources */,
 				CC45FCF51BE36B1900DE0BFB /* ViewController.m in Sources */,
 				CC45FD821BE37C3200DE0BFB /* MQImageUtil.m in Sources */,
 				CC45FD731BE3745700DE0BFB /* MQManager.m in Sources */,
 				CC45FD591BE36B3500DE0BFB /* MQTipsCell.m in Sources */,
 				CC45FD5F1BE36B3600DE0BFB /* MQTipsCellModel.m in Sources */,
+				CC45FFC91BE4912200DE0BFB /* HPTextViewInternal.m in Sources */,
+				CC45FFC81BE4912200DE0BFB /* HPGrowingTextView.m in Sources */,
 				CC45FD671BE36B3600DE0BFB /* MQChatViewModel.m in Sources */,
 				CC45FD901BE3A90600DE0BFB /* MQBaseMessage.m in Sources */,
 				CC45FCF21BE36B1900DE0BFB /* AppDelegate.m in Sources */,
@@ -558,6 +605,7 @@
 				CC45FD831BE37C3200DE0BFB /* MQStringSizeUtil.m in Sources */,
 				CC45FD681BE36B3600DE0BFB /* MQChatViewTableDataSource.m in Sources */,
 				CC45FD571BE36B3500DE0BFB /* MQMessageDateCell.m in Sources */,
+				CC45FFC21BE490B100DE0BFB /* MQInputBar.m in Sources */,
 				CC45FD8D1BE3A1C000DE0BFB /* MQVoiceMessage.m in Sources */,
 				CC45FD581BE36B3500DE0BFB /* MQTextMessageCell.m in Sources */,
 				CC45FD561BE36B3500DE0BFB /* MQImageMessageCell.m in Sources */,

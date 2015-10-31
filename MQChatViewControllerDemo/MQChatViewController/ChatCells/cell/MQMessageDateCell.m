@@ -37,7 +37,7 @@ static CGFloat const kMQMessageDateLabelFontSize = 12.0;
     MQMessageDateCellModel *cellModel = (MQMessageDateCellModel *)model;
     
     //刷新时间label
-    dateLabel.text = cellModel.messageDate;
+    dateLabel.text = cellModel.date;
     dateLabel.frame = cellModel.dateLabelFrame;
 }
 

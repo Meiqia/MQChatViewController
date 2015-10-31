@@ -11,10 +11,12 @@
 #import "MQChatViewModel.h"
 #import "MQCellModelProtocol.h"
 #import "MQDeviceFrameUtil.h"
+#import "MQInputBar.h"
+#import "MQToast.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
-@interface MQChatViewController () <UITableViewDelegate, MQChatViewModelDelegate>
+@interface MQChatViewController () <UITableViewDelegate, MQChatViewModelDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate>
 
 @end
 
@@ -22,6 +24,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     MQChatViewConfig *chatViewConfig;
     MQChatViewTableDataSource *tableDataSource;
     MQChatViewModel *chatViewModel;
+    MQInputBar *chatInputBar;
 }
 
 - (instancetype)initWithChatViewManager:(MQChatViewConfig *)config {
@@ -73,7 +76,14 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
  * 初始化聊天的inpur bar
  */
 - (void)initInputBar {
-    
+    chatInputBar = [[MQInputBar alloc] init];
+    chatInputBar.recordButtonVisible = chatViewConfig.enableVoiceMessage;
+    chatInputBar.frame = CGRectMake(self.chatTableView.frame.origin.x, self.chatTableView.frame.origin.y+self.chatTableView.frame.size.height, self.chatTableView.frame.size.width, kMQChatViewInputBarHeight);
+    chatInputBar.delegate = self;
+    [chatInputBar setChatView:self.chatTableView];
+    [chatInputBar setupUI];
+    self.inputBarView = chatInputBar;
+    self.inputBarTextView = chatInputBar.textView.internalTextView;
 }
 
 #pragma UITableViewDelegate
@@ -92,6 +102,62 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [self.chatTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     [self.chatTableView endUpdates];
 }
+
+#pragma MQInputBarDelegate
+-(BOOL)sendTextMessage:(NSString*)text {
+    if (self.isInitializing) {
+        [MQToast showToast:@"正在分配客服，请稍后发送消息" duration:3 window:self.view];
+        return NO;
+    }
+    [chatViewModel sendTextMessageWithContent:text];
+    return YES;
+}
+-(void)sendImageWithSourceType:(UIImagePickerControllerSourceType *)sourceType {
+    if (TARGET_IPHONE_SIMULATOR && (int)sourceType == UIImagePickerControllerSourceTypeCamera){
+        [MQToast showToast:@"当前设备没有相机" duration:2 window:self.view];
+        NSLog(@"当前设备没有相机");
+        return;
+    }
+    //兼容ipad打不开相册问题，使用队列延迟，规避ios8的警惕性
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        picker.sourceType               = (int)sourceType;
+        picker.delegate                 = (id)self;
+        [self presentViewController:picker animated:YES completion:nil];
+    }];
+}
+-(void)inputting:(NSString*)content {
+    //用户正在输入
+    [chatViewModel sendUserInputtingWithContent:content];
+}
+#warning 还没有完成语音输入
+-(void)beginRecord:(CGPoint)point {
+    
+}
+-(void)endRecord:(CGPoint)point {
+    
+}
+-(void)changedRecord:(CGPoint)point {
+    
+}
+
+#pragma UIImagePickerControllerDelegate
+-(void)imagePickerController:(UIImagePickerController*)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
+    NSString *type          = [info objectForKey:UIImagePickerControllerMediaType];
+    //当选择的类型是图片
+    if (![type isEqualToString:@"public.image"]) {
+        return;
+    }
+    UIImage *image          = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+    [picker dismissViewControllerAnimated:YES completion:nil];
+    [chatViewModel sendImageMessageWithImage:image];
+}
+
+-(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+
 
 
 

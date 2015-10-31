@@ -6,8 +6,6 @@
 //  Copyright © 2015年 MeiQia Inc. All rights reserved.
 //
 
-//是否是调试SDK
-#define INCLUDE_MEIQIA_SDK
 
 #import "MQChatViewModel.h"
 #import "MQTextMessage.h"
@@ -87,6 +85,15 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self.cellModels addObject:cellModel];
 #ifdef INCLUDE_MEIQIA_SDK
     [MQManager sendAudioMessage:voiceData delegate:self];
+#endif
+}
+
+/**
+ * 发送“用户正在输入”的消息
+ */
+- (void)sendUserInputtingWithContent:(NSString *)content {
+#ifdef INCLUDE_MEIQIA_SDK
+    [MQManager sendClientInputtingWithContent:content];
 #endif
 }
 
