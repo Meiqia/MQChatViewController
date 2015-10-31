@@ -2,7 +2,7 @@
 //  MQTipsCellModel.h
 //  MeiQiaSDK
 //
-//  Created by dingnan on 15/10/29.
+//  Created by ijinmao on 15/10/29.
 //  Copyright © 2015年 MeiQia Inc. All rights reserved.
 //
 
@@ -16,6 +16,11 @@
 @interface MQTipsCellModel : NSObject
 
 /**
+ * @brief cell的高度
+ */
+@property (nonatomic, readonly, assign) CGFloat cellHeight;
+
+/**
  * @brief 提示文字
  */
 @property (nonatomic, readonly, copy) NSString *tipText;
@@ -23,7 +28,7 @@
 /**
  * @brief 提示的时间
  */
-@property (nonatomic, readonly, copy) NSString *eventDate;
+@property (nonatomic, readonly, copy) NSDate *date;
 
 /**
  * @brief 提示label的frame
@@ -44,6 +49,6 @@
 /**
  *  根据tips内容来生成cell model
  */
-- (MQTipsCellModel *)initCellModelWithTips:(NSString *)tips;
+- (MQTipsCellModel *)initCellModelWithTips:(NSString *)tips cellWidth:(CGFloat)cellWidth;
 
 @end

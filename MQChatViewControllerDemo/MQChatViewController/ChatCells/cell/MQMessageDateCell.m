@@ -2,7 +2,7 @@
 //  MQMessageDateCell.m
 //  MeiQiaSDK
 //
-//  Created by dingnan on 15/10/29.
+//  Created by ijinmao on 15/10/29.
 //  Copyright © 2015年 MeiQia Inc. All rights reserved.
 //
 
@@ -37,7 +37,7 @@ static CGFloat const kMQMessageDateLabelFontSize = 12.0;
     MQMessageDateCellModel *cellModel = (MQMessageDateCellModel *)model;
     
     //刷新时间label
-    dateLabel.text = cellModel.messageDate;
+    dateLabel.text = cellModel.date;
     dateLabel.frame = cellModel.dateLabelFrame;
 }
 

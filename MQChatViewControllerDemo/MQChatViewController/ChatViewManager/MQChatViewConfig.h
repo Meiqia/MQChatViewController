@@ -2,12 +2,13 @@
 //  MQChatViewConfig.h
 //  MeiQiaSDK
 //
-//  Created by dingnan on 15/10/29.
+//  Created by ijinmao on 15/10/29.
 //  Copyright © 2015年 MeiQia Inc. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+
 /**
  * @brief MQChatViewConfig为客服聊天界面的前置配置，由MQChatViewManager生成，在MQChatViewController中消费
  *

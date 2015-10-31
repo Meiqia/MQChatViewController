@@ -2,7 +2,7 @@
 //  MQVoiceMessageCell.m
 //  MeiQiaSDK
 //
-//  Created by dingnan on 15/10/29.
+//  Created by ijinmao on 15/10/29.
 //  Copyright © 2015年 MeiQia Inc. All rights reserved.
 //
 
@@ -18,6 +18,7 @@ static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
     UIActivityIndicatorView *sendMsgIndicator;
     UILabel *durationLabel;
     UIImageView *voiceImageView;
+    UIImageView *failureImageView;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -40,7 +41,11 @@ static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
         [self.contentView addSubview:durationLabel];
         //初始化语音图片
         voiceImageView = [[UIImageView alloc] init];
-        [self.contentView addSubview:voiceImageView];
+        [bubbleImageView addSubview:voiceImageView];
+        //初始化出错image
+#warning 这里添加出错图片
+        failureImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[MQChatFileUtil resourceWithName:@""]]];
+        [self.contentView addSubview:failureImageView];
     }
     return self;
 }
@@ -55,7 +60,7 @@ static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
     
     //刷新头像
     if (cellModel.avatarPath.length == 0) {
-        avatarImageView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:cellModel.avatarLocolImageName]];
+        avatarImageView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:cellModel.avatarLocalImageName]];
     } else {
 #warning 使用SDWebImage或自己写获取远程图片的方法
     }
@@ -93,6 +98,13 @@ static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
     NSString *durationText = [NSString stringWithFormat:@"%d\"", (int)cellModel.voiceDuration];
     durationLabel.text = durationText;
     durationLabel.frame = cellModel.durationLabelFrame;
+    
+    //刷新出错图片
+    failureImageView.hidden = true;
+    if (cellModel.sendType == MQChatCellSentFailure) {
+        failureImageView.hidden = false;
+        failureImageView.frame = cellModel.sendFailureFrame;
+    }
 }
 
 /**

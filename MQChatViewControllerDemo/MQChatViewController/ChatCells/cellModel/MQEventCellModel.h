@@ -2,7 +2,7 @@
 //  MQEventCellModel.h
 //  MeiQiaSDK
 //
-//  Created by dingnan on 15/10/29.
+//  Created by ijinmao on 15/10/29.
 //  Copyright © 2015年 MeiQia Inc. All rights reserved.
 //
 
@@ -16,6 +16,11 @@
 @interface MQEventCellModel : NSObject <MQCellModelProtocol>
 
 /**
+ * @brief cell的高度
+ */
+@property (nonatomic, readonly, assign) CGFloat cellHeight;
+
+/**
  * @brief 事件文字
  */
 @property (nonatomic, readonly, copy) NSString *eventText;
@@ -23,7 +28,7 @@
 /**
  * @brief 事件消息的时间
  */
-@property (nonatomic, readonly, copy) NSString *eventDate;
+@property (nonatomic, readonly, copy) NSDate *date;
 
 /**
  * @brief 消息气泡button的frame
@@ -34,6 +39,6 @@
 /**
  *  根据MQMessage内容来生成cell model
  */
-- (MQEventCellModel *)initCellModelWithMessage:(MQMessage *)message;
+//- (MQEventCellModel *)initCellModelWithMessage:(MQMessage *)message;
 
 @end

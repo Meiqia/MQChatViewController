@@ -30,4 +30,16 @@
     return [[AVAudioPlayer alloc]initWithContentsOfURL:[NSURL URLWithString:filePath] error:nil].duration;
 }
 
+/** 获取音频长度 */
++ (NSTimeInterval)getAudioDurationWithData:(NSData *)audioData {
+    NSError *error;
+    AVAudioPlayer *audioPlayer = [[AVAudioPlayer alloc] initWithData:audioData error:&error];
+    if (audioPlayer.duration) {
+        return audioPlayer.duration;
+    } else {
+        NSAssert(NO, @"获取音频长度失败");
+        return 0;
+    }
+}
+
 @end

@@ -2,7 +2,7 @@
 //  MQTextMessageCell.m
 //  MeiQiaSDK
 //
-//  Created by dingnan on 15/10/29.
+//  Created by ijinmao on 15/10/29.
 //  Copyright © 2015年 MeiQia Inc. All rights reserved.
 //
 
@@ -23,6 +23,7 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
     TTTAttributedLabel *textLabel;
     UIImageView *bubbleImageView;
     UIActivityIndicatorView *sendMsgIndicator;
+    UIImageView *failureImageView;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -30,20 +31,24 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
         //初始化头像
         avatarImageView = [[UIImageView alloc] init];
         [self.contentView addSubview:avatarImageView];
+        //初始化气泡
+        bubbleImageView = [[UIImageView alloc] init];
+        [self.contentView addSubview:bubbleImageView];
         //初始化文字
         textLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
         textLabel.font = [UIFont systemFontOfSize:kMQCellTextFontSize];
         textLabel.textColor = [UIColor darkTextColor];
         textLabel.numberOfLines = 0;
         textLabel.delegate = self;
-        [self.contentView addSubview:textLabel];
-        //初始化气泡
-        bubbleImageView = [[UIImageView alloc] init];
-        [self.contentView addSubview:bubbleImageView];
+        [bubbleImageView addSubview:textLabel];
         //初始化indicator
         sendMsgIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         sendMsgIndicator.hidden = YES;
         [self.contentView addSubview:sendMsgIndicator];
+        //初始化出错image
+#warning 这里添加出错图片
+        failureImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[MQChatFileUtil resourceWithName:@""]]];
+        [self.contentView addSubview:failureImageView];
     }
     return self;
 }
@@ -58,7 +63,7 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
     
     //刷新头像
     if (cellModel.avatarPath.length == 0) {
-        avatarImageView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:cellModel.avatarLocolImageName]];
+        avatarImageView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:cellModel.avatarLocalImageName]];
     } else {
 #warning 使用SDWebImage或自己写获取远程图片的方法
     }
@@ -72,6 +77,7 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
     sendMsgIndicator.hidden = true;
     [sendMsgIndicator stopAnimating];
     if (cellModel.sendType == MQChatCellSending) {
+        sendMsgIndicator.hidden = false;
         sendMsgIndicator.frame = cellModel.indicatorFrame;
         [sendMsgIndicator startAnimating];
     }
@@ -98,6 +104,13 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
         for (NSString *key in cellModel.emailNumberRangeDic.allKeys) {
             [textLabel addLinkToTransitInformation:@{@"email" : key} withRange:[cellModel.emailNumberRangeDic[key] rangeValue]];
         }
+    }
+    
+    //刷新出错图片
+    failureImageView.hidden = true;
+    if (cellModel.sendType == MQChatCellSentFailure) {
+        failureImageView.hidden = false;
+        failureImageView.frame = cellModel.sendFailureFrame;
     }
 }
 

@@ -2,7 +2,7 @@
 //  MQAgent.h
 //  MeiQiaSDK
 //
-//  Created by dingnan on 15/10/23.
+//  Created by ijinmao on 15/10/23.
 //  Copyright © 2015年 MeiQia Inc. All rights reserved.
 //
 
@@ -20,7 +20,7 @@
 @property (nonatomic, copy  ) NSString * privilege;
 
 /** 头像的URL */
-@property (nonatomic, copy  ) NSString * avatar;
+@property (nonatomic, copy  ) NSString * avatarPath;
 
 /** 公开的手机号 */
 @property (nonatomic, copy  ) NSString * publicCellphone;

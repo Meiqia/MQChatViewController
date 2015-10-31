@@ -2,7 +2,7 @@
 //  MQMessageDateCellModel.h
 //  MeiQiaSDK
 //
-//  Created by dingnan on 15/10/29.
+//  Created by ijinmao on 15/10/29.
 //  Copyright © 2015年 MeiQia Inc. All rights reserved.
 //
 
@@ -16,9 +16,19 @@
 @interface MQMessageDateCellModel : NSObject <MQCellModelProtocol>
 
 /**
+ * @brief cell的高度
+ */
+@property (nonatomic, readonly, assign) CGFloat cellHeight;
+
+/**
  * @brief 消息的时间
  */
-@property (nonatomic, readonly, copy) NSString *messageDate;
+@property (nonatomic, readonly, copy) NSDate *date;
+
+/**
+ * @brief 消息的中文时间
+ */
+@property (nonatomic, readonly, copy) NSString *dateString;
 
 /**
  * @brief 消息气泡button的frame
@@ -28,7 +38,7 @@
 /**
  *  根据时间来生成cell model
  */
-- (MQMessageDateCellModel *)initCellModelWithDate:(NSDate *)date;
+- (MQMessageDateCellModel *)initCellModelWithDate:(NSDate *)date cellWidth:(CGFloat)cellWidth;
 
 
 @end

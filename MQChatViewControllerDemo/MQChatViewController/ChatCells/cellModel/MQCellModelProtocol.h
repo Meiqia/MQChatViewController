@@ -2,27 +2,37 @@
 //  MQCellModelProtocol.h
 //  MeiQiaSDK
 //
-//  Created by dingnan on 15/10/29.
+//  Created by ijinmao on 15/10/29.
 //  Copyright © 2015年 MeiQia Inc. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import "MQChatBaseCell.h"
-#import "MQMessage.h"
+#import "MQChatFileUtil.h"
+
+//#import "MQMessage.h"
 
 //定义cell中的布局间距等
 /**
- * 头像距离屏幕边沿距离
+ * 头像距离屏幕水平边沿距离
  */
-static CGFloat const kMQCellAvatarToEdgeSpacing = 16.0;
+static CGFloat const kMQCellAvatarToHorizontalEdgeSpacing = 16.0;
+/**
+ * 头像距离屏幕垂直边沿距离
+ */
+static CGFloat const kMQCellAvatarToVerticalEdgeSpacing = 16.0;
 /**
  * 头像与聊天气泡之间的距离
  */
 static CGFloat const kMQCellAvatarToBubbleSpacing = 8.0;
 /**
- * 聊天气泡和其中的文字水平间距
+ * 聊天气泡和其中的文字较大一边的水平间距
  */
-static CGFloat const kMQCellBubbleToTextHorizontalSpacing = 8.0;
+static CGFloat const kMQCellBubbleToTextHorizontalLargerSpacing = 12.0;
+/**
+ * 聊天气泡和其中的文字较大一边的水平间距
+ */
+static CGFloat const kMQCellBubbleToTextHorizontalSmallerSpacing = 8.0;
 /**
  * 聊天气泡和其中的文字垂直间距
  */
@@ -30,7 +40,7 @@ static CGFloat const kMQCellBubbleToTextVerticalSpacing = 8.0;
 /**
  * 聊天气泡最大宽度与边沿的距离
  */
-static CGFloat const kMQCellBubbleMaxWidthToEdgeSpacing = 16.0;
+static CGFloat const kMQCellBubbleMaxWidthToEdgeSpacing = 32.0;
 /**
  * 聊天头像的直径
  */
@@ -39,6 +49,22 @@ static CGFloat const kMQCellAvatarDiameter = 64.0;
  * 聊天内容的文字大小
  */
 static CGFloat const kMQCellTextFontSize = 15.0;
+/**
+ * 聊天内容间隔的时间cell高度
+ */
+static CGFloat const kMQChatMessageDateCellHeight = 24.0;
+/**
+ * 聊天内容间隔的时间fontSize
+ */
+static CGFloat const kMQChatMessageDateLabelFontSize = 12.0;
+/**
+ * 聊天内容间隔的时间距离cell两端的间距
+ */
+static CGFloat const kMQChatMessageDateLabelToEdgeSpacing = 16.0;
+/**
+ * 聊天气泡和Indicator的间距
+ */
+static CGFloat const kMQCellBubbleToIndicatorSpacing = 8.0;
 
 
 /**
@@ -84,6 +110,11 @@ typedef NS_ENUM(NSUInteger, MQChatCellSendType) {
  *  @return 初始化了一个cell
  */
 - (UITableViewCell *)getCellWithReuseIdentifier:(NSString *)cellReuseIdentifer;
+
+/**
+ *  @return cell的消息时间.
+ */
+- (NSDate *)getCellDate;
 
 
 @end

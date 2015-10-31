@@ -2,12 +2,11 @@
 //  MQChatViewManager.m
 //  MeiQiaSDK
 //
-//  Created by dingnan on 15/10/27.
+//  Created by ijinmao on 15/10/27.
 //  Copyright © 2015年 MeiQia Inc. All rights reserved.
 //
 
 #import "MQChatViewManager.h"
-#import "MQDeviceFrameUtil.h"
 #import "MQChatViewConfig.h"
 
 @implementation MQChatViewManager {
@@ -18,38 +17,7 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        chatViewConfig.chatViewFrame = [MQDeviceFrameUtil getDeviceScreenRect];
-#warning 这里增加正则表达式
-        chatViewConfig.chatRegexs = [[NSDictionary alloc] init];
-        
-        chatViewConfig.agentOnlineTipText = @"客服上线了";
-        chatViewConfig.agentOfflineTipText = @"客服下线了";
-        chatViewConfig.chatWelcomText = @"你好，请问有什么可以帮到您？";
-        
-        chatViewConfig.enableSyncServerMessage = false;
-        chatViewConfig.enableEventDispaly = true;
-        chatViewConfig.enableVoiceMessage = true;
-        chatViewConfig.enableImageMessage = true;
-        chatViewConfig.enableTipsView = true;
-        chatViewConfig.enableAgentAvatar = true;
-        chatViewConfig.enableCustomRecordView = true;
-        chatViewConfig.enableMessageSound = true;
-        
-        chatViewConfig.incomingMsgTextColor = [UIColor darkTextColor];
-        chatViewConfig.outgoingMsgTextColor = [UIColor whiteColor];
-        chatViewConfig.eventTextColor = [UIColor grayColor];
-        chatViewConfig.navBarTintColor = [UIColor whiteColor];
-        chatViewConfig.navBarColor = [UIColor blueColor];
-        
-#warning 这里需要增加图片名字
-        chatViewConfig.agentDefaultAvatarImage = [UIImage imageNamed:@""];
-        chatViewConfig.photoSenderImage = [UIImage imageNamed:@""];
-        chatViewConfig.voiceSenderImage = [UIImage imageNamed:@""];
-        chatViewConfig.incomingBubbleImage = [UIImage imageNamed:@""];
-        chatViewConfig.outgoingBubbleImage = [UIImage imageNamed:@""];
-        
-        chatViewConfig.incomingMsgSoundData = [NSData dataWithContentsOfFile:@""];
-        chatViewConfig.outgoingMsgSoundData = [NSData dataWithContentsOfFile:@""];
+        chatViewConfig = [[MQChatViewConfig alloc] init];
     }
     return self;
 }

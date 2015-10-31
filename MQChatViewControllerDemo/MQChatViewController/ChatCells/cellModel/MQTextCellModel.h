@@ -2,13 +2,13 @@
 //  MQTextCellModel.h
 //  MeiQiaSDK
 //
-//  Created by dingnan on 15/10/29.
+//  Created by ijinmao on 15/10/29.
 //  Copyright © 2015年 MeiQia Inc. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import "MQCellModelProtocol.h"
-#import "MQMessage.h"
+#import "MQTextMessage.h"
 
 
 /**
@@ -18,6 +18,16 @@
 @interface MQTextCellModel : NSObject <MQCellModelProtocol>
 
 /**
+ * @brief cell的高度
+ */
+@property (nonatomic, readonly, assign) CGFloat cellHeight;
+
+/**
+ * @brief cell的宽度
+ */
+@property (nonatomic, readonly, assign) CGFloat cellWidth;
+
+/**
  * @brief 消息的文字
  */
 @property (nonatomic, readonly, copy) NSString *cellText;
@@ -25,7 +35,7 @@
 /**
  * @brief 消息的时间
  */
-@property (nonatomic, readonly, copy) NSString *messageDate;
+@property (nonatomic, readonly, copy) NSDate *date;
 
 /**
  * @brief 发送者的头像Path
@@ -35,7 +45,7 @@
 /**
  * @brief 发送者的头像的图片名字 (如果在头像path不存在的情况下，才使用这个属性)
  */
-@property (nonatomic, readonly, copy) NSString *avatarLocolImageName;
+@property (nonatomic, readonly, copy) NSString *avatarLocalImageName;
 
 /**
  * @brief 聊天气泡的image
@@ -63,6 +73,11 @@
 @property (nonatomic, readonly, assign) CGRect indicatorFrame;
 
 /**
+ * @brief 发送出错图片的frame
+ */
+@property (nonatomic, readonly, assign) CGRect sendFailureFrame;
+
+/**
  * @brief 消息的来源类型
  */
 @property (nonatomic, readonly, assign) MQChatCellFromType cellFromType;
@@ -85,12 +100,12 @@
 /**
  * @brief 消息的发送状态
  */
-@property (nonatomic, readonly, assign) MQChatCellSendType sendType;
+@property (nonatomic, assign) MQChatCellSendType sendType;
 
 /**
  *  根据MQMessage内容来生成cell model
  */
-- (MQTextCellModel *)initCellModelWithMessage:(MQMessage *)message;
+- (MQTextCellModel *)initCellModelWithMessage:(MQTextMessage *)message cellWidth:(CGFloat)cellWidth;
 
 
 @end
