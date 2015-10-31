@@ -25,10 +25,10 @@ typedef NS_ENUM(NSUInteger, MQChatMessageFromType) {
 @property (nonatomic, copy) NSString *messageId;
 
 /** 消息的来源类型 */
-@property (nonatomic, assign) MQChatMessageFromType messageFromType;
+@property (nonatomic, assign) MQChatMessageFromType fromType;
 
 /** 消息时间 */
-@property (nonatomic, copy) NSDate *messageDate;
+@property (nonatomic, copy) NSDate *date;
 
 /** 消息发送人姓名 */
 @property (nonatomic, copy) NSString *userName;

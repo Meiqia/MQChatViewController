@@ -51,6 +51,7 @@
 		CC45FFC81BE4912200DE0BFB /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FFC51BE4912200DE0BFB /* HPGrowingTextView.m */; };
 		CC45FFC91BE4912200DE0BFB /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FFC71BE4912200DE0BFB /* HPTextViewInternal.m */; };
 		CC45FFCD1BE4962500DE0BFB /* MQToast.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FFCC1BE4962500DE0BFB /* MQToast.m */; };
+		CC99DDB81BE4B8FD00D22464 /* MQChatDateUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CC99DDB71BE4B8FD00D22464 /* MQChatDateUtil.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -161,6 +162,8 @@
 		CC45FFC71BE4912200DE0BFB /* HPTextViewInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPTextViewInternal.m; sourceTree = "<group>"; };
 		CC45FFCB1BE4962500DE0BFB /* MQToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQToast.h; sourceTree = "<group>"; };
 		CC45FFCC1BE4962500DE0BFB /* MQToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQToast.m; sourceTree = "<group>"; };
+		CC99DDB61BE4B8FD00D22464 /* MQChatDateUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQChatDateUtil.h; sourceTree = "<group>"; };
+		CC99DDB71BE4B8FD00D22464 /* MQChatDateUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQChatDateUtil.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -281,18 +284,18 @@
 			children = (
 				CC45FD231BE36B3500DE0BFB /* MQChatBaseCell.h */,
 				CC45FD241BE36B3500DE0BFB /* MQChatBaseCell.m */,
-				CC45FD251BE36B3500DE0BFB /* MQEventMessageCell.h */,
-				CC45FD261BE36B3500DE0BFB /* MQEventMessageCell.m */,
-				CC45FD271BE36B3500DE0BFB /* MQImageMessageCell.h */,
-				CC45FD281BE36B3500DE0BFB /* MQImageMessageCell.m */,
-				CC45FD291BE36B3500DE0BFB /* MQMessageDateCell.h */,
-				CC45FD2A1BE36B3500DE0BFB /* MQMessageDateCell.m */,
 				CC45FD2B1BE36B3500DE0BFB /* MQTextMessageCell.h */,
 				CC45FD2C1BE36B3500DE0BFB /* MQTextMessageCell.m */,
-				CC45FD2D1BE36B3500DE0BFB /* MQTipsCell.h */,
-				CC45FD2E1BE36B3500DE0BFB /* MQTipsCell.m */,
+				CC45FD271BE36B3500DE0BFB /* MQImageMessageCell.h */,
+				CC45FD281BE36B3500DE0BFB /* MQImageMessageCell.m */,
 				CC45FD2F1BE36B3500DE0BFB /* MQVoiceMessageCell.h */,
 				CC45FD301BE36B3500DE0BFB /* MQVoiceMessageCell.m */,
+				CC45FD251BE36B3500DE0BFB /* MQEventMessageCell.h */,
+				CC45FD261BE36B3500DE0BFB /* MQEventMessageCell.m */,
+				CC45FD291BE36B3500DE0BFB /* MQMessageDateCell.h */,
+				CC45FD2A1BE36B3500DE0BFB /* MQMessageDateCell.m */,
+				CC45FD2D1BE36B3500DE0BFB /* MQTipsCell.h */,
+				CC45FD2E1BE36B3500DE0BFB /* MQTipsCell.m */,
 			);
 			path = cell;
 			sourceTree = "<group>";
@@ -396,6 +399,8 @@
 				CC45FD801BE37C3200DE0BFB /* MQStringSizeUtil.m */,
 				CC45FD781BE37A9500DE0BFB /* MQChatFileUtil.h */,
 				CC45FD791BE37A9500DE0BFB /* MQChatFileUtil.m */,
+				CC99DDB61BE4B8FD00D22464 /* MQChatDateUtil.h */,
+				CC99DDB71BE4B8FD00D22464 /* MQChatDateUtil.m */,
 			);
 			path = ChatUtil;
 			sourceTree = "<group>";
@@ -591,6 +596,7 @@
 				CC45FD731BE3745700DE0BFB /* MQManager.m in Sources */,
 				CC45FD591BE36B3500DE0BFB /* MQTipsCell.m in Sources */,
 				CC45FD5F1BE36B3600DE0BFB /* MQTipsCellModel.m in Sources */,
+				CC99DDB81BE4B8FD00D22464 /* MQChatDateUtil.m in Sources */,
 				CC45FFC91BE4912200DE0BFB /* HPTextViewInternal.m in Sources */,
 				CC45FFC81BE4912200DE0BFB /* HPGrowingTextView.m in Sources */,
 				CC45FD671BE36B3600DE0BFB /* MQChatViewModel.m in Sources */,
@@ -840,6 +846,7 @@
 				CC45FD191BE36B1900DE0BFB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CC45FD1A1BE36B1900DE0BFB /* Build configuration list for PBXNativeTarget "MQChatViewControllerDemoTests" */ = {
 			isa = XCConfigurationList;
@@ -848,6 +855,7 @@
 				CC45FD1C1BE36B1900DE0BFB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CC45FD1D1BE36B1900DE0BFB /* Build configuration list for PBXNativeTarget "MQChatViewControllerDemoUITests" */ = {
 			isa = XCConfigurationList;
@@ -856,6 +864,7 @@
 				CC45FD1F1BE36B1900DE0BFB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -18,6 +18,7 @@ static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
     UIActivityIndicatorView *sendMsgIndicator;
     UILabel *durationLabel;
     UIImageView *voiceImageView;
+    UIImageView *failureImageView;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -40,7 +41,11 @@ static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
         [self.contentView addSubview:durationLabel];
         //初始化语音图片
         voiceImageView = [[UIImageView alloc] init];
-        [self.contentView addSubview:voiceImageView];
+        [bubbleImageView addSubview:voiceImageView];
+        //初始化出错image
+#warning 这里添加出错图片
+        failureImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[MQChatFileUtil resourceWithName:@""]]];
+        [self.contentView addSubview:failureImageView];
     }
     return self;
 }
@@ -93,6 +98,13 @@ static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
     NSString *durationText = [NSString stringWithFormat:@"%d\"", (int)cellModel.voiceDuration];
     durationLabel.text = durationText;
     durationLabel.frame = cellModel.durationLabelFrame;
+    
+    //刷新出错图片
+    failureImageView.hidden = true;
+    if (cellModel.sendType == MQChatCellSentFailure) {
+        failureImageView.hidden = false;
+        failureImageView.frame = cellModel.sendFailureFrame;
+    }
 }
 
 /**

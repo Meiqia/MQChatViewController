@@ -20,4 +20,7 @@
 
 +(float)audioDuration:(NSString *)filePath;
 
+/** 获取音频长度 */
++ (NSTimeInterval)getAudioDurationWithData:(NSData *)audioData;
+
 @end

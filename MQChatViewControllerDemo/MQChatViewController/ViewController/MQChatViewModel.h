@@ -39,6 +39,9 @@
 /** cellModel的缓存 */
 @property (nonatomic, strong) NSMutableArray *cellModels;
 
+/** 聊天界面的宽度 */
+@property (nonatomic, assign) CGFloat chatViewWidth;
+
 /**
  * 获取更多历史聊天消息
  */

@@ -14,7 +14,7 @@
 
 #pragma MQCellModelProtocol
 - (CGFloat)getCellHeight {
-    return 0;
+    return self.cellHeight;
 }
 
 /**

@@ -16,7 +16,7 @@
 @property (nonatomic, copy) NSString *voicePath;
 
 /** 消息voice */
-@property (nonatomic, strong) NSData *voice;
+@property (nonatomic, strong) NSData *voiceData;
 
 - (instancetype)initWithVoicePath:(NSString *)voicePath;
 

@@ -16,6 +16,11 @@
 @interface MQTipsCellModel : NSObject
 
 /**
+ * @brief cell的高度
+ */
+@property (nonatomic, readonly, assign) CGFloat cellHeight;
+
+/**
  * @brief 提示文字
  */
 @property (nonatomic, readonly, copy) NSString *tipText;
@@ -44,6 +49,6 @@
 /**
  *  根据tips内容来生成cell model
  */
-- (MQTipsCellModel *)initCellModelWithTips:(NSString *)tips;
+- (MQTipsCellModel *)initCellModelWithTips:(NSString *)tips cellWidth:(CGFloat)cellWidth;
 
 @end

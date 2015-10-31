@@ -56,7 +56,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
  */
 - (void)sendTextMessageWithContent:(NSString *)content {
     MQTextMessage *message = [[MQTextMessage alloc] initWithContent:content];
-    MQTextCellModel *cellModel = [[MQTextCellModel alloc] initCellModelWithMessage:message];
+    MQTextCellModel *cellModel = [[MQTextCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth];
     [self.cellModels addObject:cellModel];
 #ifdef INCLUDE_MEIQIA_SDK
     [MQManager sendTextMessageWithContent:content delegate:self];
@@ -69,7 +69,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
  */
 - (void)sendImageMessageWithImage:(UIImage *)image {
     MQImageMessage *message = [[MQImageMessage alloc] initWithImage:image];
-    MQImageCellModel *cellModel = [[MQImageCellModel alloc] initCellModelWithMessage:message];
+    MQImageCellModel *cellModel = [[MQImageCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth];
     [self.cellModels addObject:cellModel];
 #ifdef INCLUDE_MEIQIA_SDK
     [MQManager sendImageMessageWithImage:image delegate:self];
@@ -81,7 +81,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
  */
 - (void)sendVoiceMessageWithVoice:(NSData *)voiceData {
     MQVoiceMessage *message = [[MQVoiceMessage alloc] initWithVoiceData:voiceData];
-    MQVoiceCellModel *cellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:message];
+    MQVoiceCellModel *cellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth];
     [self.cellModels addObject:cellModel];
 #ifdef INCLUDE_MEIQIA_SDK
     [MQManager sendAudioMessage:voiceData delegate:self];

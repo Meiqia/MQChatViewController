@@ -18,6 +18,16 @@
 @interface MQTextCellModel : NSObject <MQCellModelProtocol>
 
 /**
+ * @brief cell的高度
+ */
+@property (nonatomic, readonly, assign) CGFloat cellHeight;
+
+/**
+ * @brief cell的宽度
+ */
+@property (nonatomic, readonly, assign) CGFloat cellWidth;
+
+/**
  * @brief 消息的文字
  */
 @property (nonatomic, readonly, copy) NSString *cellText;
@@ -63,6 +73,11 @@
 @property (nonatomic, readonly, assign) CGRect indicatorFrame;
 
 /**
+ * @brief 发送出错图片的frame
+ */
+@property (nonatomic, readonly, assign) CGRect sendFailureFrame;
+
+/**
  * @brief 消息的来源类型
  */
 @property (nonatomic, readonly, assign) MQChatCellFromType cellFromType;
@@ -90,7 +105,7 @@
 /**
  *  根据MQMessage内容来生成cell model
  */
-- (MQTextCellModel *)initCellModelWithMessage:(MQTextMessage *)message;
+- (MQTextCellModel *)initCellModelWithMessage:(MQTextMessage *)message cellWidth:(CGFloat)cellWidth;
 
 
 @end

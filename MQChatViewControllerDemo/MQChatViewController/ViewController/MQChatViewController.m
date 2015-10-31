@@ -38,8 +38,8 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    [self initChatViewModel];
     [self initChatTableView];
+    [self initChatViewModel];
     [self initInputBar];
 }
 
@@ -52,6 +52,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)initChatViewModel {
     chatViewModel = [[MQChatViewModel alloc] init];
     chatViewModel.delegate = self;
+    chatViewModel.chatViewWidth = self.chatTableView.frame.size.width;
 }
 
 #pragma 初始化所有Views

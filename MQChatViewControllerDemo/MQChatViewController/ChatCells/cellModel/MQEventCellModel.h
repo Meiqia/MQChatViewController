@@ -16,6 +16,11 @@
 @interface MQEventCellModel : NSObject <MQCellModelProtocol>
 
 /**
+ * @brief cell的高度
+ */
+@property (nonatomic, readonly, assign) CGFloat cellHeight;
+
+/**
  * @brief 事件文字
  */
 @property (nonatomic, readonly, copy) NSString *eventText;

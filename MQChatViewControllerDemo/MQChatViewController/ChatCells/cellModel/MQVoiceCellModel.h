@@ -17,6 +17,11 @@
 @interface MQVoiceCellModel : NSObject <MQCellModelProtocol>
 
 /**
+ * @brief cell的高度
+ */
+@property (nonatomic, readonly, assign) CGFloat cellHeight;
+
+/**
  * @brief 语音data
  */
 @property (nonatomic, readonly, copy) NSData *voiceData;
@@ -67,6 +72,16 @@
 @property (nonatomic, readonly, assign) CGRect durationLabelFrame;
 
 /**
+ * @brief 语音图片的frame
+ */
+@property (nonatomic, readonly, assign) CGRect voiceImageFrame;
+
+/**
+ * @brief 发送出错图片的frame
+ */
+@property (nonatomic, readonly, assign) CGRect sendFailureFrame;
+
+/**
  * @brief 消息的来源类型
  */
 @property (nonatomic, readonly, assign) MQChatCellFromType cellFromType;
@@ -74,13 +89,13 @@
 /**
  * @brief 消息的发送状态
  */
-@property (nonatomic, readonly, assign) MQChatCellSendType sendType;
+@property (nonatomic, assign) MQChatCellSendType sendType;
 
 
 /**
  *  根据MQMessage内容来生成cell model
  */
-- (MQVoiceCellModel *)initCellModelWithMessage:(MQVoiceMessage *)message;
+- (MQVoiceCellModel *)initCellModelWithMessage:(MQVoiceMessage *)message cellWidth:(CGFloat)cellWidth;
 
 
 
