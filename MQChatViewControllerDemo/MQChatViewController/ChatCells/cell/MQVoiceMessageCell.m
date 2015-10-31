@@ -9,6 +9,7 @@
 #import "MQVoiceMessageCell.h"
 #import "MQVoiceCellModel.h"
 #import "MQChatFileUtil.h"
+#import "MQChatViewConfig.h"
 
 static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
 
@@ -43,8 +44,7 @@ static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
         voiceImageView = [[UIImageView alloc] init];
         [bubbleImageView addSubview:voiceImageView];
         //初始化出错image
-#warning 这里添加出错图片
-        failureImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[MQChatFileUtil resourceWithName:@""]]];
+        failureImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[MQChatViewConfig sharedConfig].messageSendFailureImage]];
         [self.contentView addSubview:failureImageView];
     }
     return self;
@@ -60,7 +60,7 @@ static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
     
     //刷新头像
     if (cellModel.avatarPath.length == 0) {
-        avatarImageView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:cellModel.avatarLocalImageName]];
+        avatarImageView.image = cellModel.avatarLocalImage;
     } else {
 #warning 使用SDWebImage或自己写获取远程图片的方法
     }
@@ -71,15 +71,15 @@ static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
     bubbleImageView.frame = cellModel.bubbleImageFrame;
     
     //消息图片
-#warning 这里增加语音动画图片
-    voiceImageView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@""]];
-    NSString *animationImage1 = @"";
-    NSString *animationImage2 = @"";
-    NSString *animationImage3 = @"";
+    voiceImageView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQBubble_voice_animation_green3"]];
+    NSString *animationImage1 = @"MQBubble_voice_animation_green1";
+    NSString *animationImage2 = @"MQBubble_voice_animation_green2";
+    NSString *animationImage3 = @"MQBubble_voice_animation_green3";
     if (cellModel.cellFromType == MQChatCellIncoming) {
-        animationImage1 = @"";
-        animationImage2 = @"";
-        animationImage3 = @"";
+        animationImage1 = @"MQBubble_voice_animation_gray1";
+        animationImage2 = @"MQBubble_voice_animation_gray2";
+        animationImage3 = @"MQBubble_voice_animation_gray3";
+        voiceImageView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQBubble_voice_animation_gray3"]];
     }
     voiceImageView.animationImages = [NSArray arrayWithObjects:
                                   [UIImage imageNamed:[MQChatFileUtil resourceWithName:animationImage1]],

@@ -42,9 +42,9 @@
 @property (nonatomic, readonly, copy) NSString *avatarPath;
 
 /**
- * @brief 发送者的头像的图片名字 (如果在头像path不存在的情况下，才使用这个属性)
+ * @brief 发送者的头像的图片 (如果在头像path不存在的情况下，才使用这个属性)
  */
-@property (nonatomic, readonly, copy) NSString *avatarLocalImageName;
+@property (nonatomic, readonly, copy) UIImage *avatarLocalImage;
 
 /**
  * @brief 聊天气泡的image

@@ -9,6 +9,7 @@
 #import "MQImageCellModel.h"
 #import "MQChatBaseCell.h"
 #import "MQImageMessageCell.h"
+#import "MQChatViewConfig.h"
 
 @interface MQImageCellModel()
 /**
@@ -32,9 +33,9 @@
 @property (nonatomic, readwrite, copy) NSString *avatarPath;
 
 /**
- * @brief 发送者的头像的图片名字 (如果在头像path不存在的情况下，才使用这个属性)
+ * @brief 发送者的头像的图片 (如果在头像path不存在的情况下，才使用这个属性)
  */
-@property (nonatomic, readwrite, copy) NSString *avatarLocalImageName;
+@property (nonatomic, readwrite, copy) UIImage *avatarLocalImage;
 
 /**
  * @brief 聊天气泡的image（该气泡image已经进行了resize）
@@ -79,8 +80,7 @@
         self.sendType = MQChatCellSending;
         self.date = message.date;
         self.avatarPath = @"";
-#warning 这里增加默认头像的图片
-        self.avatarLocalImageName = [MQChatFileUtil resourceWithName:@""];
+        self.avatarLocalImage = [MQChatViewConfig sharedConfig].agentDefaultAvatarImage;
         if (message.userAvatarPath) {
             self.avatarPath = message.userAvatarPath;
         }
@@ -97,12 +97,11 @@
         CGFloat bubbleHeight = ceil(contentImageSize.height/contentImageSize.width*bubbleWidth);
         
         //根据消息的来源，进行处理
-        NSString *bubbleImageName = @"";
+        UIImage *bubbleImage = [MQChatViewConfig sharedConfig].incomingBubbleImage;
         if (message.fromType == MQMessageOutgoing) {
             //发送出去的消息
             self.cellFromType = MQChatCellOutgoing;
-#warning 这里要增加气泡图片
-            bubbleImageName = @"";
+            bubbleImage = [MQChatViewConfig sharedConfig].outgoingBubbleImage;
             
             //头像的frame
             self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
@@ -111,8 +110,6 @@
         } else {
             //收到的消息
             self.cellFromType = MQChatCellIncoming;
-#warning 这里要增加气泡图片
-            bubbleImageName = @"";
             
             //头像的frame
             self.avatarFrame = CGRectMake(kMQCellAvatarToHorizontalEdgeSpacing, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
@@ -121,7 +118,6 @@
         }
         
         //气泡图片
-        UIImage *bubbleImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:bubbleImageName]];
         CGPoint centerArea = CGPointMake(bubbleImage.size.width / 4.0f, bubbleImage.size.height*3.0f / 4.0f);
         self.bubbleImage = [bubbleImage resizableImageWithCapInsets:UIEdgeInsetsMake(centerArea.y, centerArea.x, bubbleImage.size.height-centerArea.y+1, centerArea.x)];
         
@@ -129,8 +125,7 @@
         UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] init];
         self.indicatorFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-indicatorView.frame.size.width, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-indicatorView.frame.size.height/2, indicatorView.frame.size.width, indicatorView.frame.size.height);
         //发送失败的图片frame
-#warning 这里添加发送失败图片
-        UIImage *failureImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@""]];
+        UIImage *failureImage = [MQChatViewConfig sharedConfig].messageSendFailureImage;
         self.sendFailureFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-failureImage.size.width, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-failureImage.size.height/2, failureImage.size.width, failureImage.size.height);
         
         //计算cell的高度

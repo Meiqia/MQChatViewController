@@ -43,6 +43,11 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [self initInputBar];
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [chatViewConfig setConfigToDefault];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

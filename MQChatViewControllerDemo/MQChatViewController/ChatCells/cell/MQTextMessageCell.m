@@ -9,6 +9,7 @@
 #import "MQTextMessageCell.h"
 #import "MQTextCellModel.h"
 #import "MQChatFileUtil.h"
+#import "MQChatViewConfig.h"
 
 static const NSInteger kMQTextCellSelectedUrlActionSheetTag = 2000;
 static const NSInteger kMQTextCellSelectedNumberActionSheetTag = 2001;
@@ -46,8 +47,7 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
         sendMsgIndicator.hidden = YES;
         [self.contentView addSubview:sendMsgIndicator];
         //初始化出错image
-#warning 这里添加出错图片
-        failureImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[MQChatFileUtil resourceWithName:@""]]];
+        failureImageView = [[UIImageView alloc] initWithImage:[MQChatViewConfig sharedConfig].messageSendFailureImage];
         [self.contentView addSubview:failureImageView];
     }
     return self;
@@ -63,7 +63,7 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
     
     //刷新头像
     if (cellModel.avatarPath.length == 0) {
-        avatarImageView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:cellModel.avatarLocalImageName]];
+        avatarImageView.image = cellModel.avatarLocalImage;
     } else {
 #warning 使用SDWebImage或自己写获取远程图片的方法
     }

@@ -10,6 +10,7 @@
 #import "MQImageCellModel.h"
 #import "MQChatFileUtil.h"
 #import "MQImageUtil.h"
+#import "MQChatViewConfig.h"
 
 @implementation MQImageMessageCell {
     UIImageView *avatarImageView;
@@ -31,8 +32,7 @@
         sendMsgIndicator.hidden = YES;
         [self.contentView addSubview:sendMsgIndicator];
         //初始化出错image
-#warning 这里添加出错图片
-        failureImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[MQChatFileUtil resourceWithName:@""]]];
+        failureImageView = [[UIImageView alloc] initWithImage:[MQChatViewConfig sharedConfig].messageSendFailureImage];
         [self.contentView addSubview:failureImageView];
     }
     return self;
@@ -50,7 +50,7 @@
 
     //刷新头像
     if (cellModel.avatarPath.length == 0) {
-        avatarImageView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:cellModel.avatarLocalImageName]];
+        avatarImageView.image = cellModel.avatarLocalImage;
     } else {
 #warning 使用SDWebImage或自己写获取远程图片的方法
     }
