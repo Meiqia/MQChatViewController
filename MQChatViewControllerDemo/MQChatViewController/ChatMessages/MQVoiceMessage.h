@@ -20,7 +20,7 @@
 
 - (instancetype)initWithVoicePath:(NSString *)voicePath;
 
-- (instancetype)initWithVoiceData:(NSData *)voice;
+- (instancetype)initWithVoiceData:(NSData *)voiceDate;
 
 
 @end

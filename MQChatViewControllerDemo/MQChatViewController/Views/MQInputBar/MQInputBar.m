@@ -199,8 +199,10 @@
 - (void)recordBtnLongPressed:(UILongPressGestureRecognizer*) longPressedRecognizer{
     
     if(longPressedRecognizer.state == UIGestureRecognizerStateBegan) {
-        if(self.delegate && [self.delegate respondsToSelector:@selector(beginRecord:)]){
-            [self.delegate beginRecord:[longPressedRecognizer locationInView:[[UIApplication sharedApplication] keyWindow]]];
+        if(self.delegate){
+            if ([self.delegate respondsToSelector:@selector(beginRecord:)]) {
+                [self.delegate beginRecord:[longPressedRecognizer locationInView:[[UIApplication sharedApplication] keyWindow]]];
+            }
         }
         [recordBtn setTitle:@"松开结束" forState:UIControlStateNormal];
         [UIView animateWithDuration:.2 animations:^{
@@ -208,8 +210,10 @@
 //            recordBtn.layer.shadowOpacity = .1;
         }];
     }else if(longPressedRecognizer.state == UIGestureRecognizerStateEnded || longPressedRecognizer.state == UIGestureRecognizerStateCancelled) {
-        if(self.delegate && [self.delegate respondsToSelector:@selector(endRecord:)]){
-            [self.delegate endRecord:[longPressedRecognizer locationInView:[[UIApplication sharedApplication] keyWindow]]];
+        if(self.delegate){
+            if ([self.delegate respondsToSelector:@selector(endRecord:)]) {
+                [self.delegate endRecord:[longPressedRecognizer locationInView:[[UIApplication sharedApplication] keyWindow]]];
+            }
         }
         
         [recordBtn setTitle:@"按住说话" forState:UIControlStateNormal];
@@ -218,8 +222,10 @@
 //            recordBtn.layer.shadowOpacity = .4;
         }];
     }else if(longPressedRecognizer.state == UIGestureRecognizerStateChanged) {
-        if(self.delegate && [self.delegate respondsToSelector:@selector(changedRecord:)]){
-            [self.delegate changedRecord:[longPressedRecognizer locationInView:[[UIApplication sharedApplication] keyWindow]]];
+        if(self.delegate){
+            if ([self.delegate respondsToSelector:@selector(changedRecord:)]) {
+                [self.delegate changedRecord:[longPressedRecognizer locationInView:[[UIApplication sharedApplication] keyWindow]]];
+            }
         }
     }
 }
@@ -227,18 +233,28 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     switch (buttonIndex) {
-        case 0:
-            [self.delegate sendImageWithSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+        case 0: {
+            if (self.delegate) {
+                if ([self.delegate respondsToSelector:@selector(sendImageWithSourceType:)]) {
+                    [self.delegate sendImageWithSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+                }
+            }
             break;
-        case 1:
-            [self.delegate sendImageWithSourceType:(NSInteger*)UIImagePickerControllerSourceTypeCamera];
+        }
+        case 1: {
+            if (self.delegate) {
+                if ([self.delegate respondsToSelector:@selector(sendImageWithSourceType:)]) {
+                    [self.delegate sendImageWithSourceType:(NSInteger*)UIImagePickerControllerSourceTypeCamera];
+                }
+            }
             break;
+        }
     }
     actionSheet = nil;
 }
 
--(void)setChatView:(UIView*)view{
-    chatTableView = (UITableView*)view;
+-(void)setChatTableView:(MQChatTableView*)view{
+    chatTableView = (MQChatTableView*)view;
 }
 
 -(void)inputKeyboardWillShow:(NSNotification *)notification
@@ -258,8 +274,11 @@
         }else{
             keyboardHeight = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
         }
-        
-        [chatTableView scrollToBottom:NO];
+        if (self.delegate) {
+            if ([self.delegate respondsToSelector:@selector(chatTableViewScrollToBottom)]) {
+                [self.delegate chatTableViewScrollToBottom];
+            }
+        }
         //[self moveToolbarUp:keyboardHeight animate:[[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue]];
         [self moveToolbarUp:keyboardHeight animate:.25];
         [self toolbarDownBtnVisible];
@@ -336,17 +355,23 @@
 -(void)sendText:(id)sender
 {
     if ([self.textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length > 0) {
-        if([self.delegate sendTextMessage:self.textView.text]) {
-            [self.textView setText:@""];
-            thisFrame = self.frame;
+        if (self.delegate) {
+            if ([self.delegate respondsToSelector:@selector(sendTextMessage:)]) {
+                if([self.delegate sendTextMessage:self.textView.text]) {
+                    [self.textView setText:@""];
+                    thisFrame = self.frame;
+                }
+            }
         }
     }
 }
 
 - (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView
 {
-    if ([self.delegate respondsToSelector:@selector(inputting:)]) {
-        [self.delegate inputting:self.textView.text];
+    if (self.delegate) {
+        if ([self.delegate respondsToSelector:@selector(inputting:)]) {
+            [self.delegate inputting:self.textView.text];
+        }
     }
 }
 

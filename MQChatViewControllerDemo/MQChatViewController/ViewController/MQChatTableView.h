@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MQChatViewModel.h"
 
 @interface MQChatTableView : UITableView
 
--(void)scrollToBottom:(BOOL)animate;
+
+@property (nonatomic, strong) MQChatViewModel *chatViewModel;
 
 
 @end

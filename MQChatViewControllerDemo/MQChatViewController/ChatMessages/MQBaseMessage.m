@@ -13,8 +13,8 @@
 - (instancetype)init {
     if (self = [super init]) {
         self.messageId = [[NSUUID UUID] UUIDString];
-        self.messageFromType = MQMessageOutgoing;
-        self.messageDate = [NSDate date];
+        self.fromType = MQMessageOutgoing;
+        self.date = [NSDate date];
         self.userName = @"";
         self.userAvatarPath = @"";
     }

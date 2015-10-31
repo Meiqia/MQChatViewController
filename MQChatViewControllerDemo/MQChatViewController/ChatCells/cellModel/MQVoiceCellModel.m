@@ -128,7 +128,7 @@ static CGFloat const kMQCellVoiceImageToBubbleSpacing = 24.0;
         if (message.fromType == MQMessageOutgoing) {
             //发送出去的消息
             self.cellFromType = MQChatCellOutgoing;
-#warning 这里要增加图片
+#warning 这里要增加气泡图片
             bubbleImageName = @"";
             
             //头像的frame
@@ -140,7 +140,7 @@ static CGFloat const kMQCellVoiceImageToBubbleSpacing = 24.0;
         } else {
             //收到的消息
             self.cellFromType = MQChatCellIncoming;
-#warning 这里要增加图片
+#warning 这里要增加气泡图片
             bubbleImageName = @"";
             
             //头像的frame

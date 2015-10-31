@@ -81,7 +81,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     chatInputBar.recordButtonVisible = chatViewConfig.enableVoiceMessage;
     chatInputBar.frame = CGRectMake(self.chatTableView.frame.origin.x, self.chatTableView.frame.origin.y+self.chatTableView.frame.size.height, self.chatTableView.frame.size.width, kMQChatViewInputBarHeight);
     chatInputBar.delegate = self;
-    [chatInputBar setChatView:self.chatTableView];
+    [chatInputBar setChatTableView:self.chatTableView];
     [chatInputBar setupUI];
     self.inputBarView = chatInputBar;
     self.inputBarTextView = chatInputBar.textView.internalTextView;
@@ -130,6 +130,10 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 -(void)inputting:(NSString*)content {
     //用户正在输入
     [chatViewModel sendUserInputtingWithContent:content];
+}
+-(void)chatTableViewScrollToBottom {
+    NSInteger lastCellIndex = chatViewModel.cellModels.count;
+    [self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:lastCellIndex inSection:1] atScrollPosition:UITableViewScrollPositionTop animated:true];
 }
 #warning 还没有完成语音输入
 -(void)beginRecord:(CGPoint)point {

@@ -19,6 +19,7 @@
 -(void)beginRecord:(CGPoint)point;
 -(void)endRecord:(CGPoint)point;
 -(void)changedRecord:(CGPoint)point;
+-(void)chatTableViewScrollToBottom;
 @end
 
 @interface MQInputBar : UIView
@@ -36,7 +37,7 @@
 @property(nonatomic) BOOL recordButtonVisible;
 
 -(void)setupUI;
--(void)setChatView:(UIView*)view;
+-(void)setChatTableView:(MQChatTableView*)view;
 -(void)textViewResignFirstResponder;
 
 -(void)moveToolbarUp:(float)height animate:(NSTimeInterval)duration;
