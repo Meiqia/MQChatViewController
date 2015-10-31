@@ -106,11 +106,6 @@ static CGFloat const kMQCellVoiceImageToBubbleSpacing = 24.0;
             self.avatarPath = message.userAvatarPath;
         }
         
-        //气泡宽度
-        CGFloat bubbleWidth = cellWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToBubbleSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
-        //气泡高度
-        CGFloat bubbleHeight = kMQCellAvatarDiameter;
-        
         //语音图片size
         UIImage *voiceImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQBubble_voice_animation_gray3"]];
         CGSize voiceImageSize = voiceImage.size;
@@ -122,6 +117,15 @@ static CGFloat const kMQCellVoiceImageToBubbleSpacing = 24.0;
         }
         self.voiceDuration = [MQChatFileUtil getAudioDurationWithData:self.voiceData];
         
+        //气泡高度
+        CGFloat bubbleHeight = kMQCellAvatarDiameter;
+        //根据语音时长来确定气泡宽度
+        CGFloat maxBubbleWidth = cellWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToBubbleSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
+        CGFloat bubbleWidth = maxBubbleWidth;
+        if (self.voiceDuration < [MQChatViewConfig sharedConfig].maxVoiceDuration) {
+            bubbleWidth = ceil(maxBubbleWidth * self.voiceDuration / [MQChatViewConfig sharedConfig].maxVoiceDuration);
+        }
+
         //根据消息的来源，进行处理
         UIImage *bubbleImage = [MQChatViewConfig sharedConfig].incomingBubbleImage;
         if (message.fromType == MQMessageOutgoing) {
@@ -130,9 +134,10 @@ static CGFloat const kMQCellVoiceImageToBubbleSpacing = 24.0;
             bubbleImage = [MQChatViewConfig sharedConfig].outgoingBubbleImage;
             
             //头像的frame
-            self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
+//            self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
+            self.avatarFrame = CGRectMake(0, 0, 0, 0);
             //气泡的frame
-            self.bubbleImageFrame = CGRectMake(self.avatarFrame.origin.x-kMQCellAvatarToBubbleSpacing-bubbleWidth, self.avatarFrame.origin.y, bubbleWidth, bubbleHeight);
+            self.bubbleImageFrame = CGRectMake(cellWidth-kMQCellAvatarToBubbleSpacing-bubbleWidth, kMQCellAvatarToVerticalEdgeSpacing, bubbleWidth, bubbleHeight);
             //语音图片的frame
             self.voiceImageFrame = CGRectMake(self.bubbleImageFrame.size.width-kMQCellVoiceImageToBubbleSpacing-voiceImageSize.width, self.bubbleImageFrame.size.height/2-voiceImageSize.height/2, voiceImageSize.width, voiceImageSize.height);
         } else {
@@ -142,7 +147,7 @@ static CGFloat const kMQCellVoiceImageToBubbleSpacing = 24.0;
             //头像的frame
             self.avatarFrame = CGRectMake(kMQCellAvatarToHorizontalEdgeSpacing, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
             //气泡的frame
-            self.bubbleImageFrame = CGRectMake(self.avatarFrame.origin.x+kMQCellAvatarToBubbleSpacing, self.avatarFrame.origin.y, bubbleWidth, bubbleHeight);
+            self.bubbleImageFrame = CGRectMake(self.avatarFrame.origin.x+self.avatarFrame.size.width+kMQCellAvatarToBubbleSpacing, self.avatarFrame.origin.y, bubbleWidth, bubbleHeight);
             //语音图片的frame
             self.voiceImageFrame = CGRectMake(kMQCellVoiceImageToBubbleSpacing, self.bubbleImageFrame.size.height/2-voiceImageSize.height/2, voiceImageSize.width, voiceImageSize.height);
         }
@@ -152,7 +157,7 @@ static CGFloat const kMQCellVoiceImageToBubbleSpacing = 24.0;
         self.bubbleImage = [bubbleImage resizableImageWithCapInsets:UIEdgeInsetsMake(centerArea.y, centerArea.x, bubbleImage.size.height-centerArea.y+1, centerArea.x)];
         
         //发送消息的indicator的frame
-        UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] init];
+        UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, kMQCellIndicatorDiameter, kMQCellIndicatorDiameter)];
         self.indicatorFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-indicatorView.frame.size.width, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-indicatorView.frame.size.height/2, indicatorView.frame.size.width, indicatorView.frame.size.height);
         //发送失败的图片frame
         UIImage *failureImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQMessageWarning"]];

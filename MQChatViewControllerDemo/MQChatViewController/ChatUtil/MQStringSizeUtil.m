@@ -10,7 +10,7 @@
 
 @implementation MQStringSizeUtil
 
-+(CGFloat) getHeightForText:(NSString*) text withFont:(UIFont*) font andWidth:(CGFloat) width{
++ (CGFloat) getHeightForText:(NSString *) text withFont:(UIFont *) font andWidth:(CGFloat) width{
     CGSize constraint = CGSizeMake(width , 20000.0f);
     CGSize title_size;
     CGFloat totalHeight;
@@ -32,7 +32,7 @@
     return totalHeight;
 }
 
-+(CGFloat) getWidthForText:(NSString*) text withFont:(UIFont*) font andHeight:(CGFloat) height{
++ (CGFloat) getWidthForText:(NSString *) text withFont:(UIFont *) font andHeight:(CGFloat) height{
     CGSize constraint = CGSizeMake(20000.0f , height);
     CGSize title_size;
     CGFloat width;
@@ -54,7 +54,7 @@
     return width;
 }
 
-+(CGFloat) getWidthForText:(NSString*) text withAttributes:(NSDictionary*)attributes andHeight:(CGFloat) height{
++(CGFloat) getWidthForText:(NSString *) text withAttributes:(NSDictionary *)attributes andHeight:(CGFloat) height{
     CGSize constraint = CGSizeMake(20000.0f , height);
     CGSize title_size;
     CGFloat width;
@@ -68,7 +68,7 @@
     return width;
 }
 
-+(CGFloat) getHeightForText:(NSString*) text withAttributes:(NSDictionary*)attributes andWidth:(CGFloat) width{
++(CGFloat) getHeightForText:(NSString *) text withAttributes:(NSDictionary *)attributes andWidth:(CGFloat) width{
     CGSize constraint = CGSizeMake(width , 20000.0f);
     CGSize title_size;
     CGFloat totalHeight;
@@ -83,7 +83,7 @@
 }
 
 //将自然数转化为以k为单位的数值的字符串
-+(NSString*)convertNaturalNumToShortAbNum:(NSUInteger)number{
++ (NSString *)convertNaturalNumToShortAbNum:(NSUInteger)number{
     NSString *abNum;
     if(number<1000){
         abNum = [NSString stringWithFormat:@"%d",(int)number];

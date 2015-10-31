@@ -8,14 +8,17 @@
 
 #import "MQInputBar.h"
 #import "MQChatFileUtil.h"
+#import "MQChatViewConfig.h"
 
-#define ButtonWidth 33
-#define ButtonX 6.5
+//#define ButtonWidth 33
+//#define ButtonX 6.5
+static CGFloat const kMQInputBarHorizontalSpacing = 0;
 
 @implementation MQInputBar
 {
     CGRect thisFrame;   //默认
     CGRect superViewFrame;  //默认
+    UIView *superView;
     CGRect chatViewFrame;
     
     //调整键盘需要涉及的变量
@@ -23,19 +26,29 @@
     float keyboardDifference;
     BOOL isInputBarUp;  //工具栏被抬高
     float bullleViewHeigth; //真实可视区域
+    CGFloat senderImageWidth;
+    CGFloat senderImageHeight;
+    MQChatTableView *chatTableView;
 }
 
-- (id)init
+- (id)initWithSuperView:(UIView *)inputBarSuperView tableView:(MQChatTableView *)tableView
 {
     if (self = [super init]) {
+        superView               = inputBarSuperView;
+        superViewFrame          = inputBarSuperView.frame;
+        chatTableView           = tableView;
+        chatViewFrame           = tableView.frame;
+
+        senderImageWidth = [MQChatViewConfig sharedConfig].photoSenderImage.size.width;
+        senderImageHeight = [MQChatViewConfig sharedConfig].photoSenderImage.size.height;
+        
         self.backgroundColor = [UIColor whiteColor];
         cameraBtn              = [[UIButton alloc] init];
-        [cameraBtn setImage:[UIImage imageNamed:[MQChatFileUtil resourceWithName:@"camera_normal.png"]] forState:UIControlStateNormal];
-        [cameraBtn setImage:[UIImage imageNamed:[MQChatFileUtil resourceWithName:@"camera_click.png"]] forState:UIControlStateHighlighted];
+        [cameraBtn setImage:[MQChatViewConfig sharedConfig].photoSenderImage forState:UIControlStateNormal];
+        [cameraBtn setImage:[MQChatViewConfig sharedConfig].photoSenderImage forState:UIControlStateHighlighted];
         [cameraBtn addTarget:self action:@selector(cameraClick) forControlEvents:UIControlEventTouchUpInside];
         
-        self.textView               = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(0, 0, 0, ButtonWidth)];
-//        [self.textView setTextViewRadius:5];
+        self.textView               = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(0, 0, 0, senderImageHeight)];
         self.textView.font          = [UIFont systemFontOfSize:15];
         self.textView.returnKeyType = UIReturnKeySend;
         self.textView.placeholder   = @"请输入...";
@@ -78,10 +91,10 @@
         [toolbarDownBtn addTarget:self action:@selector(toolbarDownClick) forControlEvents:UIControlEventTouchUpInside];
         toolbarDownBtn.hidden = YES;
         
-        micBtn = [[UIButton alloc] init];
-        [micBtn setImage:[UIImage imageNamed:[MQChatFileUtil resourceWithName:@"mic_normal"]] forState:UIControlStateNormal];
-        [micBtn setImage:[UIImage imageNamed:[MQChatFileUtil resourceWithName:@"mic_click"]] forState:UIControlStateHighlighted];
-        [micBtn addTarget:self action:@selector(micClick) forControlEvents:UIControlEventTouchUpInside];
+        microphoneBtn = [[UIButton alloc] init];
+        [microphoneBtn setImage:[MQChatViewConfig sharedConfig].voiceSenderImage forState:UIControlStateNormal];
+        [microphoneBtn setImage:[MQChatViewConfig sharedConfig].voiceSenderImage forState:UIControlStateHighlighted];
+        [microphoneBtn addTarget:self action:@selector(microphoneClick) forControlEvents:UIControlEventTouchUpInside];
         
         recordBtn                    = [UIButton buttonWithType:UIButtonTypeCustom];
         [recordBtn setTitle:@"按住说话" forState:UIControlStateNormal];
@@ -108,7 +121,7 @@
         
         [self addSubview:toolbarDownBtn];
         [self addSubview:recordBtn];
-        [self addSubview:micBtn];
+        [self addSubview:microphoneBtn];
     }
     [self setupUI];
 }
@@ -117,46 +130,45 @@
 -(void)setupUI
 {
     thisFrame            = self.frame;
-    superViewFrame       = self.superview.frame;
-    chatViewFrame        = chatTableView.frame;
 
-    cameraBtn.frame      = CGRectMake(ButtonX, (self.frame.size.height - ButtonWidth)/2, ButtonWidth, ButtonWidth);
+    cameraBtn.frame      = CGRectMake(kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth);
     
     if (self.recordButtonVisible) {
-        micBtn.frame = CGRectMake(self.frame.size.width - ButtonWidth - ButtonX, (self.frame.size.height - ButtonWidth)/2, ButtonWidth, ButtonWidth);
-        toolbarDownBtn.frame = micBtn.frame;
+        microphoneBtn.frame = CGRectMake(self.frame.size.width - senderImageWidth - kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth);
+        toolbarDownBtn.frame = microphoneBtn.frame;
         
-        recordBtn.frame = CGRectMake(ButtonWidth + 2 * ButtonX, (thisFrame.size.height - ButtonWidth)/2, thisFrame.size.width - ButtonX * 4 - 2 * ButtonWidth, ButtonWidth);
+        recordBtn.frame = CGRectMake(kMQInputBarHorizontalSpacing*2 + senderImageWidth, (thisFrame.size.height - senderImageHeight)/2, thisFrame.size.width - kMQInputBarHorizontalSpacing * 4 - 2 * senderImageWidth, senderImageHeight);
         
-        self.textView.frame = CGRectMake(ButtonWidth + 2 * ButtonX, (thisFrame.size.height - ButtonWidth)/2, thisFrame.size.width - ButtonX * 4 - 2 * ButtonWidth, ButtonWidth);
+        self.textView.frame = CGRectMake(recordBtn.frame.origin.x, self.frame.size.height/2-senderImageHeight/2, recordBtn.frame.size.width, senderImageHeight);
     }else{
         if (toolbarDownBtn) toolbarDownBtn.hidden = YES;
-        if (micBtn) micBtn.hidden = YES;
+        if (microphoneBtn) microphoneBtn.hidden = YES;
         if (recordBtn) recordBtn.hidden = YES;
         
-        self.textView.frame = CGRectMake(ButtonWidth + 2 * ButtonX, (thisFrame.size.height - ButtonWidth)/2, thisFrame.size.width - ButtonX * 3 - ButtonWidth, ButtonWidth);
+        self.textView.frame = CGRectMake(recordBtn.frame.origin.x, self.frame.size.height/2-senderImageHeight/2, recordBtn.frame.size.width, senderImageHeight);
     }
 }
 
 -(void)cameraClick
 {
+    [self textViewResignFirstResponder];
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:(id)self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"从相册选取",@"拍照", nil];
     [sheet showInView:self.superview.superview];
 }
 
 -(void)toolbarDownClick
 {
-    micBtn.hidden = NO;
+    microphoneBtn.hidden = NO;
     toolbarDownBtn.hidden = YES;
     [self.textView resignFirstResponder];
 }
 
--(void)micClick
+-(void)microphoneClick
 {
     if (recordBtn.hidden) {
         recordBtn.hidden = NO;
-        [micBtn setImage:[UIImage imageNamed:[MQChatFileUtil resourceWithName:@"keyboard_normal"]] forState:UIControlStateNormal];
-        [micBtn setImage:[UIImage imageNamed:[MQChatFileUtil resourceWithName:@"keyboard_click"]] forState:UIControlStateHighlighted];
+        [microphoneBtn setImage:[MQChatViewConfig sharedConfig].keyboardSenderImage forState:UIControlStateNormal];
+        [microphoneBtn setImage:[MQChatViewConfig sharedConfig].keyboardSenderImage forState:UIControlStateHighlighted];
         [self textViewResignFirstResponder];
         [UIView animateWithDuration:.25 animations:^{
             //还原
@@ -173,8 +185,8 @@
             self.textView.hidden = YES;
         }];
     }else{
-        [micBtn setImage:[UIImage imageNamed:[MQChatFileUtil resourceWithName:@"mic_normal"]] forState:UIControlStateNormal];
-        [micBtn setImage:[UIImage imageNamed:[MQChatFileUtil resourceWithName:@"mic_click"]] forState:UIControlStateHighlighted];
+        [microphoneBtn setImage:[MQChatViewConfig sharedConfig].voiceSenderImage forState:UIControlStateNormal];
+        [microphoneBtn setImage:[MQChatViewConfig sharedConfig].voiceSenderImage forState:UIControlStateHighlighted];
         [self.textView becomeFirstResponder];
         self.textView.hidden = NO;
         [UIView animateWithDuration:.25 animations:^{
@@ -382,14 +394,14 @@
     UIInterfaceOrientation statusBarOrientation = [UIApplication sharedApplication].statusBarOrientation;
     if (statusBarOrientation == UIInterfaceOrientationLandscapeLeft || statusBarOrientation == UIInterfaceOrientationLandscapeRight) {
         if ([self.textView isFirstResponder]) {
-            micBtn.hidden = YES;
+            microphoneBtn.hidden = YES;
             toolbarDownBtn.hidden = NO;
         }else{
-            micBtn.hidden = NO;
+            microphoneBtn.hidden = NO;
             toolbarDownBtn.hidden = YES;
         }
     }else{
-        micBtn.hidden = NO;
+        microphoneBtn.hidden = NO;
         toolbarDownBtn.hidden = YES;
     }
 }
@@ -406,8 +418,8 @@
 
 -(void)functionBtnCenter
 {
-    cameraBtn.frame      = CGRectMake(ButtonX, (self.frame.size.height - ButtonWidth)/2, ButtonWidth, ButtonWidth);
-    micBtn.frame = CGRectMake(self.frame.size.width - ButtonWidth - ButtonX, (self.frame.size.height - ButtonWidth)/2, ButtonWidth, ButtonWidth);
+    cameraBtn.frame      = CGRectMake(kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth);
+    microphoneBtn.frame = CGRectMake(self.frame.size.width - senderImageWidth - kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth);
 }
 
 -(void)drawRect:(CGRect)rect

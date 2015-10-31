@@ -54,6 +54,7 @@
     
     self.agentDefaultAvatarImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQIcon"]];
     self.photoSenderImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQMessageCameraInputImage"]];
+    self.keyboardSenderImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQMessageTextInputImage"]];
     self.voiceSenderImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQMessageVoiceInputImage"]];
     self.incomingBubbleImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQBubbleIncoming"]];
     self.outgoingBubbleImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQBubbleOutgoing"]];
@@ -61,6 +62,8 @@
 #warning 这里需要增加声音文件名字
     self.incomingMsgSoundData = [NSData dataWithContentsOfFile:@""];
     self.outgoingMsgSoundData = [NSData dataWithContentsOfFile:@""];
+    
+    self.maxVoiceDuration = 60;
 }
 
 @end

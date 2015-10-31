@@ -26,6 +26,7 @@ static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         //初始化头像
         avatarImageView = [[UIImageView alloc] init];
+        avatarImageView.contentMode = UIViewContentModeScaleAspectFill;
         [self.contentView addSubview:avatarImageView];
         //初始化气泡
         bubbleImageView = [[UIImageView alloc] init];
@@ -89,7 +90,7 @@ static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
     //刷新indicator
     sendMsgIndicator.hidden = true;
     [sendMsgIndicator stopAnimating];
-    if (cellModel.sendType == MQChatCellSending) {
+    if (cellModel.sendType == MQChatCellSending && cellModel.cellFromType == MQChatCellOutgoing) {
         sendMsgIndicator.frame = cellModel.indicatorFrame;
         [sendMsgIndicator startAnimating];
     }

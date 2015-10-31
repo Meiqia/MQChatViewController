@@ -23,6 +23,11 @@
 @property (nonatomic, readwrite, copy) NSString *imagePath;
 
 /**
+ * @brief 图片image(当imagePath不存在时使用)
+ */
+@property (nonatomic, readwrite, strong) UIImage *image;
+
+/**
  * @brief 消息的时间
  */
 @property (nonatomic, readwrite, copy) NSDate *date;
@@ -87,12 +92,13 @@
         
         //气泡宽度
         CGFloat bubbleWidth = cellWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToBubbleSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
-        //内容图片的size
-        UIImage *contentImage = message.image;
-        if (!contentImage) {
+        //内容图片
+        self.image = message.image;
+        self.imagePath = @"";
+        if (!message.image) {
 #warning 这里增加获取网络图片的逻辑，可以是SDWebImage等
         }
-        CGSize contentImageSize = contentImage.size;
+        CGSize contentImageSize = message.image.size;
         //气泡高度
         CGFloat bubbleHeight = ceil(contentImageSize.height/contentImageSize.width*bubbleWidth);
         
@@ -104,9 +110,10 @@
             bubbleImage = [MQChatViewConfig sharedConfig].outgoingBubbleImage;
             
             //头像的frame
-            self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
+//            self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
+            self.avatarFrame = CGRectMake(0, 0, 0, 0);
             //气泡的frame
-            self.bubbleImageFrame = CGRectMake(self.avatarFrame.origin.x-kMQCellAvatarToBubbleSpacing-bubbleWidth, self.avatarFrame.origin.y, bubbleWidth, bubbleHeight);
+            self.bubbleImageFrame = CGRectMake(cellWidth-kMQCellAvatarToBubbleSpacing-bubbleWidth, kMQCellAvatarToVerticalEdgeSpacing, bubbleWidth, bubbleHeight);
         } else {
             //收到的消息
             self.cellFromType = MQChatCellIncoming;
@@ -114,7 +121,7 @@
             //头像的frame
             self.avatarFrame = CGRectMake(kMQCellAvatarToHorizontalEdgeSpacing, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
             //气泡的frame
-            self.bubbleImageFrame = CGRectMake(self.avatarFrame.origin.x+kMQCellAvatarToBubbleSpacing, self.avatarFrame.origin.y, bubbleWidth, bubbleHeight);
+            self.bubbleImageFrame = CGRectMake(self.avatarFrame.origin.x+self.avatarFrame.size.width+kMQCellAvatarToBubbleSpacing, self.avatarFrame.origin.y, bubbleWidth, bubbleHeight);
         }
         
         //气泡图片
@@ -122,7 +129,7 @@
         self.bubbleImage = [bubbleImage resizableImageWithCapInsets:UIEdgeInsetsMake(centerArea.y, centerArea.x, bubbleImage.size.height-centerArea.y+1, centerArea.x)];
         
         //发送消息的indicator的frame
-        UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] init];
+        UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, kMQCellIndicatorDiameter, kMQCellIndicatorDiameter)];
         self.indicatorFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-indicatorView.frame.size.width, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-indicatorView.frame.size.height/2, indicatorView.frame.size.width, indicatorView.frame.size.height);
         //发送失败的图片frame
         UIImage *failureImage = [MQChatViewConfig sharedConfig].messageSendFailureImage;
@@ -158,5 +165,6 @@
 - (NSDate *)getCellDate {
     return self.date;
 }
+
 
 @end

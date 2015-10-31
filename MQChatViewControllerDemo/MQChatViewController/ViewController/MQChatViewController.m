@@ -37,10 +37,15 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.automaticallyAdjustsScrollViewInsets = false;
     
+    [self setNavBar];
     [self initChatTableView];
     [self initChatViewModel];
     [self initInputBar];
+    tableDataSource = [[MQChatViewTableDataSource alloc] initWithTableView:self.chatTableView chatViewModel:chatViewModel];
+    self.chatTableView.dataSource = tableDataSource;
+    chatViewModel.chatViewWidth = self.chatTableView.frame.size.width;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -53,11 +58,30 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     // Dispose of any resources that can be recreated.
 }
 
+#pragma 编辑导航栏
+- (void)setNavBar {
+#ifndef INCLUDE_MEIQIA_SDK
+    UIButton *loadMessageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    loadMessageBtn.frame = CGRectMake(0, 0, 62, 22);
+    [loadMessageBtn setTitle:@"收取消息" forState:UIControlStateNormal];
+    [loadMessageBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    loadMessageBtn.titleLabel.font = [UIFont systemFontOfSize:12.0];
+    loadMessageBtn.backgroundColor = [UIColor clearColor];
+    [loadMessageBtn addTarget:self action:@selector(tapLoadMessageBtn:) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:loadMessageBtn];
+#endif
+}
+#ifndef INCLUDE_MEIQIA_SDK
+- (void)tapLoadMessageBtn:(id)sender {
+    [chatViewModel loadLastMessage];
+    [self chatTableViewScrollToBottom];
+}
+#endif
+
 #pragma 初始化viewModel
 - (void)initChatViewModel {
     chatViewModel = [[MQChatViewModel alloc] init];
     chatViewModel.delegate = self;
-    chatViewModel.chatViewWidth = self.chatTableView.frame.size.width;
 }
 
 #pragma 初始化所有Views
@@ -73,8 +97,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     self.chatTableView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
     self.chatTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.chatTableView.delegate = self;
-    tableDataSource = [[MQChatViewTableDataSource alloc] initWithTableView:self.chatTableView chatViewModel:chatViewModel];
-    self.chatTableView.dataSource = tableDataSource;
     [self.view addSubview:self.chatTableView];
 }
 
@@ -82,12 +104,12 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
  * 初始化聊天的inpur bar
  */
 - (void)initInputBar {
-    chatInputBar = [[MQInputBar alloc] init];
+    chatInputBar = [[MQInputBar alloc] initWithSuperView:self.view tableView:self.chatTableView];
     chatInputBar.recordButtonVisible = chatViewConfig.enableVoiceMessage;
     chatInputBar.frame = CGRectMake(self.chatTableView.frame.origin.x, self.chatTableView.frame.origin.y+self.chatTableView.frame.size.height, self.chatTableView.frame.size.width, kMQChatViewInputBarHeight);
     chatInputBar.delegate = self;
-    [chatInputBar setChatTableView:self.chatTableView];
     [chatInputBar setupUI];
+    [self.view addSubview:chatInputBar];
     self.inputBarView = chatInputBar;
     self.inputBarTextView = chatInputBar.textView.internalTextView;
 }
@@ -109,6 +131,10 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [self.chatTableView endUpdates];
 }
 
+- (void)reloadChatTableView {
+    [self.chatTableView reloadData];
+}
+
 #pragma MQInputBarDelegate
 -(BOOL)sendTextMessage:(NSString*)text {
     if (self.isInitializing) {
@@ -116,6 +142,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
         return NO;
     }
     [chatViewModel sendTextMessageWithContent:text];
+    [self chatTableViewScrollToBottom];
     return YES;
 }
 -(void)sendImageWithSourceType:(UIImagePickerControllerSourceType *)sourceType {
@@ -135,10 +162,14 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 -(void)inputting:(NSString*)content {
     //用户正在输入
     [chatViewModel sendUserInputtingWithContent:content];
+    [self chatTableViewScrollToBottom];
 }
 -(void)chatTableViewScrollToBottom {
     NSInteger lastCellIndex = chatViewModel.cellModels.count;
-    [self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:lastCellIndex inSection:1] atScrollPosition:UITableViewScrollPositionTop animated:true];
+    if (lastCellIndex == 0) {
+        return;
+    }
+    [self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:lastCellIndex-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:true];
 }
 #warning 还没有完成语音输入
 -(void)beginRecord:(CGPoint)point {
@@ -161,6 +192,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     UIImage *image          = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     [picker dismissViewControllerAnimated:YES completion:nil];
     [chatViewModel sendImageMessageWithImage:image];
+    [self chatTableViewScrollToBottom];
 }
 
 -(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{

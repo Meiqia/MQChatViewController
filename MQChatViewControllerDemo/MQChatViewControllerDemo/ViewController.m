@@ -21,8 +21,9 @@
     
     UIButton *pushChatViewBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     pushChatViewBtn.backgroundColor = [UIColor blueColor];
-    pushChatViewBtn.titleLabel.text = @"pushChatView";
-    pushChatViewBtn.frame = CGRectMake(100, 200, 100, 30);
+    [pushChatViewBtn setTitle:@"pushChatView" forState:UIControlStateNormal];
+    [pushChatViewBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    pushChatViewBtn.frame = CGRectMake(100, 200, 200, 30);
     [pushChatViewBtn addTarget:self action:@selector(pushChatViewAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:pushChatViewBtn];
 }

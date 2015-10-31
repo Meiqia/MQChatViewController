@@ -27,6 +27,11 @@
 @property (nonatomic, readonly, copy) NSString *imagePath;
 
 /**
+ * @brief 图片image(当imagePath不存在时使用)
+ */
+@property (nonatomic, readonly, strong) UIImage *image;
+
+/**
  * @brief 消息的时间
  */
 @property (nonatomic, readonly, copy) NSDate *date;

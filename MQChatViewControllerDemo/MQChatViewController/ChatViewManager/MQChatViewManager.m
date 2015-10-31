@@ -23,16 +23,20 @@
 }
 
 - (MQChatViewController *)pushMQChatViewControllerInViewController:(UIViewController *)viewController {
-    if (chatViewController) {
-        chatViewController = [[MQChatViewController alloc] init];
+    if (!chatViewController) {
+        chatViewController = [[MQChatViewController alloc] initWithChatViewManager:chatViewConfig];
     }
-    [viewController.navigationController pushViewController:chatViewController animated:true];
+    if (viewController.navigationController) {
+        [viewController.navigationController pushViewController:chatViewController animated:true];
+    } else {
+        [self presentMQChatViewControllerInViewController:viewController];
+    }
     return chatViewController;
 }
 
 - (MQChatViewController *)presentMQChatViewControllerInViewController:(UIViewController *)viewController {
     if (chatViewController) {
-        chatViewController = [[MQChatViewController alloc] init];
+        chatViewController = [[MQChatViewController alloc] initWithChatViewManager:chatViewConfig];
     }
     [viewController presentViewController:chatViewController animated:true completion:nil];
     return chatViewController;

@@ -31,6 +31,7 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         //初始化头像
         avatarImageView = [[UIImageView alloc] init];
+        avatarImageView.contentMode = UIViewContentModeScaleAspectFill;
         [self.contentView addSubview:avatarImageView];
         //初始化气泡
         bubbleImageView = [[UIImageView alloc] init];
@@ -40,6 +41,7 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
         textLabel.font = [UIFont systemFontOfSize:kMQCellTextFontSize];
         textLabel.textColor = [UIColor darkTextColor];
         textLabel.numberOfLines = 0;
+        textLabel.textAlignment = NSTextAlignmentCenter;
         textLabel.delegate = self;
         [bubbleImageView addSubview:textLabel];
         //初始化indicator
@@ -76,7 +78,7 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
     //刷新indicator
     sendMsgIndicator.hidden = true;
     [sendMsgIndicator stopAnimating];
-    if (cellModel.sendType == MQChatCellSending) {
+    if (cellModel.sendType == MQChatCellSending && cellModel.cellFromType == MQChatCellOutgoing) {
         sendMsgIndicator.hidden = false;
         sendMsgIndicator.frame = cellModel.indicatorFrame;
         [sendMsgIndicator startAnimating];
@@ -85,7 +87,6 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
     //刷新聊天文字
     textLabel.frame = cellModel.textLabelFrame;
     textLabel.text = cellModel.cellText;
-    textLabel.textColor = [UIColor whiteColor];
     if (cellModel.cellFromType == MQChatCellIncoming) {
         textLabel.textColor = [UIColor darkTextColor];
     }

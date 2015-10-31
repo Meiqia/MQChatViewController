@@ -23,6 +23,7 @@
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         //初始化头像
         avatarImageView = [[UIImageView alloc] init];
+        avatarImageView.contentMode = UIViewContentModeScaleAspectFill;
         [self.contentView addSubview:avatarImageView];
         //初始化气泡
         bubbleImageView = [[UIImageView alloc] init];
@@ -59,13 +60,17 @@
     //刷新气泡
     bubbleImageView.frame = cellModel.bubbleImageFrame;
     //消息图片
+    if (cellModel.imagePath.length > 0) {
 #warning 使用SDWebImage或自己写获取远程图片的方法
+    } else {
+        bubbleImageView.image = cellModel.image;
+    }
     [MQImageUtil makeMaskView:bubbleImageView withImage:cellModel.bubbleImage];
     
     //刷新indicator
     sendMsgIndicator.hidden = true;
     [sendMsgIndicator stopAnimating];
-    if (cellModel.sendType == MQChatCellSending) {
+    if (cellModel.sendType == MQChatCellSending && cellModel.cellFromType == MQChatCellOutgoing) {
         sendMsgIndicator.frame = cellModel.indicatorFrame;
         [sendMsgIndicator startAnimating];
     }

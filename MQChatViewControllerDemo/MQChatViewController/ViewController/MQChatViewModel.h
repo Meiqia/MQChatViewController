@@ -10,9 +10,9 @@
 #import "MQBaseMessage.h"
 #import <UIKit/UIKit.h>
 //是否是调试SDK
-#define INCLUDE_MEIQIA_SDK
+//#define INCLUDE_MEIQIA_SDK
 
-@protocol MQChatViewModelDelegate
+@protocol MQChatViewModelDelegate <NSObject>
 
 /**
  *  获取到了更多历史消息
@@ -24,6 +24,12 @@
  */
 - (void)didSendMessageWithIndexPath:(NSIndexPath *)indexPath;
 
+/**
+ *  通知viewController更新tableView；
+ */
+- (void)reloadChatTableView;
+
+
 @end
 
 /**
@@ -34,7 +40,7 @@
 @interface MQChatViewModel : NSObject
 
 /** MQChatViewModel的委托 */
-@property (nonatomic) id<MQChatViewModelDelegate>delegate;
+@property (nonatomic, weak) id<MQChatViewModelDelegate>delegate;
 
 /** cellModel的缓存 */
 @property (nonatomic, strong) NSMutableArray *cellModels;
@@ -67,6 +73,11 @@
  */
 - (void)sendUserInputtingWithContent:(NSString *)content;
 
-
+#ifndef INCLUDE_MEIQIA_SDK
+/**
+ * 使用MQChatViewControllerDemo的时候，调试用的方法，用于收取和上一个message一样的消息
+ */
+- (void)loadLastMessage;
+#endif
 
 @end
