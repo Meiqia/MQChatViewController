@@ -162,19 +162,19 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 }
 
 /**
- * 从cellModels中获取到业务相关的cellModel，即text, image, voice的时间；
+ * 从cellModels中获取到业务相关的cellModel，即text, image, voice等；
  */
 - (id<MQCellModelProtocol>)getBussinessCellModelWithIndex:(NSInteger)index {
     if (self.cellModels.count <= index) {
         return nil;
     }
     id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index];
-    if ([cellModel isKindOfClass:[MQTextCellModel class]] || [cellModel isKindOfClass:[MQImageCellModel class]] || [cellModel isKindOfClass:[MQVoiceCellModel class]]){
+    //判断获取到的cellModel是否是业务相关的cell，如果不是则继续往前取
+    if ([cellModel isServiceRelatedCell]){
         return cellModel;
     }
     [self getBussinessCellModelWithIndex:index - 1];
     return nil;
-    
 }
 
 /**

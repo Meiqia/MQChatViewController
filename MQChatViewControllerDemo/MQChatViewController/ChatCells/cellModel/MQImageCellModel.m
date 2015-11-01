@@ -90,8 +90,9 @@
             self.avatarPath = message.userAvatarPath;
         }
         
-        //气泡宽度
-        CGFloat bubbleWidth = cellWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToBubbleSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
+        //限定图片的最大直径
+        CGFloat maxBubbleDiameter = ceil(cellWidth / 2);  //限定图片的最大直径
+//        CGFloat bubbleWidth = cellWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToBubbleSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
         //内容图片
         self.image = message.image;
         self.imagePath = @"";
@@ -99,8 +100,14 @@
 #warning 这里增加获取网络图片的逻辑，可以是SDWebImage等
         }
         CGSize contentImageSize = message.image.size;
-        //气泡高度
+        //先限定图片宽度来计算高度
+        CGFloat bubbleWidth = contentImageSize.width < maxBubbleDiameter ? contentImageSize.width : maxBubbleDiameter;
         CGFloat bubbleHeight = ceil(contentImageSize.height/contentImageSize.width*bubbleWidth);
+        //判断如果气泡高度计算结果超过图片的最大直径，则限制高度
+        if (bubbleHeight > maxBubbleDiameter) {
+            bubbleHeight = maxBubbleDiameter;
+            bubbleWidth = ceil(contentImageSize.width / contentImageSize.height * bubbleHeight);
+        }
         
         //根据消息的来源，进行处理
         UIImage *bubbleImage = [MQChatViewConfig sharedConfig].incomingBubbleImage;
@@ -148,13 +155,6 @@
 }
 
 /**
- *  @return cell重用的名字.
- */
-- (NSString *)getCellReuseIdentifier {
-    return @"MQImageMessageCell";
-}
-
-/**
  *  通过重用的名字初始化cell
  *  @return 初始化了一个cell
  */
@@ -165,6 +165,11 @@
 - (NSDate *)getCellDate {
     return self.date;
 }
+
+- (BOOL)isServiceRelatedCell {
+    return true;
+}
+
 
 
 @end

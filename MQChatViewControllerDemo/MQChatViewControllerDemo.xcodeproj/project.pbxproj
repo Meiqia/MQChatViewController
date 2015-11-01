@@ -59,6 +59,8 @@
 		CC5115C31BE5B3C200184CF0 /* FBSquareFont.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5115BB1BE5B3C200184CF0 /* FBSquareFont.m */; };
 		CC5115C41BE5B3C200184CF0 /* FBSquareFontView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5115BD1BE5B3C200184CF0 /* FBSquareFontView.m */; };
 		CC5115C81BE5B47B00184CF0 /* MQRecordView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5115C71BE5B47B00184CF0 /* MQRecordView.m */; };
+		CC5115D01BE6545B00184CF0 /* MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5115CD1BE6545B00184CF0 /* MHFacebookImageViewer.m */; };
+		CC5115D11BE6545B00184CF0 /* UIImageView+MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5115CF1BE6545B00184CF0 /* UIImageView+MHFacebookImageViewer.m */; };
 		CC99DDB81BE4B8FD00D22464 /* MQChatDateUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CC99DDB71BE4B8FD00D22464 /* MQChatDateUtil.m */; };
 /* End PBXBuildFile section */
 
@@ -186,6 +188,10 @@
 		CC5115BD1BE5B3C200184CF0 /* FBSquareFontView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBSquareFontView.m; sourceTree = "<group>"; };
 		CC5115C61BE5B47B00184CF0 /* MQRecordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQRecordView.h; sourceTree = "<group>"; };
 		CC5115C71BE5B47B00184CF0 /* MQRecordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQRecordView.m; sourceTree = "<group>"; };
+		CC5115CC1BE6545B00184CF0 /* MHFacebookImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHFacebookImageViewer.h; sourceTree = "<group>"; };
+		CC5115CD1BE6545B00184CF0 /* MHFacebookImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHFacebookImageViewer.m; sourceTree = "<group>"; };
+		CC5115CE1BE6545B00184CF0 /* UIImageView+MHFacebookImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+MHFacebookImageViewer.h"; sourceTree = "<group>"; };
+		CC5115CF1BE6545B00184CF0 /* UIImageView+MHFacebookImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+MHFacebookImageViewer.m"; sourceTree = "<group>"; };
 		CC99DDB61BE4B8FD00D22464 /* MQChatDateUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQChatDateUtil.h; sourceTree = "<group>"; };
 		CC99DDB71BE4B8FD00D22464 /* MQChatDateUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQChatDateUtil.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -358,6 +364,7 @@
 		CC45FD461BE36B3500DE0BFB /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				CC5115CB1BE6545B00184CF0 /* MHFacebookImageViewer */,
 				CC5115AF1BE5B3C200184CF0 /* FBDigitalFont */,
 				CC45FFC31BE4912200DE0BFB /* HPTextView */,
 				CC45FD471BE36B3500DE0BFB /* TTTAttributedLabel */,
@@ -503,6 +510,17 @@
 				CC5115C71BE5B47B00184CF0 /* MQRecordView.m */,
 			);
 			path = MQRecordView;
+			sourceTree = "<group>";
+		};
+		CC5115CB1BE6545B00184CF0 /* MHFacebookImageViewer */ = {
+			isa = PBXGroup;
+			children = (
+				CC5115CC1BE6545B00184CF0 /* MHFacebookImageViewer.h */,
+				CC5115CD1BE6545B00184CF0 /* MHFacebookImageViewer.m */,
+				CC5115CE1BE6545B00184CF0 /* UIImageView+MHFacebookImageViewer.h */,
+				CC5115CF1BE6545B00184CF0 /* UIImageView+MHFacebookImageViewer.m */,
+			);
+			path = MHFacebookImageViewer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -672,8 +690,10 @@
 				CC5115C41BE5B3C200184CF0 /* FBSquareFontView.m in Sources */,
 				CC45FD5A1BE36B3600DE0BFB /* MQVoiceMessageCell.m in Sources */,
 				CC45FD831BE37C3200DE0BFB /* MQStringSizeUtil.m in Sources */,
+				CC5115D11BE6545B00184CF0 /* UIImageView+MHFacebookImageViewer.m in Sources */,
 				CC45FD681BE36B3600DE0BFB /* MQChatViewTableDataSource.m in Sources */,
 				CC45FD571BE36B3500DE0BFB /* MQMessageDateCell.m in Sources */,
+				CC5115D01BE6545B00184CF0 /* MHFacebookImageViewer.m in Sources */,
 				CC45FFC21BE490B100DE0BFB /* MQInputBar.m in Sources */,
 				CC45FD8D1BE3A1C000DE0BFB /* MQVoiceMessage.m in Sources */,
 				CC45FD581BE36B3500DE0BFB /* MQTextMessageCell.m in Sources */,

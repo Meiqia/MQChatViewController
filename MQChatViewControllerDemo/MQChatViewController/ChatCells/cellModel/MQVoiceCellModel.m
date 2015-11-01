@@ -175,13 +175,6 @@ static CGFloat const kMQCellVoiceImageToBubbleSpacing = 24.0;
 }
 
 /**
- *  @return cell重用的名字.
- */
-- (NSString *)getCellReuseIdentifier {
-    return @"MQVoiceMessageCell";
-}
-
-/**
  *  通过重用的名字初始化cell
  *  @return 初始化了一个cell
  */
@@ -192,5 +185,10 @@ static CGFloat const kMQCellVoiceImageToBubbleSpacing = 24.0;
 - (NSDate *)getCellDate {
     return self.date;
 }
+
+- (BOOL)isServiceRelatedCell {
+    return true;
+}
+
 
 @end

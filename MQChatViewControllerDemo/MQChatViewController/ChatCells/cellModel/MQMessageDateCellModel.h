@@ -10,7 +10,7 @@
 #import "MQCellModelProtocol.h"
 
 /**
- * MQMessageDateCellModel定义了消息时间的基本类型数据，包括产生cell的内部所有view的显示数据，cell内部元素的frame等
+ * MQMessageDateCellModel定义了时间cell的基本类型数据，包括产生cell的内部所有view的显示数据，cell内部元素的frame等
  * @warning MQMessageDateCellModel必须满足MQCellModelProtocol协议
  */
 @interface MQMessageDateCellModel : NSObject <MQCellModelProtocol>

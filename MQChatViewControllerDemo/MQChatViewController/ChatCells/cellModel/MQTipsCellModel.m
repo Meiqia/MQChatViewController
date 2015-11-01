@@ -86,13 +86,6 @@ static CGFloat const kMQMessageTipsLineHeight = 0.5;
 }
 
 /**
- *  @return cell重用的名字.
- */
-- (NSString *)getCellReuseIdentifier {
-    return @"MQTipsCell";
-}
-
-/**
  *  通过重用的名字初始化cell
  *  @return 初始化了一个cell
  */
@@ -103,5 +96,10 @@ static CGFloat const kMQMessageTipsLineHeight = 0.5;
 - (NSDate *)getCellDate {
     return self.date;
 }
+
+- (BOOL)isServiceRelatedCell {
+    return false;
+}
+
 
 @end

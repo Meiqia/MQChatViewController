@@ -49,7 +49,7 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
         originalChatViewFrame   = tableView.frame;
 
         senderImageWidth = [MQChatViewConfig sharedConfig].photoSenderImage.size.width;
-        textViewHeight = ceil(frame.size.height * 3 / 4);
+        textViewHeight = ceil(frame.size.height * 5 / 7);
         
         self.backgroundColor = [UIColor whiteColor];
         cameraBtn              = [[UIButton alloc] init];
@@ -59,7 +59,7 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
         cameraBtn.frame      = CGRectMake(kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth);
         
         self.textView               = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(0, 0, 0, textViewHeight)];
-        self.textView.font          = [UIFont systemFontOfSize:18];
+        self.textView.font          = [UIFont systemFontOfSize:16];
         self.textView.returnKeyType = UIReturnKeySend;
         self.textView.placeholder   = @"请输入...";
         self.textView.delegate      = (id)self;
@@ -290,8 +290,6 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
             y = [[UIApplication sharedApplication] keyWindow].frame.size.height - self.frame.size.height - point.y;
         }
     }
-    NSLog(@"finger point = %f",y);
-    
     if (y + 20 > 100) {
         return YES;
     }else{

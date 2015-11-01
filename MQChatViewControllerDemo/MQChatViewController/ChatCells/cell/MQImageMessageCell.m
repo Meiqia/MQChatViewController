@@ -11,6 +11,7 @@
 #import "MQChatFileUtil.h"
 #import "MQImageUtil.h"
 #import "MQChatViewConfig.h"
+#import "UIImageView+MHFacebookImageViewer.h"
 
 @implementation MQImageMessageCell {
     UIImageView *avatarImageView;
@@ -65,6 +66,7 @@
     } else {
         bubbleImageView.image = cellModel.image;
     }
+    [bubbleImageView setupImageViewer];
     [MQImageUtil makeMaskView:bubbleImageView withImage:cellModel.bubbleImage];
     
     //刷新indicator

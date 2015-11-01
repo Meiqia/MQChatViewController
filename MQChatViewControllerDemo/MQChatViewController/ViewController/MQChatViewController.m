@@ -187,30 +187,38 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     }
     [self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:lastCellIndex-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:true];
 }
-#warning 还没有完成语音输入
 -(void)beginRecord:(CGPoint)point {
     if (TARGET_IPHONE_SIMULATOR){
         [MQToast showToast:@"当前设备无法完成录音" duration:2 window:self.view];
         NSLog(@"当前设备无法完成录音");
         return;
     }
-#warning 这里生成录音开始的回调给开发者
-//    if(self.delegate && [self.delegate respondsToSelector:@selector(recordWillBegin)]){
-//        [self.delegate recordWillBegin];
-//    }
     
-    //停止播放
+    //停止播放的通知
     [[NSNotificationCenter defaultCenter] postNotificationName:@"MQAudioBubbleSopPlay" object:nil];
-    if (!recordView) {
-        recordView = [[MQRecordView alloc] initWithFrame:CGRectMake(0, 0,
-                                                                    self.chatTableView.frame.size.width,
-                                                                    self.chatTableView.frame.size.height)];
-        recordView.recordOverDelegate = (id)self;
-        [self.view addSubview:recordView];
+    
+#warning 这里生成录音开始的回调给开发者
+    //    if(self.delegate && [self.delegate respondsToSelector:@selector(recordWillBegin)]){
+    //        [self.delegate recordWillBegin];
+    //    }
+
+    //如果开发者不自定义录音界面，则将播放界面显示出来
+    if ([MQChatViewConfig sharedConfig].enableCustomRecordView) {
+        if (!recordView) {
+            recordView = [[MQRecordView alloc] initWithFrame:CGRectMake(0, 0,
+                                                                        self.chatTableView.frame.size.width,
+                                                                        self.chatTableView.frame.size.height)];
+            recordView.recordOverDelegate = (id)self;
+            [self.view addSubview:recordView];
+        }
+        [recordView reDisplayRecordView];
+        [recordView startRecording];
     }
-    [recordView reDisplayRecordView];
-    [recordView startRecording];
+    
     [self.chatTableView setScrollEnabled:NO];
+    
+#warning 这里增加语音的数据处理
+
 }
 
 -(void)finishRecord:(CGPoint)point {

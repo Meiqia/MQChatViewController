@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MQMessage.h"
+//#import "MQMessage.h"
 
 @protocol MQRecordViewDelegate <NSObject>
 //录音结束
--(void)recordOver:(MQMessage*)message;
+//-(void)recordOver:(MQMessage*)message;
 @end
 
 @interface MQRecordView : UIView
@@ -27,4 +27,7 @@
 -(void)stopRecord;
 -(void)revokeRecord;
 - (void)reDisplayRecordView;
+/** 语音音量的大小设置 */
+-(void)setRecordingVolume:(float)volume;
+
 @end

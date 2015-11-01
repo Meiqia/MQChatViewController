@@ -173,13 +173,6 @@
 }
 
 /**
- *  @return cell重用的名字.
- */
-- (NSString *)getCellReuseIdentifier {
-    return @"MQTextMessageCell";
-}
-
-/**
  *  通过重用的名字初始化cell
  *  @return 初始化了一个cell
  */
@@ -189,6 +182,10 @@
 
 - (NSDate *)getCellDate {
     return self.date;
+}
+
+- (BOOL)isServiceRelatedCell {
+    return true;
 }
 
 

@@ -164,7 +164,7 @@
     }
 }
 
--(void)recordingInVolume:(float)volume
+-(void)setRecordingVolume:(float)volume
 {
     if (!self.revoke) {
         if (volume > .66) {
