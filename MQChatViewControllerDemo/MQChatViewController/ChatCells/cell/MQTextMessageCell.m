@@ -41,7 +41,7 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
         textLabel.font = [UIFont systemFontOfSize:kMQCellTextFontSize];
         textLabel.textColor = [UIColor darkTextColor];
         textLabel.numberOfLines = 0;
-        textLabel.textAlignment = NSTextAlignmentCenter;
+        textLabel.textAlignment = NSTextAlignmentLeft;
         textLabel.delegate = self;
         [bubbleImageView addSubview:textLabel];
         //初始化indicator
