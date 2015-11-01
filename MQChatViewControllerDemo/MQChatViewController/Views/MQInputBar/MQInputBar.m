@@ -47,7 +47,6 @@ static CGFloat const kMQInputBarHorizontalSpacing = 0;
         originalChatViewFrame   = tableView.frame;
 
         senderImageWidth = [MQChatViewConfig sharedConfig].photoSenderImage.size.width;
-//        textViewHeight = [MQChatViewConfig sharedConfig].photoSenderImage.size.height;
         textViewHeight = ceil(frame.size.height * 3 / 4);
         
         self.backgroundColor = [UIColor whiteColor];
@@ -227,26 +226,75 @@ static CGFloat const kMQInputBarHorizontalSpacing = 0;
         [recordBtn setTitle:@"松开结束" forState:UIControlStateNormal];
         [UIView animateWithDuration:.2 animations:^{
             recordBtn.backgroundColor = [UIColor colorWithWhite:.92 alpha:1];
-//            recordBtn.layer.shadowOpacity = .1;
         }];
     }else if(longPressedRecognizer.state == UIGestureRecognizerStateEnded || longPressedRecognizer.state == UIGestureRecognizerStateCancelled) {
-        if(self.delegate){
-            if ([self.delegate respondsToSelector:@selector(endRecord:)]) {
-                [self.delegate endRecord:[longPressedRecognizer locationInView:[[UIApplication sharedApplication] keyWindow]]];
-            }
-        }
-        
+        [self endRecordWithPoint:[longPressedRecognizer locationInView:[[UIApplication sharedApplication] keyWindow]]];
         [recordBtn setTitle:@"按住说话" forState:UIControlStateNormal];
         [UIView animateWithDuration:.2 animations:^{
             recordBtn.backgroundColor = [UIColor colorWithWhite:1 alpha:1];
-//            recordBtn.layer.shadowOpacity = .4;
         }];
     }else if(longPressedRecognizer.state == UIGestureRecognizerStateChanged) {
+        [self changeRecordStatusWithPoint:[longPressedRecognizer locationInView:[[UIApplication sharedApplication] keyWindow]]];
+    }
+}
+
+//改变录音的状态
+- (void)changeRecordStatusWithPoint:(CGPoint)point {
+    if ([self isFingerMoveUpToCancelRecordingWithPoint:point]) {
+        //取消录音状态
         if(self.delegate){
-            if ([self.delegate respondsToSelector:@selector(changedRecord:)]) {
-                [self.delegate changedRecord:[longPressedRecognizer locationInView:[[UIApplication sharedApplication] keyWindow]]];
+            if ([self.delegate respondsToSelector:@selector(changedRecordViewToCancel:)]) {
+                [self.delegate changedRecordViewToCancel:point];
             }
         }
+    } else {
+        //正常录音状态
+        if(self.delegate){
+            if ([self.delegate respondsToSelector:@selector(changedRecordViewToNormal:)]) {
+                [self.delegate changedRecordViewToNormal:point];
+            }
+        }
+    }
+}
+
+//结束录音，并判断是取消录音还是完成录音
+- (void)endRecordWithPoint:(CGPoint)point {
+    if ([self isFingerMoveUpToCancelRecordingWithPoint:point]) {
+        //取消录音
+        if(self.delegate){
+            if ([self.delegate respondsToSelector:@selector(cancelRecord:)]) {
+                [self.delegate cancelRecord:point];
+            }
+        }
+    } else {
+        //结束录音
+        if(self.delegate){
+            if ([self.delegate respondsToSelector:@selector(finishRecord:)]) {
+                [self.delegate finishRecord:point];
+            }
+        }
+    }
+}
+
+//判断手指是否上移取消发送
+- (BOOL)isFingerMoveUpToCancelRecordingWithPoint:(CGPoint)point {
+    float y = 0;
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
+        y = [[UIApplication sharedApplication] keyWindow].frame.size.height - self.frame.size.height - point.y;
+    }else{
+        UIInterfaceOrientation statusBarOrientation = [UIApplication sharedApplication].statusBarOrientation;
+        if (statusBarOrientation == UIInterfaceOrientationLandscapeLeft || statusBarOrientation == UIInterfaceOrientationLandscapeRight) {
+            y = point.x;
+        }else{
+            y = [[UIApplication sharedApplication] keyWindow].frame.size.height - self.frame.size.height - point.y;
+        }
+    }
+    NSLog(@"finger point = %f",y);
+    
+    if (y + 20 > 100) {
+        return YES;
+    }else{
+        return NO;
     }
 }
 
@@ -295,7 +343,7 @@ static CGFloat const kMQInputBarHorizontalSpacing = 0;
                 [self.delegate chatTableViewScrollToBottom];
             }
         }
-        //[self moveToolbarUp:keyboardHeight animate:[[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue]];
+        [self moveToolbarUp:keyboardHeight animate:[[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue]];
         [self moveToolbarUp:keyboardHeight animate:.25];
         [self toolbarDownBtnVisible];
     }

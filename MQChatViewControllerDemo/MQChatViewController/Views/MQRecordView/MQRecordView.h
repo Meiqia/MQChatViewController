@@ -1,5 +1,5 @@
 //
-//  MQRecrodView.h
+//  MQRecordView.h
 //  MeChatSDK
 //
 //  Created by Injoy on 14/11/13.
@@ -14,16 +14,17 @@
 -(void)recordOver:(MQMessage*)message;
 @end
 
-@interface MQRecrodView : UIView
+@interface MQRecordView : UIView
 
 @property(nonatomic,strong) id<MQRecordViewDelegate> recordOverDelegate;
 @property(nonatomic,assign) float marginBottom;
+/** 是否显示撤回语音 */
 @property(nonatomic,assign) BOOL revoke;
 
 -(void)setupUI;
 
-//-(void)startRecording:(id<MCMessageDelegate>)delegate;
+-(void)startRecording;
 -(void)stopRecord;
--(void)revokeRecrod;
+-(void)revokeRecord;
 
 @end

@@ -1,21 +1,21 @@
 //
-//  MQRecrodView.m
+//  MQRecordView.m
 //  MeChatSDK
 //
 //  Created by Injoy on 14/11/13.
 //  Copyright (c) 2014年 MeChat. All rights reserved.
 //
 
-#import "MQRecrodView.h"
+#import "MQRecordView.h"
 #import "FBLCDFontView.h"
 #import "MQImageUtil.h"
 #import "MQChatFileUtil.h"
 #import "MQToast.h"
 
-@implementation MQRecrodView
+@implementation MQRecordView
 {
     UIView* blurView;
-    UIView* recrodView;
+    UIView* recordView;
     UIImageView* volumeView;
     UILabel* tipLabel;
     FBLCDFontView *LCDView;
@@ -25,17 +25,18 @@
     
 //    MQMessage* message;
     
-    int recrodTime; //录音时长
-    NSTimer *recrodTimer;
+    int recordTime; //录音时长
+    NSTimer *recordTimer;
 }
 
 -(instancetype)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
+        self.revoke = NO;
         self.layer.masksToBounds = YES;
-        recrodView = [[UIView alloc] init];
-        recrodView.layer.cornerRadius = 10;
-        recrodView.backgroundColor = [UIColor colorWithWhite:0 alpha:.8];
+        recordView = [[UIView alloc] init];
+        recordView.layer.cornerRadius = 10;
+        recordView.backgroundColor = [UIColor colorWithWhite:0 alpha:.8];
         
         blurView = [[UIView alloc] init];
         volumeView = [[UIImageView alloc] init];
@@ -47,9 +48,9 @@
         tipLabel.textAlignment = NSTextAlignmentCenter;
         
         [self addSubview:blurView];
-        [self addSubview:recrodView];
-        [recrodView addSubview:volumeView];
-        [recrodView addSubview:tipLabel];
+        [self addSubview:recordView];
+        [recordView addSubview:volumeView];
+        [recordView addSubview:tipLabel];
     }
     return self;
 }
@@ -59,9 +60,10 @@
     if (revoke != self.revoke) {
         if (revoke) {
             tipLabel.text = @"松开手指,取消发送";
-//            volumeView.image = [UIImage imageNamed:[MCUitl jointResource:@"record_back"]];
+            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQRecord_back"]];
         }else{
             tipLabel.text = @"上滑手指,取消发送";
+            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQRecord0"]];
         }
     }
     _revoke = revoke;
@@ -69,13 +71,13 @@
 
 -(void)setupUI
 {
-    if ([recrodView.superview isEqual:self]) [recrodView removeFromSuperview];
+    if ([recordView.superview isEqual:self]) [recordView removeFromSuperview];
     if ([blurView.superview isEqual:self]) [blurView removeFromSuperview];
     
     blurImage = [[MQImageUtil viewScreenshot:self.superview] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     
     [self addSubview:blurView];
-    [self addSubview:recrodView];
+    [self addSubview:recordView];
     blurView.frame = CGRectMake(0, 0, blurImage.size.width, blurImage.size.height);
     blurView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     blurView.layer.contents = (id)blurImage.CGImage;
@@ -101,21 +103,21 @@
         });
     }
 
-    float recrodViewWH = 150;
-    recrodView.frame = CGRectMake((self.frame.size.width - recrodViewWH) / 2,
-                                  (self.frame.size.height - recrodViewWH) / 2,
-                                  recrodViewWH, recrodViewWH);
-    self.marginBottom = self.frame.size.height - recrodView.frame.origin.y - recrodView.frame.size.height;
-    recrodView.alpha = 0;
+    float recordViewWH = 150;
+    recordView.frame = CGRectMake((self.frame.size.width - recordViewWH) / 2,
+                                  (self.frame.size.height - recordViewWH) / 2,
+                                  recordViewWH, recordViewWH);
+    self.marginBottom = self.frame.size.height - recordView.frame.origin.y - recordView.frame.size.height;
+    recordView.alpha = 0;
     
     tipLabel.text = @"上滑手指,取消发送";
-    tipLabel.frame = CGRectMake(0, recrodViewWH - 20 - 12, recrodView.frame.size.width, 20);
+    tipLabel.frame = CGRectMake(0, recordViewWH - 20 - 12, recordView.frame.size.width, 20);
     
-    volumeView.frame = CGRectMake((recrodView.frame.size.width - 58)/2, 16, 58, 90);
-    volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"record0"]];
+    volumeView.frame = CGRectMake((recordView.frame.size.width - 58)/2, 16, 58, 90);
+    volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQRecord0"]];
     
     [UIView animateWithDuration:.2 animations:^{
-        recrodView.alpha = 1;
+        recordView.alpha = 1;
     }];
 }
 
@@ -127,17 +129,17 @@
     }
 }
 
-//-(void)startRecording:(id<MCMessageDelegate>)delegate
-//{
+-(void)startRecording
+{
 //    message = [MCCore startRecordingAndSendAudioMessage:(id)self delegate:delegate];
-//    recrodTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(recodTime) userInfo:nil repeats:YES];
-//    recrodTime = 0;
-//}
+    recordTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(recodTime) userInfo:nil repeats:YES];
+    recordTime = 0;
+}
 
 -(void)recodTime
 {
-    recrodTime++;
-    if (recrodTime >= 50) {
+    recordTime++;
+    if (recordTime >= 50) {
         volumeView.alpha = 0;
         if (LCDView) {
             [LCDView removeFromSuperview];
@@ -155,8 +157,8 @@
         LCDView.glowColor = [UIColor whiteColor];
         LCDView.innerGlowColor = [UIColor grayColor];
         LCDView.innerGlowSize = 3.0;
-        [recrodView addSubview:LCDView];
-        LCDView.text = [NSString stringWithFormat:@"%i",60 - recrodTime - 1];
+        [recordView addSubview:LCDView];
+        LCDView.text = [NSString stringWithFormat:@"%i",60 - recordTime - 1];
         [LCDView resetSize];
     }
 }
@@ -165,53 +167,57 @@
 {
     if (!self.revoke) {
         if (volume > .66) {
-            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"record8"]];
+            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQRecord8"]];
         }else if (volume > .57){
-            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"record7"]];
+            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQRecord7"]];
         }else if (volume > .48){
-            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"record6"]];
+            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQRecord6"]];
         }else if (volume > .39){
-            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"record5"]];
+            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQRecord5"]];
         }else if (volume > .30){
-            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"record4"]];
+            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQRecord4"]];
         }else if (volume > .21){
-            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"record3"]];
+            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQRecord3"]];
         }else if (volume > .12){
-            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"record2"]];
+            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQRecord2"]];
         }else if (volume > .03){
-            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"record1"]];
+            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQRecord1"]];
         }else{
-            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"record0"]];
+            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQRecord0"]];
         }
     }
 }
 
 //用户取消录音
--(void)stopRecord
-{
+//-(void)stopRecord
+//{
 //    [MCCore stopRecordingAudioMessage];
-    [recrodTimer invalidate];
-    recrodTimer = nil;
-}
+//    [recordTimer invalidate];
+//    recordTimer = nil;
+//}
 
 //组件终止录音
--(void)recordStop
+-(void)stopRecord
 {
-    [recrodTimer invalidate];
-    recrodTimer = nil;
+    [recordTimer invalidate];
+    recordTimer = nil;
 //    if (![MQFileUtil fileExistsAtPath:message.content] || [MQFileUtil audioDuration:message.content] < .5) {
 //        [MQToast showToast:@"录音时间太短" duration:1 window:self.superview];
 //        [self removeFromSuperview];
 //        return;
 //    }
-    
+    if (recordTime < 1) {
+        [MQToast showToast:@"录音时间太短" duration:1 window:self.superview];
+        [self removeFromSuperview];
+        return;
+    }
 //    if (self.recordOverDelegate && [self.recordOverDelegate respondsToSelector:@selector(recordOver:)]) {
 //        [self.recordOverDelegate recordOver:message];
 //    }
     [self removeFromSuperview];
 }
 
--(void)revokeRecrod
+-(void)revokerecord
 {
 //    [MCCore cancelSendAudioMessage];
     [self removeFromSuperview];
@@ -233,7 +239,7 @@
     blurView.layer.opacity = 0;
     
     [UIView animateWithDuration:.2 animations:^{
-        recrodView.alpha = 0;
+        recordView.alpha = 0;
     }];
     
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(opacityAnimation.duration * NSEC_PER_SEC));

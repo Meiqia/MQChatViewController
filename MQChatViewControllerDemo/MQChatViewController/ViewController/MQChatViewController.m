@@ -13,6 +13,7 @@
 #import "MQDeviceFrameUtil.h"
 #import "MQInputBar.h"
 #import "MQToast.h"
+#import "MQRecordView.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
@@ -25,6 +26,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     MQChatViewTableDataSource *tableDataSource;
     MQChatViewModel *chatViewModel;
     MQInputBar *chatInputBar;
+    MQRecordView *recordView;
 }
 
 - (instancetype)initWithChatViewManager:(MQChatViewConfig *)config {
@@ -187,13 +189,40 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 #warning 还没有完成语音输入
 -(void)beginRecord:(CGPoint)point {
+    if (TARGET_IPHONE_SIMULATOR){
+        [MQToast showToast:@"当前设备无法完成录音" duration:2 window:self.view];
+        NSLog(@"当前设备无法完成录音");
+        return;
+    }
+#warning 这里生成录音开始的回调给开发者
+//    if(self.delegate && [self.delegate respondsToSelector:@selector(recordWillBegin)]){
+//        [self.delegate recordWillBegin];
+//    }
     
+    //停止播放
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"MQAudioBubbleSopPlay" object:nil];
+    if (!recordView) {
+        recordView = [[MQRecordView alloc] initWithFrame:CGRectMake(0, 0,
+                                                                    self.chatTableView.frame.size.width,
+                                                                    self.chatTableView.frame.size.height)];
+        recordView.recordOverDelegate = (id)self;
+    }
+    [self.view addSubview:recordView];
+    [recordView startRecording];
+    [self.chatTableView setScrollEnabled:NO];
 }
--(void)endRecord:(CGPoint)point {
-    
+
+-(void)finishRecord:(CGPoint)point {
+    [recordView stopRecord];
 }
--(void)changedRecord:(CGPoint)point {
-    
+-(void)cancelRecord:(CGPoint)point {
+    [recordView stopRecord];
+}
+-(void)changedRecordViewToCancel:(CGPoint)point {
+    recordView.revoke = true;
+}
+-(void)changedRecordViewToNormal:(CGPoint)point {
+    recordView.revoke = false;
 }
 
 #pragma UIImagePickerControllerDelegate
