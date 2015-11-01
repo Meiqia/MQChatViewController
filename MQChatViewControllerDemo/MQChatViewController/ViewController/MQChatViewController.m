@@ -39,6 +39,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     // Do any additional setup after loading the view.
     self.automaticallyAdjustsScrollViewInsets = false;
     
+    [self setViewGesture];
     [self setNavBar];
     [self initChatTableView];
     [self initChatViewModel];
@@ -56,6 +57,17 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma 对view添加gesture
+- (void)setViewGesture {
+    UITapGestureRecognizer *tapViewGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapChatView:)];
+    self.view.userInteractionEnabled = true;
+    [self.view addGestureRecognizer:tapViewGesture];
+}
+
+- (void)tapChatView:(id)sender {
+    [self.view endEditing:true];
 }
 
 #pragma 编辑导航栏
@@ -104,11 +116,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
  * 初始化聊天的inpur bar
  */
 - (void)initInputBar {
-    chatInputBar = [[MQInputBar alloc] initWithSuperView:self.view tableView:self.chatTableView];
-    chatInputBar.recordButtonVisible = chatViewConfig.enableVoiceMessage;
-    chatInputBar.frame = CGRectMake(self.chatTableView.frame.origin.x, self.chatTableView.frame.origin.y+self.chatTableView.frame.size.height, self.chatTableView.frame.size.width, kMQChatViewInputBarHeight);
+    CGRect inputBarFrame = CGRectMake(self.chatTableView.frame.origin.x, self.chatTableView.frame.origin.y+self.chatTableView.frame.size.height, self.chatTableView.frame.size.width, kMQChatViewInputBarHeight);
+    chatInputBar = [[MQInputBar alloc] initWithFrame:inputBarFrame superView:self.view tableView:self.chatTableView enableRecordBtn:chatViewConfig.enableVoiceMessage];
     chatInputBar.delegate = self;
-    [chatInputBar setupUI];
     [self.view addSubview:chatInputBar];
     self.inputBarView = chatInputBar;
     self.inputBarTextView = chatInputBar.textView.internalTextView;
@@ -118,6 +128,10 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     id<MQCellModelProtocol> cellModel = [chatViewModel.cellModels objectAtIndex:indexPath.row];
     return [cellModel getCellHeight];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.view endEditing:YES];
 }
 
 #pragma MQChatViewModelDelegate

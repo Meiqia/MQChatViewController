@@ -58,6 +58,7 @@
 		CC5115C21BE5B3C200184CF0 /* FBLCDFontView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5115B91BE5B3C200184CF0 /* FBLCDFontView.m */; };
 		CC5115C31BE5B3C200184CF0 /* FBSquareFont.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5115BB1BE5B3C200184CF0 /* FBSquareFont.m */; };
 		CC5115C41BE5B3C200184CF0 /* FBSquareFontView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5115BD1BE5B3C200184CF0 /* FBSquareFontView.m */; };
+		CC5115C81BE5B47B00184CF0 /* MQRecrodView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5115C71BE5B47B00184CF0 /* MQRecrodView.m */; };
 		CC99DDB81BE4B8FD00D22464 /* MQChatDateUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CC99DDB71BE4B8FD00D22464 /* MQChatDateUtil.m */; };
 /* End PBXBuildFile section */
 
@@ -183,6 +184,8 @@
 		CC5115BB1BE5B3C200184CF0 /* FBSquareFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBSquareFont.m; sourceTree = "<group>"; };
 		CC5115BC1BE5B3C200184CF0 /* FBSquareFontView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBSquareFontView.h; sourceTree = "<group>"; };
 		CC5115BD1BE5B3C200184CF0 /* FBSquareFontView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBSquareFontView.m; sourceTree = "<group>"; };
+		CC5115C61BE5B47B00184CF0 /* MQRecrodView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQRecrodView.h; sourceTree = "<group>"; };
+		CC5115C71BE5B47B00184CF0 /* MQRecrodView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQRecrodView.m; sourceTree = "<group>"; };
 		CC99DDB61BE4B8FD00D22464 /* MQChatDateUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQChatDateUtil.h; sourceTree = "<group>"; };
 		CC99DDB71BE4B8FD00D22464 /* MQChatDateUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQChatDateUtil.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -389,6 +392,7 @@
 		CC45FD531BE36B3500DE0BFB /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				CC5115C51BE5B47B00184CF0 /* MQRecordView */,
 				CC45FFCA1BE4962500DE0BFB /* MQToast */,
 				CC45FFBF1BE490B100DE0BFB /* MQInputBar */,
 			);
@@ -490,6 +494,15 @@
 				CC5115BD1BE5B3C200184CF0 /* FBSquareFontView.m */,
 			);
 			path = FBDigitalFont;
+			sourceTree = "<group>";
+		};
+		CC5115C51BE5B47B00184CF0 /* MQRecordView */ = {
+			isa = PBXGroup;
+			children = (
+				CC5115C61BE5B47B00184CF0 /* MQRecrodView.h */,
+				CC5115C71BE5B47B00184CF0 /* MQRecrodView.m */,
+			);
+			path = MQRecordView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -647,6 +660,7 @@
 				CC45FFC91BE4912200DE0BFB /* HPTextViewInternal.m in Sources */,
 				CC45FFC81BE4912200DE0BFB /* HPGrowingTextView.m in Sources */,
 				CC45FD671BE36B3600DE0BFB /* MQChatViewModel.m in Sources */,
+				CC5115C81BE5B47B00184CF0 /* MQRecrodView.m in Sources */,
 				CC45FD901BE3A90600DE0BFB /* MQBaseMessage.m in Sources */,
 				CC45FCF21BE36B1900DE0BFB /* AppDelegate.m in Sources */,
 				CC45FD8A1BE3A1B500DE0BFB /* MQImageMessage.m in Sources */,

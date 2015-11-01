@@ -33,10 +33,12 @@
 
 @property(nonatomic,weak) id<MQInputBarDelegate> delegate;
 @property(nonatomic,strong) HPGrowingTextView* textView;
-@property(nonatomic, assign) BOOL recordButtonVisible;
+//@property(nonatomic, assign) BOOL recordButtonVisible;
 
-- (id)initWithSuperView:(UIView *)inputBarSuperView tableView:(MQChatTableView *)tableView;
--(void)setupUI;
+- (id)initWithFrame:(CGRect)frame
+          superView:(UIView *)inputBarSuperView
+          tableView:(MQChatTableView *)tableView
+    enableRecordBtn:(BOOL)enableRecordBtn;
 -(void)textViewResignFirstResponder;
 
 -(void)moveToolbarUp:(float)height animate:(NSTimeInterval)duration;
