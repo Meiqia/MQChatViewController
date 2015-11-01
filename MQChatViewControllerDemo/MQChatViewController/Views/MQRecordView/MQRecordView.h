@@ -26,5 +26,5 @@
 -(void)startRecording;
 -(void)stopRecord;
 -(void)revokeRecord;
-
+- (void)reDisplayRecordView;
 @end

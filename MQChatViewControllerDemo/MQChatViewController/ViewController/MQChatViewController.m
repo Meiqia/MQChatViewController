@@ -206,8 +206,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
                                                                     self.chatTableView.frame.size.width,
                                                                     self.chatTableView.frame.size.height)];
         recordView.recordOverDelegate = (id)self;
+        [self.view addSubview:recordView];
     }
-    [self.view addSubview:recordView];
+    [recordView reDisplayRecordView];
     [recordView startRecording];
     [self.chatTableView setScrollEnabled:NO];
 }

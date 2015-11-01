@@ -71,38 +71,6 @@
 
 -(void)setupUI
 {
-    if ([recordView.superview isEqual:self]) [recordView removeFromSuperview];
-    if ([blurView.superview isEqual:self]) [blurView removeFromSuperview];
-    
-    blurImage = [[MQImageUtil viewScreenshot:self.superview] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    
-    [self addSubview:blurView];
-    [self addSubview:recordView];
-    blurView.frame = CGRectMake(0, 0, blurImage.size.width, blurImage.size.height);
-    blurView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    blurView.layer.contents = (id)blurImage.CGImage;
-    
-    if (blurImage) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0L), ^{
-            UIImage *blur = [MQImageUtil blurryImage:blurImage
-                                  withBlurLevel:.2
-                                  exclusionPath:nil];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                CATransition *transition = [CATransition animation];
-                transition.duration = .2;
-                transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-                transition.type = kCATransitionFade;
-                
-                [blurView.layer addAnimation:transition forKey:nil];
-                blurView.layer.contents = (id)blur.CGImage;
-                
-                [self setNeedsLayout];
-                [self layoutIfNeeded];
-            });
-        });
-    }
-
     float recordViewWH = 150;
     recordView.frame = CGRectMake((self.frame.size.width - recordViewWH) / 2,
                                   (self.frame.size.height - recordViewWH) / 2,
@@ -119,6 +87,39 @@
     [UIView animateWithDuration:.2 animations:^{
         recordView.alpha = 1;
     }];
+}
+
+- (void)reDisplayRecordView {
+    self.hidden = NO;
+    if ([recordView.superview isEqual:self]) [recordView removeFromSuperview];
+    if ([blurView.superview isEqual:self]) [blurView removeFromSuperview];
+    blurImage = [[MQImageUtil viewScreenshot:self.superview] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    [self addSubview:blurView];
+    [self addSubview:recordView];
+    blurView.frame = CGRectMake(0, 0, blurImage.size.width, blurImage.size.height);
+    blurView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    blurView.layer.contents = (id)blurImage.CGImage;
+
+    if (blurImage) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0L), ^{
+            UIImage *blur = [MQImageUtil blurryImage:blurImage
+                                       withBlurLevel:.2
+                                       exclusionPath:nil];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                CATransition *transition = [CATransition animation];
+                transition.duration = .2;
+                transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+                transition.type = kCATransitionFade;
+                
+                [blurView.layer addAnimation:transition forKey:nil];
+                blurView.layer.contents = (id)blur.CGImage;
+                
+                [self setNeedsLayout];
+                [self layoutIfNeeded];
+            });
+        });
+    }
 }
 
 -(void)didMoveToSuperview
@@ -208,46 +209,51 @@
 //    }
     if (recordTime < 1) {
         [MQToast showToast:@"录音时间太短" duration:1 window:self.superview];
-        [self removeFromSuperview];
+//        [self removeFromSuperview];
+        self.hidden = YES;
         return;
     }
 //    if (self.recordOverDelegate && [self.recordOverDelegate respondsToSelector:@selector(recordOver:)]) {
 //        [self.recordOverDelegate recordOver:message];
 //    }
-    [self removeFromSuperview];
+//    [self removeFromSuperview];
+    self.hidden = YES;
 }
 
 -(void)revokerecord
 {
 //    [MCCore cancelSendAudioMessage];
-    [self removeFromSuperview];
+//    [self removeFromSuperview];
+    self.hidden = YES;
 }
 
 -(void)recordError:(NSError*)error
 {
 //    [self.recordOverDelegate recordOver:message];
-    [self removeFromSuperview];
+//    [self removeFromSuperview];
+    self.hidden = YES;
 }
 
--(void)removeFromSuperview
-{
-    CABasicAnimation *opacityAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
-    opacityAnimation.fromValue = @1.;
-    opacityAnimation.toValue = @0.;
-    opacityAnimation.duration = .1;
-    [blurView.layer addAnimation:opacityAnimation forKey:nil];
-    blurView.layer.opacity = 0;
-    
-    [UIView animateWithDuration:.2 animations:^{
-        recordView.alpha = 0;
-    }];
-    
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(opacityAnimation.duration * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [super removeFromSuperview];
-    });
-    
-    isVisible = NO;
-}
+//-(void)removeFromSuperview
+//{
+//    CABasicAnimation *opacityAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+//    opacityAnimation.fromValue = @1.;
+//    opacityAnimation.toValue = @0.;
+//    opacityAnimation.duration = .1;
+//    [blurView.layer addAnimation:opacityAnimation forKey:nil];
+//    blurView.layer.opacity = 0;
+//    
+//    [UIView animateWithDuration:.2 animations:^{
+//        recordView.alpha = 0;
+//    }];
+//    
+//    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(opacityAnimation.duration * NSEC_PER_SEC));
+//    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+////        [super removeFromSuperview];
+//        self.hidden = YES;
+//    });
+//    
+//    isVisible = NO;
+//}
 
 @end

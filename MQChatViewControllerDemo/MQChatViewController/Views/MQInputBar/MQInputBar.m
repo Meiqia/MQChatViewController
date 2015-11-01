@@ -13,6 +13,8 @@
 //#define ButtonWidth 33
 //#define ButtonX 6.5
 static CGFloat const kMQInputBarHorizontalSpacing = 0;
+static NSString * const kMQInputBarRecordButtonConfirmText = @"按住 说话";
+static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
 
 @implementation MQInputBar
 {
@@ -125,7 +127,7 @@ static CGFloat const kMQInputBarHorizontalSpacing = 0;
     [microphoneBtn addTarget:self action:@selector(microphoneClick) forControlEvents:UIControlEventTouchUpInside];
     
     recordBtn                    = [UIButton buttonWithType:UIButtonTypeCustom];
-    [recordBtn setTitle:@"按住说话" forState:UIControlStateNormal];
+    [recordBtn setTitle:kMQInputBarRecordButtonConfirmText forState:UIControlStateNormal];
     [recordBtn setTitleColor:[UIColor colorWithWhite:.1 alpha:1] forState:UIControlStateNormal];
     recordBtn.backgroundColor    = [UIColor colorWithWhite:1 alpha:1];
     recordBtn.layer.cornerRadius = 4;
@@ -208,10 +210,9 @@ static CGFloat const kMQInputBarHorizontalSpacing = 0;
 
 -(void)reRecordBtn
 {
-    [recordBtn setTitle:@"按住说话" forState:UIControlStateNormal];
+    [recordBtn setTitle:kMQInputBarRecordButtonConfirmText forState:UIControlStateNormal];
     [UIView animateWithDuration:.2 animations:^{
         recordBtn.backgroundColor = [UIColor colorWithWhite:1 alpha:1];
-//        recordBtn.layer.shadowOpacity = .4;
     }];
 }
 
@@ -223,13 +224,13 @@ static CGFloat const kMQInputBarHorizontalSpacing = 0;
                 [self.delegate beginRecord:[longPressedRecognizer locationInView:[[UIApplication sharedApplication] keyWindow]]];
             }
         }
-        [recordBtn setTitle:@"松开结束" forState:UIControlStateNormal];
+        [recordBtn setTitle:kMQInputBarRecordButtonFinishText forState:UIControlStateNormal];
         [UIView animateWithDuration:.2 animations:^{
             recordBtn.backgroundColor = [UIColor colorWithWhite:.92 alpha:1];
         }];
     }else if(longPressedRecognizer.state == UIGestureRecognizerStateEnded || longPressedRecognizer.state == UIGestureRecognizerStateCancelled) {
         [self endRecordWithPoint:[longPressedRecognizer locationInView:[[UIApplication sharedApplication] keyWindow]]];
-        [recordBtn setTitle:@"按住说话" forState:UIControlStateNormal];
+        [recordBtn setTitle:kMQInputBarRecordButtonConfirmText forState:UIControlStateNormal];
         [UIView animateWithDuration:.2 animations:^{
             recordBtn.backgroundColor = [UIColor colorWithWhite:1 alpha:1];
         }];
