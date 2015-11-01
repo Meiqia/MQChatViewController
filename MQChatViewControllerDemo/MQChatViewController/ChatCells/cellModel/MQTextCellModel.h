@@ -85,12 +85,12 @@
 /**
  * @brief 消息文字中，数字选中识别的字典 [number : range]
  */
-@property (nonatomic, readonly, strong) NSDictionary *phoneNumberRangeDic;
+@property (nonatomic, readonly, strong) NSDictionary *numberRangeDic;
 
 /**
  * @brief 消息文字中，url选中识别的字典 [url : range]
  */
-@property (nonatomic, readonly, strong) NSDictionary *urlNumberRangeDic;
+@property (nonatomic, readonly, strong) NSDictionary *linkNumberRangeDic;
 
 /**
  * @brief 消息文字中，email选中识别的字典 [email : range]

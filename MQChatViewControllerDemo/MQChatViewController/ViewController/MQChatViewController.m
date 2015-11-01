@@ -64,6 +64,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #pragma 对view添加gesture
 - (void)setViewGesture {
     UITapGestureRecognizer *tapViewGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapChatView:)];
+    tapViewGesture.cancelsTouchesInView = false;
     self.view.userInteractionEnabled = true;
     [self.view addGestureRecognizer:tapViewGesture];
 }

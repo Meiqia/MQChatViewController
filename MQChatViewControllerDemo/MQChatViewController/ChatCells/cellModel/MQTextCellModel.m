@@ -73,12 +73,12 @@
 /**
  * @brief 消息文字中，数字选中识别的字典 [number : range]
  */
-@property (nonatomic, readwrite, strong) NSDictionary *phoneNumberRangeDic;
+@property (nonatomic, readwrite, strong) NSDictionary *numberRangeDic;
 
 /**
  * @brief 消息文字中，url选中识别的字典 [url : range]
  */
-@property (nonatomic, readwrite, strong) NSDictionary *urlNumberRangeDic;
+@property (nonatomic, readwrite, strong) NSDictionary *linkNumberRangeDic;
 
 /**
  * @brief 消息文字中，email选中识别的字典 [email : range]
@@ -163,6 +163,35 @@
         
         //计算cell的高度
         self.cellHeight = self.bubbleImageFrame.origin.y + self.bubbleImageFrame.size.height + kMQCellAvatarToVerticalEdgeSpacing;
+        
+        //匹配消息文字中的正则
+        //数字正则匹配
+        NSMutableDictionary *numberRegexDic = [[NSMutableDictionary alloc] init];
+        for (NSString *numberRegex in [MQChatViewConfig sharedConfig].numberRegexs) {
+            NSRange range = [message.content rangeOfString:numberRegex options:NSRegularExpressionSearch];
+            if (range.location != NSNotFound) {
+                [numberRegexDic setValue:[NSValue valueWithRange:range] forKey:[message.content substringWithRange:range]];
+            }
+        }
+        self.numberRangeDic = numberRegexDic;
+        //链接正则匹配
+        NSMutableDictionary *linkRegexDic = [[NSMutableDictionary alloc] init];
+        for (NSString *linkRegex in [MQChatViewConfig sharedConfig].linkRegexs) {
+            NSRange range = [message.content rangeOfString:linkRegex options:NSRegularExpressionSearch];
+            if (range.location != NSNotFound) {
+                [linkRegexDic setValue:[NSValue valueWithRange:range] forKey:[message.content substringWithRange:range]];
+            }
+        }
+        self.linkNumberRangeDic = linkRegexDic;
+        //email正则匹配
+        NSMutableDictionary *emailRegexDic = [[NSMutableDictionary alloc] init];
+        for (NSString *emailRegex in [MQChatViewConfig sharedConfig].emailRegexs) {
+            NSRange range = [message.content rangeOfString:emailRegex options:NSRegularExpressionSearch];
+            if (range.location != NSNotFound) {
+                [emailRegexDic setValue:[NSValue valueWithRange:range] forKey:[message.content substringWithRange:range]];
+            }
+        }
+        self.emailNumberRangeDic = emailRegexDic;
     }
     return self;
 }

@@ -35,14 +35,16 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
         [self.contentView addSubview:avatarImageView];
         //初始化气泡
         bubbleImageView = [[UIImageView alloc] init];
+        bubbleImageView.userInteractionEnabled = true;
         [self.contentView addSubview:bubbleImageView];
         //初始化文字
-        textLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+        textLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
         textLabel.font = [UIFont systemFontOfSize:kMQCellTextFontSize];
         textLabel.textColor = [UIColor darkTextColor];
         textLabel.numberOfLines = 0;
         textLabel.textAlignment = NSTextAlignmentLeft;
         textLabel.delegate = self;
+        textLabel.userInteractionEnabled = true;
         [bubbleImageView addSubview:textLabel];
         //初始化indicator
         sendMsgIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -91,20 +93,35 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
         textLabel.textColor = [UIColor darkTextColor];
     }
     //获取文字中的可选中的元素
-    if (cellModel.phoneNumberRangeDic.count > 0) {
-        for (NSString *key in cellModel.phoneNumberRangeDic.allKeys) {
-            [textLabel addLinkToPhoneNumber:key withRange:[cellModel.phoneNumberRangeDic[key] rangeValue]];
+    if (cellModel.numberRangeDic.count > 0) {
+        NSString *longestKey = @"";
+        for (NSString *key in cellModel.numberRangeDic.allKeys) {
+            //找到最长的key
+            if (key.length > longestKey.length) {
+                longestKey = key;
+            }
         }
+        [textLabel addLinkToPhoneNumber:longestKey withRange:[cellModel.numberRangeDic[longestKey] rangeValue]];
     }
-    if (cellModel.urlNumberRangeDic.count > 0) {
-        for (NSString *key in cellModel.urlNumberRangeDic.allKeys) {
-            [textLabel addLinkToURL:[NSURL URLWithString:key] withRange:[cellModel.urlNumberRangeDic[key] rangeValue]];
+    if (cellModel.linkNumberRangeDic.count > 0) {
+        NSString *longestKey = @"";
+        for (NSString *key in cellModel.linkNumberRangeDic.allKeys) {
+            //找到最长的key
+            if (key.length > longestKey.length) {
+                longestKey = key;
+            }
         }
+        [textLabel addLinkToURL:[NSURL URLWithString:longestKey] withRange:[cellModel.linkNumberRangeDic[longestKey] rangeValue]];
     }
     if (cellModel.emailNumberRangeDic.count > 0) {
+        NSString *longestKey = @"";
         for (NSString *key in cellModel.emailNumberRangeDic.allKeys) {
-            [textLabel addLinkToTransitInformation:@{@"email" : key} withRange:[cellModel.emailNumberRangeDic[key] rangeValue]];
+            //找到最长的key
+            if (key.length > longestKey.length) {
+                longestKey = key;
+            }
         }
+        [textLabel addLinkToTransitInformation:@{@"email" : longestKey} withRange:[cellModel.emailNumberRangeDic[longestKey] rangeValue]];
     }
     
     //刷新出错图片
@@ -146,13 +163,13 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
         case kMQTextCellSelectedNumberActionSheetTag: {
             NSLog(@"点击了一个数字");
             switch (buttonIndex) {
-                case 1:
+                case 0:
                     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", actionSheet.title]]];
                     break;
-                case 2:
+                case 1:
                     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"sms://%@", actionSheet.title]]];
                     break;
-                case 3:
+                case 2:
                     [UIPasteboard generalPasteboard].string = actionSheet.title;
                     break;
                 default:
@@ -163,7 +180,7 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
         case kMQTextCellSelectedUrlActionSheetTag: {
             NSLog(@"点击了一个url");
             switch (buttonIndex) {
-                case 1: {
+                case 0: {
                     if ([actionSheet.title rangeOfString:@"://"].location == NSNotFound) {
                         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@", actionSheet.title]]];
                     } else {
@@ -171,7 +188,7 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
                     }
                     break;
                 }
-                case 2:
+                case 1:
                     [UIPasteboard generalPasteboard].string = actionSheet.title;
                     break;
                 default:
@@ -182,11 +199,11 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
         case kMQTextCellSelectedEmailActionSheetTag: {
             NSLog(@"点击了一个email");
             switch (buttonIndex) {
-                case 1: {
+                case 0: {
                     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat:@"mailto://%@", actionSheet.title]]];
                     break;
                 }
-                case 2:
+                case 1:
                     [UIPasteboard generalPasteboard].string = actionSheet.title;
                     break;
                 default:

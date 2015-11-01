@@ -89,7 +89,6 @@ static const CGFloat kMinImageScale = 1.0f;
     _imageIndex = imageIndex;
     _defaultImage = defaultImage;
 
-    
     _senderView.alpha = 0.0f;
     if(!__imageView){
         __imageView = [[UIImageView alloc]init];

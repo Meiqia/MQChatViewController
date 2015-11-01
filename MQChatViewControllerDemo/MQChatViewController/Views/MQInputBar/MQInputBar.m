@@ -109,6 +109,7 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
                                                  selector:@selector(toolbarDownBtnVisible)
                                                      name:@"MCToolbarDownBtnVisible"
                                                    object:nil];
+        
     }
     return self;
 }
