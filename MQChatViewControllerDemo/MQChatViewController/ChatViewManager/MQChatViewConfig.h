@@ -38,12 +38,21 @@
 @property (nonatomic, copy) UIColor *navBarColor;
 
 @property (nonatomic, strong) UIImage *agentDefaultAvatarImage;
+@property (nonatomic, strong) UIImage *messageSendFailureImage;
 @property (nonatomic, strong) UIImage *photoSenderImage;
 @property (nonatomic, strong) UIImage *voiceSenderImage;
+@property (nonatomic, strong) UIImage *keyboardSenderImage;
 @property (nonatomic, strong) UIImage *incomingBubbleImage;
 @property (nonatomic, strong) UIImage *outgoingBubbleImage;
 
 @property (nonatomic, strong) NSData *incomingMsgSoundData;
 @property (nonatomic, strong) NSData *outgoingMsgSoundData;
+
+@property (nonatomic, assign) NSTimeInterval maxVoiceDuration;
+
++ (instancetype)sharedConfig;
+
+/** 将配置设置为默认值 */
+- (void)setConfigToDefault;
 
 @end

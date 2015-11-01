@@ -28,11 +28,11 @@ static CGFloat const kMQCellAvatarToBubbleSpacing = 8.0;
 /**
  * 聊天气泡和其中的文字较大一边的水平间距
  */
-static CGFloat const kMQCellBubbleToTextHorizontalLargerSpacing = 12.0;
+static CGFloat const kMQCellBubbleToTextHorizontalLargerSpacing = 16.0;
 /**
  * 聊天气泡和其中的文字较大一边的水平间距
  */
-static CGFloat const kMQCellBubbleToTextHorizontalSmallerSpacing = 8.0;
+static CGFloat const kMQCellBubbleToTextHorizontalSmallerSpacing = 10.0;
 /**
  * 聊天气泡和其中的文字垂直间距
  */
@@ -44,7 +44,7 @@ static CGFloat const kMQCellBubbleMaxWidthToEdgeSpacing = 32.0;
 /**
  * 聊天头像的直径
  */
-static CGFloat const kMQCellAvatarDiameter = 64.0;
+static CGFloat const kMQCellAvatarDiameter = 36.0;
 /**
  * 聊天内容的文字大小
  */
@@ -52,7 +52,11 @@ static CGFloat const kMQCellTextFontSize = 15.0;
 /**
  * 聊天内容间隔的时间cell高度
  */
-static CGFloat const kMQChatMessageDateCellHeight = 24.0;
+static CGFloat const kMQChatMessageDateCellHeight = 32.0;
+/**
+ * 聊天内容间隔的时间的label向下偏移的数量
+ */
+static CGFloat const kMQChatMessageDateLabelVerticalOffset = 8.0;
 /**
  * 聊天内容间隔的时间fontSize
  */
@@ -65,6 +69,11 @@ static CGFloat const kMQChatMessageDateLabelToEdgeSpacing = 16.0;
  * 聊天气泡和Indicator的间距
  */
 static CGFloat const kMQCellBubbleToIndicatorSpacing = 8.0;
+/**
+ * indicator的diameter
+ */
+static CGFloat const kMQCellIndicatorDiameter = 33.0;
+
 
 
 /**
@@ -90,7 +99,7 @@ typedef NS_ENUM(NSUInteger, MQChatCellSendType) {
 };
 
 /**
- * MQCellModelProtocol协议定义了ChatCell的view需要满足的方法
+ * MQCellModelProtocol协议定义了ChatCell的view需要满足的方法，开发者也可根据自身需要，增加协议方法
  *
  */
 @protocol MQCellModelProtocol <NSObject>

@@ -49,7 +49,7 @@
         //时间文字size
         CGFloat dateLabelWidth = cellWidth - kMQChatMessageDateLabelToEdgeSpacing * 2;
         CGFloat dateLabelHeight = [MQStringSizeUtil getHeightForText:self.dateString withFont:[UIFont systemFontOfSize:kMQChatMessageDateLabelFontSize] andWidth:dateLabelWidth];
-        self.dateLabelFrame = CGRectMake(cellWidth/2-dateLabelWidth/2, kMQChatMessageDateCellHeight/2-dateLabelHeight/2, dateLabelWidth, dateLabelHeight);
+        self.dateLabelFrame = CGRectMake(cellWidth/2-dateLabelWidth/2, kMQChatMessageDateCellHeight/2-dateLabelHeight/2+kMQChatMessageDateLabelVerticalOffset, dateLabelWidth, dateLabelHeight);
         
         self.cellHeight = kMQChatMessageDateCellHeight;
     }

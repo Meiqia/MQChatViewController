@@ -10,6 +10,7 @@
 #import "MQImageCellModel.h"
 #import "MQChatFileUtil.h"
 #import "MQImageUtil.h"
+#import "MQChatViewConfig.h"
 
 @implementation MQImageMessageCell {
     UIImageView *avatarImageView;
@@ -22,6 +23,7 @@
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         //初始化头像
         avatarImageView = [[UIImageView alloc] init];
+        avatarImageView.contentMode = UIViewContentModeScaleAspectFill;
         [self.contentView addSubview:avatarImageView];
         //初始化气泡
         bubbleImageView = [[UIImageView alloc] init];
@@ -31,8 +33,7 @@
         sendMsgIndicator.hidden = YES;
         [self.contentView addSubview:sendMsgIndicator];
         //初始化出错image
-#warning 这里添加出错图片
-        failureImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[MQChatFileUtil resourceWithName:@""]]];
+        failureImageView = [[UIImageView alloc] initWithImage:[MQChatViewConfig sharedConfig].messageSendFailureImage];
         [self.contentView addSubview:failureImageView];
     }
     return self;
@@ -50,7 +51,7 @@
 
     //刷新头像
     if (cellModel.avatarPath.length == 0) {
-        avatarImageView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:cellModel.avatarLocalImageName]];
+        avatarImageView.image = cellModel.avatarLocalImage;
     } else {
 #warning 使用SDWebImage或自己写获取远程图片的方法
     }
@@ -59,13 +60,17 @@
     //刷新气泡
     bubbleImageView.frame = cellModel.bubbleImageFrame;
     //消息图片
+    if (cellModel.imagePath.length > 0) {
 #warning 使用SDWebImage或自己写获取远程图片的方法
+    } else {
+        bubbleImageView.image = cellModel.image;
+    }
     [MQImageUtil makeMaskView:bubbleImageView withImage:cellModel.bubbleImage];
     
     //刷新indicator
     sendMsgIndicator.hidden = true;
     [sendMsgIndicator stopAnimating];
-    if (cellModel.sendType == MQChatCellSending) {
+    if (cellModel.sendType == MQChatCellSending && cellModel.cellFromType == MQChatCellOutgoing) {
         sendMsgIndicator.frame = cellModel.indicatorFrame;
         [sendMsgIndicator startAnimating];
     }

@@ -23,9 +23,9 @@
     return self;
 }
 
-- (instancetype)initWithVoiceData:(NSData *)voice {
+- (instancetype)initWithVoiceData:(NSData *)voiceDate {
     self = [self init];
-    self.voice = voice;
+    self.voiceData = voiceDate;
     return self;
 }
 

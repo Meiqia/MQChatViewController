@@ -9,6 +9,7 @@
 #import "MQTextMessageCell.h"
 #import "MQTextCellModel.h"
 #import "MQChatFileUtil.h"
+#import "MQChatViewConfig.h"
 
 static const NSInteger kMQTextCellSelectedUrlActionSheetTag = 2000;
 static const NSInteger kMQTextCellSelectedNumberActionSheetTag = 2001;
@@ -30,6 +31,7 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         //初始化头像
         avatarImageView = [[UIImageView alloc] init];
+        avatarImageView.contentMode = UIViewContentModeScaleAspectFill;
         [self.contentView addSubview:avatarImageView];
         //初始化气泡
         bubbleImageView = [[UIImageView alloc] init];
@@ -39,6 +41,7 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
         textLabel.font = [UIFont systemFontOfSize:kMQCellTextFontSize];
         textLabel.textColor = [UIColor darkTextColor];
         textLabel.numberOfLines = 0;
+        textLabel.textAlignment = NSTextAlignmentLeft;
         textLabel.delegate = self;
         [bubbleImageView addSubview:textLabel];
         //初始化indicator
@@ -46,8 +49,7 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
         sendMsgIndicator.hidden = YES;
         [self.contentView addSubview:sendMsgIndicator];
         //初始化出错image
-#warning 这里添加出错图片
-        failureImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[MQChatFileUtil resourceWithName:@""]]];
+        failureImageView = [[UIImageView alloc] initWithImage:[MQChatViewConfig sharedConfig].messageSendFailureImage];
         [self.contentView addSubview:failureImageView];
     }
     return self;
@@ -63,7 +65,7 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
     
     //刷新头像
     if (cellModel.avatarPath.length == 0) {
-        avatarImageView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:cellModel.avatarLocalImageName]];
+        avatarImageView.image = cellModel.avatarLocalImage;
     } else {
 #warning 使用SDWebImage或自己写获取远程图片的方法
     }
@@ -76,7 +78,7 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
     //刷新indicator
     sendMsgIndicator.hidden = true;
     [sendMsgIndicator stopAnimating];
-    if (cellModel.sendType == MQChatCellSending) {
+    if (cellModel.sendType == MQChatCellSending && cellModel.cellFromType == MQChatCellOutgoing) {
         sendMsgIndicator.hidden = false;
         sendMsgIndicator.frame = cellModel.indicatorFrame;
         [sendMsgIndicator startAnimating];
@@ -85,7 +87,6 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
     //刷新聊天文字
     textLabel.frame = cellModel.textLabelFrame;
     textLabel.text = cellModel.cellText;
-    textLabel.textColor = [UIColor whiteColor];
     if (cellModel.cellFromType == MQChatCellIncoming) {
         textLabel.textColor = [UIColor darkTextColor];
     }

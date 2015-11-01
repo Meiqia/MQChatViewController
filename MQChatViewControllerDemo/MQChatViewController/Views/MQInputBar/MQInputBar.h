@@ -19,24 +19,24 @@
 -(void)beginRecord:(CGPoint)point;
 -(void)endRecord:(CGPoint)point;
 -(void)changedRecord:(CGPoint)point;
+-(void)chatTableViewScrollToBottom;
 @end
 
 @interface MQInputBar : UIView
 {
-    UIButton *micBtn;
+    UIButton *microphoneBtn;
     UIButton *cameraBtn;
     UIButton *recordBtn;
     UIButton *toolbarDownBtn;
     
-    MQChatTableView *chatTableView;
 }
 
 @property(nonatomic,weak) id<MQInputBarDelegate> delegate;
 @property(nonatomic,strong) HPGrowingTextView* textView;
-@property(nonatomic) BOOL recordButtonVisible;
+@property(nonatomic, assign) BOOL recordButtonVisible;
 
+- (id)initWithSuperView:(UIView *)inputBarSuperView tableView:(MQChatTableView *)tableView;
 -(void)setupUI;
--(void)setChatView:(UIView*)view;
 -(void)textViewResignFirstResponder;
 
 -(void)moveToolbarUp:(float)height animate:(NSTimeInterval)duration;

@@ -17,7 +17,7 @@
  * @param font  文字font
  * @param width 该段文字的宽度
  */
-+(CGFloat) getHeightForText:(NSString *)text
++ (CGFloat) getHeightForText:(NSString *)text
                  withFont:(UIFont *)font
                  andWidth:(CGFloat)width;
 
@@ -27,7 +27,7 @@
  * @param attributes  文字attributes
  * @param width 该段文字的宽度
  */
-+(CGFloat) getHeightForText:(NSString *)text
++ (CGFloat) getHeightForText:(NSString *)text
              withAttributes:(NSDictionary *)attributes
                    andWidth:(CGFloat)width;
 
@@ -37,7 +37,7 @@
  * @param font  文字font
  * @param height 该段文字的高度
  */
-+(CGFloat) getWidthForText:(NSString *)text
++ (CGFloat) getWidthForText:(NSString *)text
                 withFont:(UIFont *)font
                andHeight:(CGFloat)height;
 
@@ -47,7 +47,7 @@
  * @param attributes  文字attributes
  * @param height 该段文字的高度
  */
-+(CGFloat) getWidthForText:(NSString *)text
++ (CGFloat) getWidthForText:(NSString *)text
             withAttributes:(NSDictionary *)attributes
                  andHeight:(CGFloat)height;
 
@@ -55,7 +55,7 @@
  * 将数字转换成以k为单位的string；
  * @param number  被转换的数字
  */
-+(NSString*)convertNaturalNumToShortAbNum:(NSUInteger)number;
++ (NSString *)convertNaturalNumToShortAbNum:(NSUInteger)number;
 
 
 @end
