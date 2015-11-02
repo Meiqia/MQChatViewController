@@ -29,7 +29,11 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 
 #ifdef INCLUDE_MEIQIA_SDK
-@interface MQChatViewModel() <MQMessageDelegate>
+@interface MQChatViewModel() <MQMessageDelegate, MQCellModelDelegate>
+
+@end
+#else
+@interface MQChatViewModel() <MQCellModelDelegate>
 
 @end
 #endif
@@ -221,6 +225,31 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self reloadChatTableView];
 }
 #endif
+
+#pragma MQCellModelDelegate
+- (void)didUpdateCellDataWithMessageId:(NSString *)messageId {
+    //获取又更新的cell的index
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        for (NSInteger index=0; index<self.cellModels.count; index++) {
+            id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index];
+            if ([[cellModel getCellMessageId] isEqualToString:messageId]) {
+                //更新该cell
+                [self updateCellWithIndex:index];
+                break;
+            }
+        }
+    });
+}
+
+//通知tableView更新该indexPath的cell
+- (void)updateCellWithIndex:(NSInteger)index {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    if (self.delegate) {
+        if ([self.delegate respondsToSelector:@selector(didUpdateCellWithIndexPath:)]) {
+            [self.delegate didUpdateCellWithIndexPath:indexPath];
+        }
+    }
+}
 
 
 @end

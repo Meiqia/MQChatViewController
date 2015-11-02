@@ -16,6 +16,11 @@
 @interface MQEventCellModel : NSObject <MQCellModelProtocol>
 
 /**
+ * @brief cell中消息的id
+ */
+@property (nonatomic, readonly, strong) NSString *messageId;
+
+/**
  * @brief cell的高度
  */
 @property (nonatomic, readonly, assign) CGFloat cellHeight;

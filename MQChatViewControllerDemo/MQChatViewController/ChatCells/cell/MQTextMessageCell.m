@@ -23,7 +23,7 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
     UIImageView *avatarImageView;
     TTTAttributedLabel *textLabel;
     UIImageView *bubbleImageView;
-    UIActivityIndicatorView *sendMsgIndicator;
+    UIActivityIndicatorView *sendingIndicator;
     UIImageView *failureImageView;
 }
 
@@ -47,9 +47,9 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
         textLabel.userInteractionEnabled = true;
         [bubbleImageView addSubview:textLabel];
         //初始化indicator
-        sendMsgIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        sendMsgIndicator.hidden = YES;
-        [self.contentView addSubview:sendMsgIndicator];
+        sendingIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        sendingIndicator.hidden = YES;
+        [self.contentView addSubview:sendingIndicator];
         //初始化出错image
         failureImageView = [[UIImageView alloc] initWithImage:[MQChatViewConfig sharedConfig].messageSendFailureImage];
         [self.contentView addSubview:failureImageView];
@@ -78,12 +78,12 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
     bubbleImageView.frame = cellModel.bubbleImageFrame;
     
     //刷新indicator
-    sendMsgIndicator.hidden = true;
-    [sendMsgIndicator stopAnimating];
+    sendingIndicator.hidden = true;
+    [sendingIndicator stopAnimating];
     if (cellModel.sendType == MQChatCellSending && cellModel.cellFromType == MQChatCellOutgoing) {
-        sendMsgIndicator.hidden = false;
-        sendMsgIndicator.frame = cellModel.indicatorFrame;
-        [sendMsgIndicator startAnimating];
+        sendingIndicator.hidden = false;
+        sendingIndicator.frame = cellModel.sendingIndicatorFrame;
+        [sendingIndicator startAnimating];
     }
     
     //刷新聊天文字

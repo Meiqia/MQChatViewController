@@ -101,5 +101,9 @@ static CGFloat const kMQMessageTipsLineHeight = 0.5;
     return false;
 }
 
+- (NSString *)getCellMessageId {
+    return @"";
+}
+
 
 @end

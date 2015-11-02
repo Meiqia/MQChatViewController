@@ -16,10 +16,11 @@ static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
 @implementation MQVoiceMessageCell {
     UIImageView *avatarImageView;
     UIImageView *bubbleImageView;
-    UIActivityIndicatorView *sendMsgIndicator;
+    UIActivityIndicatorView *sendingIndicator;
     UILabel *durationLabel;
     UIImageView *voiceImageView;
     UIImageView *failureImageView;
+    UIActivityIndicatorView *loadingIndicator;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -32,9 +33,9 @@ static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
         bubbleImageView = [[UIImageView alloc] init];
         [self.contentView addSubview:bubbleImageView];
         //初始化indicator
-        sendMsgIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        sendMsgIndicator.hidden = YES;
-        [self.contentView addSubview:sendMsgIndicator];
+        sendingIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        sendingIndicator.hidden = YES;
+        [self.contentView addSubview:sendingIndicator];
         //初始化语音时长的label
         durationLabel = [[UILabel alloc] init];
         durationLabel.textColor = [UIColor lightGrayColor];
@@ -45,8 +46,12 @@ static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
         voiceImageView = [[UIImageView alloc] init];
         [bubbleImageView addSubview:voiceImageView];
         //初始化出错image
-        failureImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[MQChatViewConfig sharedConfig].messageSendFailureImage]];
+        failureImageView = [[UIImageView alloc] initWithImage:[MQChatViewConfig sharedConfig].messageSendFailureImage];
         [self.contentView addSubview:failureImageView];
+        //初始化加载数据的indicator
+        loadingIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        loadingIndicator.hidden = YES;
+        [bubbleImageView addSubview:loadingIndicator];
     }
     return self;
 }
@@ -64,6 +69,10 @@ static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
         avatarImageView.image = cellModel.avatarLocalImage;
     } else {
 #warning 使用SDWebImage或自己写获取远程图片的方法
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:cellModel.avatarPath]];
+            avatarImageView.image = [UIImage imageWithData:imageData];
+        });
     }
     avatarImageView.frame = cellModel.avatarFrame;
     
@@ -87,12 +96,24 @@ static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
                                   [UIImage imageNamed:[MQChatFileUtil resourceWithName:animationImage2]],
                                   [UIImage imageNamed:[MQChatFileUtil resourceWithName:animationImage3]],nil];
     
+    //判断是否正在加载声音，是否显示加载数据的indicator
+    loadingIndicator.frame = cellModel.loadingIndicatorFrame;
+    if (cellModel.voiceData) {
+        voiceImageView.hidden = false;
+        loadingIndicator.hidden = true;
+        [loadingIndicator stopAnimating];
+    } else {
+        voiceImageView.hidden = true;
+        loadingIndicator.hidden = false;
+        [loadingIndicator startAnimating];
+    }
+
     //刷新indicator
-    sendMsgIndicator.hidden = true;
-    [sendMsgIndicator stopAnimating];
+    sendingIndicator.hidden = true;
+    [sendingIndicator stopAnimating];
     if (cellModel.sendType == MQChatCellSending && cellModel.cellFromType == MQChatCellOutgoing) {
-        sendMsgIndicator.frame = cellModel.indicatorFrame;
-        [sendMsgIndicator startAnimating];
+        sendingIndicator.frame = cellModel.sendingIndicatorFrame;
+        [sendingIndicator startAnimating];
     }
     
     //刷新语音时长label

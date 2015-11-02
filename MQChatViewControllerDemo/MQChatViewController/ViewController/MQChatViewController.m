@@ -142,7 +142,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [self.chatTableView reloadData];
 }
 
-- (void)didSendMessageWithIndexPath:(NSIndexPath *)indexPath {
+- (void)didUpdateCellWithIndexPath:(NSIndexPath *)indexPath {
     [self.chatTableView beginUpdates];
     [self.chatTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     [self.chatTableView endUpdates];

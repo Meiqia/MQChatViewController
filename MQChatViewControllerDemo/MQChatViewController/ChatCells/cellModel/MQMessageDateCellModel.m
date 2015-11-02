@@ -77,5 +77,8 @@
     return false;
 }
 
+- (NSString *)getCellMessageId {
+    return @"";
+}
 
 @end

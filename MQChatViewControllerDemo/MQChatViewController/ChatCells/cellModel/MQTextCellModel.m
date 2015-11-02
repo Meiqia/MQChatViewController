@@ -15,6 +15,12 @@
 #import "MQChatViewConfig.h"
 
 @interface MQTextCellModel()
+
+/**
+ * @brief cell中消息的id
+ */
+@property (nonatomic, readwrite, strong) NSString *messageId;
+
 /**
  * @brief 消息的文字
  */
@@ -58,7 +64,7 @@
 /**
  * @brief 发送状态指示器的frame
  */
-@property (nonatomic, readwrite, assign) CGRect indicatorFrame;
+@property (nonatomic, readwrite, assign) CGRect sendingIndicatorFrame;
 
 /**
  * @brief 发送出错图片的frame
@@ -102,6 +108,7 @@
 
 - (MQTextCellModel *)initCellModelWithMessage:(MQTextMessage *)message cellWidth:(CGFloat)cellWidth {
     if (self = [super init]) {
+        self.messageId = message.messageId;
         self.sendType = MQChatCellSending;
         self.cellText = message.content;
         self.date = message.date;
@@ -156,7 +163,7 @@
         
         //发送消息的indicator的frame
         UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, kMQCellIndicatorDiameter, kMQCellIndicatorDiameter)];
-        self.indicatorFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-indicatorView.frame.size.width, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-indicatorView.frame.size.height/2, indicatorView.frame.size.width, indicatorView.frame.size.height);
+        self.sendingIndicatorFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-indicatorView.frame.size.width, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-indicatorView.frame.size.height/2, indicatorView.frame.size.width, indicatorView.frame.size.height);
         //发送失败的图片frame
         UIImage *failureImage = [MQChatViewConfig sharedConfig].messageSendFailureImage;
         self.sendFailureFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-failureImage.size.width, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-failureImage.size.height/2, failureImage.size.width, failureImage.size.height);
@@ -215,6 +222,10 @@
 
 - (BOOL)isServiceRelatedCell {
     return true;
+}
+
+- (NSString *)getCellMessageId {
+    return self.messageId;
 }
 
 

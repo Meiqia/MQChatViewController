@@ -20,9 +20,9 @@
 - (void)didGetHistoryMessages;
 
 /**
- *  已经发送了这条消息（可能这条消息是发送成功/失败/正在发送）
+ *  已经更新了这条消息的数据，通知tableView刷新界面
  */
-- (void)didSendMessageWithIndexPath:(NSIndexPath *)indexPath;
+- (void)didUpdateCellWithIndexPath:(NSIndexPath *)indexPath;
 
 /**
  *  通知viewController更新tableView；
@@ -37,7 +37,7 @@
  *
  * MQChatViewModel管理者MQChatViewController中的数据
  */
-@interface MQChatViewModel : NSObject
+@interface MQChatViewModel : NSObject 
 
 /** MQChatViewModel的委托 */
 @property (nonatomic, weak) id<MQChatViewModelDelegate>delegate;

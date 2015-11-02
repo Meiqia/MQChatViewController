@@ -33,5 +33,9 @@
     return true;
 }
 
+- (NSString *)getCellMessageId {
+    return self.messageId;
+}
+
 
 @end

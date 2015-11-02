@@ -125,5 +125,24 @@ typedef NS_ENUM(NSUInteger, MQChatCellSendType) {
  */
 - (BOOL)isServiceRelatedCell;
 
+/**
+ *  @warning 非业务相关的cellModel，返回空字符串即可；
+ *  @return cell的消息id.
+ */
+- (NSString *)getCellMessageId;
+
+
+@end
+
+/**
+ * MQCellModelDataLoadDelegate协议定义了cellModel中的委托方法，需要在ViewModel进行实现；
+ */
+@protocol MQCellModelDelegate <NSObject>
+
+/**
+ * 该委托定义了cell中有数据更新，通知tableView可以进行cell的刷新了；
+ * @param messageId 该cell中的消息id
+ */
+- (void)didUpdateCellDataWithMessageId:(NSString *)messageId;
 
 @end
