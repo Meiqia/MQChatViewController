@@ -14,10 +14,12 @@
 #import "MQInputBar.h"
 #import "MQToast.h"
 #import "MQRecordView.h"
+#import "MQChatAudioRecorder.h"
+#import "VoiceConverter.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
-@interface MQChatViewController () <UITableViewDelegate, MQChatViewModelDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate>
+@interface MQChatViewController () <UITableViewDelegate, MQChatViewModelDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatAudioRecorderDelegate>
 
 @end
 
@@ -27,6 +29,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     MQChatViewModel *chatViewModel;
     MQInputBar *chatInputBar;
     MQRecordView *recordView;
+    MQChatAudioRecorder *audioRecorder;
 }
 
 - (instancetype)initWithChatViewManager:(MQChatViewConfig *)config {
@@ -54,6 +57,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [chatViewConfig setConfigToDefault];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"MQAudioPlayerDidInterrupt" object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -162,6 +166,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [self chatTableViewScrollToBottom];
     return YES;
 }
+
 -(void)sendImageWithSourceType:(UIImagePickerControllerSourceType *)sourceType {
     if (TARGET_IPHONE_SIMULATOR && (int)sourceType == UIImagePickerControllerSourceTypeCamera){
         [MQToast showToast:@"当前设备没有相机" duration:2 window:self.view];
@@ -176,11 +181,13 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
         [self presentViewController:picker animated:YES completion:nil];
     }];
 }
+
 -(void)inputting:(NSString*)content {
     //用户正在输入
     [chatViewModel sendUserInputtingWithContent:content];
     [self chatTableViewScrollToBottom];
 }
+
 -(void)chatTableViewScrollToBottom {
     NSInteger lastCellIndex = chatViewModel.cellModels.count;
     if (lastCellIndex == 0) {
@@ -188,6 +195,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     }
     [self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:lastCellIndex-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:true];
 }
+
 -(void)beginRecord:(CGPoint)point {
     if (TARGET_IPHONE_SIMULATOR){
         [MQToast showToast:@"当前设备无法完成录音" duration:2 window:self.view];
@@ -196,7 +204,8 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     }
     
     //停止播放的通知
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"MQAudioBubbleSopPlay" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"MQAudioPlayerDidInterrupt" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"MQAudioPlayerDidInterrupt" object:nil];
     
 #warning 这里生成录音开始的回调给开发者
     //    if(self.delegate && [self.delegate respondsToSelector:@selector(recordWillBegin)]){
@@ -218,21 +227,48 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     
     [self.chatTableView setScrollEnabled:NO];
     
-#warning 这里增加语音的数据处理
+#warning 这里增加语音输入的数据处理
+    if (!audioRecorder) {
+        audioRecorder = [[MQChatAudioRecorder alloc] init];
+        audioRecorder.delegate = self;
+    }
+    [audioRecorder beginRecording];
 
 }
 
 -(void)finishRecord:(CGPoint)point {
     [recordView stopRecord];
+    [audioRecorder finishRecording];
 }
+
 -(void)cancelRecord:(CGPoint)point {
     [recordView stopRecord];
+    [audioRecorder cancelRecording];
 }
+
 -(void)changedRecordViewToCancel:(CGPoint)point {
     recordView.revoke = true;
 }
+
 -(void)changedRecordViewToNormal:(CGPoint)point {
     recordView.revoke = false;
+}
+
+#pragma MQChatAudioRecorderDelegate
+- (void)didFinishRecordingWithAMRFilePath:(NSString *)filePath {
+    [chatViewModel sendVoiceMessageWithAMRFilePath:filePath];
+}
+
+- (void)didUpdateAudioVolume:(Float32)volume {
+    [recordView setRecordingVolume:volume];
+}
+
+- (void)didEndRecording {
+    [recordView stopRecord];
+}
+
+- (void)didBeginRecording {
+    
 }
 
 #pragma UIImagePickerControllerDelegate

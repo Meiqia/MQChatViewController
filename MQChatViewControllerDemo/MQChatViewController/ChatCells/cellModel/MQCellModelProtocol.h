@@ -71,7 +71,10 @@ static CGFloat const kMQCellBubbleToIndicatorSpacing = 8.0;
  * indicator的diameter
  */
 static CGFloat const kMQCellIndicatorDiameter = 33.0;
-
+/**
+ * 语音时长label的font size
+ */
+static CGFloat const kMQCellVoiceDurationLabelFontSize = 12.0;
 
 
 /**

@@ -17,6 +17,7 @@
 #import "MQMessageDateCellModel.h"
 #import <UIKit/UIKit.h>
 #import "MQToast.h"
+#import "VoiceConverter.h"
 
 #ifdef INCLUDE_MEIQIA_SDK
 #import "MQManager.h"
@@ -104,15 +105,19 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 /**
  * 发送语音消息
  */
-- (void)sendVoiceMessageWithVoice:(NSData *)voiceData {
-    MQVoiceMessage *message = [[MQVoiceMessage alloc] initWithVoiceData:voiceData];
+- (void)sendVoiceMessageWithAMRFilePath:(NSString *)filePath {
+#ifdef INCLUDE_MEIQIA_SDK
+    NSData *amrData = [NSData dataWithContentsOfFile:filePath];
+    [MQManager sendAudioMessage:amrData delegate:self];
+#else
+    //将AMR格式转换成WAV格式，以便使iPhone能播放
+    NSData *wavData = [self convertToWAVDataWithAMRFilePath:filePath];
+    MQVoiceMessage *message = [[MQVoiceMessage alloc] initWithVoiceData:wavData];
     MQVoiceCellModel *cellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth];
     [self generateMessageDateCellWithCurrentCellModel:cellModel];
     [self.cellModels addObject:cellModel];
     [self reloadChatTableView];
-#ifdef INCLUDE_MEIQIA_SDK
-    [MQManager sendAudioMessage:voiceData delegate:self];
-#else
+
     //模仿发送成功
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         cellModel.sendType = MQChatCellSended;
@@ -249,6 +254,16 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             [self.delegate didUpdateCellWithIndexPath:indexPath];
         }
     }
+}
+
+#pragma AMR to WAV转换
+- (NSData *)convertToWAVDataWithAMRFilePath:(NSString *)amrFilePath {
+    NSString *tempPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    tempPath = [tempPath stringByAppendingPathComponent:@"record.wav"];
+    [VoiceConverter amrToWav:amrFilePath wavSavePath:tempPath];
+    NSData *wavData = [NSData dataWithContentsOfFile:tempPath];
+    [[NSFileManager defaultManager] removeItemAtPath:tempPath error:nil];
+    return wavData;
 }
 
 

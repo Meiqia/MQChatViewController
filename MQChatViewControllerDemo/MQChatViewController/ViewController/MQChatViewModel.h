@@ -66,7 +66,7 @@
 /**
  * 发送语音消息
  */
-- (void)sendVoiceMessageWithVoice:(NSData *)voiceData;
+- (void)sendVoiceMessageWithAMRFilePath:(NSString *)filePath;
 
 /**
  * 发送“用户正在输入”的消息

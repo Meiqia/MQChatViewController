@@ -10,8 +10,11 @@
 #import "MQVoiceCellModel.h"
 #import "MQChatFileUtil.h"
 #import "MQChatViewConfig.h"
+#import "MQChatAudioPlayer.h"
 
-static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
+@interface MQVoiceMessageCell()<MQChatAudioPlayerDelegate>
+
+@end
 
 @implementation MQVoiceMessageCell {
     UIImageView *avatarImageView;
@@ -21,16 +24,26 @@ static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
     UIImageView *voiceImageView;
     UIImageView *failureImageView;
     UIActivityIndicatorView *loadingIndicator;
+    MQChatAudioPlayer *audioPlayer;
+    NSData *voiceData;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"MQAudioPlayerDidInterrupt" object:nil];
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+//        isVoicePlaying = false;
         //初始化头像
         avatarImageView = [[UIImageView alloc] init];
         avatarImageView.contentMode = UIViewContentModeScaleAspectFill;
         [self.contentView addSubview:avatarImageView];
         //初始化气泡
         bubbleImageView = [[UIImageView alloc] init];
+        bubbleImageView.userInteractionEnabled = true;
+        UITapGestureRecognizer *tapBubbleGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapVoiceBubbleGesture:)];
+        [bubbleImageView addGestureRecognizer:tapBubbleGesture];
         [self.contentView addSubview:bubbleImageView];
         //初始化indicator
         sendingIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -39,7 +52,7 @@ static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
         //初始化语音时长的label
         durationLabel = [[UILabel alloc] init];
         durationLabel.textColor = [UIColor lightGrayColor];
-        durationLabel.font = [UIFont systemFontOfSize:kMQChatCellDurationLabelFontSize];
+        durationLabel.font = [UIFont systemFontOfSize:kMQCellVoiceDurationLabelFontSize];
         durationLabel.textAlignment = NSTextAlignmentCenter;
         [self.contentView addSubview:durationLabel];
         //初始化语音图片
@@ -52,8 +65,27 @@ static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
         loadingIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         loadingIndicator.hidden = YES;
         [bubbleImageView addSubview:loadingIndicator];
+        //注册声音中断的通知
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopVoiceAnimation) name:@"MQAudioPlayerDidInterrupt" object:nil];
     }
     return self;
+}
+
+#pragma 点击语音的事件
+- (void)didTapVoiceBubbleGesture:(id)sender {
+    if (!voiceData) {
+        return ;
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"MQAudioPlayerDidInterrupt" object:nil];
+    audioPlayer = [MQChatAudioPlayer sharedInstance];
+    audioPlayer.delegate = self;
+    [audioPlayer stopSound];
+    [audioPlayer playSongWithData:voiceData];
+    [voiceImageView startAnimating];
+}
+
+- (void)stopVoiceAnimation {
+    [voiceImageView stopAnimating];
 }
 
 #pragma MQChatCellProtocol
@@ -95,10 +127,20 @@ static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
                                   [UIImage imageNamed:[MQChatFileUtil resourceWithName:animationImage1]],
                                   [UIImage imageNamed:[MQChatFileUtil resourceWithName:animationImage2]],
                                   [UIImage imageNamed:[MQChatFileUtil resourceWithName:animationImage3]],nil];
+    voiceImageView.animationDuration = 1;
+    voiceImageView.animationRepeatCount = 0;
+
+    //刷新语音时长label
+    NSString *durationText = [NSString stringWithFormat:@"%d\"", (int)cellModel.voiceDuration];
+    durationLabel.text = durationText;
+    durationLabel.frame = cellModel.durationLabelFrame;
+    durationLabel.hidden = true;
     
     //判断是否正在加载声音，是否显示加载数据的indicator
     loadingIndicator.frame = cellModel.loadingIndicatorFrame;
+    voiceImageView.frame = cellModel.voiceImageFrame;
     if (cellModel.voiceData) {
+        voiceData = cellModel.voiceData;
         voiceImageView.hidden = false;
         loadingIndicator.hidden = true;
         [loadingIndicator stopAnimating];
@@ -114,12 +156,9 @@ static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
     if (cellModel.sendType == MQChatCellSending && cellModel.cellFromType == MQChatCellOutgoing) {
         sendingIndicator.frame = cellModel.sendingIndicatorFrame;
         [sendingIndicator startAnimating];
+    } else {
+        durationLabel.hidden = false;
     }
-    
-    //刷新语音时长label
-    NSString *durationText = [NSString stringWithFormat:@"%d\"", (int)cellModel.voiceDuration];
-    durationLabel.text = durationText;
-    durationLabel.frame = cellModel.durationLabelFrame;
     
     //刷新出错图片
     failureImageView.hidden = true;
@@ -132,18 +171,32 @@ static CGFloat const kMQChatCellDurationLabelFontSize = 13.0;
 /**
  *  开始播放声音
  */
-- (void)didPlayVoice {
+- (void)playVoice {
     [voiceImageView startAnimating];
 }
 
 /**
  *  停止播放声音
  */
-- (void)didEndVoice {
+- (void)stopVoice {
     if (voiceImageView.isAnimating) {
         [voiceImageView stopAnimating];
     }
 }
+
+#pragma MQChatAudioPlayerDelegate
+- (void)MQAudioPlayerBeiginLoadVoice {
+    
+}
+
+- (void)MQAudioPlayerBeiginPlay {
+    
+}
+
+- (void)MQAudioPlayerDidFinishPlay {
+    [self stopVoiceAnimation];
+}
+
 
 
 

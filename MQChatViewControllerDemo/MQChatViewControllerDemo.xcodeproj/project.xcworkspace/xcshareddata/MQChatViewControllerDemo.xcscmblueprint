@@ -1,0 +1,32 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "BD5ED25A840DFB21F61B8AF88811C42DA77CF1AA",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+    "eccd39b4-39d4-47ab-bb89-e81f4763b8b8++3220" : {
+
+    }
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "eccd39b4-39d4-47ab-bb89-e81f4763b8b8++3220" : 0,
+    "BD5ED25A840DFB21F61B8AF88811C42DA77CF1AA" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "C9228291-B451-4204-8BA5-FE9C755A8E16",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "eccd39b4-39d4-47ab-bb89-e81f4763b8b8++3220" : "MQChatViewController\/MQChatViewControllerDemo\/MQChatViewController\/Vendors\/VoiceConvert\/",
+    "BD5ED25A840DFB21F61B8AF88811C42DA77CF1AA" : "MQChatViewController\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "MQChatViewControllerDemo",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "MQChatViewControllerDemo\/MQChatViewControllerDemo.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/ijinmao\/MQChatViewController.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "BD5ED25A840DFB21F61B8AF88811C42DA77CF1AA"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "svn:\/\/192.168.0.240\/repository",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "eccd39b4-39d4-47ab-bb89-e81f4763b8b8++3220"
+    }
+  ]
+}
