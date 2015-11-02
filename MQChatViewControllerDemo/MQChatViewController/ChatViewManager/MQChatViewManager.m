@@ -53,8 +53,16 @@
     chatViewConfig.chatViewFrame = viewFrame;
 }
 
-- (void)setMessageRegex:(NSDictionary *)regexs {
-    chatViewConfig.chatRegexs = [[NSDictionary alloc] initWithDictionary:regexs];
+- (void)setMessageNumberRegex:(NSString *)numberRegex {
+    [chatViewConfig.numberRegexs addObject:numberRegex];
+}
+
+- (void)setMessageLinkRegex:(NSString *)linkRegex {
+    [chatViewConfig.linkRegexs addObject:linkRegex];
+}
+
+- (void)setMessageEmailRegex:(NSString *)emailRegex {
+    [chatViewConfig.linkRegexs addObject:emailRegex];
 }
 
 - (void)enableSyncServerMessage:(BOOL)enable {

@@ -16,7 +16,9 @@
 @interface MQChatViewConfig : NSObject
 
 @property (nonatomic, assign) CGRect chatViewFrame;
-@property (nonatomic, strong) NSDictionary *chatRegexs;
+@property (nonatomic, strong) NSMutableArray *numberRegexs;
+@property (nonatomic, strong) NSMutableArray *linkRegexs;
+@property (nonatomic, strong) NSMutableArray *emailRegexs;
 
 @property (nonatomic, copy) NSString *agentOnlineTipText;
 @property (nonatomic, copy) NSString *agentOfflineTipText;

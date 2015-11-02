@@ -10,12 +10,16 @@
 #import "MQCellModelProtocol.h"
 #import "MQTextMessage.h"
 
-
 /**
  * MQTextCellModel定义了文字消息的基本类型数据，包括产生cell的内部所有view的显示数据，cell内部元素的frame等
  * @warning MQTextCellModel必须满足MQCellModelProtocol协议
  */
 @interface MQTextCellModel : NSObject <MQCellModelProtocol>
+
+/**
+ * @brief cell中消息的id
+ */
+@property (nonatomic, readonly, strong) NSString *messageId;
 
 /**
  * @brief cell的高度
@@ -70,7 +74,7 @@
 /**
  * @brief 发送状态指示器的frame
  */
-@property (nonatomic, readonly, assign) CGRect indicatorFrame;
+@property (nonatomic, readonly, assign) CGRect sendingIndicatorFrame;
 
 /**
  * @brief 发送出错图片的frame
@@ -85,12 +89,12 @@
 /**
  * @brief 消息文字中，数字选中识别的字典 [number : range]
  */
-@property (nonatomic, readonly, strong) NSDictionary *phoneNumberRangeDic;
+@property (nonatomic, readonly, strong) NSDictionary *numberRangeDic;
 
 /**
  * @brief 消息文字中，url选中识别的字典 [url : range]
  */
-@property (nonatomic, readonly, strong) NSDictionary *urlNumberRangeDic;
+@property (nonatomic, readonly, strong) NSDictionary *linkNumberRangeDic;
 
 /**
  * @brief 消息文字中，email选中识别的字典 [email : range]

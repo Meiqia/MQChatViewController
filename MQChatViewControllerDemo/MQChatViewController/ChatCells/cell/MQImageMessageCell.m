@@ -11,12 +11,14 @@
 #import "MQChatFileUtil.h"
 #import "MQImageUtil.h"
 #import "MQChatViewConfig.h"
+#import "UIImageView+MHFacebookImageViewer.h"
 
 @implementation MQImageMessageCell {
     UIImageView *avatarImageView;
     UIImageView *bubbleImageView;
-    UIActivityIndicatorView *sendMsgIndicator;
+    UIActivityIndicatorView *sendingIndicator;
     UIImageView *failureImageView;
+    UIActivityIndicatorView *loadingIndicator;
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -29,17 +31,19 @@
         bubbleImageView = [[UIImageView alloc] init];
         [self.contentView addSubview:bubbleImageView];
         //初始化indicator
-        sendMsgIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        sendMsgIndicator.hidden = YES;
-        [self.contentView addSubview:sendMsgIndicator];
+        sendingIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        sendingIndicator.hidden = YES;
+        [self.contentView addSubview:sendingIndicator];
         //初始化出错image
         failureImageView = [[UIImageView alloc] initWithImage:[MQChatViewConfig sharedConfig].messageSendFailureImage];
         [self.contentView addSubview:failureImageView];
+        //初始化加载数据的indicator
+        loadingIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        loadingIndicator.hidden = YES;
+        [bubbleImageView addSubview:loadingIndicator];
     }
     return self;
 }
-
-
 
 #pragma MQChatCellProtocol
 - (void)updateCellWithCellModel:(id<MQCellModelProtocol>)model {
@@ -54,25 +58,36 @@
         avatarImageView.image = cellModel.avatarLocalImage;
     } else {
 #warning 使用SDWebImage或自己写获取远程图片的方法
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:cellModel.avatarPath]];
+            avatarImageView.image = [UIImage imageWithData:imageData];
+        });
     }
     avatarImageView.frame = cellModel.avatarFrame;
     
     //刷新气泡
     bubbleImageView.frame = cellModel.bubbleImageFrame;
+    
     //消息图片
-    if (cellModel.imagePath.length > 0) {
-#warning 使用SDWebImage或自己写获取远程图片的方法
-    } else {
+    loadingIndicator.frame = cellModel.loadingIndicatorFrame;
+    if (cellModel.image) {
         bubbleImageView.image = cellModel.image;
+        loadingIndicator.hidden = true;
+        [loadingIndicator stopAnimating];
+    } else {
+        bubbleImageView.image = cellModel.bubbleImage;
+        loadingIndicator.hidden = false;
+        [loadingIndicator startAnimating];
     }
+    [bubbleImageView setupImageViewer];
     [MQImageUtil makeMaskView:bubbleImageView withImage:cellModel.bubbleImage];
     
     //刷新indicator
-    sendMsgIndicator.hidden = true;
-    [sendMsgIndicator stopAnimating];
+    sendingIndicator.hidden = true;
+    [sendingIndicator stopAnimating];
     if (cellModel.sendType == MQChatCellSending && cellModel.cellFromType == MQChatCellOutgoing) {
-        sendMsgIndicator.frame = cellModel.indicatorFrame;
-        [sendMsgIndicator startAnimating];
+        sendingIndicator.frame = cellModel.sendingIndicatorFrame;
+        [sendingIndicator startAnimating];
     }
     
     //刷新出错图片

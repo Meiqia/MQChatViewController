@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "FBFontSymbol.h"
+#import <UIKit/UIKit.h>
 
 @interface FBLCDFont : NSObject
 + (void)drawSymbol:(FBFontSymbolType)symbol

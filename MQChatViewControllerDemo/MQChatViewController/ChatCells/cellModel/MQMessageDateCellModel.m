@@ -62,13 +62,6 @@
 }
 
 /**
- *  @return cell重用的名字.
- */
-- (NSString *)getCellReuseIdentifier {
-    return @"MQMessageDateCell";
-}
-
-/**
  *  通过重用的名字初始化cell
  *  @return 初始化了一个cell
  */
@@ -78,6 +71,14 @@
 
 - (NSDate *)getCellDate {
     return self.date;
+}
+
+- (BOOL)isServiceRelatedCell {
+    return false;
+}
+
+- (NSString *)getCellMessageId {
+    return @"";
 }
 
 @end

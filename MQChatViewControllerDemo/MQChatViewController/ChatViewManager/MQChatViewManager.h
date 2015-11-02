@@ -40,11 +40,22 @@
 - (void)setChatViewFrame:(CGRect)viewFrame;
 
 /**
- * 正则表达式组，用于匹配消息，满足条件段落会以超链接的形式展现，并且可以被用户点击。
- * @warning 键为正则表达式字符串(NSString)，值为段落的文字颜色(UIColor)。
- * @param regexs 客服聊天界面的坐标
+ * 数字的正则表达式，用于匹配消息，满足条件段落可以被用户点击。
+ * @param numberRegex 数字的正则表达式
  */
-- (void)setMessageRegex:(NSDictionary *)regexs;
+- (void)setMessageNumberRegex:(NSString *)numberRegex;
+
+/**
+ * 链接的正则表达式，用于匹配消息，满足条件段落可以被用户点击。
+ * @param numberRegex 链接的正则表达式
+ */
+- (void)setMessageLinkRegex:(NSString *)linkRegex;
+
+/**
+ * email的正则表达式，用于匹配消息，满足条件段落可以被用户点击。
+ * @param emailRegex email的正则表达式
+ */
+- (void)setMessageEmailRegex:(NSString *)emailRegex;
 
 /**
  * 显示的历史聊天消息是否去主动同步服务端的消息记录。因为有可能顾客在其他客户端产生了消息记录，如果设置为NO，则SDK本地消息会与服务端实际的历史消息不相符；默认NO

@@ -17,6 +17,16 @@
 @interface MQVoiceCellModel : NSObject <MQCellModelProtocol>
 
 /**
+ * @brief cell中消息的id
+ */
+@property (nonatomic, readonly, strong) NSString *messageId;
+
+/**
+ * @brief 该cellModel的委托对象
+ */
+@property (nonatomic, weak) id<MQCellModelDelegate> delegate;
+
+/**
  * @brief cell的高度
  */
 @property (nonatomic, readonly, assign) CGFloat cellHeight;
@@ -64,7 +74,12 @@
 /**
  * @brief 发送状态指示器的frame
  */
-@property (nonatomic, readonly, assign) CGRect indicatorFrame;
+@property (nonatomic, readonly, assign) CGRect sendingIndicatorFrame;
+
+/**
+ * @brief 读取语音数据的指示器的frame
+ */
+@property (nonatomic, readonly, assign) CGRect loadingIndicatorFrame;
 
 /**
  * @brief 语音市场的frame

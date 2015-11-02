@@ -58,7 +58,24 @@
 		CC5115C21BE5B3C200184CF0 /* FBLCDFontView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5115B91BE5B3C200184CF0 /* FBLCDFontView.m */; };
 		CC5115C31BE5B3C200184CF0 /* FBSquareFont.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5115BB1BE5B3C200184CF0 /* FBSquareFont.m */; };
 		CC5115C41BE5B3C200184CF0 /* FBSquareFontView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5115BD1BE5B3C200184CF0 /* FBSquareFontView.m */; };
+		CC5115C81BE5B47B00184CF0 /* MQRecordView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5115C71BE5B47B00184CF0 /* MQRecordView.m */; };
+		CC5115D01BE6545B00184CF0 /* MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5115CD1BE6545B00184CF0 /* MHFacebookImageViewer.m */; };
+		CC5115D11BE6545B00184CF0 /* UIImageView+MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5115CF1BE6545B00184CF0 /* UIImageView+MHFacebookImageViewer.m */; };
 		CC99DDB81BE4B8FD00D22464 /* MQChatDateUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CC99DDB71BE4B8FD00D22464 /* MQChatDateUtil.m */; };
+		CCAD3CC91BE662C200B87A23 /* MQChatRegexUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CCAD3CC81BE662C200B87A23 /* MQChatRegexUtil.m */; };
+		CCAD3D141BE75F7500B87A23 /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCAD3D061BE75F7500B87A23 /* libopencore-amrnb.a */; };
+		CCAD3D151BE75F7500B87A23 /* libopencore-amrwb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCAD3D071BE75F7500B87A23 /* libopencore-amrwb.a */; };
+		CCAD3D161BE75F7500B87A23 /* AmrRecordWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = CCAD3D091BE75F7500B87A23 /* AmrRecordWriter.m */; };
+		CCAD3D171BE75F7500B87A23 /* CafRecordWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = CCAD3D0B1BE75F7500B87A23 /* CafRecordWriter.m */; };
+		CCAD3D181BE75F7500B87A23 /* MLAudioMeterObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = CCAD3D0D1BE75F7500B87A23 /* MLAudioMeterObserver.m */; };
+		CCAD3D191BE75F7500B87A23 /* MLAudioRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = CCAD3D0F1BE75F7500B87A23 /* MLAudioRecorder.m */; };
+		CCAD3D1A1BE75F7500B87A23 /* lame.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCAD3D111BE75F7500B87A23 /* lame.framework */; };
+		CCAD3D1B1BE75F7500B87A23 /* Mp3RecordWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = CCAD3D131BE75F7500B87A23 /* Mp3RecordWriter.m */; };
+		CCAD3D1E1BE7612D00B87A23 /* MQChatAudioRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = CCAD3D1D1BE7612D00B87A23 /* MQChatAudioRecorder.m */; };
+		CCAD3D221BE79FB900B87A23 /* MQChatAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = CCAD3D211BE79FB900B87A23 /* MQChatAudioPlayer.m */; };
+		CCAD3D2B1BE7BD2C00B87A23 /* amrFileCodec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CCAD3D261BE7BD2C00B87A23 /* amrFileCodec.mm */; };
+		CCAD3D2C1BE7BD2C00B87A23 /* wav.mm in Sources */ = {isa = PBXBuildFile; fileRef = CCAD3D281BE7BD2C00B87A23 /* wav.mm */; };
+		CCAD3D2D1BE7BD2C00B87A23 /* VoiceConverter.mm in Sources */ = {isa = PBXBuildFile; fileRef = CCAD3D2A1BE7BD2C00B87A23 /* VoiceConverter.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -183,8 +200,44 @@
 		CC5115BB1BE5B3C200184CF0 /* FBSquareFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBSquareFont.m; sourceTree = "<group>"; };
 		CC5115BC1BE5B3C200184CF0 /* FBSquareFontView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBSquareFontView.h; sourceTree = "<group>"; };
 		CC5115BD1BE5B3C200184CF0 /* FBSquareFontView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBSquareFontView.m; sourceTree = "<group>"; };
+		CC5115C61BE5B47B00184CF0 /* MQRecordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQRecordView.h; sourceTree = "<group>"; };
+		CC5115C71BE5B47B00184CF0 /* MQRecordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQRecordView.m; sourceTree = "<group>"; };
+		CC5115CC1BE6545B00184CF0 /* MHFacebookImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MHFacebookImageViewer.h; sourceTree = "<group>"; };
+		CC5115CD1BE6545B00184CF0 /* MHFacebookImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHFacebookImageViewer.m; sourceTree = "<group>"; };
+		CC5115CE1BE6545B00184CF0 /* UIImageView+MHFacebookImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+MHFacebookImageViewer.h"; sourceTree = "<group>"; };
+		CC5115CF1BE6545B00184CF0 /* UIImageView+MHFacebookImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+MHFacebookImageViewer.m"; sourceTree = "<group>"; };
 		CC99DDB61BE4B8FD00D22464 /* MQChatDateUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQChatDateUtil.h; sourceTree = "<group>"; };
 		CC99DDB71BE4B8FD00D22464 /* MQChatDateUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQChatDateUtil.m; sourceTree = "<group>"; };
+		CCAD3CC71BE662C200B87A23 /* MQChatRegexUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQChatRegexUtil.h; sourceTree = "<group>"; };
+		CCAD3CC81BE662C200B87A23 /* MQChatRegexUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQChatRegexUtil.m; sourceTree = "<group>"; };
+		CCAD3D001BE75F7500B87A23 /* interf_dec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interf_dec.h; sourceTree = "<group>"; };
+		CCAD3D011BE75F7500B87A23 /* interf_enc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interf_enc.h; sourceTree = "<group>"; };
+		CCAD3D031BE75F7500B87A23 /* dec_if.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dec_if.h; sourceTree = "<group>"; };
+		CCAD3D041BE75F7500B87A23 /* if_rom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = if_rom.h; sourceTree = "<group>"; };
+		CCAD3D061BE75F7500B87A23 /* libopencore-amrnb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrnb.a"; sourceTree = "<group>"; };
+		CCAD3D071BE75F7500B87A23 /* libopencore-amrwb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrwb.a"; sourceTree = "<group>"; };
+		CCAD3D081BE75F7500B87A23 /* AmrRecordWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AmrRecordWriter.h; sourceTree = "<group>"; };
+		CCAD3D091BE75F7500B87A23 /* AmrRecordWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AmrRecordWriter.m; sourceTree = "<group>"; };
+		CCAD3D0A1BE75F7500B87A23 /* CafRecordWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CafRecordWriter.h; sourceTree = "<group>"; };
+		CCAD3D0B1BE75F7500B87A23 /* CafRecordWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CafRecordWriter.m; sourceTree = "<group>"; };
+		CCAD3D0C1BE75F7500B87A23 /* MLAudioMeterObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLAudioMeterObserver.h; sourceTree = "<group>"; };
+		CCAD3D0D1BE75F7500B87A23 /* MLAudioMeterObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLAudioMeterObserver.m; sourceTree = "<group>"; };
+		CCAD3D0E1BE75F7500B87A23 /* MLAudioRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLAudioRecorder.h; sourceTree = "<group>"; };
+		CCAD3D0F1BE75F7500B87A23 /* MLAudioRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLAudioRecorder.m; sourceTree = "<group>"; };
+		CCAD3D111BE75F7500B87A23 /* lame.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = lame.framework; sourceTree = "<group>"; };
+		CCAD3D121BE75F7500B87A23 /* Mp3RecordWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mp3RecordWriter.h; sourceTree = "<group>"; };
+		CCAD3D131BE75F7500B87A23 /* Mp3RecordWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Mp3RecordWriter.m; sourceTree = "<group>"; };
+		CCAD3D1C1BE7612D00B87A23 /* MQChatAudioRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQChatAudioRecorder.h; sourceTree = "<group>"; };
+		CCAD3D1D1BE7612D00B87A23 /* MQChatAudioRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQChatAudioRecorder.m; sourceTree = "<group>"; };
+		CCAD3D1F1BE79D2000B87A23 /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Debug.h; sourceTree = "<group>"; };
+		CCAD3D201BE79FB900B87A23 /* MQChatAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQChatAudioPlayer.h; sourceTree = "<group>"; };
+		CCAD3D211BE79FB900B87A23 /* MQChatAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQChatAudioPlayer.m; sourceTree = "<group>"; };
+		CCAD3D251BE7BD2C00B87A23 /* amrFileCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = amrFileCodec.h; sourceTree = "<group>"; };
+		CCAD3D261BE7BD2C00B87A23 /* amrFileCodec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = amrFileCodec.mm; sourceTree = "<group>"; };
+		CCAD3D271BE7BD2C00B87A23 /* wav.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wav.h; sourceTree = "<group>"; };
+		CCAD3D281BE7BD2C00B87A23 /* wav.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = wav.mm; sourceTree = "<group>"; };
+		CCAD3D291BE7BD2C00B87A23 /* VoiceConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoiceConverter.h; sourceTree = "<group>"; };
+		CCAD3D2A1BE7BD2C00B87A23 /* VoiceConverter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = VoiceConverter.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,6 +245,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CCAD3D151BE75F7500B87A23 /* libopencore-amrwb.a in Frameworks */,
+				CCAD3D1A1BE75F7500B87A23 /* lame.framework in Frameworks */,
+				CCAD3D141BE75F7500B87A23 /* libopencore-amrnb.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -355,6 +411,9 @@
 		CC45FD461BE36B3500DE0BFB /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
+				CCAD3D231BE7BD2C00B87A23 /* VoiceConvert */,
+				CCAD3CFC1BE75F7500B87A23 /* MLAudioRecorder */,
+				CC5115CB1BE6545B00184CF0 /* MHFacebookImageViewer */,
 				CC5115AF1BE5B3C200184CF0 /* FBDigitalFont */,
 				CC45FFC31BE4912200DE0BFB /* HPTextView */,
 				CC45FD471BE36B3500DE0BFB /* TTTAttributedLabel */,
@@ -389,6 +448,7 @@
 		CC45FD531BE36B3500DE0BFB /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				CC5115C51BE5B47B00184CF0 /* MQRecordView */,
 				CC45FFCA1BE4962500DE0BFB /* MQToast */,
 				CC45FFBF1BE490B100DE0BFB /* MQInputBar */,
 			);
@@ -423,6 +483,12 @@
 				CC45FD791BE37A9500DE0BFB /* MQChatFileUtil.m */,
 				CC99DDB61BE4B8FD00D22464 /* MQChatDateUtil.h */,
 				CC99DDB71BE4B8FD00D22464 /* MQChatDateUtil.m */,
+				CCAD3CC71BE662C200B87A23 /* MQChatRegexUtil.h */,
+				CCAD3CC81BE662C200B87A23 /* MQChatRegexUtil.m */,
+				CCAD3D1C1BE7612D00B87A23 /* MQChatAudioRecorder.h */,
+				CCAD3D1D1BE7612D00B87A23 /* MQChatAudioRecorder.m */,
+				CCAD3D201BE79FB900B87A23 /* MQChatAudioPlayer.h */,
+				CCAD3D211BE79FB900B87A23 /* MQChatAudioPlayer.m */,
 			);
 			path = ChatUtil;
 			sourceTree = "<group>";
@@ -490,6 +556,120 @@
 				CC5115BD1BE5B3C200184CF0 /* FBSquareFontView.m */,
 			);
 			path = FBDigitalFont;
+			sourceTree = "<group>";
+		};
+		CC5115C51BE5B47B00184CF0 /* MQRecordView */ = {
+			isa = PBXGroup;
+			children = (
+				CC5115C61BE5B47B00184CF0 /* MQRecordView.h */,
+				CC5115C71BE5B47B00184CF0 /* MQRecordView.m */,
+			);
+			path = MQRecordView;
+			sourceTree = "<group>";
+		};
+		CC5115CB1BE6545B00184CF0 /* MHFacebookImageViewer */ = {
+			isa = PBXGroup;
+			children = (
+				CC5115CC1BE6545B00184CF0 /* MHFacebookImageViewer.h */,
+				CC5115CD1BE6545B00184CF0 /* MHFacebookImageViewer.m */,
+				CC5115CE1BE6545B00184CF0 /* UIImageView+MHFacebookImageViewer.h */,
+				CC5115CF1BE6545B00184CF0 /* UIImageView+MHFacebookImageViewer.m */,
+			);
+			path = MHFacebookImageViewer;
+			sourceTree = "<group>";
+		};
+		CCAD3CFC1BE75F7500B87A23 /* MLAudioRecorder */ = {
+			isa = PBXGroup;
+			children = (
+				CCAD3D1F1BE79D2000B87A23 /* Debug.h */,
+				CCAD3CFD1BE75F7500B87A23 /* amr_en_de */,
+				CCAD3D081BE75F7500B87A23 /* AmrRecordWriter.h */,
+				CCAD3D091BE75F7500B87A23 /* AmrRecordWriter.m */,
+				CCAD3D0A1BE75F7500B87A23 /* CafRecordWriter.h */,
+				CCAD3D0B1BE75F7500B87A23 /* CafRecordWriter.m */,
+				CCAD3D0C1BE75F7500B87A23 /* MLAudioMeterObserver.h */,
+				CCAD3D0D1BE75F7500B87A23 /* MLAudioMeterObserver.m */,
+				CCAD3D0E1BE75F7500B87A23 /* MLAudioRecorder.h */,
+				CCAD3D0F1BE75F7500B87A23 /* MLAudioRecorder.m */,
+				CCAD3D101BE75F7500B87A23 /* mp3_en_de */,
+				CCAD3D121BE75F7500B87A23 /* Mp3RecordWriter.h */,
+				CCAD3D131BE75F7500B87A23 /* Mp3RecordWriter.m */,
+			);
+			path = MLAudioRecorder;
+			sourceTree = "<group>";
+		};
+		CCAD3CFD1BE75F7500B87A23 /* amr_en_de */ = {
+			isa = PBXGroup;
+			children = (
+				CCAD3CFE1BE75F7500B87A23 /* include */,
+				CCAD3D051BE75F7500B87A23 /* lib */,
+			);
+			path = amr_en_de;
+			sourceTree = "<group>";
+		};
+		CCAD3CFE1BE75F7500B87A23 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				CCAD3CFF1BE75F7500B87A23 /* opencore-amrnb */,
+				CCAD3D021BE75F7500B87A23 /* opencore-amrwb */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		CCAD3CFF1BE75F7500B87A23 /* opencore-amrnb */ = {
+			isa = PBXGroup;
+			children = (
+				CCAD3D001BE75F7500B87A23 /* interf_dec.h */,
+				CCAD3D011BE75F7500B87A23 /* interf_enc.h */,
+			);
+			path = "opencore-amrnb";
+			sourceTree = "<group>";
+		};
+		CCAD3D021BE75F7500B87A23 /* opencore-amrwb */ = {
+			isa = PBXGroup;
+			children = (
+				CCAD3D031BE75F7500B87A23 /* dec_if.h */,
+				CCAD3D041BE75F7500B87A23 /* if_rom.h */,
+			);
+			path = "opencore-amrwb";
+			sourceTree = "<group>";
+		};
+		CCAD3D051BE75F7500B87A23 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				CCAD3D061BE75F7500B87A23 /* libopencore-amrnb.a */,
+				CCAD3D071BE75F7500B87A23 /* libopencore-amrwb.a */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		CCAD3D101BE75F7500B87A23 /* mp3_en_de */ = {
+			isa = PBXGroup;
+			children = (
+				CCAD3D111BE75F7500B87A23 /* lame.framework */,
+			);
+			path = mp3_en_de;
+			sourceTree = "<group>";
+		};
+		CCAD3D231BE7BD2C00B87A23 /* VoiceConvert */ = {
+			isa = PBXGroup;
+			children = (
+				CCAD3D241BE7BD2C00B87A23 /* amrwapper */,
+				CCAD3D291BE7BD2C00B87A23 /* VoiceConverter.h */,
+				CCAD3D2A1BE7BD2C00B87A23 /* VoiceConverter.mm */,
+			);
+			path = VoiceConvert;
+			sourceTree = "<group>";
+		};
+		CCAD3D241BE7BD2C00B87A23 /* amrwapper */ = {
+			isa = PBXGroup;
+			children = (
+				CCAD3D251BE7BD2C00B87A23 /* amrFileCodec.h */,
+				CCAD3D261BE7BD2C00B87A23 /* amrFileCodec.mm */,
+				CCAD3D271BE7BD2C00B87A23 /* wav.h */,
+				CCAD3D281BE7BD2C00B87A23 /* wav.mm */,
+			);
+			path = amrwapper;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -633,20 +813,28 @@
 				CC5115BE1BE5B3C200184CF0 /* FBBitmapFont.m in Sources */,
 				CC45FD601BE36B3600DE0BFB /* MQVoiceCellModel.m in Sources */,
 				CC45FD5E1BE36B3600DE0BFB /* MQTextCellModel.m in Sources */,
+				CCAD3D1E1BE7612D00B87A23 /* MQChatAudioRecorder.m in Sources */,
 				CC45FD621BE36B3600DE0BFB /* MQChatViewManager.m in Sources */,
 				CC45FD541BE36B3500DE0BFB /* MQChatBaseCell.m in Sources */,
+				CCAD3D2B1BE7BD2C00B87A23 /* amrFileCodec.mm in Sources */,
 				CC45FFCD1BE4962500DE0BFB /* MQToast.m in Sources */,
+				CCAD3D2D1BE7BD2C00B87A23 /* VoiceConverter.mm in Sources */,
 				CC45FD871BE3A19F00DE0BFB /* MQTextMessage.m in Sources */,
 				CC45FCF51BE36B1900DE0BFB /* ViewController.m in Sources */,
+				CCAD3D191BE75F7500B87A23 /* MLAudioRecorder.m in Sources */,
 				CC45FD821BE37C3200DE0BFB /* MQImageUtil.m in Sources */,
+				CCAD3D181BE75F7500B87A23 /* MLAudioMeterObserver.m in Sources */,
 				CC45FD731BE3745700DE0BFB /* MQManager.m in Sources */,
+				CCAD3D1B1BE75F7500B87A23 /* Mp3RecordWriter.m in Sources */,
 				CC45FD591BE36B3500DE0BFB /* MQTipsCell.m in Sources */,
 				CC5115BF1BE5B3C200184CF0 /* FBBitmapFontView.m in Sources */,
 				CC45FD5F1BE36B3600DE0BFB /* MQTipsCellModel.m in Sources */,
+				CCAD3D221BE79FB900B87A23 /* MQChatAudioPlayer.m in Sources */,
 				CC99DDB81BE4B8FD00D22464 /* MQChatDateUtil.m in Sources */,
 				CC45FFC91BE4912200DE0BFB /* HPTextViewInternal.m in Sources */,
 				CC45FFC81BE4912200DE0BFB /* HPGrowingTextView.m in Sources */,
 				CC45FD671BE36B3600DE0BFB /* MQChatViewModel.m in Sources */,
+				CC5115C81BE5B47B00184CF0 /* MQRecordView.m in Sources */,
 				CC45FD901BE3A90600DE0BFB /* MQBaseMessage.m in Sources */,
 				CC45FCF21BE36B1900DE0BFB /* AppDelegate.m in Sources */,
 				CC45FD8A1BE3A1B500DE0BFB /* MQImageMessage.m in Sources */,
@@ -655,11 +843,16 @@
 				CC45FD811BE37C3200DE0BFB /* MQDeviceFrameUtil.m in Sources */,
 				CC5115C01BE5B3C200184CF0 /* FBFontSymbol.m in Sources */,
 				CC45FCEF1BE36B1900DE0BFB /* main.m in Sources */,
+				CCAD3D161BE75F7500B87A23 /* AmrRecordWriter.m in Sources */,
+				CCAD3D171BE75F7500B87A23 /* CafRecordWriter.m in Sources */,
 				CC5115C41BE5B3C200184CF0 /* FBSquareFontView.m in Sources */,
 				CC45FD5A1BE36B3600DE0BFB /* MQVoiceMessageCell.m in Sources */,
 				CC45FD831BE37C3200DE0BFB /* MQStringSizeUtil.m in Sources */,
+				CC5115D11BE6545B00184CF0 /* UIImageView+MHFacebookImageViewer.m in Sources */,
+				CCAD3CC91BE662C200B87A23 /* MQChatRegexUtil.m in Sources */,
 				CC45FD681BE36B3600DE0BFB /* MQChatViewTableDataSource.m in Sources */,
 				CC45FD571BE36B3500DE0BFB /* MQMessageDateCell.m in Sources */,
+				CC5115D01BE6545B00184CF0 /* MHFacebookImageViewer.m in Sources */,
 				CC45FFC21BE490B100DE0BFB /* MQInputBar.m in Sources */,
 				CC45FD8D1BE3A1C000DE0BFB /* MQVoiceMessage.m in Sources */,
 				CC45FD581BE36B3500DE0BFB /* MQTextMessageCell.m in Sources */,
@@ -668,6 +861,7 @@
 				CC45FD641BE36B3600DE0BFB /* TTTAttributedLabel.m in Sources */,
 				CC5115C11BE5B3C200184CF0 /* FBLCDFont.m in Sources */,
 				CC45FD7A1BE37A9500DE0BFB /* MQChatFileUtil.m in Sources */,
+				CCAD3D2C1BE7BD2C00B87A23 /* wav.mm in Sources */,
 				CC45FD741BE3745700DE0BFB /* MQMessage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -809,9 +1003,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/MQChatViewController/Vendors/MLAudioRecorder/mp3_en_de",
+				);
 				INFOPLIST_FILE = MQChatViewControllerDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = ijinmao.MQChatViewControllerDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -821,9 +1024,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/MQChatViewController/Vendors/MLAudioRecorder/mp3_en_de",
+				);
 				INFOPLIST_FILE = MQChatViewControllerDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/MQChatViewController/Vendors/MLAudioRecorder/amr_en_de/lib",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = ijinmao.MQChatViewControllerDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

@@ -13,13 +13,16 @@
 //#define ButtonWidth 33
 //#define ButtonX 6.5
 static CGFloat const kMQInputBarHorizontalSpacing = 0;
+static NSString * const kMQInputBarRecordButtonConfirmText = @"按住 说话";
+static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
 
 @implementation MQInputBar
 {
-    CGRect thisFrame;   //默认
-    CGRect superViewFrame;  //默认
+    CGRect originalFrame;   //默认
+    CGRect originalSuperViewFrame;  //默认
     UIView *superView;
-    CGRect chatViewFrame;
+    CGRect originalChatViewFrame;
+    CGRect originalTextViewFrame;   //textView的初始frame
     
     //调整键盘需要涉及的变量
     UIEdgeInsets chatViewInsets;    //默认chatView.contentInsets
@@ -27,34 +30,63 @@ static CGFloat const kMQInputBarHorizontalSpacing = 0;
     BOOL isInputBarUp;  //工具栏被抬高
     float bullleViewHeigth; //真实可视区域
     CGFloat senderImageWidth;
-    CGFloat senderImageHeight;
+    CGFloat textViewHeight;
     MQChatTableView *chatTableView;
+    BOOL enableRecord;
 }
 
-- (id)initWithSuperView:(UIView *)inputBarSuperView tableView:(MQChatTableView *)tableView
+- (id)initWithFrame:(CGRect)frame
+          superView:(UIView *)inputBarSuperView
+          tableView:(MQChatTableView *)tableView
+    enableRecordBtn:(BOOL)enableRecordBtn
 {
     if (self = [super init]) {
+        self.frame              = frame;
+        originalFrame           = frame;
         superView               = inputBarSuperView;
-        superViewFrame          = inputBarSuperView.frame;
+        originalSuperViewFrame  = inputBarSuperView.frame;
         chatTableView           = tableView;
-        chatViewFrame           = tableView.frame;
+        originalChatViewFrame   = tableView.frame;
 
         senderImageWidth = [MQChatViewConfig sharedConfig].photoSenderImage.size.width;
-        senderImageHeight = [MQChatViewConfig sharedConfig].photoSenderImage.size.height;
+        textViewHeight = ceil(frame.size.height * 5 / 7);
         
         self.backgroundColor = [UIColor whiteColor];
         cameraBtn              = [[UIButton alloc] init];
         [cameraBtn setImage:[MQChatViewConfig sharedConfig].photoSenderImage forState:UIControlStateNormal];
         [cameraBtn setImage:[MQChatViewConfig sharedConfig].photoSenderImage forState:UIControlStateHighlighted];
         [cameraBtn addTarget:self action:@selector(cameraClick) forControlEvents:UIControlEventTouchUpInside];
+        cameraBtn.frame      = CGRectMake(kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth);
         
-        self.textView               = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(0, 0, 0, senderImageHeight)];
-        self.textView.font          = [UIFont systemFontOfSize:15];
+        self.textView               = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(0, 0, 0, textViewHeight)];
+        self.textView.font          = [UIFont systemFontOfSize:16];
         self.textView.returnKeyType = UIReturnKeySend;
         self.textView.placeholder   = @"请输入...";
         self.textView.delegate      = (id)self;
-        self.textView.layer.borderColor = [UIColor colorWithWhite:0.8 alpha:1].CGColor;
-        self.textView.layer.borderWidth = 1;
+        self.textView.layer.borderColor     = [UIColor colorWithWhite:0.8 alpha:1].CGColor;
+        self.textView.layer.borderWidth     = 1;
+        self.textView.layer.cornerRadius    = 4;
+        
+        enableRecord = false;
+        if (enableRecordBtn) {
+            enableRecord = true;
+            [self initRecordBtn];
+            
+            self.textView.frame     = recordBtn.frame;
+            originalTextViewFrame   = recordBtn.frame;
+        }else{
+            if (toolbarDownBtn) {
+                toolbarDownBtn.hidden = YES;
+            }
+            if (microphoneBtn) {
+                microphoneBtn.hidden = YES;
+            }
+            if (recordBtn) {
+                recordBtn.hidden = YES;
+            }
+            self.textView.frame = CGRectMake(kMQInputBarHorizontalSpacing*2 + senderImageWidth, (originalFrame.size.height - textViewHeight)/2, originalFrame.size.width - kMQInputBarHorizontalSpacing * 3 - senderImageWidth, textViewHeight);
+            originalTextViewFrame = self.textView.frame;
+        }
         
         [self addSubview:self.textView];
         [self addSubview:cameraBtn];
@@ -77,76 +109,54 @@ static CGFloat const kMQInputBarHorizontalSpacing = 0;
                                                  selector:@selector(toolbarDownBtnVisible)
                                                      name:@"MCToolbarDownBtnVisible"
                                                    object:nil];
+        
     }
     return self;
 }
 
--(void)setRecordButtonVisible:(BOOL)recordButtonVisible
+-(void)initRecordBtn
 {
-    _recordButtonVisible = recordButtonVisible;
-    if (_recordButtonVisible) {
-        toolbarDownBtn = [[UIButton alloc] init];
-        [toolbarDownBtn setImage:[UIImage imageNamed:[MQChatFileUtil resourceWithName:@"toolbarDown_normal"]] forState:UIControlStateNormal];
-        [toolbarDownBtn setImage:[UIImage imageNamed:[MQChatFileUtil resourceWithName:@"toolbarDown_click"]] forState:UIControlStateHighlighted];
-        [toolbarDownBtn addTarget:self action:@selector(toolbarDownClick) forControlEvents:UIControlEventTouchUpInside];
-        toolbarDownBtn.hidden = YES;
-        
-        microphoneBtn = [[UIButton alloc] init];
-        [microphoneBtn setImage:[MQChatViewConfig sharedConfig].voiceSenderImage forState:UIControlStateNormal];
-        [microphoneBtn setImage:[MQChatViewConfig sharedConfig].voiceSenderImage forState:UIControlStateHighlighted];
-        [microphoneBtn addTarget:self action:@selector(microphoneClick) forControlEvents:UIControlEventTouchUpInside];
-        
-        recordBtn                    = [UIButton buttonWithType:UIButtonTypeCustom];
-        [recordBtn setTitle:@"按住说话" forState:UIControlStateNormal];
-        [recordBtn setTitleColor:[UIColor colorWithWhite:.1 alpha:1] forState:UIControlStateNormal];
-        recordBtn.backgroundColor    = [UIColor colorWithWhite:1 alpha:1];
-        recordBtn.layer.cornerRadius = 5;
-        recordBtn.alpha              = 0;
-        recordBtn.hidden             = YES;
-        
-        recordBtn.layer.borderColor = [UIColor colorWithWhite:0.8 alpha:1].CGColor;
-        recordBtn.layer.borderWidth = 1;
-        
-//        recordBtn.layer.shadowColor = [UIColor colorWithWhite:0 alpha:1].CGColor;
-//        recordBtn.layer.shadowOffset = CGSizeMake(0, .7);
-//        recordBtn.layer.shadowRadius = .6;
-//        recordBtn.layer.shadowOpacity = .4;
-        
-        UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(recordBtnLongPressed:)];
-        gesture.delegate = (id)self;
-        gesture.delaysTouchesBegan = NO;
-        gesture.delaysTouchesEnded = NO;
-        gesture.minimumPressDuration = -1;
-        [recordBtn addGestureRecognizer:gesture];
-        
-        [self addSubview:toolbarDownBtn];
-        [self addSubview:recordBtn];
-        [self addSubview:microphoneBtn];
-    }
-    [self setupUI];
-}
-
-
--(void)setupUI
-{
-    thisFrame            = self.frame;
-
-    cameraBtn.frame      = CGRectMake(kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth);
+    toolbarDownBtn = [[UIButton alloc] init];
+    [toolbarDownBtn setImage:[UIImage imageNamed:[MQChatFileUtil resourceWithName:@"toolbarDown_normal"]] forState:UIControlStateNormal];
+    [toolbarDownBtn setImage:[UIImage imageNamed:[MQChatFileUtil resourceWithName:@"toolbarDown_click"]] forState:UIControlStateHighlighted];
+    [toolbarDownBtn addTarget:self action:@selector(toolbarDownClick) forControlEvents:UIControlEventTouchUpInside];
+    toolbarDownBtn.hidden = YES;
     
-    if (self.recordButtonVisible) {
-        microphoneBtn.frame = CGRectMake(self.frame.size.width - senderImageWidth - kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth);
-        toolbarDownBtn.frame = microphoneBtn.frame;
-        
-        recordBtn.frame = CGRectMake(kMQInputBarHorizontalSpacing*2 + senderImageWidth, (thisFrame.size.height - senderImageHeight)/2, thisFrame.size.width - kMQInputBarHorizontalSpacing * 4 - 2 * senderImageWidth, senderImageHeight);
-        
-        self.textView.frame = CGRectMake(recordBtn.frame.origin.x, self.frame.size.height/2-senderImageHeight/2, recordBtn.frame.size.width, senderImageHeight);
-    }else{
-        if (toolbarDownBtn) toolbarDownBtn.hidden = YES;
-        if (microphoneBtn) microphoneBtn.hidden = YES;
-        if (recordBtn) recordBtn.hidden = YES;
-        
-        self.textView.frame = CGRectMake(recordBtn.frame.origin.x, self.frame.size.height/2-senderImageHeight/2, recordBtn.frame.size.width, senderImageHeight);
-    }
+    microphoneBtn = [[UIButton alloc] init];
+    [microphoneBtn setImage:[MQChatViewConfig sharedConfig].voiceSenderImage forState:UIControlStateNormal];
+    [microphoneBtn setImage:[MQChatViewConfig sharedConfig].voiceSenderImage forState:UIControlStateHighlighted];
+    [microphoneBtn addTarget:self action:@selector(microphoneClick) forControlEvents:UIControlEventTouchUpInside];
+    
+    recordBtn                    = [UIButton buttonWithType:UIButtonTypeCustom];
+    [recordBtn setTitle:kMQInputBarRecordButtonConfirmText forState:UIControlStateNormal];
+    [recordBtn setTitleColor:[UIColor colorWithWhite:.1 alpha:1] forState:UIControlStateNormal];
+    recordBtn.backgroundColor    = [UIColor colorWithWhite:1 alpha:1];
+    recordBtn.layer.cornerRadius = 4;
+    recordBtn.alpha              = 0;
+    recordBtn.hidden             = YES;
+    
+    recordBtn.layer.borderColor = [UIColor colorWithWhite:0.8 alpha:1].CGColor;
+    recordBtn.layer.borderWidth = 1;
+    
+    //        recordBtn.layer.shadowColor = [UIColor colorWithWhite:0 alpha:1].CGColor;
+    //        recordBtn.layer.shadowOffset = CGSizeMake(0, .7);
+    //        recordBtn.layer.shadowRadius = .6;
+    //        recordBtn.layer.shadowOpacity = .4;
+    
+    UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(recordBtnLongPressed:)];
+    gesture.delegate = (id)self;
+    gesture.delaysTouchesBegan = NO;
+    gesture.delaysTouchesEnded = NO;
+    gesture.minimumPressDuration = -1;
+    [recordBtn addGestureRecognizer:gesture];
+    
+    microphoneBtn.frame = CGRectMake(self.frame.size.width - senderImageWidth - kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth);
+    toolbarDownBtn.frame = microphoneBtn.frame;
+    recordBtn.frame = CGRectMake(kMQInputBarHorizontalSpacing*2 + senderImageWidth, (originalFrame.size.height - textViewHeight)/2, originalFrame.size.width - kMQInputBarHorizontalSpacing * 4 - 2 * senderImageWidth, textViewHeight);
+    
+    [self addSubview:toolbarDownBtn];
+    [self addSubview:recordBtn];
+    [self addSubview:microphoneBtn];
 }
 
 -(void)cameraClick
@@ -160,7 +170,7 @@ static CGFloat const kMQInputBarHorizontalSpacing = 0;
 {
     microphoneBtn.hidden = NO;
     toolbarDownBtn.hidden = YES;
-    [self.textView resignFirstResponder];
+    [self resignFirstResponder];
 }
 
 -(void)microphoneClick
@@ -172,12 +182,12 @@ static CGFloat const kMQInputBarHorizontalSpacing = 0;
         [self textViewResignFirstResponder];
         [UIView animateWithDuration:.25 animations:^{
             //还原
-            chatTableView.frame  = chatViewFrame;
-            self.frame      = thisFrame;
+            chatTableView.frame     = originalChatViewFrame;
+            self.frame              = originalFrame;
 
-            self.textView.frame  = recordBtn.frame;
-            self.textView.alpha  = 0;
-            recordBtn.alpha = 1;
+            self.textView.frame     = originalTextViewFrame;
+            self.textView.alpha     = 0;
+            recordBtn.alpha         = 1;
             
             //居中
             [self functionBtnCenter];
@@ -190,21 +200,20 @@ static CGFloat const kMQInputBarHorizontalSpacing = 0;
         [self.textView becomeFirstResponder];
         self.textView.hidden = NO;
         [UIView animateWithDuration:.25 animations:^{
-            self.textView.text    = self.textView.text;
-            self.textView.alpha   = 1;
-            recordBtn.alpha  = 0;
+            self.textView.text      = self.textView.text;
+            self.textView.alpha     = 1;
+            recordBtn.alpha         = 0;
         } completion:^(BOOL finished) {
-            recordBtn.hidden = YES;
+            recordBtn.hidden        = YES;
         }];
     }
 }
 
 -(void)reRecordBtn
 {
-    [recordBtn setTitle:@"按住说话" forState:UIControlStateNormal];
+    [recordBtn setTitle:kMQInputBarRecordButtonConfirmText forState:UIControlStateNormal];
     [UIView animateWithDuration:.2 animations:^{
         recordBtn.backgroundColor = [UIColor colorWithWhite:1 alpha:1];
-//        recordBtn.layer.shadowOpacity = .4;
     }];
 }
 
@@ -216,29 +225,76 @@ static CGFloat const kMQInputBarHorizontalSpacing = 0;
                 [self.delegate beginRecord:[longPressedRecognizer locationInView:[[UIApplication sharedApplication] keyWindow]]];
             }
         }
-        [recordBtn setTitle:@"松开结束" forState:UIControlStateNormal];
+        [recordBtn setTitle:kMQInputBarRecordButtonFinishText forState:UIControlStateNormal];
         [UIView animateWithDuration:.2 animations:^{
             recordBtn.backgroundColor = [UIColor colorWithWhite:.92 alpha:1];
-//            recordBtn.layer.shadowOpacity = .1;
         }];
     }else if(longPressedRecognizer.state == UIGestureRecognizerStateEnded || longPressedRecognizer.state == UIGestureRecognizerStateCancelled) {
-        if(self.delegate){
-            if ([self.delegate respondsToSelector:@selector(endRecord:)]) {
-                [self.delegate endRecord:[longPressedRecognizer locationInView:[[UIApplication sharedApplication] keyWindow]]];
-            }
-        }
-        
-        [recordBtn setTitle:@"按住说话" forState:UIControlStateNormal];
+        [self endRecordWithPoint:[longPressedRecognizer locationInView:[[UIApplication sharedApplication] keyWindow]]];
+        [recordBtn setTitle:kMQInputBarRecordButtonConfirmText forState:UIControlStateNormal];
         [UIView animateWithDuration:.2 animations:^{
             recordBtn.backgroundColor = [UIColor colorWithWhite:1 alpha:1];
-//            recordBtn.layer.shadowOpacity = .4;
         }];
     }else if(longPressedRecognizer.state == UIGestureRecognizerStateChanged) {
+        [self changeRecordStatusWithPoint:[longPressedRecognizer locationInView:[[UIApplication sharedApplication] keyWindow]]];
+    }
+}
+
+//改变录音的状态
+- (void)changeRecordStatusWithPoint:(CGPoint)point {
+    if ([self isFingerMoveUpToCancelRecordingWithPoint:point]) {
+        //取消录音状态
         if(self.delegate){
-            if ([self.delegate respondsToSelector:@selector(changedRecord:)]) {
-                [self.delegate changedRecord:[longPressedRecognizer locationInView:[[UIApplication sharedApplication] keyWindow]]];
+            if ([self.delegate respondsToSelector:@selector(changedRecordViewToCancel:)]) {
+                [self.delegate changedRecordViewToCancel:point];
             }
         }
+    } else {
+        //正常录音状态
+        if(self.delegate){
+            if ([self.delegate respondsToSelector:@selector(changedRecordViewToNormal:)]) {
+                [self.delegate changedRecordViewToNormal:point];
+            }
+        }
+    }
+}
+
+//结束录音，并判断是取消录音还是完成录音
+- (void)endRecordWithPoint:(CGPoint)point {
+    if ([self isFingerMoveUpToCancelRecordingWithPoint:point]) {
+        //取消录音
+        if(self.delegate){
+            if ([self.delegate respondsToSelector:@selector(cancelRecord:)]) {
+                [self.delegate cancelRecord:point];
+            }
+        }
+    } else {
+        //结束录音
+        if(self.delegate){
+            if ([self.delegate respondsToSelector:@selector(finishRecord:)]) {
+                [self.delegate finishRecord:point];
+            }
+        }
+    }
+}
+
+//判断手指是否上移取消发送
+- (BOOL)isFingerMoveUpToCancelRecordingWithPoint:(CGPoint)point {
+    float y = 0;
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
+        y = [[UIApplication sharedApplication] keyWindow].frame.size.height - self.frame.size.height - point.y;
+    }else{
+        UIInterfaceOrientation statusBarOrientation = [UIApplication sharedApplication].statusBarOrientation;
+        if (statusBarOrientation == UIInterfaceOrientationLandscapeLeft || statusBarOrientation == UIInterfaceOrientationLandscapeRight) {
+            y = point.x;
+        }else{
+            y = [[UIApplication sharedApplication] keyWindow].frame.size.height - self.frame.size.height - point.y;
+        }
+    }
+    if (y + 20 > 100) {
+        return YES;
+    }else{
+        return NO;
     }
 }
 
@@ -265,10 +321,6 @@ static CGFloat const kMQInputBarHorizontalSpacing = 0;
     actionSheet = nil;
 }
 
--(void)setChatTableView:(MQChatTableView*)view{
-    chatTableView = (MQChatTableView*)view;
-}
-
 -(void)inputKeyboardWillShow:(NSNotification *)notification
 {
     NSDictionary *userInfo = [notification userInfo];
@@ -291,7 +343,7 @@ static CGFloat const kMQInputBarHorizontalSpacing = 0;
                 [self.delegate chatTableViewScrollToBottom];
             }
         }
-        //[self moveToolbarUp:keyboardHeight animate:[[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue]];
+        [self moveToolbarUp:keyboardHeight animate:[[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue]];
         [self moveToolbarUp:keyboardHeight animate:.25];
         [self toolbarDownBtnVisible];
     }
@@ -338,8 +390,8 @@ static CGFloat const kMQInputBarHorizontalSpacing = 0;
                                                      chatTableView.contentInset.bottom,
                                                      chatTableView.contentInset.right);
         }
-        self.superview.frame = CGRectMake(self.superview.frame.origin.x,
-                                          superViewFrame.origin.y - height,
+        superView.frame = CGRectMake(self.superview.frame.origin.x,
+                                          originalSuperViewFrame.origin.y - height,
                                           self.superview.frame.size.width,
                                           self.superview.frame.size.height);
     }];
@@ -351,7 +403,7 @@ static CGFloat const kMQInputBarHorizontalSpacing = 0;
 {
     [UIView animateWithDuration:animateDuration
                      animations:^{
-                         self.superview.frame  = superViewFrame;
+                         self.superview.frame  = originalSuperViewFrame;
                          chatTableView.contentInset = chatViewInsets;
                      } completion:^(BOOL finished) {
                          isInputBarUp = NO;
@@ -371,7 +423,6 @@ static CGFloat const kMQInputBarHorizontalSpacing = 0;
             if ([self.delegate respondsToSelector:@selector(sendTextMessage:)]) {
                 if([self.delegate sendTextMessage:self.textView.text]) {
                     [self.textView setText:@""];
-                    thisFrame = self.frame;
                 }
             }
         }
@@ -389,7 +440,9 @@ static CGFloat const kMQInputBarHorizontalSpacing = 0;
 
 -(void)toolbarDownBtnVisible
 {
-    if (!self.recordButtonVisible) return;
+    if (!enableRecord) {
+        return;
+    }
     
     UIInterfaceOrientation statusBarOrientation = [UIApplication sharedApplication].statusBarOrientation;
     if (statusBarOrientation == UIInterfaceOrientationLandscapeLeft || statusBarOrientation == UIInterfaceOrientationLandscapeRight) {
@@ -409,7 +462,12 @@ static CGFloat const kMQInputBarHorizontalSpacing = 0;
 -(void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
 {
     float diff     = (self.textView.frame.size.height - height);
-    chatTableView.frame = CGRectMake(chatTableView.frame.origin.x, chatTableView.frame.origin.y + diff, chatTableView.frame.size.width, chatTableView.frame.size.height);
+    //确保tableView的y不大于原始的y
+    CGFloat tableViewOriginY = chatTableView.frame.origin.y + diff;
+    if (tableViewOriginY > originalChatViewFrame.origin.y) {
+        tableViewOriginY = originalChatViewFrame.origin.y;
+    }
+    chatTableView.frame = CGRectMake(chatTableView.frame.origin.x, tableViewOriginY, chatTableView.frame.size.width, chatTableView.frame.size.height);
     self.frame     = CGRectMake(0, self.frame.origin.y + diff, self.frame.size.width, self.frame.size.height - diff);
     
     //居中

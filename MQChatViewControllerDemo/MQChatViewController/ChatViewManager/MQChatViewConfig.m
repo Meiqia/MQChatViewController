@@ -30,8 +30,10 @@
 
 - (void)setConfigToDefault {
     self.chatViewFrame = [MQDeviceFrameUtil getDeviceScreenRect];
-#warning 这里增加正则表达式
-    self.chatRegexs = [[NSDictionary alloc] init];
+
+    self.numberRegexs = [[NSMutableArray alloc] initWithArray:@[@"^(\\d{3,4}-?)\\d{7,8}$", @"^1[3|4|5|7|8]\\d{9}", @"[1-9]\\d{4,10}"]];
+    self.linkRegexs   = [[NSMutableArray alloc] initWithArray:@[@"((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)|(www.[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)"]];
+    self.emailRegexs  = [[NSMutableArray alloc] initWithArray:@[@"[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}"]];
     
     self.agentOnlineTipText = @"客服上线了";
     self.agentOfflineTipText = @"客服下线了";

@@ -17,6 +17,7 @@
 #import "MQMessageDateCellModel.h"
 #import <UIKit/UIKit.h>
 #import "MQToast.h"
+#import "VoiceConverter.h"
 
 #ifdef INCLUDE_MEIQIA_SDK
 #import "MQManager.h"
@@ -29,7 +30,11 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 
 #ifdef INCLUDE_MEIQIA_SDK
-@interface MQChatViewModel() <MQMessageDelegate>
+@interface MQChatViewModel() <MQMessageDelegate, MQCellModelDelegate>
+
+@end
+#else
+@interface MQChatViewModel() <MQCellModelDelegate>
 
 @end
 #endif
@@ -100,15 +105,19 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 /**
  * 发送语音消息
  */
-- (void)sendVoiceMessageWithVoice:(NSData *)voiceData {
-    MQVoiceMessage *message = [[MQVoiceMessage alloc] initWithVoiceData:voiceData];
+- (void)sendVoiceMessageWithAMRFilePath:(NSString *)filePath {
+#ifdef INCLUDE_MEIQIA_SDK
+    NSData *amrData = [NSData dataWithContentsOfFile:filePath];
+    [MQManager sendAudioMessage:amrData delegate:self];
+#else
+    //将AMR格式转换成WAV格式，以便使iPhone能播放
+    NSData *wavData = [self convertToWAVDataWithAMRFilePath:filePath];
+    MQVoiceMessage *message = [[MQVoiceMessage alloc] initWithVoiceData:wavData];
     MQVoiceCellModel *cellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth];
     [self generateMessageDateCellWithCurrentCellModel:cellModel];
     [self.cellModels addObject:cellModel];
     [self reloadChatTableView];
-#ifdef INCLUDE_MEIQIA_SDK
-    [MQManager sendAudioMessage:voiceData delegate:self];
-#else
+
     //模仿发送成功
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         cellModel.sendType = MQChatCellSended;
@@ -162,19 +171,19 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 }
 
 /**
- * 从cellModels中获取到业务相关的cellModel，即text, image, voice的时间；
+ * 从cellModels中获取到业务相关的cellModel，即text, image, voice等；
  */
 - (id<MQCellModelProtocol>)getBussinessCellModelWithIndex:(NSInteger)index {
     if (self.cellModels.count <= index) {
         return nil;
     }
     id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index];
-    if ([cellModel isKindOfClass:[MQTextCellModel class]] || [cellModel isKindOfClass:[MQImageCellModel class]] || [cellModel isKindOfClass:[MQVoiceCellModel class]]){
+    //判断获取到的cellModel是否是业务相关的cell，如果不是则继续往前取
+    if ([cellModel isServiceRelatedCell]){
         return cellModel;
     }
     [self getBussinessCellModelWithIndex:index - 1];
     return nil;
-    
 }
 
 /**
@@ -221,6 +230,41 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self reloadChatTableView];
 }
 #endif
+
+#pragma MQCellModelDelegate
+- (void)didUpdateCellDataWithMessageId:(NSString *)messageId {
+    //获取又更新的cell的index
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        for (NSInteger index=0; index<self.cellModels.count; index++) {
+            id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index];
+            if ([[cellModel getCellMessageId] isEqualToString:messageId]) {
+                //更新该cell
+                [self updateCellWithIndex:index];
+                break;
+            }
+        }
+    });
+}
+
+//通知tableView更新该indexPath的cell
+- (void)updateCellWithIndex:(NSInteger)index {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    if (self.delegate) {
+        if ([self.delegate respondsToSelector:@selector(didUpdateCellWithIndexPath:)]) {
+            [self.delegate didUpdateCellWithIndexPath:indexPath];
+        }
+    }
+}
+
+#pragma AMR to WAV转换
+- (NSData *)convertToWAVDataWithAMRFilePath:(NSString *)amrFilePath {
+    NSString *tempPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    tempPath = [tempPath stringByAppendingPathComponent:@"record.wav"];
+    [VoiceConverter amrToWav:amrFilePath wavSavePath:tempPath];
+    NSData *wavData = [NSData dataWithContentsOfFile:tempPath];
+    [[NSFileManager defaultManager] removeItemAtPath:tempPath error:nil];
+    return wavData;
+}
 
 
 @end
