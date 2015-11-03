@@ -10,7 +10,7 @@
 #import "MQChatBaseCell.h"
 #import "MQCellModelProtocol.h"
 
-@interface MQChatViewTableDataSource() 
+@interface MQChatViewTableDataSource()
 
 @end
 
@@ -28,16 +28,22 @@
 }
 
 #pragma UITableViewDataSource
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView
+ numberOfRowsInSection:(NSInteger)section
+{
     return [chatViewModel.cellModels count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     id<MQCellModelProtocol> cellModel = [chatViewModel.cellModels objectAtIndex:indexPath.row];
     NSString *cellModelName = NSStringFromClass([cellModel class]);
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellModelName];
     if (cell == nil){
         cell = [cellModel getCellWithReuseIdentifier:cellModelName];
+        MQChatBaseCell *chatCell = (MQChatBaseCell*)cell;
+        chatCell.chatCellDelegate = self.chatCellDelegate;
     }
     if (![cell isKindOfClass:[MQChatBaseCell class]]) {
         NSAssert(NO, @"ChatTableDataSource的cellForRow中，没有返回正确的cell类型");

@@ -19,7 +19,7 @@
 
 static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
-@interface MQChatViewController () <UITableViewDelegate, MQChatViewModelDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatAudioRecorderDelegate, MQChatTableViewDelegate>
+@interface MQChatViewController () <UITableViewDelegate, MQChatViewModelDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatAudioRecorderDelegate, MQChatTableViewDelegate, MQChatCellDelegate>
 
 @end
 
@@ -44,20 +44,24 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     // Do any additional setup after loading the view.
     self.automaticallyAdjustsScrollViewInsets = false;
     
-//    [self setViewGesture];
     [self setNavBar];
     [self initChatTableView];
     [self initChatViewModel];
     [self initInputBar];
-    tableDataSource = [[MQChatViewTableDataSource alloc] initWithTableView:self.chatTableView chatViewModel:chatViewModel];
-    self.chatTableView.dataSource = tableDataSource;
+    [self initTableViewDataSource];
     chatViewModel.chatViewWidth = self.chatTableView.frame.size.width;
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [chatViewConfig setConfigToDefault];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"MQAudioPlayerDidInterrupt" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:MQAudioPlayerDidInterruptNotification object:nil];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -65,6 +69,15 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     // Dispose of any resources that can be recreated.
 }
 
+#pragma 添加消息通知的observer
+- (void)setNotificationObserver {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resignKeyboardFirstResponder:) name:MQChatViewKeyboardResignFirstResponderNotification object:nil];
+}
+
+#pragma 消息通知observer的处理函数
+- (void)resignKeyboardFirstResponder:(NSNotification *)notification {
+    [self.view endEditing:true];
+}
 
 #pragma MQChatTableViewDelegate
 - (void)didTapChatTableView:(UITableView *)tableView {
@@ -95,6 +108,13 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)initChatViewModel {
     chatViewModel = [[MQChatViewModel alloc] init];
     chatViewModel.delegate = self;
+}
+
+#pragma 初始化tableView dataSource
+- (void)initTableViewDataSource {
+    tableDataSource = [[MQChatViewTableDataSource alloc] initWithTableView:self.chatTableView chatViewModel:chatViewModel];
+    tableDataSource.chatCellDelegate = self;
+    self.chatTableView.dataSource = tableDataSource;
 }
 
 #pragma 初始化所有Views
@@ -194,8 +214,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     }
     
     //停止播放的通知
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"MQAudioPlayerDidInterrupt" object:nil];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"MQAudioPlayerDidInterrupt" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:MQAudioPlayerDidInterruptNotification object:nil];
     
 #warning 这里生成录音开始的回调给开发者
     //    if(self.delegate && [self.delegate respondsToSelector:@selector(recordWillBegin)]){
@@ -215,8 +234,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
         [recordView startRecording];
     }
     
-    [self.chatTableView setScrollEnabled:NO];
-    
 #warning 这里增加语音输入的数据处理
     if (!audioRecorder) {
         audioRecorder = [[MQChatAudioRecorder alloc] init];
@@ -227,7 +244,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 -(void)finishRecord:(CGPoint)point {
-    [recordView stopRecord];
     [audioRecorder finishRecording];
 }
 
@@ -246,7 +262,10 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 #pragma MQChatAudioRecorderDelegate
 - (void)didFinishRecordingWithAMRFilePath:(NSString *)filePath {
+    //通知录音界面已完成录音
+    [recordView stopRecord];
     [chatViewModel sendVoiceMessageWithAMRFilePath:filePath];
+    [self chatTableViewScrollToBottom];
 }
 
 - (void)didUpdateAudioVolume:(Float32)volume {
@@ -278,7 +297,10 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
-
+#pragma MQChatCellDelegate
+- (void)showToastViewInChatView:(NSString *)toastText {
+    [MQToast showToast:toastText duration:1.0 window:self.view];
+}
 
 
 

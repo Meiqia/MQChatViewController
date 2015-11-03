@@ -22,12 +22,25 @@
 
 @end
 
+/**
+ * 所有cell的代理方法
+ */
+@protocol MQChatCellDelegate <NSObject>
+
+- (void)showToastViewInChatView:(NSString *)toastText;
+
+@end
+
 
 /**
  * MQChatBaseCell定义了客服聊天界面所有cell的父cell，开发者自定义的Cell请继承该Cell
  */
 @interface MQChatBaseCell : UITableViewCell <MQChatCellProtocol>
 
+/**
+ *  ChatCell的代理
+ */
+@property (nonatomic, weak) id<MQChatCellDelegate> chatCellDelegate;
 
 /**
  *  发送过来的消息气泡图片
@@ -45,7 +58,9 @@
 @property (nonatomic, assign) CGRect cellFrame;
 
 
-
+- (void)showMenuControllerInView:(UIView *)inView
+                      targetRect:(CGRect)targetRect
+                   menuItemsName:(NSDictionary *)menuItemsName;
 
 
 @end

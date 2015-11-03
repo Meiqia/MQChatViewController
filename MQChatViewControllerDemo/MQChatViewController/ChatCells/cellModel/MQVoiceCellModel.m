@@ -155,6 +155,8 @@ static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
 - (void)setModelsWithMessage:(MQVoiceMessage *)message
                    cellWidth:(CGFloat)cellWidth
 {
+    //由于语音可能是小数，故+1
+    self.voiceDuration++ ;
     //语音图片size
     UIImage *voiceImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQBubble_voice_animation_gray3"]];
     CGSize voiceImageSize = voiceImage.size;

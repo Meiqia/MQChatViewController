@@ -29,6 +29,8 @@
         [self.contentView addSubview:avatarImageView];
         //初始化气泡
         bubbleImageView = [[UIImageView alloc] init];
+        UILongPressGestureRecognizer *longPressBubbleGesture=[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressBubbleView:)];
+        [bubbleImageView addGestureRecognizer:longPressBubbleGesture];
         [self.contentView addSubview:bubbleImageView];
         //初始化indicator
         sendingIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -97,5 +99,43 @@
         failureImageView.frame = cellModel.sendFailureFrame;
     }
 }
+
+
+#pragma 长按事件
+- (void)longPressBubbleView:(id)sender {
+    if (((UILongPressGestureRecognizer*)sender).state == UIGestureRecognizerStateBegan) {
+        [self showMenuControllerInView:self targetRect:bubbleImageView.frame menuItemsName:@{@"imageCopy" : bubbleImageView.image}];
+
+//        [self.chatCellDelegate didLongPressToShowMenuAtMQChatCell:self targetRect:bubbleImageView.frame menuItemsName:@{@"imageCopy" : bubbleImageView.image}];
+    }
+}
+
+
+//- (void)showMenueController {
+//    [self becomeFirstResponder];
+//    UIMenuController *menu = [UIMenuController sharedMenuController];
+//    UIMenuItem *copyItem = [[UIMenuItem alloc] initWithTitle:@"保存" action:@selector(copySender:)];
+//    [menu setMenuItems:@[copyItem]];
+//    [menu setTargetRect:bubbleImageView.frame inView:self];
+//    [menu setMenuVisible:YES animated:YES];
+//}
+//
+//#pragma mark 剪切板代理方法
+//-(BOOL)canBecomeFirstResponder {
+//    return YES;
+//}
+//
+//-(BOOL)canPerformAction:(SEL)action withSender:(id)sender {
+//    return (action==@selector(copySender:));
+//}
+//
+//-(void)copySender:(id)sender {
+//    UIImageWriteToSavedPhotosAlbum(bubbleImageView.image, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
+//}
+//
+//- (void)image: (UIImage *) image didFinishSavingWithError: (NSError *) error contextInfo: (void *) contextInfo
+//{
+//   
+//}
 
 @end

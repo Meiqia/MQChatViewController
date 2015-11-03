@@ -29,12 +29,11 @@
 }
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"MQAudioPlayerDidInterrupt" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MQAudioPlayerDidInterruptNotification object:nil];
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-//        isVoicePlaying = false;
         //初始化头像
         avatarImageView = [[UIImageView alloc] init];
         avatarImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -66,7 +65,7 @@
         loadingIndicator.hidden = YES;
         [bubbleImageView addSubview:loadingIndicator];
         //注册声音中断的通知
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopVoiceAnimation) name:@"MQAudioPlayerDidInterrupt" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopVoiceAnimation) name:MQAudioPlayerDidInterruptNotification object:nil];
     }
     return self;
 }
@@ -76,7 +75,7 @@
     if (!voiceData) {
         return ;
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"MQAudioPlayerDidInterrupt" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:MQAudioPlayerDidInterruptNotification object:nil];
     audioPlayer = [MQChatAudioPlayer sharedInstance];
     audioPlayer.delegate = self;
     [audioPlayer stopSound];
@@ -173,6 +172,8 @@
  */
 - (void)playVoice {
     [voiceImageView startAnimating];
+    //关闭键盘通知
+    [[NSNotificationCenter defaultCenter] postNotificationName:MQChatViewKeyboardResignFirstResponderNotification object:nil];
 }
 
 /**

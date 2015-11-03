@@ -36,6 +36,8 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
         //初始化气泡
         bubbleImageView = [[UIImageView alloc] init];
         bubbleImageView.userInteractionEnabled = true;
+        UILongPressGestureRecognizer *longPressBubbleGesture=[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressBubbleView:)];
+        [bubbleImageView addGestureRecognizer:longPressBubbleGesture];
         [self.contentView addSubview:bubbleImageView];
         //初始化文字
         textLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
@@ -133,6 +135,12 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
 }
 
 #pragma TTTAttributedLabelDelegate 点击事件
+- (void)attributedLabel:(TTTAttributedLabel *)label
+didLongPressLinkWithPhoneNumber:(NSString *)phoneNumber
+                atPoint:(CGPoint)point {
+    [self showMenueController];
+}
+
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithPhoneNumber:(NSString *)phoneNumber {
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:phoneNumber delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:[NSString stringWithFormat:@"拨打至 %@", phoneNumber], [NSString stringWithFormat:@"短信至 %@", phoneNumber], @"复制", nil];
     sheet.tag = kMQTextCellSelectedNumberActionSheetTag;
@@ -159,6 +167,7 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
     if (buttonIndex == actionSheet.cancelButtonIndex) {
         return;
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:MQChatViewKeyboardResignFirstResponderNotification object:nil];
     switch (actionSheet.tag) {
         case kMQTextCellSelectedNumberActionSheetTag: {
             NSLog(@"点击了一个数字");
@@ -215,5 +224,43 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
             break;
     }
 }
+
+#pragma 长按事件
+- (void)longPressBubbleView:(id)sender {
+    if (((UILongPressGestureRecognizer*)sender).state == UIGestureRecognizerStateBegan) {
+        [self showMenueController];
+    }
+}
+
+- (void)showMenueController {
+    [self showMenuControllerInView:self targetRect:bubbleImageView.frame menuItemsName:@{@"textCopy" : textLabel.text}];    
+    
+}
+
+//- (void)showMenueController {
+//    [self becomeFirstResponder];
+//    UIMenuController *menu = [UIMenuController sharedMenuController];
+//    UIMenuItem *copyItem = [[UIMenuItem alloc] initWithTitle:@"复制" action:@selector(copyTextSender:)];
+//    [menu setMenuItems:@[copyItem]];
+//    [menu setTargetRect:bubbleImageView.frame inView:self];
+//    [menu setMenuVisible:YES animated:YES];
+//}
+
+//#pragma mark 剪切板代理方法
+//-(BOOL)canBecomeFirstResponder {
+//    return YES;
+//}
+//
+//-(BOOL)canPerformAction:(SEL)action withSender:(id)sender {
+//    return (action==@selector(copySender:));
+//}
+//
+//-(void)copySender:(id)sender {
+//    UIPasteboard *pasteboard=[UIPasteboard generalPasteboard];
+//    pasteboard.string = textLabel.text;
+//}
+
+
+
 
 @end
