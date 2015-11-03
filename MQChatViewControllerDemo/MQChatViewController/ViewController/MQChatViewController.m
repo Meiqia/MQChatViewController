@@ -19,7 +19,7 @@
 
 static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
-@interface MQChatViewController () <UITableViewDelegate, MQChatViewModelDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatAudioRecorderDelegate>
+@interface MQChatViewController () <UITableViewDelegate, MQChatViewModelDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatAudioRecorderDelegate, MQChatTableViewDelegate>
 
 @end
 
@@ -44,7 +44,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     // Do any additional setup after loading the view.
     self.automaticallyAdjustsScrollViewInsets = false;
     
-    [self setViewGesture];
+//    [self setViewGesture];
     [self setNavBar];
     [self initChatTableView];
     [self initChatViewModel];
@@ -65,15 +65,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     // Dispose of any resources that can be recreated.
 }
 
-#pragma 对view添加gesture
-- (void)setViewGesture {
-    UITapGestureRecognizer *tapViewGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapChatView:)];
-    tapViewGesture.cancelsTouchesInView = false;
-    self.view.userInteractionEnabled = true;
-    [self.view addGestureRecognizer:tapViewGesture];
-}
 
-- (void)tapChatView:(id)sender {
+#pragma MQChatTableViewDelegate
+- (void)didTapChatTableView:(UITableView *)tableView {
     [self.view endEditing:true];
 }
 
@@ -113,8 +107,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
         chatViewConfig.chatViewFrame = CGRectMake(0, navBarRect.origin.y+navBarRect.size.height, navBarRect.size.width, [MQDeviceFrameUtil getDeviceScreenRect].size.height - navBarRect.origin.y - navBarRect.size.height - kMQChatViewInputBarHeight);
     }
     self.chatTableView = [[MQChatTableView alloc] initWithFrame:chatViewConfig.chatViewFrame style:UITableViewStylePlain];
-    self.chatTableView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
-    self.chatTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.chatTableView.delegate = self;
     [self.view addSubview:self.chatTableView];
 }
@@ -147,9 +139,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 - (void)didUpdateCellWithIndexPath:(NSIndexPath *)indexPath {
-    [self.chatTableView beginUpdates];
-    [self.chatTableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    [self.chatTableView endUpdates];
+    [self.chatTableView updateTableViewAtIndexPath:indexPath];
 }
 
 - (void)reloadChatTableView {
