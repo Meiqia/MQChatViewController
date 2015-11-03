@@ -34,7 +34,7 @@
 /**
  * @brief 图片path
  */
-@property (nonatomic, readonly, copy) NSString *imagePath;
+//@property (nonatomic, readonly, copy) NSString *imagePath;
 
 /**
  * @brief 图片image(当imagePath不存在时使用)
@@ -52,9 +52,9 @@
 @property (nonatomic, readonly, copy) NSString *avatarPath;
 
 /**
- * @brief 发送者的头像的图片 (如果在头像path不存在的情况下，才使用这个属性)
+ * @brief 发送者的头像的图片 
  */
-@property (nonatomic, readonly, copy) UIImage *avatarLocalImage;
+@property (nonatomic, readonly, copy) UIImage *avatarImage;
 
 /**
  * @brief 聊天气泡的image（该气泡image已经进行了resize）
@@ -102,7 +102,9 @@
 /**
  *  根据MQMessage内容来生成cell model
  */
-- (MQImageCellModel *)initCellModelWithMessage:(MQImageMessage *)message cellWidth:(CGFloat)cellWidth;
+- (MQImageCellModel *)initCellModelWithMessage:(MQImageMessage *)message
+                                     cellWidth:(CGFloat)cellWidth
+                                      delegate:(id<MQCellModelDelegate>)delegator;
 
 
 @end

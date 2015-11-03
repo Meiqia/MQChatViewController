@@ -50,7 +50,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [self initInputBar];
     [self initTableViewDataSource];
     chatViewModel.chatViewWidth = self.chatTableView.frame.size.width;
-    
+
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -127,6 +127,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
         chatViewConfig.chatViewFrame = CGRectMake(0, navBarRect.origin.y+navBarRect.size.height, navBarRect.size.width, [MQDeviceFrameUtil getDeviceScreenRect].size.height - navBarRect.origin.y - navBarRect.size.height - kMQChatViewInputBarHeight);
     }
     self.chatTableView = [[MQChatTableView alloc] initWithFrame:chatViewConfig.chatViewFrame style:UITableViewStylePlain];
+    self.chatTableView.chatTableViewDelegate = self;
     self.chatTableView.delegate = self;
     [self.view addSubview:self.chatTableView];
 }
@@ -159,7 +160,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 - (void)didUpdateCellWithIndexPath:(NSIndexPath *)indexPath {
-    [self.chatTableView updateTableViewAtIndexPath:indexPath];
+    [self.chatTableView reloadData];
+//    [self tableView:self.chatTableView heightForRowAtIndexPath:indexPath];
+//    [self.chatTableView updateTableViewAtIndexPath:indexPath];
 }
 
 - (void)reloadChatTableView {
@@ -302,6 +305,20 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [MQToast showToast:toastText duration:1.0 window:self.view];
 }
 
+- (void)resendMessageInCell:(UITableViewCell *)cell resendData:(NSDictionary *)resendData {
+    //先删除之前的消息
+    NSIndexPath *indexPath = [self.chatTableView indexPathForCell:cell];
+    [chatViewModel removeCellModelAtIndex:indexPath.row];
+    if (resendData[@"text"]) {
+        [chatViewModel sendTextMessageWithContent:resendData[@"text"]];
+    }
+    if (resendData[@"image"]) {
+        [chatViewModel sendImageMessageWithImage:resendData[@"image"]];
+    }
+    if (resendData[@"voice"]) {
+        [chatViewModel sendVoiceMessageWithAMRFilePath:resendData[@"voice"]];
+    }
+}
 
 
 @end

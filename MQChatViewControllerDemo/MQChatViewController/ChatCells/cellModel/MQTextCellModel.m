@@ -37,9 +37,9 @@
 @property (nonatomic, readwrite, copy) NSString *avatarPath;
 
 /**
- * @brief 发送者的头像的图片名字 (如果在头像path不存在的情况下，才使用这个属性)
+ * @brief 发送者的头像的图片名字
  */
-@property (nonatomic, readwrite, copy) UIImage *avatarLocalImage;
+@property (nonatomic, readwrite, copy) UIImage *avatarImage;
 
 /**
  * @brief 聊天气泡的image
@@ -112,9 +112,14 @@
         self.sendType = MQChatCellSending;
         self.cellText = message.content;
         self.date = message.date;
-        self.avatarLocalImage = [MQChatViewConfig sharedConfig].agentDefaultAvatarImage;
-        if (message.userAvatarPath) {
+        if (message.userAvatarPath.length > 0) {
             self.avatarPath = message.userAvatarPath;
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:message.userAvatarPath]];
+                self.avatarImage = [UIImage imageWithData:imageData];
+            });
+        } else {
+            self.avatarImage = [MQChatViewConfig sharedConfig].agentDefaultAvatarImage;
         }
         
         //文字最大宽度
@@ -166,7 +171,8 @@
         self.sendingIndicatorFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-indicatorView.frame.size.width, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-indicatorView.frame.size.height/2, indicatorView.frame.size.width, indicatorView.frame.size.height);
         //发送失败的图片frame
         UIImage *failureImage = [MQChatViewConfig sharedConfig].messageSendFailureImage;
-        self.sendFailureFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-failureImage.size.width, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-failureImage.size.height/2, failureImage.size.width, failureImage.size.height);
+        CGSize failureSize = CGSizeMake(ceil(failureImage.size.width * 2 / 3), ceil(failureImage.size.height * 2 / 3));
+        self.sendFailureFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-failureSize.width, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-failureSize.height/2, failureSize.width, failureSize.height);
         
         //计算cell的高度
         self.cellHeight = self.bubbleImageFrame.origin.y + self.bubbleImageFrame.size.height + kMQCellAvatarToVerticalEdgeSpacing;

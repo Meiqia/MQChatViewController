@@ -38,6 +38,9 @@
         [self.contentView addSubview:sendingIndicator];
         //初始化出错image
         failureImageView = [[UIImageView alloc] initWithImage:[MQChatViewConfig sharedConfig].messageSendFailureImage];
+        UITapGestureRecognizer *tapFailureImageGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapFailImage:)];
+        failureImageView.userInteractionEnabled = true;
+        [failureImageView addGestureRecognizer:tapFailureImageGesture];
         [self.contentView addSubview:failureImageView];
         //初始化加载数据的indicator
         loadingIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -56,10 +59,9 @@
     MQImageCellModel *cellModel = (MQImageCellModel *)model;
 
     //刷新头像
-    if (cellModel.avatarPath.length == 0) {
-        avatarImageView.image = cellModel.avatarLocalImage;
+    if (cellModel.avatarImage) {
+        avatarImageView.image = cellModel.avatarImage;
     } else {
-#warning 使用SDWebImage或自己写获取远程图片的方法
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:cellModel.avatarPath]];
             avatarImageView.image = [UIImage imageWithData:imageData];
@@ -74,6 +76,8 @@
     loadingIndicator.frame = cellModel.loadingIndicatorFrame;
     if (cellModel.image) {
         bubbleImageView.image = cellModel.image;
+        [bubbleImageView setupImageViewer];
+        [MQImageUtil makeMaskView:bubbleImageView withImage:cellModel.bubbleImage];
         loadingIndicator.hidden = true;
         [loadingIndicator stopAnimating];
     } else {
@@ -81,8 +85,6 @@
         loadingIndicator.hidden = false;
         [loadingIndicator startAnimating];
     }
-    [bubbleImageView setupImageViewer];
-    [MQImageUtil makeMaskView:bubbleImageView withImage:cellModel.bubbleImage];
     
     //刷新indicator
     sendingIndicator.hidden = true;
@@ -105,37 +107,23 @@
 - (void)longPressBubbleView:(id)sender {
     if (((UILongPressGestureRecognizer*)sender).state == UIGestureRecognizerStateBegan) {
         [self showMenuControllerInView:self targetRect:bubbleImageView.frame menuItemsName:@{@"imageCopy" : bubbleImageView.image}];
+    }
+}
 
-//        [self.chatCellDelegate didLongPressToShowMenuAtMQChatCell:self targetRect:bubbleImageView.frame menuItemsName:@{@"imageCopy" : bubbleImageView.image}];
+#pragma 点击发送失败消息，重新发送事件
+- (void)tapFailImage:(id)sender {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"重新发送吗？" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alertView show];
+}
+
+#pragma UIAlertViewDelegate
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        NSLog(@"重新发送");
+        [self.chatCellDelegate resendMessageInCell:self resendData:@{@"image" : bubbleImageView.image}];
     }
 }
 
 
-//- (void)showMenueController {
-//    [self becomeFirstResponder];
-//    UIMenuController *menu = [UIMenuController sharedMenuController];
-//    UIMenuItem *copyItem = [[UIMenuItem alloc] initWithTitle:@"保存" action:@selector(copySender:)];
-//    [menu setMenuItems:@[copyItem]];
-//    [menu setTargetRect:bubbleImageView.frame inView:self];
-//    [menu setMenuVisible:YES animated:YES];
-//}
-//
-//#pragma mark 剪切板代理方法
-//-(BOOL)canBecomeFirstResponder {
-//    return YES;
-//}
-//
-//-(BOOL)canPerformAction:(SEL)action withSender:(id)sender {
-//    return (action==@selector(copySender:));
-//}
-//
-//-(void)copySender:(id)sender {
-//    UIImageWriteToSavedPhotosAlbum(bubbleImageView.image, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
-//}
-//
-//- (void)image: (UIImage *) image didFinishSavingWithError: (NSError *) error contextInfo: (void *) contextInfo
-//{
-//   
-//}
 
 @end

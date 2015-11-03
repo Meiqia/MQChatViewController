@@ -40,6 +40,10 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
     BOOL enableRecord;
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (id)initWithFrame:(CGRect)frame
           superView:(UIView *)inputBarSuperView
           tableView:(MQChatTableView *)tableView

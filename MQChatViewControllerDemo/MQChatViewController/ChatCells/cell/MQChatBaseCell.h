@@ -29,6 +29,12 @@
 
 - (void)showToastViewInChatView:(NSString *)toastText;
 
+/**
+ * 该委托定义了cell中重新发送；
+ * @param resendData 重新发送的字典 [text/image/voice : data]
+ */
+- (void)resendMessageInCell:(UITableViewCell *)cell resendData:(NSDictionary *)resendData;
+
 @end
 
 

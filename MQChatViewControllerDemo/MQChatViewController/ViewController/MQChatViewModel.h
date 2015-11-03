@@ -73,6 +73,11 @@
  */
 - (void)sendUserInputtingWithContent:(NSString *)content;
 
+/**
+ * 删除对应的cellModel
+ */
+- (void)removeCellModelAtIndex:(NSInteger)index;
+
 #ifndef INCLUDE_MEIQIA_SDK
 /**
  * 使用MQChatViewControllerDemo的时候，调试用的方法，用于收取和上一个message一样的消息

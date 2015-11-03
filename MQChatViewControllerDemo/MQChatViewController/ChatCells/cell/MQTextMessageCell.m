@@ -15,7 +15,7 @@ static const NSInteger kMQTextCellSelectedUrlActionSheetTag = 2000;
 static const NSInteger kMQTextCellSelectedNumberActionSheetTag = 2001;
 static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
 
-@interface MQTextMessageCell() <TTTAttributedLabelDelegate, UIActionSheetDelegate>
+@interface MQTextMessageCell() <TTTAttributedLabelDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
 
 @end
 
@@ -54,6 +54,9 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
         [self.contentView addSubview:sendingIndicator];
         //初始化出错image
         failureImageView = [[UIImageView alloc] initWithImage:[MQChatViewConfig sharedConfig].messageSendFailureImage];
+        UITapGestureRecognizer *tapFailureImageGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapFailImage:)];
+        failureImageView.userInteractionEnabled = true;
+        [failureImageView addGestureRecognizer:tapFailureImageGesture];
         [self.contentView addSubview:failureImageView];
     }
     return self;
@@ -68,10 +71,13 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
     MQTextCellModel *cellModel = (MQTextCellModel *)model;
     
     //刷新头像
-    if (cellModel.avatarPath.length == 0) {
-        avatarImageView.image = cellModel.avatarLocalImage;
+    if (cellModel.avatarImage) {
+        avatarImageView.image = cellModel.avatarImage;
     } else {
-#warning 使用SDWebImage或自己写获取远程图片的方法
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:cellModel.avatarPath]];
+            avatarImageView.image = [UIImage imageWithData:imageData];
+        });
     }
     avatarImageView.frame = cellModel.avatarFrame;
     
@@ -237,29 +243,19 @@ didLongPressLinkWithPhoneNumber:(NSString *)phoneNumber
     
 }
 
-//- (void)showMenueController {
-//    [self becomeFirstResponder];
-//    UIMenuController *menu = [UIMenuController sharedMenuController];
-//    UIMenuItem *copyItem = [[UIMenuItem alloc] initWithTitle:@"复制" action:@selector(copyTextSender:)];
-//    [menu setMenuItems:@[copyItem]];
-//    [menu setTargetRect:bubbleImageView.frame inView:self];
-//    [menu setMenuVisible:YES animated:YES];
-//}
+#pragma 点击发送失败消息，重新发送事件
+- (void)tapFailImage:(id)sender {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"重新发送吗？" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alertView show];
+}
 
-//#pragma mark 剪切板代理方法
-//-(BOOL)canBecomeFirstResponder {
-//    return YES;
-//}
-//
-//-(BOOL)canPerformAction:(SEL)action withSender:(id)sender {
-//    return (action==@selector(copySender:));
-//}
-//
-//-(void)copySender:(id)sender {
-//    UIPasteboard *pasteboard=[UIPasteboard generalPasteboard];
-//    pasteboard.string = textLabel.text;
-//}
-
+#pragma UIAlertViewDelegate
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        NSLog(@"重新发送");
+        [self.chatCellDelegate resendMessageInCell:self resendData:@{@"text" : textLabel.text}];
+    }
+}
 
 
 
