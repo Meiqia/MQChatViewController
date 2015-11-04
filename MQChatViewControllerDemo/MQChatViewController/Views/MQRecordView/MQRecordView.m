@@ -13,6 +13,8 @@
 #import "MQToast.h"
 #import "MQChatAudioRecorder.h"
 
+static CGFloat const kMQRecordViewDiameter = 150.0;
+
 @interface MQRecordView()<MQChatAudioRecorderDelegate>
 
 @end
@@ -31,6 +33,7 @@
     CGFloat recordTime; //录音时长
     NSTimer *recordTimer;
     MQChatAudioRecorder *audioRecorder;
+    
 }
 
 -(instancetype)initWithFrame:(CGRect)frame
@@ -78,15 +81,14 @@
 
 -(void)setupUI
 {
-    float recordViewWH = 150;
-    recordView.frame = CGRectMake((self.frame.size.width - recordViewWH) / 2,
-                                  (self.frame.size.height - recordViewWH) / 2,
-                                  recordViewWH, recordViewWH);
+    recordView.frame = CGRectMake((self.frame.size.width - kMQRecordViewDiameter) / 2,
+                                  (self.frame.size.height - kMQRecordViewDiameter) / 2,
+                                  kMQRecordViewDiameter, kMQRecordViewDiameter);
     self.marginBottom = self.frame.size.height - recordView.frame.origin.y - recordView.frame.size.height;
     recordView.alpha = 0;
     
     tipLabel.text = @"上滑手指,取消发送";
-    tipLabel.frame = CGRectMake(0, recordViewWH - 20 - 12, recordView.frame.size.width, 20);
+    tipLabel.frame = CGRectMake(0, kMQRecordViewDiameter - 20 - 12, recordView.frame.size.width, 20);
     
     volumeView.frame = CGRectMake((recordView.frame.size.width - 58)/2, 16, 58, 90);
     volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQRecord0"]];
@@ -252,6 +254,13 @@
     
 }
 
+/** 更新frame */
+- (void)updateFrame:(CGRect)frame {
+    self.frame = frame;
+    recordView.frame = CGRectMake((self.frame.size.width - kMQRecordViewDiameter) / 2,
+                                  (self.frame.size.height - kMQRecordViewDiameter) / 2,
+                                  kMQRecordViewDiameter, kMQRecordViewDiameter);
 
+}
 
 @end
