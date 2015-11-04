@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "MQChatViewModel.h"
 #import <UIKit/UIKit.h>
+#import "MQChatBaseCell.h"
 
 /**
  * @brief 客服聊天界面中的UITableView的datasource
@@ -16,5 +17,10 @@
 @interface MQChatViewTableDataSource : NSObject <UITableViewDataSource>
 
 - (instancetype)initWithTableView:(UITableView *)tableView  chatViewModel:(MQChatViewModel *)viewModel;
+
+/**
+ *  ChatCell的代理
+ */
+@property (nonatomic, weak) id<MQChatCellDelegate> chatCellDelegate;
 
 @end

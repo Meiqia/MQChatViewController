@@ -13,14 +13,17 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 
-@interface MQChatAudioRecorder()
+@interface MQChatAudioRecorder() <MLAudioRecorderDelegate>
 @property (nonatomic, strong) MLAudioRecorder *recorder;
 @property (nonatomic, strong) AmrRecordWriter *amrWriter;
 @property (nonatomic, strong) MLAudioMeterObserver *meterObserver;
 
 @end
 
-@implementation MQChatAudioRecorder
+@implementation MQChatAudioRecorder {
+    //是否取消了录音
+    BOOL isCancelRecording;
+}
 
 - (void)dealloc
 {
@@ -38,6 +41,7 @@
 }
 
 - (void)initRecorder {
+    isCancelRecording = false;
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
 
     //初始化amr recorder
@@ -56,7 +60,6 @@
                 [self.delegate didUpdateAudioVolume:volume];
             }
         }
-        NSLog(@"volume:%f",volume);
     };
     meterObserver.errorBlock = ^(NSError *error,MLAudioMeterObserver *meterObserver){
         [[[UIAlertView alloc]initWithTitle:@"抱歉，录音出现了点小问题-_-" message:error.userInfo[NSLocalizedDescriptionKey] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"知道了", nil]show];
@@ -74,9 +77,9 @@
         [[[UIAlertView alloc]initWithTitle:@"抱歉，录音出现了点小问题-_-" message:error.userInfo[NSLocalizedDescriptionKey] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"知道了", nil]show];
     };
 
-    //amr
     recorder.bufferDurationSeconds = 0.25;
     recorder.fileWriterDelegate = self.amrWriter;
+    recorder.delegate = self;
     self.recorder = recorder;
 
     //音频变化的系统通知
@@ -114,6 +117,7 @@
 - (void)cancelRecording {
     if (self.recorder.isRecording) {
         //取消录音
+        isCancelRecording = true;
         [self.recorder stopRecording];
     }
 }
@@ -122,13 +126,28 @@
     if (self.recorder.isRecording) {
         //取消录音
         [self.recorder stopRecording];
-        if (self.delegate) {
-            if ([self.delegate respondsToSelector:@selector(didFinishRecordingWithAMRFilePath:)]) {
-//                NSData *voiceData = [NSData dataWithContentsOfFile:self.amrWriter.filePath];
-                [self.delegate didFinishRecordingWithAMRFilePath:self.amrWriter.filePath];
+    }
+}
+
+- (void)didFinishRecord {
+    if (self.delegate) {
+        if ([self.delegate respondsToSelector:@selector(didFinishRecordingWithAMRFilePath:)]) {
+            if (isCancelRecording) {
+                isCancelRecording = false;
+                return ;
             }
+            [self.delegate didFinishRecordingWithAMRFilePath:self.amrWriter.filePath];
         }
     }
+}
+
+#pragma MLAudioRecorderDelegate
+- (void)recordError:(NSError *)error {
+    
+}
+
+- (void)recordStopped {
+    [self didFinishRecord];
 }
 
 

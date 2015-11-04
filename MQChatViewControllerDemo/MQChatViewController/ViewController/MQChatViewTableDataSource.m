@@ -10,34 +10,44 @@
 #import "MQChatBaseCell.h"
 #import "MQCellModelProtocol.h"
 
-@interface MQChatViewTableDataSource() 
+@interface MQChatViewTableDataSource()
+
+@property (nonatomic, weak) UITableView *chatTableView;
+@property (nonatomic, weak) MQChatViewModel *chatViewModel;
+
 
 @end
 
 @implementation MQChatViewTableDataSource {
-    UITableView *chatTableView;
-    MQChatViewModel *chatViewModel;
 }
 
 - (instancetype)initWithTableView:(UITableView *)tableView chatViewModel:(MQChatViewModel *)viewModel {
     if (self = [super init]) {
-        chatTableView = tableView;
-        chatViewModel = viewModel;
+        self.chatTableView = tableView;
+        self.chatViewModel = viewModel;
     }
     return self;
 }
 
 #pragma UITableViewDataSource
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [chatViewModel.cellModels count];
+- (NSInteger)tableView:(UITableView *)tableView
+ numberOfRowsInSection:(NSInteger)section
+{
+    return [self.chatViewModel.cellModels count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    id<MQCellModelProtocol> cellModel = [chatViewModel.cellModels objectAtIndex:indexPath.row];
+- (UITableViewCell *)tableView:(UITableView *)tableView
+         cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    id<MQCellModelProtocol> cellModel = [self.chatViewModel.cellModels objectAtIndex:indexPath.row];
     NSString *cellModelName = NSStringFromClass([cellModel class]);
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellModelName];
-    if (cell == nil){
-        cell = [cellModel getCellWithReuseIdentifier:cellModelName];
+    if (!cell){
+//        if (!(cell = [tableView cellForRowAtIndexPath:indexPath])) {
+            cell = [cellModel getCellWithReuseIdentifier:cellModelName];
+            MQChatBaseCell *chatCell = (MQChatBaseCell*)cell;
+            chatCell.chatCellDelegate = self.chatCellDelegate;
+//        }
     }
     if (![cell isKindOfClass:[MQChatBaseCell class]]) {
         NSAssert(NO, @"ChatTableDataSource的cellForRow中，没有返回正确的cell类型");

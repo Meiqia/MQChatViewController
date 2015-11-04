@@ -187,7 +187,6 @@ void inputBufferHandler(void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRe
 
 - (void)stopRecording
 {
-    //    DLOG(@"stopRecording");
     if (self.isRecording) {
         self.isRecording = NO;
         

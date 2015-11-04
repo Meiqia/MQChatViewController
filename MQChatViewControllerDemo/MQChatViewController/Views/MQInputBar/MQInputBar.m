@@ -16,11 +16,16 @@ static CGFloat const kMQInputBarHorizontalSpacing = 0;
 static NSString * const kMQInputBarRecordButtonConfirmText = @"按住 说话";
 static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
 
+@interface MQInputBar()
+
+//@property (nonatomic, weak) UIView *inputBarSuperView;
+
+@end
+
 @implementation MQInputBar
 {
     CGRect originalFrame;   //默认
     CGRect originalSuperViewFrame;  //默认
-    UIView *superView;
     CGRect originalChatViewFrame;
     CGRect originalTextViewFrame;   //textView的初始frame
     
@@ -35,6 +40,10 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
     BOOL enableRecord;
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (id)initWithFrame:(CGRect)frame
           superView:(UIView *)inputBarSuperView
           tableView:(MQChatTableView *)tableView
@@ -43,7 +52,7 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
     if (self = [super init]) {
         self.frame              = frame;
         originalFrame           = frame;
-        superView               = inputBarSuperView;
+//        self.superView               = inputBarSuperView;
         originalSuperViewFrame  = inputBarSuperView.frame;
         chatTableView           = tableView;
         originalChatViewFrame   = tableView.frame;
@@ -163,7 +172,7 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
 {
     [self textViewResignFirstResponder];
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:(id)self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"从相册选取",@"拍照", nil];
-    [sheet showInView:self.superview.superview];
+    [sheet showInView:self.superview];
 }
 
 -(void)toolbarDownClick
@@ -390,7 +399,7 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
                                                      chatTableView.contentInset.bottom,
                                                      chatTableView.contentInset.right);
         }
-        superView.frame = CGRectMake(self.superview.frame.origin.x,
+        self.superview.frame = CGRectMake(self.superview.frame.origin.x,
                                           originalSuperViewFrame.origin.y - height,
                                           self.superview.frame.size.width,
                                           self.superview.frame.size.height);

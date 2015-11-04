@@ -29,12 +29,11 @@
 }
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"MQAudioPlayerDidInterrupt" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MQAudioPlayerDidInterruptNotification object:nil];
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-//        isVoicePlaying = false;
         //初始化头像
         avatarImageView = [[UIImageView alloc] init];
         avatarImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -60,13 +59,16 @@
         [bubbleImageView addSubview:voiceImageView];
         //初始化出错image
         failureImageView = [[UIImageView alloc] initWithImage:[MQChatViewConfig sharedConfig].messageSendFailureImage];
+        UITapGestureRecognizer *tapFailureImageGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapFailImage:)];
+        failureImageView.userInteractionEnabled = true;
+        [failureImageView addGestureRecognizer:tapFailureImageGesture];
         [self.contentView addSubview:failureImageView];
         //初始化加载数据的indicator
         loadingIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         loadingIndicator.hidden = YES;
         [bubbleImageView addSubview:loadingIndicator];
         //注册声音中断的通知
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopVoiceAnimation) name:@"MQAudioPlayerDidInterrupt" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopVoiceAnimation) name:MQAudioPlayerDidInterruptNotification object:nil];
     }
     return self;
 }
@@ -76,7 +78,7 @@
     if (!voiceData) {
         return ;
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"MQAudioPlayerDidInterrupt" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:MQAudioPlayerDidInterruptNotification object:nil];
     audioPlayer = [MQChatAudioPlayer sharedInstance];
     audioPlayer.delegate = self;
     [audioPlayer stopSound];
@@ -97,10 +99,9 @@
     MQVoiceCellModel *cellModel = (MQVoiceCellModel *)model;
     
     //刷新头像
-    if (cellModel.avatarPath.length == 0) {
-        avatarImageView.image = cellModel.avatarLocalImage;
+    if (cellModel.avatarImage) {
+        avatarImageView.image = cellModel.avatarImage;
     } else {
-#warning 使用SDWebImage或自己写获取远程图片的方法
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:cellModel.avatarPath]];
             avatarImageView.image = [UIImage imageWithData:imageData];
@@ -173,6 +174,8 @@
  */
 - (void)playVoice {
     [voiceImageView startAnimating];
+    //关闭键盘通知
+    [[NSNotificationCenter defaultCenter] postNotificationName:MQChatViewKeyboardResignFirstResponderNotification object:nil];
 }
 
 /**
@@ -195,6 +198,28 @@
 
 - (void)MQAudioPlayerDidFinishPlay {
     [self stopVoiceAnimation];
+}
+
+#pragma 点击发送失败消息，重新发送事件
+- (void)tapFailImage:(id)sender {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"重新发送吗？" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alertView show];
+}
+
+#pragma UIAlertViewDelegate
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        NSLog(@"重新发送");
+        //将voiceData写进文件
+        NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        path = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.amr", (int)[NSDate date].timeIntervalSince1970]];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        [fileManager createFileAtPath:path contents:voiceData attributes:nil];
+        if (![fileManager fileExistsAtPath:path]) {
+            NSAssert(NO, @"将voiceData写进文件失败");
+        }
+        [self.chatCellDelegate resendMessageInCell:self resendData:@{@"voice" : path}];
+    }
 }
 
 

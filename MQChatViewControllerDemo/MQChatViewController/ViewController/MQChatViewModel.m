@@ -87,7 +87,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
  */
 - (void)sendImageMessageWithImage:(UIImage *)image {
     MQImageMessage *message = [[MQImageMessage alloc] initWithImage:image];
-    MQImageCellModel *cellModel = [[MQImageCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth];
+    MQImageCellModel *cellModel = [[MQImageCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
     [self generateMessageDateCellWithCurrentCellModel:cellModel];
     [self.cellModels addObject:cellModel];
     [self reloadChatTableView];
@@ -113,7 +113,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     //将AMR格式转换成WAV格式，以便使iPhone能播放
     NSData *wavData = [self convertToWAVDataWithAMRFilePath:filePath];
     MQVoiceMessage *message = [[MQVoiceMessage alloc] initWithVoiceData:wavData];
-    MQVoiceCellModel *cellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth];
+    MQVoiceCellModel *cellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
     [self generateMessageDateCellWithCurrentCellModel:cellModel];
     [self.cellModels addObject:cellModel];
     [self reloadChatTableView];
@@ -125,6 +125,22 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     });
 #endif
 }
+
+/**
+ * 删除对应的cellModel
+ */
+- (void)removeCellModelAtIndex:(NSInteger)index {
+    [self.cellModels removeObjectAtIndex:index];
+    //判断删除这个model的之前的model是否为date，如果是，则删除时间cellModel
+    if (index < 0 || self.cellModels.count <= index-1) {
+        return;
+    }
+    id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index-1];
+    if (cellModel && [cellModel isKindOfClass:[MQMessageDateCellModel class]]) {
+        [self.cellModels removeObjectAtIndex:index-1];
+    }
+}
+
 
 /**
  * 发送“用户正在输入”的消息
@@ -218,15 +234,25 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         MQImageCellModel *imageCellModel = (MQImageCellModel *)lastCellModel;
         MQImageMessage *message = [[MQImageMessage alloc] initWithImage:imageCellModel.image];
         message.fromType = MQMessageIncoming;
-        MQImageCellModel *newCellModel = [[MQImageCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth];
+        MQImageCellModel *newCellModel = [[MQImageCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
         [self.cellModels addObject:newCellModel];
     } else if ([lastCellModel isKindOfClass:[MQVoiceCellModel class]]) {
         MQVoiceCellModel *voiceCellModel = (MQVoiceCellModel *)lastCellModel;
         MQVoiceMessage *message = [[MQVoiceMessage alloc] initWithVoiceData:voiceCellModel.voiceData];
         message.fromType = MQMessageIncoming;
-        MQVoiceCellModel *newCellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth];
+        MQVoiceCellModel *newCellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
         [self.cellModels addObject:newCellModel];
     }
+    //初始随机数据
+    MQTextMessage *textMessage = [[MQTextMessage alloc] initWithContent:@"测试测试kjdjfkadsjlfkadfasdkf"];
+    textMessage.fromType = MQMessageIncoming;
+    MQTextCellModel *textCellModel = [[MQTextCellModel alloc] initCellModelWithMessage:textMessage cellWidth:self.chatViewWidth];
+    MQImageMessage *imageMessage = [[MQImageMessage alloc] initWithImagePath:@"https://s3.cn-north-1.amazonaws.com.cn/pics.meiqia.bucket/65135e4c4fde7b5f"];
+    imageMessage.fromType = MQMessageIncoming;
+    MQImageCellModel *imageCellModel = [[MQImageCellModel alloc] initCellModelWithMessage:imageMessage cellWidth:self.chatViewWidth delegate:self];
+    [self.cellModels addObject:textCellModel];
+    [self.cellModels addObject:imageCellModel];
+
     [self reloadChatTableView];
 }
 #endif

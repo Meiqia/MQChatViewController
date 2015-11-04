@@ -23,9 +23,7 @@
     UIImage* blurImage;
     BOOL isVisible;
     
-//    MQMessage* message;
-    
-    int recordTime; //录音时长
+    CGFloat recordTime; //录音时长
     NSTimer *recordTimer;
 }
 
@@ -133,13 +131,13 @@
 -(void)startRecording
 {
 //    message = [MCCore startRecordingAndSendAudioMessage:(id)self delegate:delegate];
-    recordTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(recodTime) userInfo:nil repeats:YES];
+    recordTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(recodTime) userInfo:nil repeats:YES];
     recordTime = 0;
 }
 
 -(void)recodTime
 {
-    recordTime++;
+    recordTime = recordTime + 0.1;
     if (recordTime >= 50) {
         volumeView.alpha = 0;
         if (LCDView) {
@@ -159,9 +157,10 @@
         LCDView.innerGlowColor = [UIColor grayColor];
         LCDView.innerGlowSize = 3.0;
         [recordView addSubview:LCDView];
-        LCDView.text = [NSString stringWithFormat:@"%i",60 - recordTime - 1];
+        LCDView.text = [NSString stringWithFormat:@"%d",(int)(60 - recordTime)];
         [LCDView resetSize];
     }
+    NSLog(@"recordView time = %f", recordTime);
 }
 
 -(void)setRecordingVolume:(float)volume
@@ -202,28 +201,14 @@
 {
     [recordTimer invalidate];
     recordTimer = nil;
-//    if (![MQFileUtil fileExistsAtPath:message.content] || [MQFileUtil audioDuration:message.content] < .5) {
-//        [MQToast showToast:@"录音时间太短" duration:1 window:self.superview];
-//        [self removeFromSuperview];
-//        return;
-//    }
     if (recordTime < 1) {
         [MQToast showToast:@"录音时间太短" duration:1 window:self.superview];
-//        [self removeFromSuperview];
-        self.hidden = YES;
-        return;
     }
-//    if (self.recordOverDelegate && [self.recordOverDelegate respondsToSelector:@selector(recordOver:)]) {
-//        [self.recordOverDelegate recordOver:message];
-//    }
-//    [self removeFromSuperview];
     self.hidden = YES;
+    recordTime = 0;
 }
 
--(void)revokerecord
-{
-//    [MCCore cancelSendAudioMessage];
-//    [self removeFromSuperview];
+-(void)revokerecord {
     self.hidden = YES;
 }
 

@@ -15,7 +15,7 @@ static const NSInteger kMQTextCellSelectedUrlActionSheetTag = 2000;
 static const NSInteger kMQTextCellSelectedNumberActionSheetTag = 2001;
 static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
 
-@interface MQTextMessageCell() <TTTAttributedLabelDelegate, UIActionSheetDelegate>
+@interface MQTextMessageCell() <TTTAttributedLabelDelegate, UIActionSheetDelegate, UIAlertViewDelegate>
 
 @end
 
@@ -36,6 +36,8 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
         //初始化气泡
         bubbleImageView = [[UIImageView alloc] init];
         bubbleImageView.userInteractionEnabled = true;
+        UILongPressGestureRecognizer *longPressBubbleGesture=[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressBubbleView:)];
+        [bubbleImageView addGestureRecognizer:longPressBubbleGesture];
         [self.contentView addSubview:bubbleImageView];
         //初始化文字
         textLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
@@ -52,6 +54,9 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
         [self.contentView addSubview:sendingIndicator];
         //初始化出错image
         failureImageView = [[UIImageView alloc] initWithImage:[MQChatViewConfig sharedConfig].messageSendFailureImage];
+        UITapGestureRecognizer *tapFailureImageGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapFailImage:)];
+        failureImageView.userInteractionEnabled = true;
+        [failureImageView addGestureRecognizer:tapFailureImageGesture];
         [self.contentView addSubview:failureImageView];
     }
     return self;
@@ -66,10 +71,13 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
     MQTextCellModel *cellModel = (MQTextCellModel *)model;
     
     //刷新头像
-    if (cellModel.avatarPath.length == 0) {
-        avatarImageView.image = cellModel.avatarLocalImage;
+    if (cellModel.avatarImage) {
+        avatarImageView.image = cellModel.avatarImage;
     } else {
-#warning 使用SDWebImage或自己写获取远程图片的方法
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:cellModel.avatarPath]];
+            avatarImageView.image = [UIImage imageWithData:imageData];
+        });
     }
     avatarImageView.frame = cellModel.avatarFrame;
     
@@ -133,6 +141,12 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
 }
 
 #pragma TTTAttributedLabelDelegate 点击事件
+- (void)attributedLabel:(TTTAttributedLabel *)label
+didLongPressLinkWithPhoneNumber:(NSString *)phoneNumber
+                atPoint:(CGPoint)point {
+    [self showMenueController];
+}
+
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithPhoneNumber:(NSString *)phoneNumber {
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:phoneNumber delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:[NSString stringWithFormat:@"拨打至 %@", phoneNumber], [NSString stringWithFormat:@"短信至 %@", phoneNumber], @"复制", nil];
     sheet.tag = kMQTextCellSelectedNumberActionSheetTag;
@@ -159,6 +173,7 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
     if (buttonIndex == actionSheet.cancelButtonIndex) {
         return;
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:MQChatViewKeyboardResignFirstResponderNotification object:nil];
     switch (actionSheet.tag) {
         case kMQTextCellSelectedNumberActionSheetTag: {
             NSLog(@"点击了一个数字");
@@ -215,5 +230,33 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
             break;
     }
 }
+
+#pragma 长按事件
+- (void)longPressBubbleView:(id)sender {
+    if (((UILongPressGestureRecognizer*)sender).state == UIGestureRecognizerStateBegan) {
+        [self showMenueController];
+    }
+}
+
+- (void)showMenueController {
+    [self showMenuControllerInView:self targetRect:bubbleImageView.frame menuItemsName:@{@"textCopy" : textLabel.text}];    
+    
+}
+
+#pragma 点击发送失败消息，重新发送事件
+- (void)tapFailImage:(id)sender {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"重新发送吗？" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alertView show];
+}
+
+#pragma UIAlertViewDelegate
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        NSLog(@"重新发送");
+        [self.chatCellDelegate resendMessageInCell:self resendData:@{@"text" : textLabel.text}];
+    }
+}
+
+
 
 @end
