@@ -75,7 +75,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 #else
     //模仿发送成功
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        cellModel.sendType = MQChatCellSended;
+        cellModel.sendType = MQChatCellSentFailure;
         [self reloadChatTableView];
     });
 #endif
@@ -127,9 +127,11 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 }
 
 /**
- * 删除对应的cellModel
+ * 重新发送消息
+ * @param index 需要重新发送的index
+ * @param resendData 重新发送的字典 [text/image/voice : data]
  */
-- (void)removeCellModelAtIndex:(NSInteger)index {
+- (void)resendMessageAtIndex:(NSInteger)index resendData:(NSDictionary *)resendData {
     [self.cellModels removeObjectAtIndex:index];
     //判断删除这个model的之前的model是否为date，如果是，则删除时间cellModel
     if (index < 0 || self.cellModels.count <= index-1) {
@@ -138,6 +140,16 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index-1];
     if (cellModel && [cellModel isKindOfClass:[MQMessageDateCellModel class]]) {
         [self.cellModels removeObjectAtIndex:index-1];
+    }
+    //重新发送
+    if (resendData[@"text"]) {
+        [self sendTextMessageWithContent:resendData[@"text"]];
+    }
+    if (resendData[@"image"]) {
+        [self sendImageMessageWithImage:resendData[@"image"]];
+    }
+    if (resendData[@"voice"]) {
+        [self sendVoiceMessageWithAMRFilePath:resendData[@"voice"]];
     }
 }
 
@@ -276,8 +288,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 - (void)updateCellWithIndex:(NSInteger)index {
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     if (self.delegate) {
-        if ([self.delegate respondsToSelector:@selector(didUpdateCellWithIndexPath:)]) {
-            [self.delegate didUpdateCellWithIndexPath:indexPath];
+        if ([self.delegate respondsToSelector:@selector(didUpdateCellModelWithIndexPath:)]) {
+            [self.delegate didUpdateCellModelWithIndexPath:indexPath];
         }
     }
 }

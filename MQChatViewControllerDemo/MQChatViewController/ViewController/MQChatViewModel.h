@@ -22,7 +22,7 @@
 /**
  *  已经更新了这条消息的数据，通知tableView刷新界面
  */
-- (void)didUpdateCellWithIndexPath:(NSIndexPath *)indexPath;
+- (void)didUpdateCellModelWithIndexPath:(NSIndexPath *)indexPath;
 
 /**
  *  通知viewController更新tableView；
@@ -74,9 +74,11 @@
 - (void)sendUserInputtingWithContent:(NSString *)content;
 
 /**
- * 删除对应的cellModel
+ * 重新发送消息
+ * @param index 需要重新发送的index
+ * @param resendData 重新发送的字典 [text/image/voice : data]
  */
-- (void)removeCellModelAtIndex:(NSInteger)index;
+- (void)resendMessageAtIndex:(NSInteger)index resendData:(NSDictionary *)resendData;
 
 #ifndef INCLUDE_MEIQIA_SDK
 /**

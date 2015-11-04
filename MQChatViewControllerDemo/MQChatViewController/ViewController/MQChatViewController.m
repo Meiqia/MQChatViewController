@@ -159,7 +159,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [self.chatTableView reloadData];
 }
 
-- (void)didUpdateCellWithIndexPath:(NSIndexPath *)indexPath {
+- (void)didUpdateCellModelWithIndexPath:(NSIndexPath *)indexPath {
     [self.chatTableView reloadData];
 //    [self tableView:self.chatTableView heightForRowAtIndexPath:indexPath];
 //    [self.chatTableView updateTableViewAtIndexPath:indexPath];
@@ -308,16 +308,8 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)resendMessageInCell:(UITableViewCell *)cell resendData:(NSDictionary *)resendData {
     //先删除之前的消息
     NSIndexPath *indexPath = [self.chatTableView indexPathForCell:cell];
-    [chatViewModel removeCellModelAtIndex:indexPath.row];
-    if (resendData[@"text"]) {
-        [chatViewModel sendTextMessageWithContent:resendData[@"text"]];
-    }
-    if (resendData[@"image"]) {
-        [chatViewModel sendImageMessageWithImage:resendData[@"image"]];
-    }
-    if (resendData[@"voice"]) {
-        [chatViewModel sendVoiceMessageWithAMRFilePath:resendData[@"voice"]];
-    }
+    [chatViewModel resendMessageAtIndex:indexPath.row resendData:resendData];
+    [self chatTableViewScrollToBottom];
 }
 
 
