@@ -25,13 +25,6 @@
 @end
 
 @interface MQInputBar : UIView
-{
-    UIButton *microphoneBtn;
-    UIButton *cameraBtn;
-    UIButton *recordBtn;
-    UIButton *toolbarDownBtn;
-    
-}
 
 @property(nonatomic,weak) id<MQInputBarDelegate> delegate;
 @property(nonatomic,strong) HPGrowingTextView* textView;
@@ -39,12 +32,16 @@
 
 - (id)initWithFrame:(CGRect)frame
           superView:(UIView *)inputBarSuperView
-          tableView:(MQChatTableView *)tableView
-    enableRecordBtn:(BOOL)enableRecordBtn;
+          tableView:(MQChatTableView *)tableView;
+
 -(void)textViewResignFirstResponder;
 
 -(void)moveToolbarUp:(float)height animate:(NSTimeInterval)duration;
 -(void)moveToolbarDown:(float)animateDuration;
 
 -(void)reRecordBtn;
+
+/** 更新frame */
+- (void)updateFrame:(CGRect)frame;
+
 @end

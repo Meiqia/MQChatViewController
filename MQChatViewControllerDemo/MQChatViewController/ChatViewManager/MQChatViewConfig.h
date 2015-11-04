@@ -21,6 +21,7 @@ static NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerD
  */
 @interface MQChatViewConfig : NSObject
 
+@property (nonatomic, assign) BOOL isCustomizedChatViewFrame;
 @property (nonatomic, assign) CGRect chatViewFrame;
 @property (nonatomic, strong) NSMutableArray *numberRegexs;
 @property (nonatomic, strong) NSMutableArray *linkRegexs;
@@ -38,6 +39,7 @@ static NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerD
 @property (nonatomic, assign) BOOL enableAgentAvatar;
 @property (nonatomic, assign) BOOL enableCustomRecordView;
 @property (nonatomic, assign) BOOL enableMessageSound;
+@property (nonatomic, assign) BOOL enableClientAvatar;
 
 @property (nonatomic, copy) UIColor *incomingMsgTextColor;
 @property (nonatomic, copy) UIColor *outgoingMsgTextColor;

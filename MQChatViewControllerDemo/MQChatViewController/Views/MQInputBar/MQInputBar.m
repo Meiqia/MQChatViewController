@@ -18,7 +18,7 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
 
 @interface MQInputBar()
 
-//@property (nonatomic, weak) UIView *inputBarSuperView;
+@property (nonatomic, weak) MQChatTableView *chatTableView;
 
 @end
 
@@ -36,8 +36,12 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
     float bullleViewHeigth; //真实可视区域
     CGFloat senderImageWidth;
     CGFloat textViewHeight;
-    MQChatTableView *chatTableView;
     BOOL enableRecord;
+    
+    UIButton *microphoneBtn;
+    UIButton *cameraBtn;
+    UIButton *recordBtn;
+    UIButton *toolbarDownBtn;
 }
 
 - (void)dealloc {
@@ -47,14 +51,13 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
 - (id)initWithFrame:(CGRect)frame
           superView:(UIView *)inputBarSuperView
           tableView:(MQChatTableView *)tableView
-    enableRecordBtn:(BOOL)enableRecordBtn
 {
     if (self = [super init]) {
         self.frame              = frame;
         originalFrame           = frame;
 //        self.superView               = inputBarSuperView;
         originalSuperViewFrame  = inputBarSuperView.frame;
-        chatTableView           = tableView;
+        self.chatTableView           = tableView;
         originalChatViewFrame   = tableView.frame;
 
         senderImageWidth = [MQChatViewConfig sharedConfig].photoSenderImage.size.width;
@@ -76,9 +79,8 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
         self.textView.layer.borderWidth     = 1;
         self.textView.layer.cornerRadius    = 4;
         
-        enableRecord = false;
-        if (enableRecordBtn) {
-            enableRecord = true;
+        enableRecord = [MQChatViewConfig sharedConfig].enableVoiceMessage;
+        if (enableRecord) {
             [self initRecordBtn];
             
             self.textView.frame     = recordBtn.frame;
@@ -191,7 +193,7 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
         [self textViewResignFirstResponder];
         [UIView animateWithDuration:.25 animations:^{
             //还原
-            chatTableView.frame     = originalChatViewFrame;
+            self.chatTableView.frame     = originalChatViewFrame;
             self.frame              = originalFrame;
 
             self.textView.frame     = originalTextViewFrame;
@@ -374,12 +376,12 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
 -(void)moveToolbarUp:(float)height animate:(NSTimeInterval)duration
 {
     if (!isInputBarUp){
-        bullleViewHeigth = chatTableView.frame.size.height - chatTableView.contentInset.top;
-        chatViewInsets   = chatTableView.contentInset;
+        bullleViewHeigth = self.chatTableView.frame.size.height - self.chatTableView.contentInset.top;
+        chatViewInsets   = self.chatTableView.contentInset;
     }
     
     //内容与键盘的高度差。   可视区域 - 键盘高度 - 总内容高度
-    keyboardDifference  = bullleViewHeigth - height - chatTableView.contentSize.height;
+    keyboardDifference  = bullleViewHeigth - height - self.chatTableView.contentSize.height;
     /*
      去要调整contentInset.top的情况：
      1、keyboardDifference大于0，说明内容不饱和，及contentInset.top加上键盘高度
@@ -387,17 +389,17 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
      */
     [UIView animateWithDuration:duration animations:^{
         if(keyboardDifference >= 0){
-            chatTableView.contentInset = UIEdgeInsetsMake(chatViewInsets.top + height,
+            self.chatTableView.contentInset = UIEdgeInsetsMake(chatViewInsets.top + height,
                                                      chatViewInsets.left,
                                                      chatViewInsets.bottom,
                                                      chatViewInsets.right);
         }else{
             //限制keyboardDifference大小
             if (-keyboardDifference > bullleViewHeigth) keyboardDifference = -bullleViewHeigth;
-            chatTableView.contentInset = UIEdgeInsetsMake(chatTableView.contentInset.top + keyboardDifference + bullleViewHeigth,
-                                                     chatTableView.contentInset.left,
-                                                     chatTableView.contentInset.bottom,
-                                                     chatTableView.contentInset.right);
+            self.chatTableView.contentInset = UIEdgeInsetsMake(self.chatTableView.contentInset.top + keyboardDifference + bullleViewHeigth,
+                                                     self.chatTableView.contentInset.left,
+                                                     self.chatTableView.contentInset.bottom,
+                                                     self.chatTableView.contentInset.right);
         }
         self.superview.frame = CGRectMake(self.superview.frame.origin.x,
                                           originalSuperViewFrame.origin.y - height,
@@ -413,7 +415,7 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
     [UIView animateWithDuration:animateDuration
                      animations:^{
                          self.superview.frame  = originalSuperViewFrame;
-                         chatTableView.contentInset = chatViewInsets;
+                         self.chatTableView.contentInset = chatViewInsets;
                      } completion:^(BOOL finished) {
                          isInputBarUp = NO;
                      }];
@@ -472,11 +474,11 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
 {
     float diff     = (self.textView.frame.size.height - height);
     //确保tableView的y不大于原始的y
-    CGFloat tableViewOriginY = chatTableView.frame.origin.y + diff;
+    CGFloat tableViewOriginY = self.chatTableView.frame.origin.y + diff;
     if (tableViewOriginY > originalChatViewFrame.origin.y) {
         tableViewOriginY = originalChatViewFrame.origin.y;
     }
-    chatTableView.frame = CGRectMake(chatTableView.frame.origin.x, tableViewOriginY, chatTableView.frame.size.width, chatTableView.frame.size.height);
+    self.chatTableView.frame = CGRectMake(self.chatTableView.frame.origin.x, tableViewOriginY, self.chatTableView.frame.size.width, self.chatTableView.frame.size.height);
     self.frame     = CGRectMake(0, self.frame.origin.y + diff, self.frame.size.width, self.frame.size.height - diff);
     
     //居中
@@ -499,6 +501,25 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
     CGContextAddLineToPoint(ctx, rect.size.width, 0);
     CGContextClosePath(ctx);
     CGContextStrokePath(ctx);
+}
+
+/** 更新frame */
+- (void)updateFrame:(CGRect)frame {
+    self.frame = frame;
+    originalFrame = frame;
+    originalChatViewFrame = self.chatTableView.frame;
+    originalSuperViewFrame = self.superview.frame;
+    cameraBtn.frame      = CGRectMake(kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth);
+    microphoneBtn.frame = CGRectMake(self.frame.size.width - senderImageWidth - kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth);
+    toolbarDownBtn.frame = microphoneBtn.frame;
+    if (enableRecord) {
+        recordBtn.frame = CGRectMake(kMQInputBarHorizontalSpacing*2 + senderImageWidth, (originalFrame.size.height - textViewHeight)/2, originalFrame.size.width - kMQInputBarHorizontalSpacing * 4 - 2 * senderImageWidth, textViewHeight);
+        self.textView.frame     = recordBtn.frame;
+        originalTextViewFrame   = recordBtn.frame;
+    } else {
+        self.textView.frame = CGRectMake(kMQInputBarHorizontalSpacing*2 + senderImageWidth, (originalFrame.size.height - textViewHeight)/2, originalFrame.size.width - kMQInputBarHorizontalSpacing * 3 - senderImageWidth, textViewHeight);
+        originalTextViewFrame = self.textView.frame;
+    }
 }
 
 @end

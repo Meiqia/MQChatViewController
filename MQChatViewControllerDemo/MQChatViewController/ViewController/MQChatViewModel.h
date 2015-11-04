@@ -22,7 +22,7 @@
 /**
  *  已经更新了这条消息的数据，通知tableView刷新界面
  */
-- (void)didUpdateCellWithIndexPath:(NSIndexPath *)indexPath;
+- (void)didUpdateCellModelWithIndexPath:(NSIndexPath *)indexPath;
 
 /**
  *  通知viewController更新tableView；
@@ -64,9 +64,16 @@
 - (void)sendImageMessageWithImage:(UIImage *)image;
 
 /**
- * 发送语音消息
+ * 以AMR格式语音文件的形式，发送语音消息
+ * @param filePath AMR格式的语音文件
  */
 - (void)sendVoiceMessageWithAMRFilePath:(NSString *)filePath;
+
+/**
+ * 以WAV格式语音数据的形式，发送语音消息
+ * @param wavData WAV格式的语音数据
+ */
+- (void)sendVoiceMessageWIthWAVData:(NSData *)wavData;
 
 /**
  * 发送“用户正在输入”的消息
@@ -74,9 +81,16 @@
 - (void)sendUserInputtingWithContent:(NSString *)content;
 
 /**
- * 删除对应的cellModel
+ * 重新发送消息
+ * @param index 需要重新发送的index
+ * @param resendData 重新发送的字典 [text/image/voice : data]
  */
-- (void)removeCellModelAtIndex:(NSInteger)index;
+- (void)resendMessageAtIndex:(NSInteger)index resendData:(NSDictionary *)resendData;
+
+/**
+ *  更新cellModel中的frame，针对转屏的场景
+ */
+- (void)updateCellModelsFrame;
 
 #ifndef INCLUDE_MEIQIA_SDK
 /**

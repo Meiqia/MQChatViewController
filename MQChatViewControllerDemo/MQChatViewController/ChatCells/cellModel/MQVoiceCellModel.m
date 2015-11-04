@@ -30,6 +30,11 @@ static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
 @property (nonatomic, readwrite, strong) NSString *messageId;
 
 /**
+ * @brief cell的宽度
+ */
+@property (nonatomic, readwrite, assign) CGFloat cellWidth;
+
+/**
  * @brief cell的高度
  */
 @property (nonatomic, readwrite, assign) CGFloat cellHeight;
@@ -240,7 +245,6 @@ static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
     
     //计算cell的高度
     self.cellHeight = self.bubbleImageFrame.origin.y + self.bubbleImageFrame.size.height + kMQCellAvatarToVerticalEdgeSpacing;
-
     
 }
 
@@ -268,5 +272,26 @@ static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
 - (NSString *)getCellMessageId {
     return self.messageId;
 }
+
+- (void)updateCellFrameWithCellWidth:(CGFloat)cellWidth {
+    self.cellWidth = cellWidth;
+    if (self.cellFromType == MQChatCellOutgoing) {
+        //头像的frame
+        if ([MQChatViewConfig sharedConfig].enableClientAvatar) {
+            self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
+        } else {
+            self.avatarFrame = CGRectMake(0, 0, 0, 0);
+        }
+        //气泡的frame
+        self.bubbleImageFrame = CGRectMake(cellWidth-self.avatarFrame.origin.x-kMQCellAvatarToBubbleSpacing-self.bubbleImageFrame.size.width, kMQCellAvatarToVerticalEdgeSpacing, self.bubbleImageFrame.size.width, self.bubbleImageFrame.size.height);
+        //发送指示器的frame
+        self.sendingIndicatorFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-self.sendingIndicatorFrame.size.width, self.sendingIndicatorFrame.origin.y, self.sendingIndicatorFrame.size.width, self.sendingIndicatorFrame.size.height);
+        //发送出错图片的frame
+        self.sendFailureFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-self.sendFailureFrame.size.width, self.sendFailureFrame.origin.y, self.sendFailureFrame.size.width, self.sendFailureFrame.size.height);
+        //语音时长的frame
+        self.durationLabelFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-self.durationLabelFrame.size.width, self.durationLabelFrame.origin.y, self.durationLabelFrame.size.width, self.durationLabelFrame.size.height);
+    }
+}
+
 
 @end

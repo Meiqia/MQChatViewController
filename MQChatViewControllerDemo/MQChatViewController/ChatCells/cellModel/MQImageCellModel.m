@@ -19,6 +19,11 @@
 @property (nonatomic, readwrite, strong) NSString *messageId;
 
 /**
+ * @brief cell的宽度
+ */
+@property (nonatomic, readwrite, assign) CGFloat cellWidth;
+
+/**
  * @brief cell的高度
  */
 @property (nonatomic, readwrite, assign) CGFloat cellHeight;
@@ -95,6 +100,7 @@
                                      cellWidth:(CGFloat)cellWidth
                                       delegate:(id<MQCellModelDelegate>)delegator{
     if (self = [super init]) {
+        self.cellWidth = cellWidth;
         self.delegate = delegator;
         self.messageId = message.messageId;
         self.sendType = MQChatCellSending;
@@ -178,8 +184,11 @@
         bubbleImage = [MQChatViewConfig sharedConfig].outgoingBubbleImage;
         
         //头像的frame
-        //            self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
-        self.avatarFrame = CGRectMake(0, 0, 0, 0);
+        if ([MQChatViewConfig sharedConfig].enableClientAvatar) {
+            self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
+        } else {
+            self.avatarFrame = CGRectMake(0, 0, 0, 0);
+        }
         //气泡的frame
         self.bubbleImageFrame = CGRectMake(cellWidth-kMQCellAvatarToBubbleSpacing-bubbleWidth, kMQCellAvatarToVerticalEdgeSpacing, bubbleWidth, bubbleHeight);
     } else {
@@ -238,5 +247,24 @@
 - (NSString *)getCellMessageId {
     return self.messageId;
 }
+
+- (void)updateCellFrameWithCellWidth:(CGFloat)cellWidth {
+    self.cellWidth = cellWidth;
+    if (self.cellFromType == MQChatCellOutgoing) {
+        //头像的frame
+        if ([MQChatViewConfig sharedConfig].enableClientAvatar) {
+            self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
+        } else {
+            self.avatarFrame = CGRectMake(0, 0, 0, 0);
+        }
+        //气泡的frame
+        self.bubbleImageFrame = CGRectMake(cellWidth-self.avatarFrame.origin.x-kMQCellAvatarToBubbleSpacing-self.bubbleImageFrame.size.width, kMQCellAvatarToVerticalEdgeSpacing, self.bubbleImageFrame.size.width, self.bubbleImageFrame.size.height);
+        //发送指示器的frame
+        self.sendingIndicatorFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-self.sendingIndicatorFrame.size.width, self.sendingIndicatorFrame.origin.y, self.sendingIndicatorFrame.size.width, self.sendingIndicatorFrame.size.height);
+        //发送出错图片的frame
+        self.sendFailureFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-self.sendFailureFrame.size.width, self.sendFailureFrame.origin.y, self.sendFailureFrame.size.width, self.sendFailureFrame.size.height);
+    }
+}
+
 
 @end

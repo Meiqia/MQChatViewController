@@ -134,6 +134,13 @@ typedef NS_ENUM(NSUInteger, MQChatCellSendType) {
  */
 - (NSString *)getCellMessageId;
 
+/**
+ *  根据cellWidth来重新布局
+ *
+ *  @param cellWidth cell宽度
+ */
+- (void)updateCellFrameWithCellWidth:(CGFloat)cellWidth;
+
 
 @end
 

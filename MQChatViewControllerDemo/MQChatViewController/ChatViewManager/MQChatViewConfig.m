@@ -29,6 +29,7 @@
 }
 
 - (void)setConfigToDefault {
+    self.isCustomizedChatViewFrame = false;
     self.chatViewFrame = [MQDeviceFrameUtil getDeviceScreenRect];
 
     self.numberRegexs = [[NSMutableArray alloc] initWithArray:@[@"^(\\d{3,4}-?)\\d{7,8}$", @"^1[3|4|5|7|8]\\d{9}", @"[1-9]\\d{4,10}"]];
@@ -47,6 +48,7 @@
     self.enableAgentAvatar = true;
     self.enableCustomRecordView = true;
     self.enableMessageSound = true;
+    self.enableClientAvatar = false;
     
     self.incomingMsgTextColor = [UIColor darkTextColor];
     self.outgoingMsgTextColor = [UIColor whiteColor];
