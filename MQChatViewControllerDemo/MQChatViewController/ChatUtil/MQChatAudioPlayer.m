@@ -81,7 +81,7 @@
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
-    [self.delegate MQAudioPlayerDidFinishPlay];
+    [self didFinishAudioPlay];
 }
 
 - (void)stopSound
@@ -89,7 +89,7 @@
     if (_player && _player.isPlaying) {
         [_player stop];
     }
-    [self removeAudioObserver];
+    [self didFinishAudioPlay];
 }
 
 - (void)removeAudioObserver {
@@ -100,6 +100,12 @@
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application{
+    [self didFinishAudioPlay];
+}
+
+//音频播放结束
+- (void)didFinishAudioPlay {
+    [self removeAudioObserver];
     [self.delegate MQAudioPlayerDidFinishPlay];
 }
 
@@ -118,7 +124,9 @@
 
 //声音播放被打断的通知
 - (void)audioPlayerDidInterrupt:(NSNotification *)notification {
-    [self stopSound];
+    if (_player && _player.isPlaying) {
+        [_player stop];
+    }
 }
 
 @end
