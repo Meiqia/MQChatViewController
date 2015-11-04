@@ -14,6 +14,7 @@
 #import "MQTextCellModel.h"
 #import "MQImageCellModel.h"
 #import "MQVoiceCellModel.h"
+#import "MQTipsCellModel.h"
 #import "MQMessageDateCellModel.h"
 #import <UIKit/UIKit.h>
 #import "MQToast.h"
@@ -235,7 +236,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [MQToast showToast:@"请输入一条消息，再收取消息~" duration:2 window:[UIApplication sharedApplication].keyWindow];
         return ;
     }
-    ;
     if ([lastCellModel isKindOfClass:[MQTextCellModel class]]) {
         MQTextCellModel *textCellModel = (MQTextCellModel *)lastCellModel;
         MQTextMessage *message = [[MQTextMessage alloc] initWithContent:textCellModel.cellText];
@@ -255,15 +255,19 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         MQVoiceCellModel *newCellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
         [self.cellModels addObject:newCellModel];
     }
-    //初始随机数据
+    //text message
     MQTextMessage *textMessage = [[MQTextMessage alloc] initWithContent:@"测试测试kjdjfkadsjlfkadfasdkf"];
     textMessage.fromType = MQMessageIncoming;
     MQTextCellModel *textCellModel = [[MQTextCellModel alloc] initCellModelWithMessage:textMessage cellWidth:self.chatViewWidth];
-    MQImageMessage *imageMessage = [[MQImageMessage alloc] initWithImagePath:@"https://s3.cn-north-1.amazonaws.com.cn/pics.meiqia.bucket/65135e4c4fde7b5f"];
-    imageMessage.fromType = MQMessageIncoming;
-    MQImageCellModel *imageCellModel = [[MQImageCellModel alloc] initCellModelWithMessage:imageMessage cellWidth:self.chatViewWidth delegate:self];
     [self.cellModels addObject:textCellModel];
-    [self.cellModels addObject:imageCellModel];
+    //image message
+//    MQImageMessage *imageMessage = [[MQImageMessage alloc] initWithImagePath:@"https://s3.cn-north-1.amazonaws.com.cn/pics.meiqia.bucket/65135e4c4fde7b5f"];
+//    imageMessage.fromType = MQMessageIncoming;
+//    MQImageCellModel *imageCellModel = [[MQImageCellModel alloc] initCellModelWithMessage:imageMessage cellWidth:self.chatViewWidth delegate:self];
+//    [self.cellModels addObject:imageCellModel];
+    //tip message
+    MQTipsCellModel *tipCellModel = [[MQTipsCellModel alloc] initCellModelWithTips:@"主人，您的客服离线啦~" cellWidth:self.chatViewWidth];
+    [self.cellModels addObject:tipCellModel];
 
     [self reloadChatTableView];
 }

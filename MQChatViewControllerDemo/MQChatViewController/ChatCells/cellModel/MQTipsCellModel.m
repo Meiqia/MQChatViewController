@@ -14,10 +14,9 @@
 //上下两条线与cell垂直边沿的间距
 static CGFloat const kMQMessageTipsLabelLineVerticalMargin = 2.0;
 //上下两条线超过文字label的距离
-static CGFloat const kMQMessageTipsLabelToLineSpacing = 8.0;
-static CGFloat const kMQMessageTipsLabelHeight = 0.5;
+static CGFloat const kMQMessageTipsLabelToLineSpacing = 48.0;
 static CGFloat const kMQMessageTipsCellHeight = 54.0;
-static CGFloat const kMQMessageTipsFontSize = 14.0;
+static CGFloat const kMQMessageTipsFontSize = 15.0;
 static CGFloat const kMQMessageTipsLineHeight = 0.5;
 
 @interface MQTipsCellModel()
@@ -72,10 +71,12 @@ static CGFloat const kMQMessageTipsLineHeight = 0.5;
         
         //上线条的frame
         CGFloat lineWidth = tipsWidth + kMQMessageTipsLabelToLineSpacing * 2;
-        self.topLineFrame = CGRectMake(cellWidth/2-lineWidth/2, 0, lineWidth, kMQMessageTipsLineHeight);
+        self.topLineFrame = CGRectMake(cellWidth/2-lineWidth/2, kMQMessageTipsLabelLineVerticalMargin, lineWidth, kMQMessageTipsLineHeight);
         
         //下线条的frame
-        self.bottomLineFrame = CGRectMake(self.topLineFrame.origin.x, kMQMessageTipsCellHeight-1-kMQMessageTipsLineHeight, lineWidth, kMQMessageTipsLineHeight);
+        self.bottomLineFrame = CGRectMake(self.topLineFrame.origin.x, kMQMessageTipsCellHeight-kMQMessageTipsLabelLineVerticalMargin-kMQMessageTipsLineHeight, lineWidth, kMQMessageTipsLineHeight);
+        
+        self.cellHeight = self.bottomLineFrame.origin.y + self.bottomLineFrame.size.height;
     }
     return self;
 }
