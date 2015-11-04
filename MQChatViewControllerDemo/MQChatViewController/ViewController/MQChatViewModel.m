@@ -104,27 +104,35 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 }
 
 /**
- * 发送语音消息
+ * 以AMR格式语音文件的形式，发送语音消息
+ * @param filePath AMR格式的语音文件
  */
 - (void)sendVoiceMessageWithAMRFilePath:(NSString *)filePath {
 #ifdef INCLUDE_MEIQIA_SDK
     NSData *amrData = [NSData dataWithContentsOfFile:filePath];
     [MQManager sendAudioMessage:amrData delegate:self];
-#else
+#endif
     //将AMR格式转换成WAV格式，以便使iPhone能播放
     NSData *wavData = [self convertToWAVDataWithAMRFilePath:filePath];
+    [self sendVoiceMessageWIthWAVData:wavData];
+}
+
+/**
+ * 以WAV格式语音数据的形式，发送语音消息
+ * @param wavData WAV格式的语音数据
+ */
+- (void)sendVoiceMessageWIthWAVData:(NSData *)wavData {
     MQVoiceMessage *message = [[MQVoiceMessage alloc] initWithVoiceData:wavData];
     MQVoiceCellModel *cellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
     [self generateMessageDateCellWithCurrentCellModel:cellModel];
     [self.cellModels addObject:cellModel];
     [self reloadChatTableView];
-
+    
     //模仿发送成功
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        cellModel.sendType = MQChatCellSended;
+        cellModel.sendType = MQChatCellSentFailure;
         [self reloadChatTableView];
     });
-#endif
 }
 
 /**

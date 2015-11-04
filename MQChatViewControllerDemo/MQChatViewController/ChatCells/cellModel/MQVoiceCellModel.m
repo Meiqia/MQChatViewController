@@ -240,7 +240,6 @@ static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
     
     //计算cell的高度
     self.cellHeight = self.bubbleImageFrame.origin.y + self.bubbleImageFrame.size.height + kMQCellAvatarToVerticalEdgeSpacing;
-
     
 }
 

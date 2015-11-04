@@ -64,9 +64,16 @@
 - (void)sendImageMessageWithImage:(UIImage *)image;
 
 /**
- * 发送语音消息
+ * 以AMR格式语音文件的形式，发送语音消息
+ * @param filePath AMR格式的语音文件
  */
 - (void)sendVoiceMessageWithAMRFilePath:(NSString *)filePath;
+
+/**
+ * 以WAV格式语音数据的形式，发送语音消息
+ * @param wavData WAV格式的语音数据
+ */
+- (void)sendVoiceMessageWIthWAVData:(NSData *)wavData;
 
 /**
  * 发送“用户正在输入”的消息

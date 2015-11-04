@@ -11,6 +11,11 @@
 #import "MQImageUtil.h"
 #import "MQChatFileUtil.h"
 #import "MQToast.h"
+#import "MQChatAudioRecorder.h"
+
+@interface MQRecordView()<MQChatAudioRecorderDelegate>
+
+@end
 
 @implementation MQRecordView
 {
@@ -25,6 +30,7 @@
     
     CGFloat recordTime; //录音时长
     NSTimer *recordTimer;
+    MQChatAudioRecorder *audioRecorder;
 }
 
 -(instancetype)initWithFrame:(CGRect)frame
@@ -49,6 +55,9 @@
         [self addSubview:recordView];
         [recordView addSubview:volumeView];
         [recordView addSubview:tipLabel];
+        
+        audioRecorder = [[MQChatAudioRecorder alloc] init];
+        audioRecorder.delegate = self;
     }
     return self;
 }
@@ -130,9 +139,9 @@
 
 -(void)startRecording
 {
-//    message = [MCCore startRecordingAndSendAudioMessage:(id)self delegate:delegate];
     recordTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(recodTime) userInfo:nil repeats:YES];
     recordTime = 0;
+    [audioRecorder beginRecording];
 }
 
 -(void)recodTime
@@ -188,14 +197,6 @@
     }
 }
 
-//用户取消录音
-//-(void)stopRecord
-//{
-//    [MCCore stopRecordingAudioMessage];
-//    [recordTimer invalidate];
-//    recordTimer = nil;
-//}
-
 //组件终止录音
 -(void)stopRecord
 {
@@ -203,9 +204,21 @@
     recordTimer = nil;
     if (recordTime < 1) {
         [MQToast showToast:@"录音时间太短" duration:1 window:self.superview];
+        [audioRecorder cancelRecording];
+    } else {
+        [audioRecorder finishRecording];
     }
     self.hidden = YES;
     recordTime = 0;
+}
+
+//取消录音
+- (void)cancelRecording {
+    [recordTimer invalidate];
+    recordTimer = nil;
+    self.hidden = YES;
+    recordTime = 0;
+    [audioRecorder cancelRecording];
 }
 
 -(void)revokerecord {
@@ -214,31 +227,31 @@
 
 -(void)recordError:(NSError*)error
 {
-//    [self.recordOverDelegate recordOver:message];
-//    [self removeFromSuperview];
     self.hidden = YES;
 }
 
-//-(void)removeFromSuperview
-//{
-//    CABasicAnimation *opacityAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
-//    opacityAnimation.fromValue = @1.;
-//    opacityAnimation.toValue = @0.;
-//    opacityAnimation.duration = .1;
-//    [blurView.layer addAnimation:opacityAnimation forKey:nil];
-//    blurView.layer.opacity = 0;
-//    
-//    [UIView animateWithDuration:.2 animations:^{
-//        recordView.alpha = 0;
-//    }];
-//    
-//    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(opacityAnimation.duration * NSEC_PER_SEC));
-//    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-////        [super removeFromSuperview];
-//        self.hidden = YES;
-//    });
-//    
-//    isVisible = NO;
-//}
+#pragma MQChatAudioRecorderDelegate
+- (void)didFinishRecordingWithAMRFilePath:(NSString *)filePath {
+    //通知viewController已完成录音
+    if (self.recordViewDelegate) {
+        if ([self.recordViewDelegate respondsToSelector:@selector(didFinishRecordingWithAMRFilePath:)]) {
+            [self.recordViewDelegate didFinishRecordingWithAMRFilePath:filePath];
+        }
+    }
+}
+
+- (void)didUpdateAudioVolume:(Float32)volume {
+    [self setRecordingVolume:volume];
+}
+
+- (void)didEndRecording {
+    [self stopRecord];
+}
+
+- (void)didBeginRecording {
+    
+}
+
+
 
 @end

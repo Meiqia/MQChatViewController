@@ -10,13 +10,15 @@
 //#import "MQMessage.h"
 
 @protocol MQRecordViewDelegate <NSObject>
-//录音结束
-//-(void)recordOver:(MQMessage*)message;
+
+/** 通知viewController完成录音 */
+- (void)didFinishRecordingWithAMRFilePath:(NSString *)filePath;
+
 @end
 
 @interface MQRecordView : UIView
 
-@property(nonatomic,strong) id<MQRecordViewDelegate> recordOverDelegate;
+@property(nonatomic,weak) id<MQRecordViewDelegate> recordViewDelegate;
 @property(nonatomic,assign) float marginBottom;
 /** 是否显示撤回语音 */
 @property(nonatomic,assign) BOOL revoke;
@@ -29,5 +31,6 @@
 - (void)reDisplayRecordView;
 /** 语音音量的大小设置 */
 -(void)setRecordingVolume:(float)volume;
-
+//取消录音
+- (void)cancelRecording;
 @end

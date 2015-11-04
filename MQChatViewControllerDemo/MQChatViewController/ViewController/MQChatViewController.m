@@ -14,12 +14,11 @@
 #import "MQInputBar.h"
 #import "MQToast.h"
 #import "MQRecordView.h"
-#import "MQChatAudioRecorder.h"
 #import "VoiceConverter.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
-@interface MQChatViewController () <UITableViewDelegate, MQChatViewModelDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatAudioRecorderDelegate, MQChatTableViewDelegate, MQChatCellDelegate>
+@interface MQChatViewController () <UITableViewDelegate, MQChatViewModelDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQRecordViewDelegate>
 
 @end
 
@@ -29,7 +28,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     MQChatViewModel *chatViewModel;
     MQInputBar *chatInputBar;
     MQRecordView *recordView;
-    MQChatAudioRecorder *audioRecorder;
 }
 
 - (instancetype)initWithChatViewManager:(MQChatViewConfig *)config {
@@ -230,29 +228,20 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
             recordView = [[MQRecordView alloc] initWithFrame:CGRectMake(0, 0,
                                                                         self.chatTableView.frame.size.width,
                                                                         self.chatTableView.frame.size.height)];
-            recordView.recordOverDelegate = (id)self;
+            recordView.recordViewDelegate = self;
             [self.view addSubview:recordView];
         }
         [recordView reDisplayRecordView];
         [recordView startRecording];
     }
-    
-#warning 这里增加语音输入的数据处理
-    if (!audioRecorder) {
-        audioRecorder = [[MQChatAudioRecorder alloc] init];
-        audioRecorder.delegate = self;
-    }
-    [audioRecorder beginRecording];
-
 }
 
 -(void)finishRecord:(CGPoint)point {
-    [audioRecorder finishRecording];
+    [recordView stopRecord];
 }
 
 -(void)cancelRecord:(CGPoint)point {
-    [recordView stopRecord];
-    [audioRecorder cancelRecording];
+    [recordView cancelRecording];
 }
 
 -(void)changedRecordViewToCancel:(CGPoint)point {
@@ -263,24 +252,10 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     recordView.revoke = false;
 }
 
-#pragma MQChatAudioRecorderDelegate
+#pragma MQRecordViewDelegate
 - (void)didFinishRecordingWithAMRFilePath:(NSString *)filePath {
-    //通知录音界面已完成录音
-    [recordView stopRecord];
     [chatViewModel sendVoiceMessageWithAMRFilePath:filePath];
     [self chatTableViewScrollToBottom];
-}
-
-- (void)didUpdateAudioVolume:(Float32)volume {
-    [recordView setRecordingVolume:volume];
-}
-
-- (void)didEndRecording {
-    [recordView stopRecord];
-}
-
-- (void)didBeginRecording {
-    
 }
 
 #pragma UIImagePickerControllerDelegate
