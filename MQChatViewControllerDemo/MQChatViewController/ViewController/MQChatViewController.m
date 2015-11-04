@@ -28,6 +28,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     MQChatViewModel *chatViewModel;
     MQInputBar *chatInputBar;
     MQRecordView *recordView;
+    CGSize viewSize;
 }
 
 - (instancetype)initWithChatViewManager:(MQChatViewConfig *)config {
@@ -42,6 +43,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     // Do any additional setup after loading the view.
     self.automaticallyAdjustsScrollViewInsets = false;
     
+    viewSize = [MQDeviceFrameUtil getDeviceScreenRect].size;
     [self setNavBar];
     [self initChatTableView];
     [self initChatViewModel];
@@ -120,10 +122,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
  * 初始化聊天的tableView
  */
 - (void)initChatTableView {
-    if (CGRectEqualToRect(chatViewConfig.chatViewFrame, [MQDeviceFrameUtil getDeviceScreenRect])) {
-        CGRect navBarRect = [MQDeviceFrameUtil getDeviceNavRect:self];
-        chatViewConfig.chatViewFrame = CGRectMake(0, navBarRect.origin.y+navBarRect.size.height, navBarRect.size.width, [MQDeviceFrameUtil getDeviceScreenRect].size.height - navBarRect.origin.y - navBarRect.size.height - kMQChatViewInputBarHeight);
-    }
+    [self setChatTableViewFrame];
     self.chatTableView = [[MQChatTableView alloc] initWithFrame:chatViewConfig.chatViewFrame style:UITableViewStylePlain];
     self.chatTableView.chatTableViewDelegate = self;
     self.chatTableView.delegate = self;
@@ -135,7 +134,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
  */
 - (void)initInputBar {
     CGRect inputBarFrame = CGRectMake(self.chatTableView.frame.origin.x, self.chatTableView.frame.origin.y+self.chatTableView.frame.size.height, self.chatTableView.frame.size.width, kMQChatViewInputBarHeight);
-    chatInputBar = [[MQInputBar alloc] initWithFrame:inputBarFrame superView:self.view tableView:self.chatTableView enableRecordBtn:chatViewConfig.enableVoiceMessage];
+    chatInputBar = [[MQInputBar alloc] initWithFrame:inputBarFrame superView:self.view tableView:self.chatTableView];
     chatInputBar.delegate = self;
     [self.view addSubview:chatInputBar];
     self.inputBarView = chatInputBar;
@@ -225,9 +224,10 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     //如果开发者不自定义录音界面，则将播放界面显示出来
     if ([MQChatViewConfig sharedConfig].enableCustomRecordView) {
         if (!recordView) {
-            recordView = [[MQRecordView alloc] initWithFrame:CGRectMake(0, 0,
+            recordView = [[MQRecordView alloc] initWithFrame:CGRectMake(0,
+                                                                        0,
                                                                         self.chatTableView.frame.size.width,
-                                                                        self.chatTableView.frame.size.height)];
+                                                                        viewSize.height - chatInputBar.frame.size.height)];
             recordView.recordViewDelegate = self;
             [self.view addSubview:recordView];
         }
@@ -285,6 +285,70 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     NSIndexPath *indexPath = [self.chatTableView indexPathForCell:cell];
     [chatViewModel resendMessageAtIndex:indexPath.row resendData:resendData];
     [self chatTableViewScrollToBottom];
+}
+
+#pragma 横屏的事件
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    NSLog(@"willAnimateRotationToInterfaceOrientation");
+    viewSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height);
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    NSLog(@"didRotateFromInterfaceOrientation");
+    viewSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height);
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+    NSLog(@"viewWillTransitionToSize  ");
+    NSLog(@"w = %f, h = %f\n", size.width, size.height);
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+         [[UIApplication sharedApplication] setStatusBarHidden:NO];
+         
+     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+         
+     }];
+    viewSize = size;
+    [self updateContentViewsFrame];
+}
+
+- (void)setChatTableViewFrame {
+    //更新tableView的frame
+    if (!chatViewConfig.isCustomizedChatViewFrame) {
+        CGFloat navBarOriginY = 20;
+        CGFloat navBarHeight = viewSize.width < viewSize.height ? 44 : 32;
+        chatViewConfig.chatViewFrame = CGRectMake(0, navBarOriginY+navBarHeight, viewSize.width, viewSize.height - navBarOriginY - navBarHeight - kMQChatViewInputBarHeight);
+    }
+}
+
+//更新viewConroller中所有的view的frame
+- (void)updateContentViewsFrame {
+    //更新view
+    self.view.frame = CGRectMake(0, 0, viewSize.width, viewSize.height);
+    //更新tableView的frame
+    [self setChatTableViewFrame];
+    self.chatTableView.frame = chatViewConfig.chatViewFrame;
+    //更新cellModel的frame
+    chatViewModel.chatViewWidth = viewSize.width;
+    [chatViewModel updateCellModelsFrame];
+    [self.chatTableView reloadData];
+    //更新inputBar的frame
+    CGRect inputBarFrame = CGRectMake(self.chatTableView.frame.origin.x, self.chatTableView.frame.origin.y+self.chatTableView.frame.size.height, self.chatTableView.frame.size.width, kMQChatViewInputBarHeight);
+    [chatInputBar updateFrame:inputBarFrame];
+    //更新recordView的frame
+    CGRect recordViewFrame = CGRectMake(0,
+                                        0,
+                                        self.chatTableView.frame.size.width,
+                                        viewSize.height - chatInputBar.frame.size.height);
+    [recordView updateFrame:recordViewFrame];
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return NO;
 }
 
 

@@ -316,5 +316,12 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     return wavData;
 }
 
+#pragma 更新cellModel中的frame
+- (void)updateCellModelsFrame {
+    for (id<MQCellModelProtocol> cellModel in self.cellModels) {
+        [cellModel updateCellFrameWithCellWidth:self.chatViewWidth];
+    }
+}
+
 
 @end

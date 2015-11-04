@@ -21,6 +21,11 @@ static CGFloat const kMQMessageTipsLineHeight = 0.5;
 
 @interface MQTipsCellModel()
 /**
+ * @brief cell的宽度
+ */
+@property (nonatomic, readwrite, assign) CGFloat cellWidth;
+
+/**
  * @brief cell的高度
  */
 @property (nonatomic, readwrite, assign) CGFloat cellHeight;
@@ -104,6 +109,13 @@ static CGFloat const kMQMessageTipsLineHeight = 0.5;
 
 - (NSString *)getCellMessageId {
     return @"";
+}
+
+- (void)updateCellFrameWithCellWidth:(CGFloat)cellWidth {
+    self.cellWidth = cellWidth;
+    self.tipLabelFrame = CGRectMake(cellWidth/2-self.tipLabelFrame.size.width/2, kMQMessageTipsCellHeight/2-self.tipLabelFrame.size.height/2, self.tipLabelFrame.size.width, self.tipLabelFrame.size.height);
+    self.topLineFrame = CGRectMake(cellWidth/2-self.topLineFrame.size.width/2, kMQMessageTipsLabelLineVerticalMargin, self.topLineFrame.size.width, kMQMessageTipsLineHeight);
+    self.bottomLineFrame = CGRectMake(self.topLineFrame.origin.x, kMQMessageTipsCellHeight-kMQMessageTipsLabelLineVerticalMargin-kMQMessageTipsLineHeight, self.topLineFrame.size.width, kMQMessageTipsLineHeight);
 }
 
 

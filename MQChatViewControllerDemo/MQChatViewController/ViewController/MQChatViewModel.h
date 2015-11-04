@@ -87,6 +87,11 @@
  */
 - (void)resendMessageAtIndex:(NSInteger)index resendData:(NSDictionary *)resendData;
 
+/**
+ *  更新cellModel中的frame，针对转屏的场景
+ */
+- (void)updateCellModelsFrame;
+
 #ifndef INCLUDE_MEIQIA_SDK
 /**
  * 使用MQChatViewControllerDemo的时候，调试用的方法，用于收取和上一个message一样的消息
