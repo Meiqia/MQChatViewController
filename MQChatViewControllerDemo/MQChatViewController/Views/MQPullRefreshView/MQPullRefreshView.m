@@ -155,7 +155,11 @@ static CGFloat const kMQPullRefreshTitleFontSize = 12.0;
     }
 }
 
-
+- (void)updateFrame {
+    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.superScrollView.frame.size.width, self.frame.size.height);
+    loadingIndicatorView.frame = CGRectMake(self.frame.size.width/2 - kMQPullRefreshIndicatorDiameter/2, self.frame.size.height/2 - kMQPullRefreshIndicatorDiameter/2, kMQPullRefreshIndicatorDiameter, kMQPullRefreshIndicatorDiameter);
+    titleLabel.frame = CGRectMake(0, self.frame.size.height/2 - kMQPullRefreshIndicatorDiameter/2, self.frame.size.height, kMQPullRefreshIndicatorDiameter);
+}
 
 
 

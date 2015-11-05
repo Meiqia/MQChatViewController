@@ -53,4 +53,9 @@
  */
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView;
 
+/**
+ *  更新frame
+ */
+- (void)updateFrame;
+
 @end

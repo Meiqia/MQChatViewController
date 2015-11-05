@@ -131,6 +131,16 @@ static CGFloat const kMQChatPullRefreshDistance = 44.0;
     }
 }
 
+- (void)updateFrame:(CGRect)frame {
+    self.frame = frame;
+    if (enableTopRefresh) {
+        [self.topRefreshView updateFrame];
+    }
+    if (enableBottomRefresh) {
+        [self.bottomRefreshView updateFrame];
+    }
+}
+
 
 
 @end

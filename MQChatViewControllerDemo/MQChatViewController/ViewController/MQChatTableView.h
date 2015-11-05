@@ -55,4 +55,6 @@
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate;
 
+- (void)updateFrame:(CGRect)frame;
+
 @end

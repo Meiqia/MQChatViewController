@@ -345,6 +345,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
         CGFloat navBarOriginY = 20;
         CGFloat navBarHeight = viewSize.width < viewSize.height ? 44 : 32;
         chatViewConfig.chatViewFrame = CGRectMake(0, navBarOriginY+navBarHeight, viewSize.width, viewSize.height - navBarOriginY - navBarHeight - kMQChatViewInputBarHeight);
+        [self.chatTableView updateFrame:chatViewConfig.chatViewFrame];;
     }
 }
 
@@ -354,7 +355,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     self.view.frame = CGRectMake(0, 0, viewSize.width, viewSize.height);
     //更新tableView的frame
     [self setChatTableViewFrame];
-    self.chatTableView.frame = chatViewConfig.chatViewFrame;
     //更新cellModel的frame
     chatViewModel.chatViewWidth = viewSize.width;
     [chatViewModel updateCellModelsFrame];
