@@ -40,12 +40,15 @@ static NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerD
 @property (nonatomic, assign) BOOL enableCustomRecordView;
 @property (nonatomic, assign) BOOL enableMessageSound;
 @property (nonatomic, assign) BOOL enableClientAvatar;
+@property (nonatomic, assign) BOOL enableTopPullRefresh;
+@property (nonatomic, assign) BOOL enableBottomPullRefresh;
 
 @property (nonatomic, copy) UIColor *incomingMsgTextColor;
 @property (nonatomic, copy) UIColor *outgoingMsgTextColor;
 @property (nonatomic, copy) UIColor *eventTextColor;
 @property (nonatomic, copy) UIColor *navBarTintColor;
 @property (nonatomic, copy) UIColor *navBarColor;
+@property (nonatomic, copy) UIColor *pullRefreshColor;
 
 @property (nonatomic, strong) UIImage *agentDefaultAvatarImage;
 @property (nonatomic, strong) UIImage *messageSendFailureImage;
