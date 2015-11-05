@@ -21,7 +21,7 @@
         self.createdOn = [NSDate new];
         self.fromType = MQMessageFromTypeClient;
         self.type = MQMessageTypeMessage;
-        self.status = MQMessageStatusSending;
+        self.sendStatus = MQMessageSendStatusSending;
     }
     return self;
 }

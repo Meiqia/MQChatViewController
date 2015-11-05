@@ -10,7 +10,7 @@
 #import "MQChatViewConfig.h"
 #import "MQChatTableView.h"
 #ifdef INCLUDE_MEIQIA_SDK
-#import "MQDelegate.h"
+#import "MQServiceToViewInterface.h"
 #endif
 
 /**
@@ -48,7 +48,8 @@
 /**
  *  聊天界面的委托方法
  */
-@property (nonatomic, weak) id<MQChatViewDelegate> chatViewDelegate;
+//@property (nonatomic, weak) id<MQChatViewDelegate> chatViewDelegate;
+@property (nonatomic, weak) id<MQServiceToViewInterfaceDelegate> serviceToViewDelegate;
 #endif
 
 @end

@@ -103,7 +103,7 @@
         self.cellWidth = cellWidth;
         self.delegate = delegator;
         self.messageId = message.messageId;
-        self.sendType = MQChatCellSending;
+        self.sendStatus = message.sendStatus;
         self.date = message.date;
         self.avatarPath = @"";
         if (message.userAvatarPath.length > 0) {
@@ -246,6 +246,14 @@
 
 - (NSString *)getCellMessageId {
     return self.messageId;
+}
+
+- (void)updateCellSendStatus:(MQChatMessageSendStatus)sendStatus {
+    self.sendStatus = sendStatus;
+}
+
+- (void)updateCellMessageId:(NSString *)messageId {
+    self.messageId = messageId;
 }
 
 - (void)updateCellFrameWithCellWidth:(CGFloat)cellWidth {

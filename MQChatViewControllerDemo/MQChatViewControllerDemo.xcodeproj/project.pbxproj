@@ -77,6 +77,7 @@
 		CCAD3D2C1BE7BD2C00B87A23 /* wav.mm in Sources */ = {isa = PBXBuildFile; fileRef = CCAD3D281BE7BD2C00B87A23 /* wav.mm */; };
 		CCAD3D2D1BE7BD2C00B87A23 /* VoiceConverter.mm in Sources */ = {isa = PBXBuildFile; fileRef = CCAD3D2A1BE7BD2C00B87A23 /* VoiceConverter.mm */; };
 		CCCDCC9C1BEB09F900B60667 /* MQPullRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCDCC9B1BEB09F900B60667 /* MQPullRefreshView.m */; };
+		CCCDCC9F1BEB99FF00B60667 /* MQServiceToViewInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCDCC9E1BEB99FF00B60667 /* MQServiceToViewInterface.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -242,6 +243,8 @@
 		CCAD3D2A1BE7BD2C00B87A23 /* VoiceConverter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = VoiceConverter.mm; sourceTree = "<group>"; };
 		CCCDCC9A1BEB09F900B60667 /* MQPullRefreshView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MQPullRefreshView.h; path = MQPullRefreshView/MQPullRefreshView.h; sourceTree = "<group>"; };
 		CCCDCC9B1BEB09F900B60667 /* MQPullRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MQPullRefreshView.m; path = MQPullRefreshView/MQPullRefreshView.m; sourceTree = "<group>"; };
+		CCCDCC9D1BEB99FF00B60667 /* MQServiceToViewInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQServiceToViewInterface.h; sourceTree = "<group>"; };
+		CCCDCC9E1BEB99FF00B60667 /* MQServiceToViewInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQServiceToViewInterface.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -472,6 +475,8 @@
 				CC45FD6F1BE3745700DE0BFB /* MQManager.m */,
 				CC45FD701BE3745700DE0BFB /* MQMessage.h */,
 				CC45FD711BE3745700DE0BFB /* MQMessage.m */,
+				CCCDCC9D1BEB99FF00B60667 /* MQServiceToViewInterface.h */,
+				CCCDCC9E1BEB99FF00B60667 /* MQServiceToViewInterface.m */,
 			);
 			path = MeiqiaSDKFiles;
 			sourceTree = SOURCE_ROOT;
@@ -867,6 +872,7 @@
 				CC5115D11BE6545B00184CF0 /* UIImageView+MHFacebookImageViewer.m in Sources */,
 				CCAD3CC91BE662C200B87A23 /* MQChatRegexUtil.m in Sources */,
 				CC45FD681BE36B3600DE0BFB /* MQChatViewTableDataSource.m in Sources */,
+				CCCDCC9F1BEB99FF00B60667 /* MQServiceToViewInterface.m in Sources */,
 				CC45FD571BE36B3500DE0BFB /* MQMessageDateCell.m in Sources */,
 				CC5115D01BE6545B00184CF0 /* MHFacebookImageViewer.m in Sources */,
 				CC45FFC21BE490B100DE0BFB /* MQInputBar.m in Sources */,
