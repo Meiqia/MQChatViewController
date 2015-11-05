@@ -13,7 +13,7 @@ static CGFloat const kMQPullRefreshViewHeight = 44.0;
 static CGFloat const kMQPullRefreshIndicatorDiameter = 20.0;
 static CGFloat const kMQPullRefreshTitleFontSize = 12.0;
 
-@interface MQPullRefreshView()<UIScrollViewDelegate>
+@interface MQPullRefreshView()
 
 /**
  *  拥有下拉刷新的scrollView
@@ -26,7 +26,7 @@ static CGFloat const kMQPullRefreshTitleFontSize = 12.0;
     UIView *loadingIndicatorView;
     UIActivityIndicatorView *loadingIndicator;
     CAShapeLayer *loadProgressLayer;
-    UIBezierPath *path;
+    UIBezierPath *bezierPath;
     BOOL isTopRefresh;          //表明是上拉刷新还是下拉刷新 true-下拉刷新(获取之前的信息)  false-上拉刷新(获取之后的信息)
     UILabel *titleLabel;
     BOOL isLoading;
@@ -39,7 +39,6 @@ static CGFloat const kMQPullRefreshTitleFontSize = 12.0;
     self = [super init];
     if (self) {
         self.superScrollView = scrollView;
-        scrollView.delegate = self;
         isLoading = false;
         enableRefresh = true;
         isTopRefresh = topRefresh;
@@ -61,6 +60,8 @@ static CGFloat const kMQPullRefreshTitleFontSize = 12.0;
         loadProgressLayer.lineWidth = 1.5;
         [loadingIndicatorView.layer addSublayer:loadProgressLayer];
         [self addSubview:loadingIndicatorView];
+        //初始化贝塞尔path
+        bezierPath = [UIBezierPath bezierPath];
         //初始化注释title
         titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.frame.size.height/2 - kMQPullRefreshIndicatorDiameter/2, self.frame.size.height, kMQPullRefreshIndicatorDiameter)];
         titleLabel.text = @"刷新不了啦~";
@@ -84,6 +85,10 @@ static CGFloat const kMQPullRefreshTitleFontSize = 12.0;
     }
 }
 
+- (void)setRefreshTitle:(NSString *)title {
+    titleLabel.text = title;
+}
+
 - (void)startLoading {
     if (!isLoading && enableRefresh) {
         isLoading = true;
@@ -92,6 +97,9 @@ static CGFloat const kMQPullRefreshTitleFontSize = 12.0;
         [loadingIndicator startAnimating];
         CGFloat contentInsetTop = isTopRefresh ? self.superScrollView.contentInset.top + self.frame.size.height : self.superScrollView.contentInset.top - self.frame.size.height;
         self.superScrollView.contentInset = UIEdgeInsetsMake(contentInsetTop, self.superScrollView.contentInset.left, self.superScrollView.contentInset.bottom, self.superScrollView.contentInset.right);
+//        CGFloat contentInsetTop = isTopRefresh ? self.superScrollView.contentInset.top + self.frame.size.height : self.superScrollView.contentInset.top;
+//        CGFloat contentInsetBottom = isTopRefresh ? self.superScrollView.contentInset.bottom : self.superScrollView.contentInset.bottom - self.frame.size.height;
+//        self.superScrollView.contentInset = UIEdgeInsetsMake(contentInsetTop, self.superScrollView.contentInset.left, contentInsetBottom, self.superScrollView.contentInset.right);
     }
 }
 
@@ -109,36 +117,40 @@ static CGFloat const kMQPullRefreshTitleFontSize = 12.0;
 #pragma UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    CGFloat navHeight = [[UINavigationController alloc] init].navigationBar.frame.size.height;
-    CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
+//    CGFloat navHeight = [[UINavigationController alloc] init].navigationBar.frame.size.height;
+//    CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
     //是否是底部上拉刷新
-    BOOL isBottomRefreshEn = !isTopRefresh && (scrollView.contentSize.height-scrollView.frame.size.height<scrollView.contentOffset.y || (scrollView.frame.size.height>scrollView.contentSize.height && scrollView.contentOffset.y > -(navHeight+statusBarHeight)));
+//    BOOL isBottomRefreshEn = !isTopRefresh && (scrollView.contentSize.height-scrollView.frame.size.height<scrollView.contentOffset.y || (scrollView.frame.size.height>scrollView.contentSize.height && scrollView.contentOffset.y > -(navHeight+statusBarHeight)));
+    BOOL isBottomRefreshEn = !isTopRefresh && (scrollView.contentSize.height-scrollView.frame.size.height<scrollView.contentOffset.y || (scrollView.frame.size.height>scrollView.contentSize.height && scrollView.contentOffset.y > 0));
     //计算bottomRefreshView的位置
     if (!isTopRefresh) {
         CGFloat refreshViewOriginY = 0;
         if (scrollView.frame.size.height > scrollView.contentSize.height) {
-            refreshViewOriginY = scrollView.frame.size.height - navHeight*3/2;
+//            refreshViewOriginY = scrollView.frame.size.height - navHeight*3/2;
+            refreshViewOriginY = scrollView.frame.size.height;
         }else{
             refreshViewOriginY = scrollView.contentSize.height;
         }
         self.frame = CGRectMake(self.frame.origin.x, refreshViewOriginY, self.frame.size.width, self.frame.size.height);
     }
-    if ((scrollView.contentOffset.y < -(navHeight+statusBarHeight) && isTopRefresh) || isBottomRefreshEn) {
+    if ((scrollView.contentOffset.y < 0 && isTopRefresh) || isBottomRefreshEn) {
+//        if ((scrollView.contentOffset.y < -(navHeight+statusBarHeight) && isTopRefresh) || isBottomRefreshEn) {
         if (!isLoading && enableRefresh) {
             CGFloat position = 0;
             if (isTopRefresh) {
                 position = -(scrollView.contentOffset.y + scrollView.contentInset.top ) / (self.frame.size.height);
             }else{
                 if (scrollView.contentSize.height < scrollView.frame.size.height) {
-                    position = (scrollView.contentOffset.y + navHeight + statusBarHeight) / (self.frame.size.height);
+//                    position = (scrollView.contentOffset.y + navHeight + statusBarHeight) / (self.frame.size.height);
+                    position = (scrollView.contentOffset.y) / (self.frame.size.height);
                 }else{
                     position = (scrollView.contentOffset.y + scrollView.frame.size.height - scrollView.contentSize.height) / (self.frame.size.height);
                 }
             }
             position = position >= 1 ? 0.9999999 : position < 0 ? 0 : position;
-            [path removeAllPoints];
-            [path addArcWithCenter:CGPointMake(loadingIndicatorView.frame.size.width/2,loadingIndicatorView.frame.size.height/2) radius:loadingIndicatorView.frame.size.height / 2 startAngle:M_PI * 2 endAngle:position * 2 * M_PI clockwise:true];
-            loadProgressLayer.path = path.CGPath;
+            [bezierPath removeAllPoints];
+            [bezierPath addArcWithCenter:CGPointMake(loadingIndicatorView.frame.size.width/2,loadingIndicatorView.frame.size.height/2) radius:loadingIndicatorView.frame.size.height / 2 startAngle:M_PI * 2 endAngle:position * 2 * M_PI clockwise:true];
+            loadProgressLayer.path = bezierPath.CGPath;
         }
     }
 }

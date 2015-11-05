@@ -50,7 +50,7 @@
     self.enableMessageSound = true;
     self.enableClientAvatar = false;
     self.enableTopPullRefresh = true;
-    self.enableBottomPullRefresh = false;
+    self.enableBottomPullRefresh = true;
     
     self.incomingMsgTextColor = [UIColor darkTextColor];
     self.outgoingMsgTextColor = [UIColor whiteColor];
