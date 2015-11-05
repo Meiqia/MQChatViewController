@@ -51,6 +51,12 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     return self;
 }
 
+#pragma 增加cellModel并刷新tableView
+- (void)addCellModelAndReloadTableViewWithModel:(id<MQCellModelProtocol>)cellModel {
+    [self.cellModels addObject:cellModel];
+    [self reloadChatTableView];
+}
+
 /**
  * 获取更多历史聊天消息
  */
@@ -69,14 +75,13 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     MQTextMessage *message = [[MQTextMessage alloc] initWithContent:content];
     MQTextCellModel *cellModel = [[MQTextCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth];
     [self generateMessageDateCellWithCurrentCellModel:cellModel];
-    [self.cellModels addObject:cellModel];
-    [self reloadChatTableView];
+    [self addCellModelAndReloadTableViewWithModel:cellModel];
 #ifdef INCLUDE_MEIQIA_SDK
     [MQManager sendTextMessageWithContent:content delegate:self];
 #else
     //模仿发送成功
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        cellModel.sendType = MQChatCellSentFailure;
+        cellModel.sendType = MQChatCellSended;
         [self reloadChatTableView];
     });
 #endif
@@ -90,8 +95,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     MQImageMessage *message = [[MQImageMessage alloc] initWithImage:image];
     MQImageCellModel *cellModel = [[MQImageCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
     [self generateMessageDateCellWithCurrentCellModel:cellModel];
-    [self.cellModels addObject:cellModel];
-    [self reloadChatTableView];
+    [self addCellModelAndReloadTableViewWithModel:cellModel];
 #ifdef INCLUDE_MEIQIA_SDK
     [MQManager sendImageMessageWithImage:image delegate:self];
 #else
@@ -114,23 +118,21 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 #endif
     //将AMR格式转换成WAV格式，以便使iPhone能播放
     NSData *wavData = [self convertToWAVDataWithAMRFilePath:filePath];
-    [self sendVoiceMessageWIthWAVData:wavData];
+    [self sendVoiceMessageWithWAVData:wavData];
 }
 
 /**
  * 以WAV格式语音数据的形式，发送语音消息
  * @param wavData WAV格式的语音数据
  */
-- (void)sendVoiceMessageWIthWAVData:(NSData *)wavData {
+- (void)sendVoiceMessageWithWAVData:(NSData *)wavData {
     MQVoiceMessage *message = [[MQVoiceMessage alloc] initWithVoiceData:wavData];
     MQVoiceCellModel *cellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
     [self generateMessageDateCellWithCurrentCellModel:cellModel];
-    [self.cellModels addObject:cellModel];
-    [self reloadChatTableView];
-    
+    [self addCellModelAndReloadTableViewWithModel:cellModel];
     //模仿发送成功
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        cellModel.sendType = MQChatCellSentFailure;
+        cellModel.sendType = MQChatCellSended;
         [self reloadChatTableView];
     });
 }
@@ -179,13 +181,52 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     
 }
 
+- (void)didReceiveTextMessage:(MQTextMessage *)message {
+    MQTextCellModel *cellModel = [[MQTextCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth];
+    [self addCellModelAndReloadTableViewWithModel:cellModel];
+}
+
+- (void)didReceiveImageMessage:(MQImageMessage *)message {
+    MQImageCellModel *cellModel = [[MQImageCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
+    [self addCellModelAndReloadTableViewWithModel:cellModel];
+}
+
+- (void)didReceiveVoiceMessage:(MQVoiceMessage *)message {
+    MQVoiceCellModel *cellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
+    [self addCellModelAndReloadTableViewWithModel:cellModel];
+}
+
 - (void)didReceiveMessage:(MQMessage *)message {
     
 }
 
 - (void)didSendMessage:(MQMessage *)message expcetion:(kMQExceptionStatus)expcetion {
-    
+    NSString *messageId = message.messageId;
+    MQMessageSendStatus sendStatus = message.sendStatus;
+    NSInteger index = [self getIndexOfCellWithMessageId:messageId];
+    if (index < 0) {
+        return;
+    }
+    id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index];
+    MQChatCellSendStatus cellSendStatus = MQChatCellSended;
+    switch (sendStatus) {
+        case MQMessageSendStatusSuccess:
+            cellSendStatus = MQChatCellSended;
+            break;
+        case MQMessageSendStatusFailed:
+            cellSendStatus = MQChatCellSentFailure;
+            break;
+        case MQMessageSendStatusSending:
+            cellSendStatus = MQChatCellSending;
+            break;
+        default:
+            break;
+    }
+    [cellModel updateCellSendType:cellSendStatus];
+    [self updateCellWithIndex:index];
 }
+
+
 
 #endif
 
@@ -284,16 +325,22 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 #pragma MQCellModelDelegate
 - (void)didUpdateCellDataWithMessageId:(NSString *)messageId {
     //获取又更新的cell的index
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        for (NSInteger index=0; index<self.cellModels.count; index++) {
-            id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index];
-            if ([[cellModel getCellMessageId] isEqualToString:messageId]) {
-                //更新该cell
-                [self updateCellWithIndex:index];
-                break;
-            }
+    NSInteger index = [self getIndexOfCellWithMessageId:messageId];
+    if (index < 0) {
+        return;
+    }
+    [self updateCellWithIndex:index];
+}
+
+- (NSInteger)getIndexOfCellWithMessageId:(NSString *)messageId {
+    for (NSInteger index=0; index<self.cellModels.count; index++) {
+        id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index];
+        if ([[cellModel getCellMessageId] isEqualToString:messageId]) {
+            //更新该cell
+            return index;
         }
-    });
+    }
+    return -1;
 }
 
 //通知tableView更新该indexPath的cell

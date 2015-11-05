@@ -14,6 +14,14 @@
 /** 通知viewController完成录音 */
 - (void)didFinishRecordingWithAMRFilePath:(NSString *)filePath;
 
+/**
+ *  录音的音量有更新
+ *
+ *  @param recordView 录音界面
+ *  @param volume     音量
+ */
+- (void)didUpdateVolumeInRecordView:(UIView *)recordView volume:(CGFloat)volume;
+
 @end
 
 @interface MQRecordView : UIView

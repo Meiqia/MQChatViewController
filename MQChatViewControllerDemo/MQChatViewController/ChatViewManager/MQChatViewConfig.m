@@ -51,6 +51,7 @@
     self.enableClientAvatar = false;
     self.enableTopPullRefresh = true;
     self.enableBottomPullRefresh = true;
+    self.enableRoundAvatar = false;
     
     self.incomingMsgTextColor = [UIColor darkTextColor];
     self.outgoingMsgTextColor = [UIColor whiteColor];

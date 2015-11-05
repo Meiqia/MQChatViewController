@@ -10,6 +10,9 @@
 #import "MQDefinition.h"
 #import "MQMessage.h"
 #import "MQAgent.h"
+#import "MQTextMessage.h"
+#import "MQImageMessage.h"
+#import "MQVoiceMessage.h"
 
 @protocol MQExpcetionDelegate <NSObject>
 @optional
@@ -31,10 +34,32 @@
 - (void)didReceiveMultipleMessage:(NSArray *)messages;
 
 /**
- * 收到了一条即时消息
+ * 收到了一条MQMessage类型的即时消息
  * @param message MQMessage类型
  */
 - (void)didReceiveMessage:(MQMessage *)message;
+
+/**
+ *  收到了一条MQTextMessage类型的即时消息
+ *
+ *  @param message MQTextMessage类型
+ */
+- (void)didReceiveTextMessage:(MQTextMessage *)message;
+
+/**
+ *  收到了一条MQImageMessage类型的即时消息
+ *
+ *  @param message MQImageMessage类型
+ */
+- (void)didReceiveImageMessage:(MQImageMessage *)message;
+
+/**
+ *  收到了一条MQVoiceMessage类型的即时消息
+ *
+ *  @param message MQVoiceMessage类型
+ */
+- (void)didReceiveVoiceMessage:(MQVoiceMessage *)message;
+
 
 @optional
 /**
@@ -51,13 +76,10 @@
  */
 - (void)didReceiveUnReadMessageNumber:(NSInteger)badgeNumber expcetion:(kMQExceptionStatus)expcetion;
 
-
-
 @end
 
 @protocol MQOfflinePushDelegate <NSObject>
 @optional
-
 /**
  * 收到了离线推送的绑定id
  * @param pushId 获得的推送绑定的id，将此id提供给极推送
@@ -65,14 +87,11 @@
  */
 - (void)didRecieveOfflinePushId:(NSString *)pushId expcetion:(kMQExceptionStatus)expcetion;
 
-
 /**
  * 开启/关闭离线推送
  * @param enable YES:开启离线推送  NO:关闭离线推送
  */
 - (void)enableOfflineNotification:(BOOL)enable expcetion:(kMQExceptionStatus)expcetion;
-
-
 
 @end
 

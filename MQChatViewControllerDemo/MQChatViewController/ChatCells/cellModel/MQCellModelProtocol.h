@@ -93,7 +93,7 @@ typedef NS_ENUM(NSUInteger, MQChatCellFromType) {
  *  MQChatCellSended        - 消息已发送
  *  MQChatCellSentFailure   - 消息发送失败
  */
-typedef NS_ENUM(NSUInteger, MQChatCellSendType) {
+typedef NS_ENUM(NSUInteger, MQChatCellSendStatus) {
     MQChatCellSending,
     MQChatCellSended,
     MQChatCellSentFailure
@@ -140,6 +140,13 @@ typedef NS_ENUM(NSUInteger, MQChatCellSendType) {
  *  @param cellWidth cell宽度
  */
 - (void)updateCellFrameWithCellWidth:(CGFloat)cellWidth;
+
+/**
+ *  更新cell的sendType
+ *
+ *  @param sendType 发送类型
+ */
+- (void)updateCellSendType:(MQChatCellSendStatus)sendType;
 
 
 @end
