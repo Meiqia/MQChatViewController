@@ -58,7 +58,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [chatViewConfig setConfigToDefault];
     [[NSNotificationCenter defaultCenter] postNotificationName:MQAudioPlayerDidInterruptNotification object:nil];
 #ifdef INCLUDE_MEIQIA_SDK
-    [self.chatViewDelegate chatViewDidDisappear];
+//    [self.chatViewDelegate chatViewDidDisappear];
 #endif
 }
 
@@ -70,7 +70,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
 #ifdef INCLUDE_MEIQIA_SDK
-    [self.chatViewDelegate chatViewWillDisappear];
+//    [self.chatViewDelegate chatViewWillDisappear];
 #endif
 }
 
@@ -250,11 +250,11 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [[NSNotificationCenter defaultCenter] postNotificationName:MQAudioPlayerDidInterruptNotification object:nil];
     
 #ifdef INCLUDE_MEIQIA_SDK
-    if (self.chatViewDelegate) {
-        if ([self.chatViewDelegate respondsToSelector:@selector(recordVoiceWillBegin)]) {
-            [self.chatViewDelegate recordVoiceWillBegin];
-        }
-    }
+//    if (self.chatViewDelegate) {
+//        if ([self.chatViewDelegate respondsToSelector:@selector(recordVoiceWillBegin)]) {
+//            [self.chatViewDelegate recordVoiceWillBegin];
+//        }
+//    }
 #endif
 
     //如果开发者不自定义录音界面，则将播放界面显示出来
@@ -292,11 +292,11 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 - (void)didEndRecord {
 #ifdef INCLUDE_MEIQIA_SDK
-    if (self.chatViewDelegate) {
-        if ([self.chatViewDelegate respondsToSelector:@selector(recordVoiceDidEnd)]) {
-            [self.chatViewDelegate recordVoiceDidEnd];
-        }
-    }
+//    if (self.chatViewDelegate) {
+//        if ([self.chatViewDelegate respondsToSelector:@selector(recordVoiceDidEnd)]) {
+//            [self.chatViewDelegate recordVoiceDidEnd];
+//        }
+//    }
 #endif
 }
 
@@ -308,11 +308,11 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 - (void)didUpdateVolumeInRecordView:(UIView *)recordView volume:(CGFloat)volume {
 #ifdef INCLUDE_MEIQIA_SDK
-    if (self.chatViewDelegate) {
-        if ([self.chatViewDelegate respondsToSelector:@selector(recordVolumnDidUpdate)]) {
-            [self.chatViewDelegate recordVolumnDidUpdate];
-        }
-    }
+//    if (self.chatViewDelegate) {
+//        if ([self.chatViewDelegate respondsToSelector:@selector(recordVolumnDidUpdate)]) {
+//            [self.chatViewDelegate recordVolumnDidUpdate];
+//        }
+//    }
 #endif
 }
 
@@ -347,11 +347,11 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 - (void)didSelectMessageContent:(NSString *)content selectedContent:(NSString *)selectedContent {
 #ifdef INCLUDE_MEIQIA_SDK
-    if (self.chatViewDelegate) {
-        if ([self.chatViewDelegate respondsToSelector:@selector(didSelectMessageContent:selectedContent:)]) {
-            [self.chatViewDelegate didSelectMessageContent:content selectedContent:selectedContent];
-        }
-    }
+//    if (self.chatViewDelegate) {
+//        if ([self.chatViewDelegate respondsToSelector:@selector(didSelectMessageContent:selectedContent:)]) {
+//            [self.chatViewDelegate didSelectMessageContent:content selectedContent:selectedContent];
+//        }
+//    }
 #endif
 }
 

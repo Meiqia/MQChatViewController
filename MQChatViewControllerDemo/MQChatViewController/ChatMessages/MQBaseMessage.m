@@ -17,6 +17,7 @@
         self.date = [NSDate date];
         self.userName = @"";
         self.userAvatarPath = @"";
+        self.sendStatus = MQMessageSendStatusSending;
     }
     return self;
 }

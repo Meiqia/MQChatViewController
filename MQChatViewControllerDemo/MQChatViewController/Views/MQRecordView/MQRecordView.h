@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-//#import "MQMessage.h"
 
 @protocol MQRecordViewDelegate <NSObject>
 

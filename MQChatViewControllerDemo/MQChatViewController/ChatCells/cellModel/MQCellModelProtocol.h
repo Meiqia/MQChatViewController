@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "MQChatBaseCell.h"
 #import "MQChatFileUtil.h"
+#import "MQBaseMessage.h"
 
 //定义cell中的布局间距等
 /**
@@ -93,11 +94,11 @@ typedef NS_ENUM(NSUInteger, MQChatCellFromType) {
  *  MQChatCellSended        - 消息已发送
  *  MQChatCellSentFailure   - 消息发送失败
  */
-typedef NS_ENUM(NSUInteger, MQChatCellSendStatus) {
-    MQChatCellSending,
-    MQChatCellSended,
-    MQChatCellSentFailure
-};
+//typedef NS_ENUM(NSUInteger, MQChatMessageSendStatus) {
+//    MQChatCellSending,
+//    MQChatCellSended,
+//    MQChatCellSentFailure
+//};
 
 /**
  * MQCellModelProtocol协议定义了ChatCell的view需要满足的方法，开发者也可根据自身需要，增加协议方法
@@ -146,7 +147,14 @@ typedef NS_ENUM(NSUInteger, MQChatCellSendStatus) {
  *
  *  @param sendType 发送类型
  */
-- (void)updateCellSendType:(MQChatCellSendStatus)sendType;
+- (void)updateCellSendStatus:(MQChatMessageSendStatus)sendStatus;
+
+/**
+ *  更新cell的messageId
+ *
+ *  @param messageId 消息id
+ */
+- (void)updateCellMessageId:(NSString *)messageId;
 
 
 @end

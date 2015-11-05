@@ -21,7 +21,8 @@
 #import "VoiceConverter.h"
 
 #ifdef INCLUDE_MEIQIA_SDK
-#import "MQManager.h"
+//#import "MQManager.h"
+#import "MQServiceToViewInterface.h"
 #endif
 
 static NSInteger const kMQChatMessageMaxTimeInterval = 60;
@@ -31,7 +32,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 
 #ifdef INCLUDE_MEIQIA_SDK
-@interface MQChatViewModel() <MQMessageDelegate, MQCellModelDelegate>
+@interface MQChatViewModel() <MQServiceToViewInterfaceDelegate, MQCellModelDelegate>
 
 @end
 #else
@@ -64,7 +65,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     
 #ifdef INCLUDE_MEIQIA_SDK
     id<MQCellModelProtocol> cellModel = [self.cellModels lastObject];
-    [MQManager getHistoryMessagesWithMsgDate:[cellModel getCellDate] messagesNumber:kMQChatGetHistoryMessageNumber delegate:self];
+    [MQServiceToViewInterface getHistoryMessagesWithMsgDate:[cellModel getCellDate] messagesNumber:kMQChatGetHistoryMessageNumber delegate:self];
 #endif
 }
 
@@ -77,7 +78,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self generateMessageDateCellWithCurrentCellModel:cellModel];
     [self addCellModelAndReloadTableViewWithModel:cellModel];
 #ifdef INCLUDE_MEIQIA_SDK
-    [MQManager sendTextMessageWithContent:content delegate:self];
+    [MQServiceToViewInterface sendTextMessageWithContent:content delegate:self];
 #else
     //模仿发送成功
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -97,7 +98,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self generateMessageDateCellWithCurrentCellModel:cellModel];
     [self addCellModelAndReloadTableViewWithModel:cellModel];
 #ifdef INCLUDE_MEIQIA_SDK
-    [MQManager sendImageMessageWithImage:image delegate:self];
+    [MQServiceToViewInterface sendImageMessageWithImage:image delegate:self];
 #else
     //模仿发送成功
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -114,7 +115,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 - (void)sendVoiceMessageWithAMRFilePath:(NSString *)filePath {
 #ifdef INCLUDE_MEIQIA_SDK
     NSData *amrData = [NSData dataWithContentsOfFile:filePath];
-    [MQManager sendAudioMessage:amrData delegate:self];
+    [MQServiceToViewInterface sendAudioMessage:amrData delegate:self];
 #endif
     //将AMR格式转换成WAV格式，以便使iPhone能播放
     NSData *wavData = [self convertToWAVDataWithAMRFilePath:filePath];
@@ -132,7 +133,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self addCellModelAndReloadTableViewWithModel:cellModel];
     //模仿发送成功
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        cellModel.sendType = MQChatCellSended;
+        cellModel.sendStatus = MQMessageSendStatusSuccess;
         [self reloadChatTableView];
     });
 }
@@ -170,15 +171,26 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
  */
 - (void)sendUserInputtingWithContent:(NSString *)content {
 #ifdef INCLUDE_MEIQIA_SDK
-    [MQManager sendClientInputtingWithContent:content];
+    [MQServiceToViewInterface sendClientInputtingWithContent:content];
 #endif
 }
 
 #ifdef INCLUDE_MEIQIA_SDK
 
-#pragma MQMessageDelegate
-- (void)didReceiveMultipleMessage:(NSArray *)messages {
-    
+#pragma MQServiceToViewInterfaceDelegate
+- (void)didReceiveHistoryMessages:(NSArray *)messages {
+    for (MQBaseMessage *message in messages) {
+        id<MQCellModelProtocol> cellModel;
+        if ([message isKindOfClass:[MQTextMessage class]]) {
+            cellModel = [[MQTextCellModel alloc] initCellModelWithMessage:(MQTextMessage *)message cellWidth:self.chatViewWidth];
+        } else if ([message isKindOfClass:[MQImageMessage class]]) {
+            cellModel = [[MQImageCellModel alloc] initCellModelWithMessage:(MQImageMessage *)message cellWidth:self.chatViewWidth delegate:self];
+        } else if ([message isKindOfClass:[MQVoiceMessage class]]) {
+            cellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:(MQVoiceMessage *)message cellWidth:self.chatViewWidth delegate:self];
+        }
+        [self.cellModels addObject:cellModel];
+    }
+    [self reloadChatTableView];
 }
 
 - (void)didReceiveTextMessage:(MQTextMessage *)message {
@@ -196,37 +208,19 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self addCellModelAndReloadTableViewWithModel:cellModel];
 }
 
-- (void)didReceiveMessage:(MQMessage *)message {
-    
-}
-
-- (void)didSendMessage:(MQMessage *)message expcetion:(kMQExceptionStatus)expcetion {
-    NSString *messageId = message.messageId;
-    MQMessageSendStatus sendStatus = message.sendStatus;
-    NSInteger index = [self getIndexOfCellWithMessageId:messageId];
+- (void)didSendMessageWithNewMessageId:(NSString *)newMessageId
+                          oldMessageId:(NSString *)oldMessageId
+                        newMessageDate:(NSDate *)newMessageDate
+                            sendStatus:(MQChatMessageSendStatus)sendStatus
+{
+    NSInteger index = [self getIndexOfCellWithMessageId:oldMessageId];
     if (index < 0) {
         return;
     }
     id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index];
-    MQChatCellSendStatus cellSendStatus = MQChatCellSended;
-    switch (sendStatus) {
-        case MQMessageSendStatusSuccess:
-            cellSendStatus = MQChatCellSended;
-            break;
-        case MQMessageSendStatusFailed:
-            cellSendStatus = MQChatCellSentFailure;
-            break;
-        case MQMessageSendStatusSending:
-            cellSendStatus = MQChatCellSending;
-            break;
-        default:
-            break;
-    }
-    [cellModel updateCellSendType:cellSendStatus];
-    [self updateCellWithIndex:index];
+    [cellModel updateCellMessageId:newMessageId];
+    [cellModel updateCellSendStatus:sendStatus];
 }
-
-
 
 #endif
 
