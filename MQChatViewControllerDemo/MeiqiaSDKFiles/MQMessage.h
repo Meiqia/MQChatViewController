@@ -19,15 +19,13 @@ typedef enum : NSUInteger {
 
 typedef enum : NSUInteger {
     MQMessageContentTypeText  = 0,  //文字
-    MQMessageContentTypePhoto = 1,  //图片
+    MQMessageContentTypeImage = 1,  //图片
     MQMessageContentTypeVoice = 2,  //语音
 } MQMessageContentType;
 
 typedef enum : NSUInteger {
     MQMessageFromTypeClient   = 0,  //来自 顾客
-    MQMessageFromTypeAgent    = 1,  //来自 客服
-    MQMessageFromTypeUnit     = 2,  //来自 企业
-    MQMessageFromTypeSystem   = 3,  //来自 系统
+    MQMessageFromTypeAgent    = 1   //来自 客服
 } MQMessageFromType;
 
 typedef enum : NSUInteger {
@@ -38,10 +36,10 @@ typedef enum : NSUInteger {
 } MQMessageType;
 
 typedef enum : NSUInteger {
-    MQMessageStatusSuccess    = 0,  //发送成功
-    MQMessageStatusFailed     = 1,  //发送失败
-    MQMessageStatusSending    = 2,  //发送中
-} MQMessageStatus;
+    MQMessageSendStatusSuccess    = 0,  //发送成功
+    MQMessageSendStatusFailed     = 1,  //发送失败
+    MQMessageSendStatusSending    = 2,  //发送中
+} MQMessageSendStatus;
 
 @interface MQMessage : NSObject
 
@@ -69,8 +67,8 @@ typedef enum : NSUInteger {
 //消息类型
 @property (nonatomic, assign) MQMessageType        type;
 
-//消息状态
-@property (nonatomic, assign) MQMessageStatus      status;
+//消息发送状态
+@property (nonatomic, assign) MQMessageSendStatus   sendStatus;
 
 /** message发送人的姓名 */
 @property (nonatomic, copy  ) NSString             * userName;

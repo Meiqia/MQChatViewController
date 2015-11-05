@@ -9,8 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "MQBaseMessage.h"
 #import <UIKit/UIKit.h>
-//是否是调试SDK
-//#define INCLUDE_MEIQIA_SDK
+#import "MQChatViewConfig.h"
 
 @protocol MQChatViewModelDelegate <NSObject>
 

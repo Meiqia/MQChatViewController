@@ -94,7 +94,7 @@
 /**
  * @brief 消息的发送状态
  */
-@property (nonatomic, assign) MQChatCellSendType sendType;
+@property (nonatomic, assign) MQChatCellSendStatus sendType;
 
 
 

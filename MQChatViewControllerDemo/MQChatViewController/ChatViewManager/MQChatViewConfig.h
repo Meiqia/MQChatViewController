@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+//是否是调试SDK
+//#define INCLUDE_MEIQIA_SDK
+
 /** 关闭键盘的通知 */
 static NSString * const MQChatViewKeyboardResignFirstResponderNotification = @"MQChatViewKeyboardResignFirstResponderNotification";
 /** 中断audio player的通知 */
@@ -42,6 +45,7 @@ static NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerD
 @property (nonatomic, assign) BOOL enableClientAvatar;
 @property (nonatomic, assign) BOOL enableTopPullRefresh;
 @property (nonatomic, assign) BOOL enableBottomPullRefresh;
+@property (nonatomic, assign) BOOL enableRoundAvatar;
 
 @property (nonatomic, copy) UIColor *incomingMsgTextColor;
 @property (nonatomic, copy) UIColor *outgoingMsgTextColor;

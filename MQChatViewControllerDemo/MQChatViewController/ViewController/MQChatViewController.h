@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "MQChatViewConfig.h"
 #import "MQChatTableView.h"
+#ifdef INCLUDE_MEIQIA_SDK
+#import "MQDelegate.h"
+#endif
 
 /**
  * @brief 聊天界面的ViewController
@@ -40,5 +43,12 @@
  * @param manager 初始化配置
  */
 - (instancetype)initWithChatViewManager:(MQChatViewConfig *)chatViewConfig;
+
+#ifdef INCLUDE_MEIQIA_SDK
+/**
+ *  聊天界面的委托方法
+ */
+@property (nonatomic, weak) id<MQChatViewDelegate> chatViewDelegate;
+#endif
 
 @end

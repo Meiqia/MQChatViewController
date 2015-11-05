@@ -204,7 +204,7 @@ static CGFloat const kMQRecordViewDiameter = 150.0;
 {
     [recordTimer invalidate];
     recordTimer = nil;
-    if (recordTime < 1) {
+    if (recordTime < 1 && recordTime > 0) {
         [MQToast showToast:@"录音时间太短" duration:1 window:self.superview];
         [audioRecorder cancelRecording];
     } else {

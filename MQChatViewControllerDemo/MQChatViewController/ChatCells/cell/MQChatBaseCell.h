@@ -35,6 +35,12 @@
  */
 - (void)resendMessageInCell:(UITableViewCell *)cell resendData:(NSDictionary *)resendData;
 
+/**
+ * 消息中与regexs中的正则表达式匹配上的内容被点击的协议（若regexs使用默认值，可以不用实现该方法）
+ * @param content 被点击的消息
+ * @param selectedContent 与正则表达式匹配的内容
+ */
+- (void)didSelectMessageContent:(NSString *)content selectedContent:(NSString *)selectedContent;
 @end
 
 

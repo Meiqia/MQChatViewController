@@ -229,6 +229,12 @@ didLongPressLinkWithPhoneNumber:(NSString *)phoneNumber
         default:
             break;
     }
+    //通知界面点击了消息
+    if (self.chatCellDelegate) {
+        if ([self.chatCellDelegate respondsToSelector:@selector(didSelectMessageContent:selectedContent:)]) {
+            [self.chatCellDelegate didSelectMessageContent:self.textLabel.text selectedContent:actionSheet.title];
+        }
+    }
 }
 
 #pragma 长按事件
