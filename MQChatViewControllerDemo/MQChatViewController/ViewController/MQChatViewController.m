@@ -84,6 +84,20 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [self.view endEditing:true];
 }
 
+//下拉刷新，获取以前的消息
+- (void)startLoadingTopMessagesInTableView:(UITableView *)tableView {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.chatTableView finishLoadingTopRefreshView];
+    });
+}
+
+//上拉刷新，获取更新的消息
+- (void)startLoadingBottomMessagesInTableView:(UITableView *)tableView {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.chatTableView finishLoadingBottomRefreshView];
+    });
+}
+
 #pragma 编辑导航栏
 - (void)setNavBar {
 #ifndef INCLUDE_MEIQIA_SDK
@@ -149,6 +163,15 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.view endEditing:YES];
+}
+
+#pragma UIScrollViewDelegate
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    [self.chatTableView scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [self.chatTableView scrollViewDidScroll:scrollView];
 }
 
 #pragma MQChatViewModelDelegate
@@ -322,6 +345,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
         CGFloat navBarOriginY = 20;
         CGFloat navBarHeight = viewSize.width < viewSize.height ? 44 : 32;
         chatViewConfig.chatViewFrame = CGRectMake(0, navBarOriginY+navBarHeight, viewSize.width, viewSize.height - navBarOriginY - navBarHeight - kMQChatViewInputBarHeight);
+        [self.chatTableView updateFrame:chatViewConfig.chatViewFrame];;
     }
 }
 
@@ -331,7 +355,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     self.view.frame = CGRectMake(0, 0, viewSize.width, viewSize.height);
     //更新tableView的frame
     [self setChatTableViewFrame];
-    self.chatTableView.frame = chatViewConfig.chatViewFrame;
     //更新cellModel的frame
     chatViewModel.chatViewWidth = viewSize.width;
     [chatViewModel updateCellModelsFrame];

@@ -49,12 +49,15 @@
     self.enableCustomRecordView = true;
     self.enableMessageSound = true;
     self.enableClientAvatar = false;
+    self.enableTopPullRefresh = true;
+    self.enableBottomPullRefresh = true;
     
     self.incomingMsgTextColor = [UIColor darkTextColor];
     self.outgoingMsgTextColor = [UIColor whiteColor];
     self.eventTextColor = [UIColor grayColor];
     self.navBarTintColor = [UIColor whiteColor];
     self.navBarColor = [UIColor blueColor];
+    self.pullRefreshColor = [UIColor colorWithRed:104.0/255.0 green:192.0/255.0 blue:160.0/255.0 alpha:1.0];
     
     self.agentDefaultAvatarImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQIcon"]];
     self.photoSenderImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQMessageCameraInputImage"]];
