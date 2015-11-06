@@ -13,11 +13,11 @@
 - (instancetype)init {
     if (self = [super init]) {
         self.messageId = [[NSUUID UUID] UUIDString];
-        self.fromType = MQMessageOutgoing;
+        self.fromType = MQChatMessageOutgoing;
         self.date = [NSDate date];
         self.userName = @"";
         self.userAvatarPath = @"";
-        self.sendStatus = MQMessageSendStatusSending;
+        self.sendStatus = MQChatMessageSendStatusSending;
     }
     return self;
 }

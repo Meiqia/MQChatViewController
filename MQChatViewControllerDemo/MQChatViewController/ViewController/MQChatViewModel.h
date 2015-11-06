@@ -10,6 +10,9 @@
 #import "MQBaseMessage.h"
 #import <UIKit/UIKit.h>
 #import "MQChatViewConfig.h"
+#ifdef INCLUDE_MEIQIA_SDK
+#import "MQServiceToViewInterface.h"
+#endif
 
 @protocol MQChatViewModelDelegate <NSObject>
 
@@ -36,10 +39,17 @@
  *
  * MQChatViewModel管理者MQChatViewController中的数据
  */
-@interface MQChatViewModel : NSObject 
+@interface MQChatViewModel : NSObject
+
+#ifdef INCLUDE_MEIQIA_SDK
+/**
+ *  后端返回的数据的错误委托方法
+ */
+@property (nonatomic, weak) id<MQServiceToViewInterfaceErrorDelegate> errorDelegate;
+#endif
 
 /** MQChatViewModel的委托 */
-@property (nonatomic, weak) id<MQChatViewModelDelegate>delegate;
+@property (nonatomic, weak) id<MQChatViewModelDelegate> delegate;
 
 /** cellModel的缓存 */
 @property (nonatomic, strong) NSMutableArray *cellModels;
@@ -90,6 +100,12 @@
  *  更新cellModel中的frame，针对转屏的场景
  */
 - (void)updateCellModelsFrame;
+
+/**
+ *  发送本地欢迎语消息
+ *  @warnning 该消息不需要发送给后端
+ */
+- (void)sendLocalWelcomeChatMessage;
 
 #ifndef INCLUDE_MEIQIA_SDK
 /**

@@ -17,8 +17,11 @@
 #import "VoiceConverter.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 50.0;
-
+#ifdef INCLUDE_MEIQIA_SDK
+@interface MQChatViewController () <UITableViewDelegate, MQChatViewModelDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQRecordViewDelegate, MQServiceToViewInterfaceErrorDelegate>
+#else
 @interface MQChatViewController () <UITableViewDelegate, MQChatViewModelDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQRecordViewDelegate>
+#endif
 
 @end
 
@@ -50,7 +53,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [self initInputBar];
     [self initTableViewDataSource];
     chatViewModel.chatViewWidth = self.chatTableView.frame.size.width;
-
+    [chatViewModel sendLocalWelcomeChatMessage];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -96,9 +99,11 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 //下拉刷新，获取以前的消息
 - (void)startLoadingTopMessagesInTableView:(UITableView *)tableView {
+#ifndef INCLUDE_MEIQIA_SDK
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.chatTableView finishLoadingTopRefreshView];
     });
+#endif
 }
 
 //上拉刷新，获取更新的消息
@@ -132,6 +137,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)initChatViewModel {
     chatViewModel = [[MQChatViewModel alloc] init];
     chatViewModel.delegate = self;
+#ifdef INCLUDE_MEIQIA_SDK
+    chatViewModel.errorDelegate = self;
+#endif
 }
 
 #pragma 初始化tableView dataSource
@@ -186,6 +194,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 #pragma MQChatViewModelDelegate
 - (void)didGetHistoryMessages {
+    [self.chatTableView finishLoadingTopRefreshView];
     [self.chatTableView reloadData];
 }
 
@@ -413,6 +422,15 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (BOOL)prefersStatusBarHidden {
     return NO;
 }
+
+#ifdef INCLUDE_MEIQIA_SDK
+#pragma MQServiceToViewInterfaceErrorDelegate 后端返回的数据的错误委托方法
+- (void)getLoadHistoryMessageError {
+    [MQToast showToast:@"抱歉，获取历史消息出了点儿小问题，请重新试下~" duration:1.0 window:self.view];
+}
+
+
+#endif
 
 
 @end

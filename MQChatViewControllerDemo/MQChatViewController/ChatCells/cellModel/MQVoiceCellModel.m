@@ -126,7 +126,9 @@ static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
         self.sendStatus = message.sendStatus;
         self.date = message.date;
         self.avatarPath = @"";
-        if (message.userAvatarPath.length > 0) {
+        if (message.userAvatarImage) {
+            self.avatarImage = message.userAvatarImage;
+        } else if (message.userAvatarPath.length > 0) {
             self.avatarPath = message.userAvatarPath;
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:message.userAvatarPath]];
@@ -198,7 +200,7 @@ static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
     
     //根据消息的来源，进行处理
     UIImage *bubbleImage = [MQChatViewConfig sharedConfig].incomingBubbleImage;
-    if (message.fromType == MQMessageOutgoing) {
+    if (message.fromType == MQChatMessageOutgoing) {
         //发送出去的消息
         self.cellFromType = MQChatCellOutgoing;
         bubbleImage = [MQChatViewConfig sharedConfig].outgoingBubbleImage;
@@ -279,6 +281,10 @@ static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
 
 - (void)updateCellMessageId:(NSString *)messageId {
     self.messageId = messageId;
+}
+
+- (void)updateCellMessageDate:(NSDate *)messageDate {
+    self.date = messageDate;
 }
 
 - (void)updateCellFrameWithCellWidth:(CGFloat)cellWidth {

@@ -25,7 +25,7 @@
  * @param messages 消息数组，元素为MQBaseMessage类型
  * @warning 该数组是按时间从旧到新排序
  */
-- (void)didReceiveHistoryMessages:(NSArray *)messages;
+- (void)didReceiveHistoryMessages:(NSArray *)messages totalNum:(NSInteger)totalNum;
 
 /**
  *  收到了一条MQTextMessage类型的即时消息
@@ -60,6 +60,17 @@
 @end
 
 /**
+ *  界面发送的请求出错的委托方法
+ */
+@protocol MQServiceToViewInterfaceErrorDelegate <NSObject>
+/**
+ *  收到获取历史消息的错误
+ */
+- (void)getLoadHistoryMessageError;
+
+@end
+
+/**
  *  MQServiceToViewInterface是美洽开源UI层和美洽数据逻辑层的接口
  */
 @interface MQServiceToViewInterface : NSObject
@@ -70,30 +81,45 @@
  * @param msgDate 获取该日期之前的历史消息;
  * @param messagesNum 获取消息的数量
  */
-+ (void)getHistoryMessagesWithMsgDate:(NSDate *)msgDate messagesNumber:(NSInteger)messagesNumber delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
++ (void)getHistoryMessagesWithMsgDate:(NSDate *)msgDate
+                       messagesNumber:(NSInteger)messagesNumber
+                      successDelegate:(id<MQServiceToViewInterfaceDelegate>)successDelegate
+                        errorDelegate:(id<MQServiceToViewInterfaceErrorDelegate>)errorDelegate;
 
 /**
  * 发送文字消息
  * @param content 消息内容。会做前后去空格处理，处理后的消息长度不能为0，否则不执行发送操作
+ * @param localMessageId 本地消息id
  * @param delegate 发送消息的代理，如果发送成功，会返回完整的消息对象，代理函数：-(void)didSendMessage:expcetion:
  */
-+ (void)sendTextMessageWithContent:(NSString *)content delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
++ (void)sendTextMessageWithContent:(NSString *)content
+                         messageId:(NSString *)localMessageId
+                   successDelegate:(id<MQServiceToViewInterfaceDelegate>)successDelegate
+                     errorDelegate:(id<MQServiceToViewInterfaceErrorDelegate>)errorDelegate;
 
 /**
  * 发送图片消息。该函数会做图片压缩操作，尺寸将会限制在最大1280px
  *
  * @param image 图片
+ * @param localMessageId 本地消息id
  * @param delegate 发送消息的代理，会返回完整的消息对象，代理函数：-(void)didSendMessage:expcetion:
  */
-+ (void)sendImageMessageWithImage:(UIImage *)image delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
++ (void)sendImageMessageWithImage:(UIImage *)image
+                        messageId:(NSString *)localMessageId
+                  successDelegate:(id<MQServiceToViewInterfaceDelegate>)successDelegate
+                    errorDelegate:(id<MQServiceToViewInterfaceErrorDelegate>)errorDelegate;
 
 /**
  * 发送语音消息。使用该接口，需要开发者提供一条amr格式的语音.
  *
  * @param audio 需要发送的语音消息，格式为amr。
+ * @param localMessageId 本地消息id
  * @param delegate 发送消息的代理，会返回完整的消息对象，代理函数：-(void)didSendMessage:expcetion:
  */
-+ (void)sendAudioMessage:(NSData *)audio delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
++ (void)sendAudioMessage:(NSData *)audio
+               messageId:(NSString *)localMessageId
+         successDelegate:(id<MQServiceToViewInterfaceDelegate>)successDelegate
+           errorDelegate:(id<MQServiceToViewInterfaceErrorDelegate>)errorDelegate;
 
 /**
  * 将用户正在输入的内容，提供给客服查看。该接口没有调用限制，但每1秒内只会向服务器发送一次数据

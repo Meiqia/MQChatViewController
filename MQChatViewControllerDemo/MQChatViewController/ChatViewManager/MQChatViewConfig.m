@@ -38,7 +38,8 @@
     
     self.agentOnlineTipText = @"客服上线了";
     self.agentOfflineTipText = @"客服下线了";
-    self.chatWelcomText = @"你好，请问有什么可以帮到您？";
+    self.chatWelcomeText = @"你好，请问有什么可以帮到您？";
+    self.agentName = @"美洽小助手";
     
     self.enableSyncServerMessage = false;
     self.enableEventDispaly = true;
@@ -52,6 +53,7 @@
     self.enableTopPullRefresh = true;
     self.enableBottomPullRefresh = true;
     self.enableRoundAvatar = false;
+    self.enableWelcomeChat = true;
     
     self.incomingMsgTextColor = [UIColor darkTextColor];
     self.outgoingMsgTextColor = [UIColor whiteColor];

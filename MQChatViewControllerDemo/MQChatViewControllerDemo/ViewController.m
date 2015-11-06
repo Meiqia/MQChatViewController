@@ -26,7 +26,6 @@
     pushChatViewBtn.frame = CGRectMake(100, 200, 200, 30);
     [pushChatViewBtn addTarget:self action:@selector(pushChatViewAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:pushChatViewBtn];
-    
 }
 
 - (void)didReceiveMemoryWarning {
