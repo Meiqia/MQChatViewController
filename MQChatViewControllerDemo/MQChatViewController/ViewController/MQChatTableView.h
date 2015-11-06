@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MQChatViewModel.h"
+#import "MQChatViewService.h"
 #import "MQPullRefreshView.h"
 
 @protocol MQChatTableViewDelegate <NSObject>
@@ -30,7 +30,7 @@
 @interface MQChatTableView : UITableView
 
 
-@property (nonatomic, strong) MQChatViewModel *chatViewModel;
+@property (nonatomic, strong) MQChatViewService *chatViewModel;
 
 @property (nonatomic, weak) id<MQChatTableViewDelegate> chatTableViewDelegate;
 

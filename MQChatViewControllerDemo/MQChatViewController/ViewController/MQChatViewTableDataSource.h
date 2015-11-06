@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MQChatViewModel.h"
+#import "MQChatViewService.h"
 #import <UIKit/UIKit.h>
 #import "MQChatBaseCell.h"
 
@@ -16,7 +16,7 @@
  */
 @interface MQChatViewTableDataSource : NSObject <UITableViewDataSource>
 
-- (instancetype)initWithTableView:(UITableView *)tableView  chatViewModel:(MQChatViewModel *)viewModel;
+- (instancetype)initWithTableView:(UITableView *)tableView  chatViewModel:(MQChatViewService *)viewModel;
 
 /**
  *  ChatCell的代理

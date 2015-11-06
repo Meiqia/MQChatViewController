@@ -17,7 +17,6 @@ static NSString * const MQChatViewKeyboardResignFirstResponderNotification = @"M
 /** 中断audio player的通知 */
 static NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInterruptNotification";
 
-
 /**
  * @brief MQChatViewConfig为客服聊天界面的前置配置，由MQChatViewManager生成，在MQChatViewController内部逻辑消费
  *

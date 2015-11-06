@@ -1,5 +1,5 @@
 //
-//  MQChatViewModel.m
+//  MQChatViewService.m
 //  MeiQiaSDK
 //
 //  Created by ijinmao on 15/10/28.
@@ -7,7 +7,7 @@
 //
 
 
-#import "MQChatViewModel.h"
+#import "MQChatViewService.h"
 #import "MQTextMessage.h"
 #import "MQImageMessage.h"
 #import "MQVoiceMessage.h"
@@ -27,16 +27,16 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 
 #ifdef INCLUDE_MEIQIA_SDK
-@interface MQChatViewModel() <MQServiceToViewInterfaceDelegate, MQCellModelDelegate>
+@interface MQChatViewService() <MQServiceToViewInterfaceDelegate, MQCellModelDelegate>
 
 @end
 #else
-@interface MQChatViewModel() <MQCellModelDelegate>
+@interface MQChatViewService() <MQCellModelDelegate>
 
 @end
 #endif
 
-@implementation MQChatViewModel {
+@implementation MQChatViewService {
     
 }
 

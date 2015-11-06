@@ -8,7 +8,7 @@
 
 #import "MQChatViewController.h"
 #import "MQChatViewTableDataSource.h"
-#import "MQChatViewModel.h"
+#import "MQChatViewService.h"
 #import "MQCellModelProtocol.h"
 #import "MQDeviceFrameUtil.h"
 #import "MQInputBar.h"
@@ -18,9 +18,9 @@
 
 static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
-@interface MQChatViewController () <UITableViewDelegate, MQChatViewModelDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQRecordViewDelegate, MQServiceToViewInterfaceErrorDelegate>
+@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQRecordViewDelegate, MQServiceToViewInterfaceErrorDelegate>
 #else
-@interface MQChatViewController () <UITableViewDelegate, MQChatViewModelDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQRecordViewDelegate>
+@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQRecordViewDelegate>
 #endif
 
 @end
@@ -28,7 +28,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 @implementation MQChatViewController {
     MQChatViewConfig *chatViewConfig;
     MQChatViewTableDataSource *tableDataSource;
-    MQChatViewModel *chatViewModel;
+    MQChatViewService *chatViewModel;
     MQInputBar *chatInputBar;
     MQRecordView *recordView;
     CGSize viewSize;
@@ -135,7 +135,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 #pragma 初始化viewModel
 - (void)initChatViewModel {
-    chatViewModel = [[MQChatViewModel alloc] init];
+    chatViewModel = [[MQChatViewService alloc] init];
     chatViewModel.delegate = self;
 #ifdef INCLUDE_MEIQIA_SDK
     chatViewModel.errorDelegate = self;
@@ -192,7 +192,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [self.chatTableView scrollViewDidScroll:scrollView];
 }
 
-#pragma MQChatViewModelDelegate
+#pragma MQChatViewServiceDelegate
 - (void)didGetHistoryMessages {
     [self.chatTableView finishLoadingTopRefreshView];
     [self.chatTableView reloadData];
