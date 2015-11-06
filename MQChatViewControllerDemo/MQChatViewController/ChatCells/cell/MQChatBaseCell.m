@@ -78,7 +78,7 @@
 -(void)copyTextSender:(id)sender {
     UIPasteboard *pasteboard=[UIPasteboard generalPasteboard];
     pasteboard.string = copiedText;
-    [self.chatCellDelegate showToastViewInChatView:@"已复制"];
+    [self.chatCellDelegate showToastViewInCell:self toastText:@"已复制"];
 }
 
 -(void)copyImageSender:(id)sender {
@@ -91,9 +91,9 @@ didFinishSavingWithError:(NSError *)error
   contextInfo:(void *)contextInfo
 {
     if(error != NULL){
-        [self.chatCellDelegate showToastViewInChatView:@"抱歉，保存失败"];
+        [self.chatCellDelegate showToastViewInCell:self toastText:@"抱歉，保存失败"];
     }else{
-        [self.chatCellDelegate showToastViewInChatView:@"已保存图片到本地相册"];
+        [self.chatCellDelegate showToastViewInCell:self toastText:@"已保存图片到本地相册"];
     }
 }
 

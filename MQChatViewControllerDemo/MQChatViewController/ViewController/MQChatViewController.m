@@ -8,7 +8,7 @@
 
 #import "MQChatViewController.h"
 #import "MQChatViewTableDataSource.h"
-#import "MQChatViewModel.h"
+#import "MQChatViewService.h"
 #import "MQCellModelProtocol.h"
 #import "MQDeviceFrameUtil.h"
 #import "MQInputBar.h"
@@ -18,9 +18,9 @@
 
 static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
-@interface MQChatViewController () <UITableViewDelegate, MQChatViewModelDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQRecordViewDelegate, MQServiceToViewInterfaceErrorDelegate>
+@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQRecordViewDelegate, MQServiceToViewInterfaceErrorDelegate>
 #else
-@interface MQChatViewController () <UITableViewDelegate, MQChatViewModelDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQRecordViewDelegate>
+@interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQRecordViewDelegate>
 #endif
 
 @end
@@ -28,10 +28,15 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 @implementation MQChatViewController {
     MQChatViewConfig *chatViewConfig;
     MQChatViewTableDataSource *tableDataSource;
-    MQChatViewModel *chatViewModel;
+    MQChatViewService *chatViewModel;
     MQInputBar *chatInputBar;
     MQRecordView *recordView;
     CGSize viewSize;
+}
+
+- (void)dealloc {
+    NSLog(@"清除chatViewController");
+    [chatViewConfig setConfigToDefault];
 }
 
 - (instancetype)initWithChatViewManager:(MQChatViewConfig *)config {
@@ -75,6 +80,10 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
 //    [self.chatViewDelegate chatViewWillDisappear];
 #endif
+}
+
+- (void)dismissChatModalView {
+    [self dismissViewControllerAnimated:true completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -135,7 +144,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 #pragma 初始化viewModel
 - (void)initChatViewModel {
-    chatViewModel = [[MQChatViewModel alloc] init];
+    chatViewModel = [[MQChatViewService alloc] init];
     chatViewModel.delegate = self;
 #ifdef INCLUDE_MEIQIA_SDK
     chatViewModel.errorDelegate = self;
@@ -192,7 +201,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [self.chatTableView scrollViewDidScroll:scrollView];
 }
 
-#pragma MQChatViewModelDelegate
+#pragma MQChatViewServiceDelegate
 - (void)didGetHistoryMessages {
     [self.chatTableView finishLoadingTopRefreshView];
     [self.chatTableView reloadData];
@@ -343,7 +352,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 #pragma MQChatCellDelegate
-- (void)showToastViewInChatView:(NSString *)toastText {
+- (void)showToastViewInCell:(UITableViewCell *)cell toastText:(NSString *)toastText {
     [MQToast showToast:toastText duration:1.0 window:self.view];
 }
 
@@ -354,13 +363,13 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [self chatTableViewScrollToBottom];
 }
 
-- (void)didSelectMessageContent:(NSString *)content selectedContent:(NSString *)selectedContent {
+- (void)didSelectMessageInCell:(UITableViewCell *)cell messageContent:(NSString *)content selectedContent:(NSString *)selectedContent {
 #ifdef INCLUDE_MEIQIA_SDK
-//    if (self.chatViewDelegate) {
-//        if ([self.chatViewDelegate respondsToSelector:@selector(didSelectMessageContent:selectedContent:)]) {
-//            [self.chatViewDelegate didSelectMessageContent:content selectedContent:selectedContent];
-//        }
-//    }
+    //    if (self.chatViewDelegate) {
+    //        if ([self.chatViewDelegate respondsToSelector:@selector(didSelectMessageContent:selectedContent:)]) {
+    //            [self.chatViewDelegate didSelectMessageContent:content selectedContent:selectedContent];
+    //        }
+    //    }
 #endif
 }
 

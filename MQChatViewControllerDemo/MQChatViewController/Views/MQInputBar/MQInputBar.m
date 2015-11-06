@@ -36,7 +36,8 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
     float bullleViewHeigth; //真实可视区域
     CGFloat senderImageWidth;
     CGFloat textViewHeight;
-    BOOL enableRecord;
+    BOOL enableSendRecord;
+    BOOL enableSendImage;
     
     UIButton *microphoneBtn;
     UIButton *cameraBtn;
@@ -55,20 +56,20 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
     if (self = [super init]) {
         self.frame              = frame;
         originalFrame           = frame;
-//        self.superView               = inputBarSuperView;
         originalSuperViewFrame  = inputBarSuperView.frame;
         self.chatTableView           = tableView;
         originalChatViewFrame   = tableView.frame;
 
         senderImageWidth = [MQChatViewConfig sharedConfig].photoSenderImage.size.width;
         textViewHeight = ceil(frame.size.height * 5 / 7);
-        
         self.backgroundColor = [UIColor whiteColor];
+        
+        enableSendImage = [MQChatViewConfig sharedConfig].enableImageMessage;
         cameraBtn              = [[UIButton alloc] init];
         [cameraBtn setImage:[MQChatViewConfig sharedConfig].photoSenderImage forState:UIControlStateNormal];
         [cameraBtn setImage:[MQChatViewConfig sharedConfig].photoSenderImage forState:UIControlStateHighlighted];
         [cameraBtn addTarget:self action:@selector(cameraClick) forControlEvents:UIControlEventTouchUpInside];
-        cameraBtn.frame      = CGRectMake(kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth);
+        cameraBtn.frame      = enableSendImage ? CGRectMake(kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth) : CGRectMake(0, 0, 0, 0);
         
         self.textView               = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(0, 0, 0, textViewHeight)];
         self.textView.font          = [UIFont systemFontOfSize:16];
@@ -79,10 +80,9 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
         self.textView.layer.borderWidth     = 1;
         self.textView.layer.cornerRadius    = 4;
         
-        enableRecord = [MQChatViewConfig sharedConfig].enableVoiceMessage;
-        if (enableRecord) {
+        enableSendRecord = [MQChatViewConfig sharedConfig].enableVoiceMessage;
+        if (enableSendRecord) {
             [self initRecordBtn];
-            
             self.textView.frame     = recordBtn.frame;
             originalTextViewFrame   = recordBtn.frame;
         }else{
@@ -95,7 +95,7 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
             if (recordBtn) {
                 recordBtn.hidden = YES;
             }
-            self.textView.frame = CGRectMake(kMQInputBarHorizontalSpacing*2 + senderImageWidth, (originalFrame.size.height - textViewHeight)/2, originalFrame.size.width - kMQInputBarHorizontalSpacing * 3 - senderImageWidth, textViewHeight);
+            self.textView.frame = CGRectMake(cameraBtn.frame.origin.x + kMQInputBarHorizontalSpacing, (originalFrame.size.height - textViewHeight)/2, originalFrame.size.width - kMQInputBarHorizontalSpacing * 3 - senderImageWidth, textViewHeight);
             originalTextViewFrame = self.textView.frame;
         }
         
@@ -149,11 +149,6 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
     recordBtn.layer.borderColor = [UIColor colorWithWhite:0.8 alpha:1].CGColor;
     recordBtn.layer.borderWidth = 1;
     
-    //        recordBtn.layer.shadowColor = [UIColor colorWithWhite:0 alpha:1].CGColor;
-    //        recordBtn.layer.shadowOffset = CGSizeMake(0, .7);
-    //        recordBtn.layer.shadowRadius = .6;
-    //        recordBtn.layer.shadowOpacity = .4;
-    
     UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(recordBtnLongPressed:)];
     gesture.delegate = (id)self;
     gesture.delaysTouchesBegan = NO;
@@ -163,7 +158,7 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
     
     microphoneBtn.frame = CGRectMake(self.frame.size.width - senderImageWidth - kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth);
     toolbarDownBtn.frame = microphoneBtn.frame;
-    recordBtn.frame = CGRectMake(kMQInputBarHorizontalSpacing*2 + senderImageWidth, (originalFrame.size.height - textViewHeight)/2, originalFrame.size.width - kMQInputBarHorizontalSpacing * 4 - 2 * senderImageWidth, textViewHeight);
+    recordBtn.frame = CGRectMake(cameraBtn.frame.origin.x + kMQInputBarHorizontalSpacing, (originalFrame.size.height - textViewHeight)/2, originalFrame.size.width - kMQInputBarHorizontalSpacing * 4 - 2 * senderImageWidth, textViewHeight);
     
     [self addSubview:toolbarDownBtn];
     [self addSubview:recordBtn];
@@ -451,7 +446,7 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
 
 -(void)toolbarDownBtnVisible
 {
-    if (!enableRecord) {
+    if (!enableSendRecord) {
         return;
     }
     
@@ -512,7 +507,7 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
     cameraBtn.frame      = CGRectMake(kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth);
     microphoneBtn.frame = CGRectMake(self.frame.size.width - senderImageWidth - kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth);
     toolbarDownBtn.frame = microphoneBtn.frame;
-    if (enableRecord) {
+    if (enableSendRecord) {
         recordBtn.frame = CGRectMake(kMQInputBarHorizontalSpacing*2 + senderImageWidth, (originalFrame.size.height - textViewHeight)/2, originalFrame.size.width - kMQInputBarHorizontalSpacing * 4 - 2 * senderImageWidth, textViewHeight);
         self.textView.frame     = recordBtn.frame;
         originalTextViewFrame   = recordBtn.frame;

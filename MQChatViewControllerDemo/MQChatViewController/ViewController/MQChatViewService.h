@@ -1,5 +1,5 @@
 //
-//  MQChatViewModel.h
+//  MQChatViewService.h
 //  MeiQiaSDK
 //
 //  Created by ijinmao on 15/10/28.
@@ -14,7 +14,7 @@
 #import "MQServiceToViewInterface.h"
 #endif
 
-@protocol MQChatViewModelDelegate <NSObject>
+@protocol MQChatViewServiceDelegate <NSObject>
 
 /**
  *  获取到了更多历史消息
@@ -37,9 +37,9 @@
 /**
  * @brief 聊天界面的ViewModel
  *
- * MQChatViewModel管理者MQChatViewController中的数据
+ * MQChatViewService管理者MQChatViewController中的数据
  */
-@interface MQChatViewModel : NSObject
+@interface MQChatViewService : NSObject
 
 #ifdef INCLUDE_MEIQIA_SDK
 /**
@@ -48,8 +48,8 @@
 @property (nonatomic, weak) id<MQServiceToViewInterfaceErrorDelegate> errorDelegate;
 #endif
 
-/** MQChatViewModel的委托 */
-@property (nonatomic, weak) id<MQChatViewModelDelegate> delegate;
+/** MQChatViewService的委托 */
+@property (nonatomic, weak) id<MQChatViewServiceDelegate> delegate;
 
 /** cellModel的缓存 */
 @property (nonatomic, strong) NSMutableArray *cellModels;

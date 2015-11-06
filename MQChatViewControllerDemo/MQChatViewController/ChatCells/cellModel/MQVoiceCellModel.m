@@ -11,6 +11,7 @@
 #import "MQVoiceMessageCell.h"
 #import "MQChatViewConfig.h"
 #import "MQStringSizeUtil.h"
+#import "MQImageUtil.h"
 
 /**
  * 语音播放图片与聊天气泡的间距
@@ -200,14 +201,22 @@ static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
     
     //根据消息的来源，进行处理
     UIImage *bubbleImage = [MQChatViewConfig sharedConfig].incomingBubbleImage;
+    if ([MQChatViewConfig sharedConfig].incomingBubbleColor) {
+        bubbleImage = [MQImageUtil convertImageColorWithImage:bubbleImage toColor:[MQChatViewConfig sharedConfig].incomingBubbleColor];
+    }
     if (message.fromType == MQChatMessageOutgoing) {
         //发送出去的消息
         self.cellFromType = MQChatCellOutgoing;
         bubbleImage = [MQChatViewConfig sharedConfig].outgoingBubbleImage;
-        
+        if ([MQChatViewConfig sharedConfig].outgoingBubbleColor) {
+            bubbleImage = [MQImageUtil convertImageColorWithImage:bubbleImage toColor:[MQChatViewConfig sharedConfig].outgoingBubbleColor];
+        }
         //头像的frame
-        //            self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
-        self.avatarFrame = CGRectMake(0, 0, 0, 0);
+        if ([MQChatViewConfig sharedConfig].enableClientAvatar) {
+            self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
+        } else {
+            self.avatarFrame = CGRectMake(0, 0, 0, 0);
+        }
         //气泡的frame
         self.bubbleImageFrame = CGRectMake(cellWidth-kMQCellAvatarToBubbleSpacing-bubbleWidth, kMQCellAvatarToVerticalEdgeSpacing, bubbleWidth, bubbleHeight);
         //语音图片的frame
@@ -217,9 +226,12 @@ static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
     } else {
         //收到的消息
         self.cellFromType = MQChatCellIncoming;
-        
         //头像的frame
-        self.avatarFrame = CGRectMake(kMQCellAvatarToHorizontalEdgeSpacing, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
+        if ([MQChatViewConfig sharedConfig].enableClientAvatar) {
+            self.avatarFrame = CGRectMake(kMQCellAvatarToHorizontalEdgeSpacing, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
+        } else {
+            self.avatarFrame = CGRectMake(0, 0, 0, 0);
+        }
         //气泡的frame
         self.bubbleImageFrame = CGRectMake(self.avatarFrame.origin.x+self.avatarFrame.size.width+kMQCellAvatarToBubbleSpacing, self.avatarFrame.origin.y, bubbleWidth, bubbleHeight);
         //语音图片的frame

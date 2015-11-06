@@ -13,7 +13,7 @@
 @interface MQChatViewTableDataSource()
 
 @property (nonatomic, weak) UITableView *chatTableView;
-@property (nonatomic, weak) MQChatViewModel *chatViewModel;
+@property (nonatomic, weak) MQChatViewService *chatViewModel;
 
 
 @end
@@ -21,7 +21,7 @@
 @implementation MQChatViewTableDataSource {
 }
 
-- (instancetype)initWithTableView:(UITableView *)tableView chatViewModel:(MQChatViewModel *)viewModel {
+- (instancetype)initWithTableView:(UITableView *)tableView chatViewModel:(MQChatViewService *)viewModel {
     if (self = [super init]) {
         self.chatTableView = tableView;
         self.chatViewModel = viewModel;

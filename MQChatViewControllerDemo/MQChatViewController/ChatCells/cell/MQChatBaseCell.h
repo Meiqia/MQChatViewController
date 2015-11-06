@@ -27,7 +27,7 @@
  */
 @protocol MQChatCellDelegate <NSObject>
 
-- (void)showToastViewInChatView:(NSString *)toastText;
+- (void)showToastViewInCell:(UITableViewCell *)cell toastText:(NSString *)toastText;
 
 /**
  * 该委托定义了cell中重新发送；
@@ -40,7 +40,9 @@
  * @param content 被点击的消息
  * @param selectedContent 与正则表达式匹配的内容
  */
-- (void)didSelectMessageContent:(NSString *)content selectedContent:(NSString *)selectedContent;
+
+- (void)didSelectMessageInCell:(UITableViewCell *)cell messageContent:(NSString *)content selectedContent:(NSString *)selectedContent;
+
 @end
 
 

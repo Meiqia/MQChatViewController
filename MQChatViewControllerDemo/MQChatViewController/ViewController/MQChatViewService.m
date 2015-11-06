@@ -1,5 +1,5 @@
 //
-//  MQChatViewModel.m
+//  MQChatViewService.m
 //  MeiQiaSDK
 //
 //  Created by ijinmao on 15/10/28.
@@ -7,7 +7,7 @@
 //
 
 
-#import "MQChatViewModel.h"
+#import "MQChatViewService.h"
 #import "MQTextMessage.h"
 #import "MQImageMessage.h"
 #import "MQVoiceMessage.h"
@@ -27,16 +27,16 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 
 #ifdef INCLUDE_MEIQIA_SDK
-@interface MQChatViewModel() <MQServiceToViewInterfaceDelegate, MQCellModelDelegate>
+@interface MQChatViewService() <MQServiceToViewInterfaceDelegate, MQCellModelDelegate>
 
 @end
 #else
-@interface MQChatViewModel() <MQCellModelDelegate>
+@interface MQChatViewService() <MQCellModelDelegate>
 
 @end
 #endif
 
-@implementation MQChatViewModel {
+@implementation MQChatViewService {
     
 }
 
@@ -57,10 +57,13 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
  * 获取更多历史聊天消息
  */
 - (void)startGettingHistoryMessages {
-    
 #ifdef INCLUDE_MEIQIA_SDK
     id<MQCellModelProtocol> cellModel = [self.cellModels lastObject];
-    [MQServiceToViewInterface getHistoryMessagesWithMsgDate:[cellModel getCellDate] messagesNumber:kMQChatGetHistoryMessageNumber successDelegate:self errorDelegate:self.errorDelegate];
+    if ([MQChatViewConfig sharedConfig].enableSyncServerMessage) {
+        [MQServiceToViewInterface getServerHistoryMessagesWithMsgDate:[cellModel getCellDate] messagesNumber:kMQChatGetHistoryMessageNumber successDelegate:self errorDelegate:self.errorDelegate];
+    } else {
+        [MQServiceToViewInterface getDatabaseHistoryMessagesWithMsgDate:[cellModel getCellDate] messagesNumber:kMQChatGetHistoryMessageNumber successDelegate:self errorDelegate:self.errorDelegate];
+    }
 #endif
 }
 
@@ -73,7 +76,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self generateMessageDateCellWithCurrentCellModel:cellModel];
     [self addCellModelAndReloadTableViewWithModel:cellModel];
 #ifdef INCLUDE_MEIQIA_SDK
-    [MQServiceToViewInterface sendTextMessageWithContent:content messageId:message.messageId successDelegate:self errorDelegate:self.errorDelegate];
+    [MQServiceToViewInterface sendTextMessageWithContent:content messageId:message.messageId delegate:self];
 #else
     //模仿发送成功
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -93,7 +96,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self generateMessageDateCellWithCurrentCellModel:cellModel];
     [self addCellModelAndReloadTableViewWithModel:cellModel];
 #ifdef INCLUDE_MEIQIA_SDK
-    [MQServiceToViewInterface sendImageMessageWithImage:image messageId:message.messageId successDelegate:self errorDelegate:self.errorDelegate];
+    [MQServiceToViewInterface sendImageMessageWithImage:image messageId:message.messageId delegate:self];
 #else
     //模仿发送成功
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -114,7 +117,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self sendVoiceMessageWithWAVData:wavData voiceMessage:message];
 #ifdef INCLUDE_MEIQIA_SDK
     NSData *amrData = [NSData dataWithContentsOfFile:filePath];
-    [MQServiceToViewInterface sendAudioMessage:amrData messageId:message.messageId successDelegate:self errorDelegate:self.errorDelegate];
+    [MQServiceToViewInterface sendAudioMessage:amrData messageId:message.messageId delegate:self];
 #endif
 }
 
@@ -198,16 +201,19 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 - (void)didReceiveTextMessage:(MQTextMessage *)message {
     MQTextCellModel *cellModel = [[MQTextCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth];
     [self addCellModelAndReloadTableViewWithModel:cellModel];
+    [self playReceivedMessageSound];
 }
 
 - (void)didReceiveImageMessage:(MQImageMessage *)message {
     MQImageCellModel *cellModel = [[MQImageCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
     [self addCellModelAndReloadTableViewWithModel:cellModel];
+    [self playReceivedMessageSound];
 }
 
 - (void)didReceiveVoiceMessage:(MQVoiceMessage *)message {
     MQVoiceCellModel *cellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
     [self addCellModelAndReloadTableViewWithModel:cellModel];
+    [self playReceivedMessageSound];
 }
 
 - (void)didSendMessageWithNewMessageId:(NSString *)newMessageId
@@ -318,6 +324,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self.cellModels addObject:tipCellModel];
 
     [self reloadChatTableView];
+    [self playReceivedMessageSound];
 }
 #endif
 
@@ -371,20 +378,29 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 #pragma 欢迎语
 - (void)sendLocalWelcomeChatMessage {
-    if ([MQChatViewConfig sharedConfig].enableWelcomeChat) {
-        //消息时间
-        MQMessageDateCellModel *dateCellModel = [[MQMessageDateCellModel alloc] initCellModelWithDate:[NSDate date] cellWidth:self.chatViewWidth];
-        [self.cellModels addObject:dateCellModel];
-        //欢迎消息
-        MQTextMessage *welcomeMessage = [[MQTextMessage alloc] initWithContent:[MQChatViewConfig sharedConfig].chatWelcomeText];
-        welcomeMessage.fromType = MQChatMessageIncoming;
-        welcomeMessage.userName = [MQChatViewConfig sharedConfig].agentName;
-        welcomeMessage.userAvatarImage = [MQChatViewConfig sharedConfig].agentDefaultAvatarImage;
-        welcomeMessage.sendStatus = MQChatMessageSendStatusSuccess;
-        MQTextCellModel *cellModel = [[MQTextCellModel alloc] initCellModelWithMessage:welcomeMessage cellWidth:self.chatViewWidth];
-        [self.cellModels addObject:cellModel];
-        [self reloadChatTableView];
+    if (![MQChatViewConfig sharedConfig].enableWelcomeChat) {
+        return ;
     }
+    //消息时间
+    MQMessageDateCellModel *dateCellModel = [[MQMessageDateCellModel alloc] initCellModelWithDate:[NSDate date] cellWidth:self.chatViewWidth];
+    [self.cellModels addObject:dateCellModel];
+    //欢迎消息
+    MQTextMessage *welcomeMessage = [[MQTextMessage alloc] initWithContent:[MQChatViewConfig sharedConfig].chatWelcomeText];
+    welcomeMessage.fromType = MQChatMessageIncoming;
+    welcomeMessage.userName = [MQChatViewConfig sharedConfig].agentName;
+    welcomeMessage.userAvatarImage = [MQChatViewConfig sharedConfig].agentDefaultAvatarImage;
+    welcomeMessage.sendStatus = MQChatMessageSendStatusSuccess;
+    MQTextCellModel *cellModel = [[MQTextCellModel alloc] initCellModelWithMessage:welcomeMessage cellWidth:self.chatViewWidth];
+    [self.cellModels addObject:cellModel];
+    [self reloadChatTableView];
+}
+
+#pragma 播放声音
+- (void)playReceivedMessageSound {
+    if ([MQChatViewConfig sharedConfig].enableMessageSound) {
+        return;
+    }
+    [MQChatFileUtil playSoundWithSoundFile:[MQChatViewConfig sharedConfig].incomingMsgSoundFileName];
 }
 
 @end
