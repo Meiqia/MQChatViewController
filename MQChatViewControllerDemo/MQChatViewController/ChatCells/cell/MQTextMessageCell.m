@@ -231,8 +231,8 @@ didLongPressLinkWithPhoneNumber:(NSString *)phoneNumber
     }
     //通知界面点击了消息
     if (self.chatCellDelegate) {
-        if ([self.chatCellDelegate respondsToSelector:@selector(didSelectMessageContent:selectedContent:)]) {
-            [self.chatCellDelegate didSelectMessageContent:self.textLabel.text selectedContent:actionSheet.title];
+        if ([self.chatCellDelegate respondsToSelector:@selector(didSelectMessageInCell:messageContent:selectedContent:)]) {
+            [self.chatCellDelegate didSelectMessageInCell:self messageContent:self.textLabel.text selectedContent:actionSheet.title];
         }
     }
 }

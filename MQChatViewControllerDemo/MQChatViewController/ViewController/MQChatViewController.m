@@ -352,7 +352,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 #pragma MQChatCellDelegate
-- (void)showToastViewInChatView:(NSString *)toastText {
+- (void)showToastViewInCell:(UITableViewCell *)cell toastText:(NSString *)toastText {
     [MQToast showToast:toastText duration:1.0 window:self.view];
 }
 
@@ -363,13 +363,13 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [self chatTableViewScrollToBottom];
 }
 
-- (void)didSelectMessageContent:(NSString *)content selectedContent:(NSString *)selectedContent {
+- (void)didSelectMessageInCell:(UITableViewCell *)cell messageContent:(NSString *)content selectedContent:(NSString *)selectedContent {
 #ifdef INCLUDE_MEIQIA_SDK
-//    if (self.chatViewDelegate) {
-//        if ([self.chatViewDelegate respondsToSelector:@selector(didSelectMessageContent:selectedContent:)]) {
-//            [self.chatViewDelegate didSelectMessageContent:content selectedContent:selectedContent];
-//        }
-//    }
+    //    if (self.chatViewDelegate) {
+    //        if ([self.chatViewDelegate respondsToSelector:@selector(didSelectMessageContent:selectedContent:)]) {
+    //            [self.chatViewDelegate didSelectMessageContent:content selectedContent:selectedContent];
+    //        }
+    //    }
 #endif
 }
 

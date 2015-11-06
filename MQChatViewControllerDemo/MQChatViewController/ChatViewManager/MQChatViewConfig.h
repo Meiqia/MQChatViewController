@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 
 //是否是调试SDK
-//#define INCLUDE_MEIQIA_SDK
+#define INCLUDE_MEIQIA_SDK
 
 /** 关闭键盘的通知 */
 extern NSString * const MQChatViewKeyboardResignFirstResponderNotification;
