@@ -60,7 +60,7 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     self.enableWelcomeChat = true;
     
     self.incomingMsgTextColor = [UIColor darkTextColor];
-    self.outgoingMsgTextColor = [UIColor whiteColor];
+    self.outgoingMsgTextColor = [UIColor darkTextColor];
     self.eventTextColor = [UIColor grayColor];
     self.navBarTintColor = [UIColor blueColor];
     self.navBarColor = [UIColor whiteColor];
@@ -75,9 +75,7 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     self.messageSendFailureImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQMessageWarning"]];
     self.navBarLeftButtomImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQNavReturnCancelImage"]];
     
-#warning 这里需要增加声音文件名字
-    self.incomingMsgSoundData = [NSData dataWithContentsOfFile:@""];
-    self.outgoingMsgSoundData = [NSData dataWithContentsOfFile:@""];
+    self.incomingMsgSoundFileName = [MQChatFileUtil resourceWithName:@"MQNewMessageRing.mp3"];
     
     self.maxVoiceDuration = 60;
 }

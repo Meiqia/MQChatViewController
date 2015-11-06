@@ -34,6 +34,13 @@
 - (void)disappearMQChatViewController;
 
 /**
+ *  设置是否开启自定义聊天界面的坐标
+ *
+ *  @param enable YES 自定义 NO 不自定义
+ */
+- (void)enableCustomChatViewFrame:(BOOL)enable;
+
+/**
  * 设置客服聊天界面的坐标
  * @param viewFrame 客服聊天界面的坐标
  */
@@ -96,10 +103,24 @@
 - (void)setIncomingMessageTextColor:(UIColor *)textColor;
 
 /**
+ *  设置发送过来的message气泡颜色
+ *
+ *  @param bubbleColor 气泡颜色
+ */
+- (void)setIncomingBubbleColor:(UIColor *)bubbleColor;
+
+/**
  * 设置发送出去的message的文字颜色；
  * @param textColor 文字颜色
  */
 - (void)setOutgoingMessageTextColor:(UIColor *)textColor;
+
+/**
+ *  设置发送的message气泡颜色
+ *
+ *  @param bubbleColor 气泡颜色
+ */
+- (void)setOutgoingBubbleColor:(UIColor *)bubbleColor;
 
 /**
  * 设置事件流的显示文字的颜色；
@@ -120,6 +141,13 @@
 - (void)setNavigationBarColor:(UIColor *)barColor;
 
 /**
+ *  设置下拉/上拉刷新的颜色
+ *
+ *  @param pullRefreshColor 颜色
+ */
+- (void)setPullRefreshColor:(UIColor *)pullRefreshColor;
+
+/**
  * 设置客服上线的提示文字；
  * @param tipText 提示文字
  */
@@ -138,10 +166,24 @@
 - (void)setchatWelcomeText:(NSString *)welcomText;
 
 /**
+ *  设置客服的名字
+ *
+ *  @param agentName 客服名字
+ */
+- (void)setAgentName:(NSString *)agentName;
+
+/**
  * 是否支持客服头像的显示；
  * @param enable YES:支持 NO:不支持
  */
 - (void)enableAgentAvatar:(BOOL)enable;
+
+/**
+ *  是否支持当前顾客头像的显示
+ *
+ * @param enable YES:支持 NO:不支持
+ */
+- (void)enableClientAvatar:(BOOL)enable;
 
 /**
  * 设置客服的缺省头像图片；
@@ -176,6 +218,20 @@
 - (void)setOutgoingBubbleImage:(UIImage *)bubbleImage;
 
 /**
+ *  设置导航栏左键的图片
+ *
+ *  @param leftButtomImage 左键图片
+ */
+- (void)setNavLeftButtomImage:(UIImage *)leftButtomImage;
+
+/**
+ *  设置导航栏右键的图片
+ *
+ *  @param rightButtomImage 左键图片
+ */
+- (void)setNavRightButtomImage:(UIImage *)rightButtomImage;
+
+/**
  * 是否支持自定义录音的界面；
  * @param enable YES:支持 NO:不支持
  */
@@ -188,18 +244,45 @@
 - (void)enableMessageSound:(BOOL)enable;
 
 /**
- * 设置发送消息后的声音；
- * @param enable YES:开启声音 NO:关闭声音
+ *  是否开启下拉刷新（顶部刷新）
+ *
+ * @param enable YES:支持 NO:不支持
  */
-- (void)setOutgoingMessageSound:(NSData *)soundData;
+- (void)enableTopPullRefresh:(BOOL)enable;
 
 /**
- * 是否开启接受/发送消息的声音；
- * @param enable YES:开启声音 NO:关闭声音
+ *  是否开启圆形头像
+ *
+ * @param enable YES:支持 NO:不支持
  */
-- (void)setIncomingMessageSound:(NSData *)soundData;
+- (void)enableRoundAvatar:(BOOL)enable;
 
+/**
+ *  是否支持欢迎语
+ *
+ * @param enable YES:支持 NO:不支持
+ */
+- (void)enableWelcomeChat:(BOOL)enable;
 
+/**
+ *  是否开启上拉刷新（底部刷新）
+ *
+ * @param enable YES:支持 NO:不支持
+ */
+- (void)enableBottomPullRefresh:(BOOL)enable;
+
+/**
+ * 设置收到消息的声音；
+ * @param soundFileName 声音文件
+ */
+- (void)setIncomingMessageSoundFileName:(NSString *)soundFileName;
+
+/**
+ *  设置录音的最大时长
+ *
+ *  @param recordDuration 时长
+ */
+- (void)setMaxRecordDuration:(NSTimeInterval)recordDuration;
 
 
 

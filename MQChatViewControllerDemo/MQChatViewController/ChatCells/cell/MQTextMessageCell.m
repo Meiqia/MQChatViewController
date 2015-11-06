@@ -80,6 +80,10 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
         });
     }
     avatarImageView.frame = cellModel.avatarFrame;
+    if ([MQChatViewConfig sharedConfig].enableRoundAvatar) {
+        avatarImageView.layer.masksToBounds = YES;
+        avatarImageView.layer.cornerRadius = cellModel.avatarFrame.size.width/2;
+    }
     
     //刷新气泡
     bubbleImageView.image = cellModel.bubbleImage;
@@ -98,7 +102,9 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
     textLabel.frame = cellModel.textLabelFrame;
     textLabel.text = cellModel.cellText;
     if (cellModel.cellFromType == MQChatCellIncoming) {
-        textLabel.textColor = [UIColor darkTextColor];
+        textLabel.textColor = [MQChatViewConfig sharedConfig].incomingMsgTextColor;
+    } else {
+        textLabel.textColor = [MQChatViewConfig sharedConfig].outgoingMsgTextColor;
     }
     //获取文字中的可选中的元素
     if (cellModel.numberRangeDic.count > 0) {

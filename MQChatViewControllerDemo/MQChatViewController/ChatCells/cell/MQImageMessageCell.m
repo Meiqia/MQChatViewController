@@ -68,6 +68,10 @@
         });
     }
     avatarImageView.frame = cellModel.avatarFrame;
+    if ([MQChatViewConfig sharedConfig].enableRoundAvatar) {
+        avatarImageView.layer.masksToBounds = YES;
+        avatarImageView.layer.cornerRadius = cellModel.avatarFrame.size.width/2;
+    }
     
     //刷新气泡
     bubbleImageView.frame = cellModel.bubbleImageFrame;

@@ -42,4 +42,20 @@
     }
 }
 
++ (void)playSoundWithSoundFile:(NSString *)fileName{
+
+    if ([[NSFileManager defaultManager] fileExistsAtPath:fileName]) {
+        NSURL *fileURL = [NSURL URLWithString:fileName];
+        SystemSoundID soundID;
+        OSStatus error = AudioServicesCreateSystemSoundID((__bridge CFURLRef)fileURL, &soundID);
+        if (error) {
+            NSLog(@"无法创建SystemSoundID");
+        }
+        else {
+            AudioServicesPlaySystemSound(soundID);
+        }
+    }
+    NSLog(@"无法加载声音文件 fileName: %@", fileName);
+}
+
 @end

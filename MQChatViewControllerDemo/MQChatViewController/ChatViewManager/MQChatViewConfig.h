@@ -40,17 +40,21 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 @property (nonatomic, assign) BOOL enableImageMessage;
 @property (nonatomic, assign) BOOL enableTipsView;
 @property (nonatomic, assign) BOOL enableAgentAvatar;
+@property (nonatomic, assign) BOOL enableClientAvatar;
 @property (nonatomic, assign) BOOL enableCustomRecordView;
 @property (nonatomic, assign) BOOL enableMessageSound;
-@property (nonatomic, assign) BOOL enableClientAvatar;
 @property (nonatomic, assign) BOOL enableTopPullRefresh;
 @property (nonatomic, assign) BOOL enableBottomPullRefresh;
 @property (nonatomic, assign) BOOL enableRoundAvatar;
 @property (nonatomic, assign) BOOL enableWelcomeChat;
 
 @property (nonatomic, copy) UIColor *incomingMsgTextColor;
+@property (nonatomic, copy) UIColor *incomingBubbleColor;
 @property (nonatomic, copy) UIColor *outgoingMsgTextColor;
+@property (nonatomic, copy) UIColor *outgoingBubbleColor;
 @property (nonatomic, copy) UIColor *eventTextColor;
+
+#error 该写这里了
 @property (nonatomic, copy) UIColor *navBarTintColor;
 @property (nonatomic, copy) UIColor *navBarColor;
 @property (nonatomic, copy) UIColor *pullRefreshColor;
@@ -65,8 +69,7 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 @property (nonatomic, strong) UIImage *navBarLeftButtomImage;
 @property (nonatomic, strong) UIImage *navBarRightButtomImage;
 
-@property (nonatomic, strong) NSData *incomingMsgSoundData;
-@property (nonatomic, strong) NSData *outgoingMsgSoundData;
+@property (nonatomic, strong) NSString *incomingMsgSoundFileName;
 
 @property (nonatomic, assign) NSTimeInterval maxVoiceDuration;
 
