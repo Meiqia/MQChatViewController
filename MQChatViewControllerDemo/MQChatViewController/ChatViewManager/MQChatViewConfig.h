@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 
 //是否是调试SDK
-#define INCLUDE_MEIQIA_SDK
+//#define INCLUDE_MEIQIA_SDK
 
 /** 关闭键盘的通知 */
 static NSString * const MQChatViewKeyboardResignFirstResponderNotification = @"MQChatViewKeyboardResignFirstResponderNotification";
@@ -32,7 +32,8 @@ static NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerD
 
 @property (nonatomic, copy) NSString *agentOnlineTipText;
 @property (nonatomic, copy) NSString *agentOfflineTipText;
-@property (nonatomic, copy) NSString *chatWelcomText;
+@property (nonatomic, copy) NSString *chatWelcomeText;
+@property (nonatomic, copy) NSString *agentName;
 
 @property (nonatomic, assign) BOOL enableSyncServerMessage;
 @property (nonatomic, assign) BOOL enableEventDispaly;
@@ -46,6 +47,7 @@ static NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerD
 @property (nonatomic, assign) BOOL enableTopPullRefresh;
 @property (nonatomic, assign) BOOL enableBottomPullRefresh;
 @property (nonatomic, assign) BOOL enableRoundAvatar;
+@property (nonatomic, assign) BOOL enableWelcomeChat;
 
 @property (nonatomic, copy) UIColor *incomingMsgTextColor;
 @property (nonatomic, copy) UIColor *outgoingMsgTextColor;

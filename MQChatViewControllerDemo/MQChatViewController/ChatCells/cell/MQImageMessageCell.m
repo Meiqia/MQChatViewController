@@ -89,14 +89,14 @@
     //刷新indicator
     sendingIndicator.hidden = true;
     [sendingIndicator stopAnimating];
-    if (cellModel.sendType == MQChatCellSending && cellModel.cellFromType == MQChatCellOutgoing) {
+    if (cellModel.sendStatus == MQChatMessageSendStatusSending && cellModel.cellFromType == MQChatCellOutgoing) {
         sendingIndicator.frame = cellModel.sendingIndicatorFrame;
         [sendingIndicator startAnimating];
     }
     
     //刷新出错图片
     failureImageView.hidden = true;
-    if (cellModel.sendType == MQChatCellSentFailure) {
+    if (cellModel.sendStatus == MQChatMessageSendStatusFailure) {
         failureImageView.hidden = false;
         failureImageView.frame = cellModel.sendFailureFrame;
     }

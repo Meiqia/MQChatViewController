@@ -156,6 +156,12 @@ typedef NS_ENUM(NSUInteger, MQChatCellFromType) {
  */
 - (void)updateCellMessageId:(NSString *)messageId;
 
+/**
+ *  更新cell的messageDate
+ *
+ *  @param messageDate 消息时间
+ */
+- (void)updateCellMessageDate:(NSDate *)messageDate;
 
 @end
 

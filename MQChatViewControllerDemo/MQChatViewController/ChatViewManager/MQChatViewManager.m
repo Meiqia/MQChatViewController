@@ -113,8 +113,8 @@
     chatViewConfig.agentOfflineTipText = [tipText copy];
 }
 
-- (void)setChatWelcomText:(NSString *)welcomText {
-    chatViewConfig.chatWelcomText = [welcomText copy];
+- (void)setchatWelcomeText:(NSString *)welcomText {
+    chatViewConfig.chatWelcomeText = [welcomText copy];
 }
 
 - (void)enableAgentAvatar:(BOOL)enable {

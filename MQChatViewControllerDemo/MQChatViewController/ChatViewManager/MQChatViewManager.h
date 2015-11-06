@@ -135,7 +135,7 @@
  * 设置顾客第一次进入界面显示的欢迎文字；
  * @param tipText 提示文字
  */
-- (void)setChatWelcomText:(NSString *)welcomText;
+- (void)setchatWelcomeText:(NSString *)welcomText;
 
 /**
  * 是否支持客服头像的显示；
