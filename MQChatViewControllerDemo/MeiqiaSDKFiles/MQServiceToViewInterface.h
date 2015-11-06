@@ -11,9 +11,9 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "MQTextMessage.h"
 #import "MQImageMessage.h"
 #import "MQVoiceMessage.h"
+#import "MQTextMessage.h"
 
 /**
  *  该协议是UI层获取数据的委托方法
@@ -94,8 +94,7 @@
  */
 + (void)sendTextMessageWithContent:(NSString *)content
                          messageId:(NSString *)localMessageId
-                   successDelegate:(id<MQServiceToViewInterfaceDelegate>)successDelegate
-                     errorDelegate:(id<MQServiceToViewInterfaceErrorDelegate>)errorDelegate;
+                          delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
 
 /**
  * 发送图片消息。该函数会做图片压缩操作，尺寸将会限制在最大1280px
@@ -106,8 +105,7 @@
  */
 + (void)sendImageMessageWithImage:(UIImage *)image
                         messageId:(NSString *)localMessageId
-                  successDelegate:(id<MQServiceToViewInterfaceDelegate>)successDelegate
-                    errorDelegate:(id<MQServiceToViewInterfaceErrorDelegate>)errorDelegate;
+                         delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
 
 /**
  * 发送语音消息。使用该接口，需要开发者提供一条amr格式的语音.
@@ -118,8 +116,7 @@
  */
 + (void)sendAudioMessage:(NSData *)audio
                messageId:(NSString *)localMessageId
-         successDelegate:(id<MQServiceToViewInterfaceDelegate>)successDelegate
-           errorDelegate:(id<MQServiceToViewInterfaceErrorDelegate>)errorDelegate;
+                delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
 
 /**
  * 将用户正在输入的内容，提供给客服查看。该接口没有调用限制，但每1秒内只会向服务器发送一次数据

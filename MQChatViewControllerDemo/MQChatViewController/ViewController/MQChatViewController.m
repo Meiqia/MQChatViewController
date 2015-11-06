@@ -34,6 +34,11 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     CGSize viewSize;
 }
 
+- (void)dealloc {
+    NSLog(@"清除chatViewController");
+    [chatViewConfig setConfigToDefault];
+}
+
 - (instancetype)initWithChatViewManager:(MQChatViewConfig *)config {
     if (self = [super init]) {
         chatViewConfig = config;
@@ -75,6 +80,10 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
 //    [self.chatViewDelegate chatViewWillDisappear];
 #endif
+}
+
+- (void)dismissChatModalView {
+    [self dismissViewControllerAnimated:true completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {

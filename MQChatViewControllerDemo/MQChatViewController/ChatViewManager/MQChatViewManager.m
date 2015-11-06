@@ -8,6 +8,7 @@
 
 #import "MQChatViewManager.h"
 #import "MQChatViewConfig.h"
+#import "MQImageUtil.h"
 
 @implementation MQChatViewManager {
 #warning 这些属性需要如果需要实时和chatView同步，则需要在增加chatViewController中的相关方法后，再添加
@@ -35,10 +36,19 @@
 }
 
 - (MQChatViewController *)presentMQChatViewControllerInViewController:(UIViewController *)viewController {
-    if (chatViewController) {
+    if (!chatViewController) {
         chatViewController = [[MQChatViewController alloc] initWithChatViewManager:chatViewConfig];
     }
-    [viewController presentViewController:chatViewController animated:true completion:nil];
+    UINavigationController *chatNavigationController = [[UINavigationController alloc] initWithRootViewController:chatViewController];
+    UIImage *cancelImage = [MQChatViewConfig sharedConfig].navBarLeftButtomImage;
+    cancelImage = [MQImageUtil convertImageColorWithImage:cancelImage toColor:[MQChatViewConfig sharedConfig].navBarTintColor];
+    UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    cancelBtn.frame = CGRectMake(0, 0, cancelImage.size.width, cancelImage.size.height);
+    [cancelBtn setBackgroundImage:cancelImage forState:UIControlStateNormal];
+    [cancelBtn addTarget:chatViewController action:@selector(dismissChatModalView) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
+    chatViewController.navigationItem.leftBarButtonItem = leftItem;
+    [viewController presentViewController:chatNavigationController animated:true completion:nil];
     return chatViewController;
 }
 

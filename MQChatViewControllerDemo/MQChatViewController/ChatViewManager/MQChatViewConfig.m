@@ -10,6 +10,10 @@
 #import "MQDeviceFrameUtil.h"
 #import "MQChatFileUtil.h"
 
+NSString * const MQChatViewKeyboardResignFirstResponderNotification = @"MQChatViewKeyboardResignFirstResponderNotification";
+NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInterruptNotification";
+
+
 @implementation MQChatViewConfig
 
 + (instancetype)sharedConfig {
@@ -58,8 +62,8 @@
     self.incomingMsgTextColor = [UIColor darkTextColor];
     self.outgoingMsgTextColor = [UIColor whiteColor];
     self.eventTextColor = [UIColor grayColor];
-    self.navBarTintColor = [UIColor whiteColor];
-    self.navBarColor = [UIColor blueColor];
+    self.navBarTintColor = [UIColor blueColor];
+    self.navBarColor = [UIColor whiteColor];
     self.pullRefreshColor = [UIColor colorWithRed:104.0/255.0 green:192.0/255.0 blue:160.0/255.0 alpha:1.0];
     
     self.agentDefaultAvatarImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQIcon"]];
@@ -69,6 +73,8 @@
     self.incomingBubbleImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQBubbleIncoming"]];
     self.outgoingBubbleImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQBubbleOutgoing"]];
     self.messageSendFailureImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQMessageWarning"]];
+    self.navBarLeftButtomImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQNavReturnCancelImage"]];
+    
 #warning 这里需要增加声音文件名字
     self.incomingMsgSoundData = [NSData dataWithContentsOfFile:@""];
     self.outgoingMsgSoundData = [NSData dataWithContentsOfFile:@""];

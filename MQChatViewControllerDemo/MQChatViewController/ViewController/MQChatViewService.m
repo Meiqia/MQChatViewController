@@ -73,7 +73,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self generateMessageDateCellWithCurrentCellModel:cellModel];
     [self addCellModelAndReloadTableViewWithModel:cellModel];
 #ifdef INCLUDE_MEIQIA_SDK
-    [MQServiceToViewInterface sendTextMessageWithContent:content messageId:message.messageId successDelegate:self errorDelegate:self.errorDelegate];
+    [MQServiceToViewInterface sendTextMessageWithContent:content messageId:message.messageId delegate:self];
 #else
     //模仿发送成功
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -93,7 +93,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self generateMessageDateCellWithCurrentCellModel:cellModel];
     [self addCellModelAndReloadTableViewWithModel:cellModel];
 #ifdef INCLUDE_MEIQIA_SDK
-    [MQServiceToViewInterface sendImageMessageWithImage:image messageId:message.messageId successDelegate:self errorDelegate:self.errorDelegate];
+    [MQServiceToViewInterface sendImageMessageWithImage:image messageId:message.messageId delegate:self];
 #else
     //模仿发送成功
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -114,7 +114,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self sendVoiceMessageWithWAVData:wavData voiceMessage:message];
 #ifdef INCLUDE_MEIQIA_SDK
     NSData *amrData = [NSData dataWithContentsOfFile:filePath];
-    [MQServiceToViewInterface sendAudioMessage:amrData messageId:message.messageId successDelegate:self errorDelegate:self.errorDelegate];
+    [MQServiceToViewInterface sendAudioMessage:amrData messageId:message.messageId delegate:self];
 #endif
 }
 
