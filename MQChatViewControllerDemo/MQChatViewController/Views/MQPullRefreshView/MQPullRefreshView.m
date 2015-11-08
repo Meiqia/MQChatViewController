@@ -7,7 +7,6 @@
 //
 
 #import "MQPullRefreshView.h"
-#import "MQChatViewConfig.h"
 
 static CGFloat const kMQPullRefreshViewHeight = 44.0;
 static CGFloat const kMQPullRefreshIndicatorDiameter = 20.0;
@@ -56,7 +55,6 @@ static CGFloat const kMQPullRefreshTitleFontSize = 12.0;
         //初始化loadProgressLayer
         loadProgressLayer = [CAShapeLayer layer];
         loadProgressLayer.fillColor = [UIColor clearColor].CGColor;
-        loadProgressLayer.strokeColor = [MQChatViewConfig sharedConfig].pullRefreshColor.CGColor;
         loadProgressLayer.lineWidth = 1.5;
         [loadingIndicatorView.layer addSublayer:loadProgressLayer];
         [self addSubview:loadingIndicatorView];
@@ -72,6 +70,10 @@ static CGFloat const kMQPullRefreshTitleFontSize = 12.0;
         [self addSubview:titleLabel];
     }
     return self;
+}
+
+- (void)setPullRefreshStrokeColor:(UIColor *)strokeColor {
+    loadProgressLayer.strokeColor = strokeColor.CGColor;
 }
 
 - (void)setEnableRefresh:(BOOL)enable {

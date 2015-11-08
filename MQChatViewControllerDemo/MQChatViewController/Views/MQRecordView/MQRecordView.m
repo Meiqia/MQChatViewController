@@ -36,7 +36,7 @@ static CGFloat const kMQRecordViewDiameter = 150.0;
     
 }
 
--(instancetype)initWithFrame:(CGRect)frame
+-(instancetype)initWithFrame:(CGRect)frame maxRecordDuration:(NSTimeInterval)duration
 {
     if (self = [super initWithFrame:frame]) {
         self.revoke = NO;
@@ -59,7 +59,7 @@ static CGFloat const kMQRecordViewDiameter = 150.0;
         [recordView addSubview:volumeView];
         [recordView addSubview:tipLabel];
         
-        audioRecorder = [[MQChatAudioRecorder alloc] init];
+        audioRecorder = [[MQChatAudioRecorder alloc] initWithMaxRecordDuration:duration];
         audioRecorder.delegate = self;
     }
     return self;

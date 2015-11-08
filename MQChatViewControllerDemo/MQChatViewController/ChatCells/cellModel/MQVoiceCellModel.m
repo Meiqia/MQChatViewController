@@ -189,8 +189,6 @@ static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
         CGFloat upWidth = floor(cellWidth / 4);   //根据语音时间来递增的基准
         CGFloat voiceWidthScale = self.voiceDuration / [MQChatViewConfig sharedConfig].maxVoiceDuration;
         bubbleWidth = floor(upWidth*voiceWidthScale) + floor(cellWidth/4);
-
-//        bubbleWidth = ceil(maxBubbleWidth * self.voiceDuration / [MQChatViewConfig sharedConfig].maxVoiceDuration);
     } else {
         NSAssert(NO, @"语音超过最大时长！");
     }

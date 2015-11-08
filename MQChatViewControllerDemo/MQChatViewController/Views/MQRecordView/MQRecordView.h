@@ -30,6 +30,8 @@
 /** 是否显示撤回语音 */
 @property(nonatomic,assign) BOOL revoke;
 
+-(instancetype)initWithFrame:(CGRect)frame maxRecordDuration:(NSTimeInterval)duration;
+
 -(void)setupUI;
 
 -(void)startRecording;

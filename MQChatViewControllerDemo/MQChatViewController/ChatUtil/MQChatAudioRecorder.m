@@ -32,60 +32,55 @@
     [self.recorder stopRecording];
 }
 
-- (instancetype)init {
+- (instancetype)initWithMaxRecordDuration:(NSTimeInterval)duration {
     self = [super init];
     if (self) {
-        [self initRecorder];
+        isCancelRecording = false;
+        NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        
+        //初始化amr recorder
+        AmrRecordWriter *amrWriter = [[AmrRecordWriter alloc]init];
+        amrWriter.filePath = [path stringByAppendingPathComponent:@"record.amr"];
+        amrWriter.maxSecondCount = duration;
+        amrWriter.maxFileSize = 1024*256;
+        self.amrWriter = amrWriter;
+        
+        //初始化音频属性的观察者
+        MLAudioMeterObserver *meterObserver = [[MLAudioMeterObserver alloc]init];
+        meterObserver.actionBlock = ^(NSArray *levelMeterStates,MLAudioMeterObserver *meterObserver){
+            Float32 volume = [MLAudioMeterObserver volumeForLevelMeterStates:levelMeterStates];
+            if (self.delegate) {
+                if ([self.delegate respondsToSelector:@selector(didUpdateAudioVolume:)]) {
+                    [self.delegate didUpdateAudioVolume:volume];
+                }
+            }
+        };
+        meterObserver.errorBlock = ^(NSError *error,MLAudioMeterObserver *meterObserver){
+            [[[UIAlertView alloc]initWithTitle:@"抱歉，录音出现了点小问题-_-" message:error.userInfo[NSLocalizedDescriptionKey] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"知道了", nil]show];
+        };
+        self.meterObserver = meterObserver;
+        
+        //初始化recorder
+        MLAudioRecorder *recorder = [[MLAudioRecorder alloc]init];
+        __weak __typeof(self)weakSelf = self;
+        recorder.receiveStoppedBlock = ^{
+            weakSelf.meterObserver.audioQueue = nil;
+        };
+        recorder.receiveErrorBlock = ^(NSError *error){
+            weakSelf.meterObserver.audioQueue = nil;
+            [[[UIAlertView alloc]initWithTitle:@"抱歉，录音出现了点小问题-_-" message:error.userInfo[NSLocalizedDescriptionKey] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"知道了", nil]show];
+        };
+        
+        recorder.bufferDurationSeconds = 0.25;
+        recorder.fileWriterDelegate = self.amrWriter;
+        recorder.delegate = self;
+        self.recorder = recorder;
+        
+        //音频变化的系统通知
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioSessionDidChangeInterruptionType:)
+                                                     name:AVAudioSessionInterruptionNotification object:[AVAudioSession sharedInstance]];
     }
     return self;
-}
-
-- (void)initRecorder {
-    isCancelRecording = false;
-    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-
-    //初始化amr recorder
-    AmrRecordWriter *amrWriter = [[AmrRecordWriter alloc]init];
-    amrWriter.filePath = [path stringByAppendingPathComponent:@"record.amr"];
-    amrWriter.maxSecondCount = 60;
-    amrWriter.maxFileSize = 1024*256;
-    self.amrWriter = amrWriter;
-    
-    //初始化音频属性的观察者
-    MLAudioMeterObserver *meterObserver = [[MLAudioMeterObserver alloc]init];
-    meterObserver.actionBlock = ^(NSArray *levelMeterStates,MLAudioMeterObserver *meterObserver){
-        Float32 volume = [MLAudioMeterObserver volumeForLevelMeterStates:levelMeterStates];
-        if (self.delegate) {
-            if ([self.delegate respondsToSelector:@selector(didUpdateAudioVolume:)]) {
-                [self.delegate didUpdateAudioVolume:volume];
-            }
-        }
-    };
-    meterObserver.errorBlock = ^(NSError *error,MLAudioMeterObserver *meterObserver){
-        [[[UIAlertView alloc]initWithTitle:@"抱歉，录音出现了点小问题-_-" message:error.userInfo[NSLocalizedDescriptionKey] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"知道了", nil]show];
-    };
-    self.meterObserver = meterObserver;
-    
-    //初始化recorder
-    MLAudioRecorder *recorder = [[MLAudioRecorder alloc]init];
-    __weak __typeof(self)weakSelf = self;
-    recorder.receiveStoppedBlock = ^{
-        weakSelf.meterObserver.audioQueue = nil;
-    };
-    recorder.receiveErrorBlock = ^(NSError *error){
-        weakSelf.meterObserver.audioQueue = nil;
-        [[[UIAlertView alloc]initWithTitle:@"抱歉，录音出现了点小问题-_-" message:error.userInfo[NSLocalizedDescriptionKey] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"知道了", nil]show];
-    };
-
-    recorder.bufferDurationSeconds = 0.25;
-    recorder.fileWriterDelegate = self.amrWriter;
-    recorder.delegate = self;
-    self.recorder = recorder;
-
-    //音频变化的系统通知
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioSessionDidChangeInterruptionType:)
-                                                 name:AVAudioSessionInterruptionNotification object:[AVAudioSession sharedInstance]];
-
 }
 
 - (void)audioSessionDidChangeInterruptionType:(NSNotification *)notification{

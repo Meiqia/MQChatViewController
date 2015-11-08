@@ -8,7 +8,6 @@
 
 #import "MQInputBar.h"
 #import "MQChatFileUtil.h"
-#import "MQChatViewConfig.h"
 
 //#define ButtonWidth 33
 //#define ButtonX 6.5
@@ -36,13 +35,17 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
     float bullleViewHeigth; //真实可视区域
     CGFloat senderImageWidth;
     CGFloat textViewHeight;
-    BOOL enableSendRecord;
+    BOOL enableSendVoice;
     BOOL enableSendImage;
     
     UIButton *microphoneBtn;
     UIButton *cameraBtn;
     UIButton *recordBtn;
     UIButton *toolbarDownBtn;
+    
+    UIImage *photoSenderImage;
+    UIImage *voiceSenderImage;
+    UIImage *keyboardSenderImage;
 }
 
 - (void)dealloc {
@@ -52,22 +55,31 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
 - (id)initWithFrame:(CGRect)frame
           superView:(UIView *)inputBarSuperView
           tableView:(MQChatTableView *)tableView
+   enabelSendVoice:(BOOL)enableVoice
+    enableSendImage:(BOOL)enableImage
+   photoSenderImage:(UIImage *)photoImage
+   voiceSenderImage:(UIImage *)voiceImage
+keyboardSenderImage:(UIImage *)keyboardImage
 {
     if (self = [super init]) {
         self.frame              = frame;
         originalFrame           = frame;
         originalSuperViewFrame  = inputBarSuperView.frame;
-        self.chatTableView           = tableView;
+        self.chatTableView      = tableView;
         originalChatViewFrame   = tableView.frame;
+        enableSendImage         = enableImage;
+        enableSendVoice         = enableVoice;
+        photoSenderImage        = photoImage;
+        voiceSenderImage        = voiceImage;
+        keyboardSenderImage     = keyboardImage;
 
-        senderImageWidth = [MQChatViewConfig sharedConfig].photoSenderImage.size.width;
+        senderImageWidth = photoImage.size.width;
         textViewHeight = ceil(frame.size.height * 5 / 7);
         self.backgroundColor = [UIColor whiteColor];
         
-        enableSendImage = [MQChatViewConfig sharedConfig].enableImageMessage;
         cameraBtn              = [[UIButton alloc] init];
-        [cameraBtn setImage:[MQChatViewConfig sharedConfig].photoSenderImage forState:UIControlStateNormal];
-        [cameraBtn setImage:[MQChatViewConfig sharedConfig].photoSenderImage forState:UIControlStateHighlighted];
+        [cameraBtn setImage:photoSenderImage forState:UIControlStateNormal];
+        [cameraBtn setImage:photoSenderImage forState:UIControlStateHighlighted];
         [cameraBtn addTarget:self action:@selector(cameraClick) forControlEvents:UIControlEventTouchUpInside];
         cameraBtn.frame      = enableSendImage ? CGRectMake(kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth) : CGRectMake(0, 0, 0, 0);
         
@@ -80,8 +92,7 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
         self.textView.layer.borderWidth     = 1;
         self.textView.layer.cornerRadius    = 4;
         
-        enableSendRecord = [MQChatViewConfig sharedConfig].enableVoiceMessage;
-        if (enableSendRecord) {
+        if (enableSendVoice) {
             [self initRecordBtn];
             self.textView.frame     = recordBtn.frame;
             originalTextViewFrame   = recordBtn.frame;
@@ -134,8 +145,8 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
     toolbarDownBtn.hidden = YES;
     
     microphoneBtn = [[UIButton alloc] init];
-    [microphoneBtn setImage:[MQChatViewConfig sharedConfig].voiceSenderImage forState:UIControlStateNormal];
-    [microphoneBtn setImage:[MQChatViewConfig sharedConfig].voiceSenderImage forState:UIControlStateHighlighted];
+    [microphoneBtn setImage:voiceSenderImage forState:UIControlStateNormal];
+    [microphoneBtn setImage:voiceSenderImage forState:UIControlStateHighlighted];
     [microphoneBtn addTarget:self action:@selector(microphoneClick) forControlEvents:UIControlEventTouchUpInside];
     
     recordBtn                    = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -183,8 +194,8 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
 {
     if (recordBtn.hidden) {
         recordBtn.hidden = NO;
-        [microphoneBtn setImage:[MQChatViewConfig sharedConfig].keyboardSenderImage forState:UIControlStateNormal];
-        [microphoneBtn setImage:[MQChatViewConfig sharedConfig].keyboardSenderImage forState:UIControlStateHighlighted];
+        [microphoneBtn setImage:keyboardSenderImage forState:UIControlStateNormal];
+        [microphoneBtn setImage:keyboardSenderImage forState:UIControlStateHighlighted];
         [self textViewResignFirstResponder];
         [UIView animateWithDuration:.25 animations:^{
             //还原
@@ -201,8 +212,8 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
             self.textView.hidden = YES;
         }];
     }else{
-        [microphoneBtn setImage:[MQChatViewConfig sharedConfig].voiceSenderImage forState:UIControlStateNormal];
-        [microphoneBtn setImage:[MQChatViewConfig sharedConfig].voiceSenderImage forState:UIControlStateHighlighted];
+        [microphoneBtn setImage:voiceSenderImage forState:UIControlStateNormal];
+        [microphoneBtn setImage:voiceSenderImage forState:UIControlStateHighlighted];
         [self.textView becomeFirstResponder];
         self.textView.hidden = NO;
         [UIView animateWithDuration:.25 animations:^{
@@ -446,7 +457,7 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
 
 -(void)toolbarDownBtnVisible
 {
-    if (!enableSendRecord) {
+    if (!enableSendVoice) {
         return;
     }
     
@@ -507,7 +518,7 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
     cameraBtn.frame      = CGRectMake(kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth);
     microphoneBtn.frame = CGRectMake(self.frame.size.width - senderImageWidth - kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth);
     toolbarDownBtn.frame = microphoneBtn.frame;
-    if (enableSendRecord) {
+    if (enableSendVoice) {
         recordBtn.frame = CGRectMake(kMQInputBarHorizontalSpacing*2 + senderImageWidth, (originalFrame.size.height - textViewHeight)/2, originalFrame.size.width - kMQInputBarHorizontalSpacing * 4 - 2 * senderImageWidth, textViewHeight);
         self.textView.frame     = recordBtn.frame;
         originalTextViewFrame   = recordBtn.frame;
