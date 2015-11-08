@@ -28,11 +28,15 @@
 
 @property(nonatomic,weak) id<MQInputBarDelegate> delegate;
 @property(nonatomic,strong) HPGrowingTextView* textView;
-//@property(nonatomic, assign) BOOL recordButtonVisible;
 
 - (id)initWithFrame:(CGRect)frame
           superView:(UIView *)inputBarSuperView
-          tableView:(MQChatTableView *)tableView;
+          tableView:(MQChatTableView *)tableView
+    enabelSendVoice:(BOOL)enableVoice
+    enableSendImage:(BOOL)enableImage
+   photoSenderImage:(UIImage *)photoImage
+   voiceSenderImage:(UIImage *)voiceImage
+keyboardSenderImage:(UIImage *)keyboardImage;
 
 -(void)textViewResignFirstResponder;
 

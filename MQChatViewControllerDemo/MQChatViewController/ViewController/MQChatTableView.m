@@ -44,11 +44,13 @@ static CGFloat const kMQChatPullRefreshDistance = 44.0;
         if (enableTopRefresh) {
             self.topRefreshView = [[MQPullRefreshView alloc] initWithSuperScrollView:self isTopRefresh:true];
             [self.topRefreshView setRefreshTitle:@"没有更多消息啦~"];
+            [self.topRefreshView setPullRefreshStrokeColor:[MQChatViewConfig sharedConfig].pullRefreshColor];
             [self addSubview:self.topRefreshView];
         }
         if (enableBottomRefresh) {
             self.bottomRefreshView = [[MQPullRefreshView alloc] initWithSuperScrollView:self isTopRefresh:false];
             [self.bottomRefreshView setRefreshTitle:@"没有更多消息啦~"];
+            [self.topRefreshView setPullRefreshStrokeColor:[MQChatViewConfig sharedConfig].pullRefreshColor];
             [self addSubview:self.bottomRefreshView];
         }
         

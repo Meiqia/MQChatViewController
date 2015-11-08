@@ -175,7 +175,14 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
  */
 - (void)initInputBar {
     CGRect inputBarFrame = CGRectMake(self.chatTableView.frame.origin.x, self.chatTableView.frame.origin.y+self.chatTableView.frame.size.height, self.chatTableView.frame.size.width, kMQChatViewInputBarHeight);
-    chatInputBar = [[MQInputBar alloc] initWithFrame:inputBarFrame superView:self.view tableView:self.chatTableView];
+    chatInputBar = [[MQInputBar alloc] initWithFrame:inputBarFrame
+                                           superView:self.view
+                                           tableView:self.chatTableView
+                                     enabelSendVoice:[MQChatViewConfig sharedConfig].enableVoiceMessage
+                                     enableSendImage:[MQChatViewConfig sharedConfig].enableImageMessage
+                                    photoSenderImage:[MQChatViewConfig sharedConfig].photoSenderImage
+                                    voiceSenderImage:[MQChatViewConfig sharedConfig].voiceSenderImage
+                                 keyboardSenderImage:[MQChatViewConfig sharedConfig].keyboardSenderImage];
     chatInputBar.delegate = self;
     [self.view addSubview:chatInputBar];
     self.inputBarView = chatInputBar;
@@ -276,18 +283,19 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #endif
 
     //如果开发者不自定义录音界面，则将播放界面显示出来
-        if (!recordView) {
-            recordView = [[MQRecordView alloc] initWithFrame:CGRectMake(0,
-                                                                        0,
-                                                                        self.chatTableView.frame.size.width,
-                                                                        viewSize.height - chatInputBar.frame.size.height)];
-            recordView.recordViewDelegate = self;
-            if ([MQChatViewConfig sharedConfig].enableCustomRecordView) {
-                [self.view addSubview:recordView];
-            }
+    if (!recordView) {
+        recordView = [[MQRecordView alloc] initWithFrame:CGRectMake(0,
+                                                                    0,
+                                                                    self.chatTableView.frame.size.width,
+                                                                    viewSize.height - chatInputBar.frame.size.height)
+                                       maxRecordDuration:[MQChatViewConfig sharedConfig].maxVoiceDuration];
+        recordView.recordViewDelegate = self;
+        if ([MQChatViewConfig sharedConfig].enableCustomRecordView) {
+            [self.view addSubview:recordView];
         }
-        [recordView reDisplayRecordView];
-        [recordView startRecording];
+    }
+    [recordView reDisplayRecordView];
+    [recordView startRecording];
 }
 
 -(void)finishRecord:(CGPoint)point {

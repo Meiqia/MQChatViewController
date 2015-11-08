@@ -54,7 +54,6 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 @property (nonatomic, copy) UIColor *outgoingBubbleColor;
 @property (nonatomic, copy) UIColor *eventTextColor;
 
-#error 该写这里了
 @property (nonatomic, copy) UIColor *navBarTintColor;
 @property (nonatomic, copy) UIColor *navBarColor;
 @property (nonatomic, copy) UIColor *pullRefreshColor;

@@ -28,6 +28,7 @@
         chatViewController = [[MQChatViewController alloc] initWithChatViewManager:chatViewConfig];
     }
     if (viewController.navigationController) {
+        [self updateNavAttributesWithNavigationController:viewController.navigationController];
         [viewController.navigationController pushViewController:chatViewController animated:true];
     } else {
         [self presentMQChatViewControllerInViewController:viewController];
@@ -40,6 +41,7 @@
         chatViewController = [[MQChatViewController alloc] initWithChatViewManager:chatViewConfig];
     }
     UINavigationController *chatNavigationController = [[UINavigationController alloc] initWithRootViewController:chatViewController];
+    [self updateNavAttributesWithNavigationController:chatNavigationController];
     UIImage *cancelImage = [MQChatViewConfig sharedConfig].navBarLeftButtomImage;
     cancelImage = [MQImageUtil convertImageColorWithImage:cancelImage toColor:[MQChatViewConfig sharedConfig].navBarTintColor];
     UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -50,6 +52,12 @@
     chatViewController.navigationItem.leftBarButtonItem = leftItem;
     [viewController presentViewController:chatNavigationController animated:true completion:nil];
     return chatViewController;
+}
+
+//修改导航栏属性
+- (void)updateNavAttributesWithNavigationController:(UINavigationController *)navigationController {
+    navigationController.navigationBar.tintColor = [MQChatViewConfig sharedConfig].navBarTintColor;
+    navigationController.navigationBar.backgroundColor = [MQChatViewConfig sharedConfig].navBarColor;
 }
 
 - (void)disappearMQChatViewController {
