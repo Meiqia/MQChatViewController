@@ -58,4 +58,11 @@
  */
 - (void)updateFrame;
 
+/**
+ *  设置下拉刷新的color
+ *
+ *  @param strokeColor 下拉刷新的圆环color
+ */
+- (void)setPullRefreshStrokeColor:(UIColor *)strokeColor;
+
 @end
