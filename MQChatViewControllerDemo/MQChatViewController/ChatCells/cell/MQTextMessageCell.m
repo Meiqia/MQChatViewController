@@ -22,6 +22,7 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
 @implementation MQTextMessageCell  {
     UIImageView *avatarImageView;
     TTTAttributedLabel *textLabel;
+//    UILabel *textLabel;
     UIImageView *bubbleImageView;
     UIActivityIndicatorView *sendingIndicator;
     UIImageView *failureImageView;
@@ -40,13 +41,18 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
         [bubbleImageView addGestureRecognizer:longPressBubbleGesture];
         [self.contentView addSubview:bubbleImageView];
         //初始化文字
-        textLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
+        if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0){
+            textLabel = [[TTTAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
+            textLabel.delegate = self;
+        } else {
+            textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
+        }
         textLabel.font = [UIFont systemFontOfSize:kMQCellTextFontSize];
         textLabel.textColor = [UIColor darkTextColor];
         textLabel.numberOfLines = 0;
         textLabel.textAlignment = NSTextAlignmentLeft;
-        textLabel.delegate = self;
         textLabel.userInteractionEnabled = true;
+        textLabel.backgroundColor = [UIColor clearColor];
         [bubbleImageView addSubview:textLabel];
         //初始化indicator
         sendingIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -115,7 +121,9 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
                 longestKey = key;
             }
         }
-        [textLabel addLinkToPhoneNumber:longestKey withRange:[cellModel.numberRangeDic[longestKey] rangeValue]];
+        if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0){
+            [textLabel addLinkToPhoneNumber:longestKey withRange:[cellModel.numberRangeDic[longestKey] rangeValue]];
+        }
     }
     if (cellModel.linkNumberRangeDic.count > 0) {
         NSString *longestKey = @"";
@@ -125,7 +133,9 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
                 longestKey = key;
             }
         }
-        [textLabel addLinkToURL:[NSURL URLWithString:longestKey] withRange:[cellModel.linkNumberRangeDic[longestKey] rangeValue]];
+        if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0){
+            [textLabel addLinkToURL:[NSURL URLWithString:longestKey] withRange:[cellModel.linkNumberRangeDic[longestKey] rangeValue]];
+        }
     }
     if (cellModel.emailNumberRangeDic.count > 0) {
         NSString *longestKey = @"";
@@ -135,7 +145,9 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
                 longestKey = key;
             }
         }
-        [textLabel addLinkToTransitInformation:@{@"email" : longestKey} withRange:[cellModel.emailNumberRangeDic[longestKey] rangeValue]];
+        if([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0){
+            [textLabel addLinkToTransitInformation:@{@"email" : longestKey} withRange:[cellModel.emailNumberRangeDic[longestKey] rangeValue]];
+        }
     }
     
     //刷新出错图片

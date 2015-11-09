@@ -169,7 +169,7 @@ keyboardSenderImage:(UIImage *)keyboardImage
     
     microphoneBtn.frame = CGRectMake(self.frame.size.width - senderImageWidth - kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth);
     toolbarDownBtn.frame = microphoneBtn.frame;
-    recordBtn.frame = CGRectMake(cameraBtn.frame.origin.x + kMQInputBarHorizontalSpacing, (originalFrame.size.height - textViewHeight)/2, originalFrame.size.width - kMQInputBarHorizontalSpacing * 4 - 2 * senderImageWidth, textViewHeight);
+    recordBtn.frame = CGRectMake(cameraBtn.frame.origin.x + cameraBtn.frame.size.width + kMQInputBarHorizontalSpacing, (originalFrame.size.height - textViewHeight)/2, originalFrame.size.width - kMQInputBarHorizontalSpacing * 4 - 2 * senderImageWidth, textViewHeight);
     
     [self addSubview:toolbarDownBtn];
     [self addSubview:recordBtn];

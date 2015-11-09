@@ -49,9 +49,8 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.automaticallyAdjustsScrollViewInsets = false;
     
-    viewSize = [MQDeviceFrameUtil getDeviceScreenRect].size;
+    viewSize = self.view.frame.size;
     [self setNavBar];
     [self initChatTableView];
     [self initchatViewService];
@@ -59,32 +58,24 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [self initTableViewDataSource];
     chatViewService.chatViewWidth = self.chatTableView.frame.size.width;
     [chatViewService sendLocalWelcomeChatMessage];
-    
-#ifdef INCLUDE_MEIQIA_SDK
-    //美洽SDK顾客上下线的请求逻辑
-    
-#endif
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [chatViewConfig setConfigToDefault];
     [[NSNotificationCenter defaultCenter] postNotificationName:MQAudioPlayerDidInterruptNotification object:nil];
-#ifdef INCLUDE_MEIQIA_SDK
-//    [self.chatViewDelegate chatViewDidDisappear];
-#endif
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    //更新view frame
+    viewSize = self.view.frame.size;
+    [self updateContentViewsFrame];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-#ifdef INCLUDE_MEIQIA_SDK
-//    [self.chatViewDelegate chatViewWillDisappear];
-#endif
 }
 
 - (void)dismissChatModalView {
@@ -279,14 +270,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     //停止播放的通知
     [[NSNotificationCenter defaultCenter] postNotificationName:MQAudioPlayerDidInterruptNotification object:nil];
     
-#ifdef INCLUDE_MEIQIA_SDK
-//    if (self.chatViewDelegate) {
-//        if ([self.chatViewDelegate respondsToSelector:@selector(recordVoiceWillBegin)]) {
-//            [self.chatViewDelegate recordVoiceWillBegin];
-//        }
-//    }
-#endif
-
     //如果开发者不自定义录音界面，则将播放界面显示出来
     if (!recordView) {
         recordView = [[MQRecordView alloc] initWithFrame:CGRectMake(0,
@@ -322,13 +305,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 - (void)didEndRecord {
-#ifdef INCLUDE_MEIQIA_SDK
-//    if (self.chatViewDelegate) {
-//        if ([self.chatViewDelegate respondsToSelector:@selector(recordVoiceDidEnd)]) {
-//            [self.chatViewDelegate recordVoiceDidEnd];
-//        }
-//    }
-#endif
+
 }
 
 #pragma MQRecordViewDelegate
@@ -338,13 +315,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 - (void)didUpdateVolumeInRecordView:(UIView *)recordView volume:(CGFloat)volume {
-#ifdef INCLUDE_MEIQIA_SDK
-//    if (self.chatViewDelegate) {
-//        if ([self.chatViewDelegate respondsToSelector:@selector(recordVolumnDidUpdate)]) {
-//            [self.chatViewDelegate recordVolumnDidUpdate];
-//        }
-//    }
-#endif
+
 }
 
 #pragma UIImagePickerControllerDelegate
@@ -377,13 +348,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 - (void)didSelectMessageInCell:(UITableViewCell *)cell messageContent:(NSString *)content selectedContent:(NSString *)selectedContent {
-#ifdef INCLUDE_MEIQIA_SDK
-    //    if (self.chatViewDelegate) {
-    //        if ([self.chatViewDelegate respondsToSelector:@selector(didSelectMessageContent:selectedContent:)]) {
-    //            [self.chatViewDelegate didSelectMessageContent:content selectedContent:selectedContent];
-    //        }
-    //    }
-#endif
+
 }
 
 #pragma ios7以下系统的横屏的事件
@@ -433,9 +398,13 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)setChatTableViewFrame {
     //更新tableView的frame
     if (!chatViewConfig.isCustomizedChatViewFrame) {
-        CGFloat navBarOriginY = 20;
-        CGFloat navBarHeight = viewSize.width < viewSize.height ? 44 : 32;
-        chatViewConfig.chatViewFrame = CGRectMake(0, navBarOriginY+navBarHeight, viewSize.width, viewSize.height - navBarOriginY - navBarHeight - kMQChatViewInputBarHeight);
+//#if __IPHONE_OS_VERSION_MIN_ALLOWED >= 70000
+//        CGFloat navBarOriginY = 20;
+//        CGFloat navBarHeight = viewSize.width < viewSize.height ? 44 : 32;
+//        chatViewConfig.chatViewFrame = CGRectMake(0, navBarOriginY+navBarHeight, viewSize.width, viewSize.height - navBarOriginY - navBarHeight - kMQChatViewInputBarHeight);
+//#else
+        chatViewConfig.chatViewFrame = CGRectMake(0, 0, viewSize.width, viewSize.height - kMQChatViewInputBarHeight);
+//#endif
         [self.chatTableView updateFrame:chatViewConfig.chatViewFrame];;
     }
 }

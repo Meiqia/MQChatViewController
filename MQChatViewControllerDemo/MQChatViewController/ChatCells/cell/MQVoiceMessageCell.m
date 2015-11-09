@@ -54,6 +54,7 @@
         durationLabel.textColor = [UIColor lightGrayColor];
         durationLabel.font = [UIFont systemFontOfSize:kMQCellVoiceDurationLabelFontSize];
         durationLabel.textAlignment = NSTextAlignmentCenter;
+        durationLabel.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:durationLabel];
         //初始化语音图片
         voiceImageView = [[UIImageView alloc] init];

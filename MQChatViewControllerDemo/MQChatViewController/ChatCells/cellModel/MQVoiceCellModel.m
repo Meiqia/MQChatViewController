@@ -225,7 +225,7 @@ static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
         //收到的消息
         self.cellFromType = MQChatCellIncoming;
         //头像的frame
-        if ([MQChatViewConfig sharedConfig].enableClientAvatar) {
+        if ([MQChatViewConfig sharedConfig].enableAgentAvatar) {
             self.avatarFrame = CGRectMake(kMQCellAvatarToHorizontalEdgeSpacing, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
         } else {
             self.avatarFrame = CGRectMake(0, 0, 0, 0);
