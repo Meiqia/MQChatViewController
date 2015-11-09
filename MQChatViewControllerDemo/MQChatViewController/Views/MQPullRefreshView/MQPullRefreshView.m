@@ -34,9 +34,11 @@ static CGFloat const kMQPullRefreshTitleFontSize = 12.0;
 }
 
 - (instancetype)initWithSuperScrollView:(UIScrollView *)scrollView
-                           isTopRefresh:(BOOL)topRefresh {
+                           isTopRefresh:(BOOL)topRefresh
+{
     self = [super init];
     if (self) {
+        self.kMQTableViewContentTopOffset = [[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0 ? 64.0 : 0.0;
         self.superScrollView = scrollView;
         isLoading = false;
         enableRefresh = true;
@@ -99,9 +101,6 @@ static CGFloat const kMQPullRefreshTitleFontSize = 12.0;
         [loadingIndicator startAnimating];
         CGFloat contentInsetTop = isTopRefresh ? self.superScrollView.contentInset.top + self.frame.size.height : self.superScrollView.contentInset.top - self.frame.size.height;
         self.superScrollView.contentInset = UIEdgeInsetsMake(contentInsetTop, self.superScrollView.contentInset.left, self.superScrollView.contentInset.bottom, self.superScrollView.contentInset.right);
-//        CGFloat contentInsetTop = isTopRefresh ? self.superScrollView.contentInset.top + self.frame.size.height : self.superScrollView.contentInset.top;
-//        CGFloat contentInsetBottom = isTopRefresh ? self.superScrollView.contentInset.bottom : self.superScrollView.contentInset.bottom - self.frame.size.height;
-//        self.superScrollView.contentInset = UIEdgeInsetsMake(contentInsetTop, self.superScrollView.contentInset.left, contentInsetBottom, self.superScrollView.contentInset.right);
     }
 }
 
@@ -119,32 +118,25 @@ static CGFloat const kMQPullRefreshTitleFontSize = 12.0;
 #pragma UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-//    CGFloat navHeight = [[UINavigationController alloc] init].navigationBar.frame.size.height;
-//    CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
-    //是否是底部上拉刷新
-//    BOOL isBottomRefreshEn = !isTopRefresh && (scrollView.contentSize.height-scrollView.frame.size.height<scrollView.contentOffset.y || (scrollView.frame.size.height>scrollView.contentSize.height && scrollView.contentOffset.y > -(navHeight+statusBarHeight)));
-    BOOL isBottomRefreshEn = !isTopRefresh && (scrollView.contentSize.height-scrollView.frame.size.height<scrollView.contentOffset.y || (scrollView.frame.size.height>scrollView.contentSize.height && scrollView.contentOffset.y > 0));
+    BOOL isBottomRefreshEn = !isTopRefresh && (scrollView.contentSize.height-scrollView.frame.size.height<scrollView.contentOffset.y+self.kMQTableViewContentTopOffset || (scrollView.frame.size.height>scrollView.contentSize.height && scrollView.contentOffset.y+self.kMQTableViewContentTopOffset > 0));
     //计算bottomRefreshView的位置
     if (!isTopRefresh) {
         CGFloat refreshViewOriginY = 0;
         if (scrollView.frame.size.height > scrollView.contentSize.height) {
-//            refreshViewOriginY = scrollView.frame.size.height - navHeight*3/2;
-            refreshViewOriginY = scrollView.frame.size.height;
+            refreshViewOriginY = scrollView.frame.size.height - self.kMQTableViewContentTopOffset;
         }else{
             refreshViewOriginY = scrollView.contentSize.height;
         }
         self.frame = CGRectMake(self.frame.origin.x, refreshViewOriginY, self.frame.size.width, self.frame.size.height);
     }
-    if ((scrollView.contentOffset.y < 0 && isTopRefresh) || isBottomRefreshEn) {
-//        if ((scrollView.contentOffset.y < -(navHeight+statusBarHeight) && isTopRefresh) || isBottomRefreshEn) {
+    if ((scrollView.contentOffset.y + self.kMQTableViewContentTopOffset < 0 && isTopRefresh) || isBottomRefreshEn) {
         if (!isLoading && enableRefresh) {
             CGFloat position = 0;
             if (isTopRefresh) {
                 position = -(scrollView.contentOffset.y + scrollView.contentInset.top ) / (self.frame.size.height);
             }else{
                 if (scrollView.contentSize.height < scrollView.frame.size.height) {
-//                    position = (scrollView.contentOffset.y + navHeight + statusBarHeight) / (self.frame.size.height);
-                    position = (scrollView.contentOffset.y) / (self.frame.size.height);
+                    position = (scrollView.contentOffset.y + self.kMQTableViewContentTopOffset) / (self.frame.size.height);
                 }else{
                     position = (scrollView.contentOffset.y + scrollView.frame.size.height - scrollView.contentSize.height) / (self.frame.size.height);
                 }
@@ -158,7 +150,11 @@ static CGFloat const kMQPullRefreshTitleFontSize = 12.0;
 }
 
 - (void)updateFrame {
-    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, self.superScrollView.frame.size.width, self.frame.size.height);
+    CGFloat originY = -kMQPullRefreshViewHeight;
+    if (!isTopRefresh) {
+        originY = self.superview.frame.size.height;
+    }
+    self.frame = CGRectMake(self.frame.origin.x, originY, self.superScrollView.frame.size.width, self.frame.size.height);
     loadingIndicatorView.frame = CGRectMake(self.frame.size.width/2 - kMQPullRefreshIndicatorDiameter/2, self.frame.size.height/2 - kMQPullRefreshIndicatorDiameter/2, kMQPullRefreshIndicatorDiameter, kMQPullRefreshIndicatorDiameter);
     titleLabel.frame = CGRectMake(0, self.frame.size.height/2 - kMQPullRefreshIndicatorDiameter/2, self.frame.size.height, kMQPullRefreshIndicatorDiameter);
 }

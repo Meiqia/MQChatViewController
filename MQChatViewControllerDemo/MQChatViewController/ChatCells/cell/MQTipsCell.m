@@ -24,6 +24,7 @@ static CGFloat const kMQMessageTipsLabelFontSize = 12.0;
         tipsLabel.textColor = [UIColor grayColor];
         tipsLabel.textAlignment = NSTextAlignmentCenter;
         tipsLabel.font = [UIFont systemFontOfSize:kMQMessageTipsLabelFontSize];
+        tipsLabel.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:tipsLabel];
         //画上下两条线
         topLineLayer = [self gradientLine];

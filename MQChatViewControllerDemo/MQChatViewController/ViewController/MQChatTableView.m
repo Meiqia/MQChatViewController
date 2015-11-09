@@ -14,6 +14,8 @@
  */
 static CGFloat const kMQChatPullRefreshDistance = 44.0;
 
+
+
 @interface MQChatTableView()<UIScrollViewDelegate>
 
 @end
@@ -125,8 +127,8 @@ static CGFloat const kMQChatPullRefreshDistance = 44.0;
     if ((scrollView.contentOffset.y + scrollView.contentInset.top <= -kMQChatPullRefreshDistance)) {
         //开启下拉刷新(顶部刷新)的条件
         [self startLoadingTopRefreshView];
-    }else if (((scrollView.contentSize.height>scrollView.frame.size.height && scrollView.contentSize.height - scrollView.frame.size.height < scrollView.contentOffset.y - kMQChatPullRefreshDistance)
-               || (scrollView.contentSize.height<scrollView.frame.size.height && scrollView.contentOffset.y > kMQChatPullRefreshDistance))
+    }else if (((scrollView.contentSize.height>scrollView.frame.size.height && scrollView.contentSize.height - scrollView.frame.size.height < scrollView.contentOffset.y + self.topRefreshView.kMQTableViewContentTopOffset - kMQChatPullRefreshDistance)
+               || (scrollView.contentSize.height<scrollView.frame.size.height && scrollView.contentOffset.y + self.topRefreshView.kMQTableViewContentTopOffset > kMQChatPullRefreshDistance))
               && enableBottomRefresh) {
         //开启上拉刷新（底部杀心）的条件
         [self startLoadingBottomRefreshView];

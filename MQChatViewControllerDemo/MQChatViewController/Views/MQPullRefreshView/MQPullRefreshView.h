@@ -11,6 +11,8 @@
 
 @interface MQPullRefreshView : UIView
 
+@property (nonatomic, assign) CGFloat kMQTableViewContentTopOffset;
+
 /**
  *  初始化上拉/下拉刷新
  *

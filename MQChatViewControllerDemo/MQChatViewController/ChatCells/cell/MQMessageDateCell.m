@@ -23,6 +23,7 @@ static CGFloat const kMQMessageDateLabelFontSize = 12.0;
         dateLabel.textColor = [UIColor lightGrayColor];
         dateLabel.textAlignment = NSTextAlignmentCenter;
         dateLabel.font = [UIFont systemFontOfSize:kMQMessageDateLabelFontSize];
+        dateLabel.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:dateLabel];
     }
     return self;
