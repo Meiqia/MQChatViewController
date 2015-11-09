@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "MQCellModelProtocol.h"
+#import "MQEventMessage.h"
 
 /**
  * MQEventCellModel定义了消息事件的基本类型数据，包括产生cell的内部所有view的显示数据，cell内部元素的frame等
@@ -28,7 +29,7 @@
 /**
  * @brief 事件文字
  */
-@property (nonatomic, readonly, copy) NSString *eventText;
+@property (nonatomic, readonly, copy) NSString *eventContent;
 
 /**
  * @brief 事件消息的时间
@@ -44,6 +45,6 @@
 /**
  *  根据MQMessage内容来生成cell model
  */
-//- (MQEventCellModel *)initCellModelWithMessage:(MQMessage *)message;
+- (MQEventCellModel *)initCellModelWithMessage:(MQEventMessage *)message cellWidth:(CGFloat)cellWidth;
 
 @end

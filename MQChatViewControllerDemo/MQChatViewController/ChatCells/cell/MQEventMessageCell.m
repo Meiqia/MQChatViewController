@@ -36,7 +36,7 @@ static CGFloat const kMQMessageEventLabelFontSize = 14.0;
     MQEventCellModel *cellModel = (MQEventCellModel *)model;
     
     //刷新时间label
-    eventLabel.text = cellModel.eventText;
+    eventLabel.text = cellModel.eventContent;
     eventLabel.frame = cellModel.eventLabelFrame;
 }
 
