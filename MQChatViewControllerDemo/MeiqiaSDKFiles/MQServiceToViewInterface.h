@@ -14,6 +14,7 @@
 #import "MQImageMessage.h"
 #import "MQVoiceMessage.h"
 #import "MQTextMessage.h"
+#import "MQAgent.h"
 
 /**
  *  该协议是UI层获取数据的委托方法
@@ -57,6 +58,13 @@
                         newMessageDate:(NSDate *)newMessageDate
                             sendStatus:(MQChatMessageSendStatus)sendStatus;
 
+/**
+ *  得到为该client服务的客服信息
+ *
+ *  @param agent 客服实体
+ */
+- (void)didScheduledWithAgent:(MQAgent *)agent;
+
 @end
 
 /**
@@ -87,15 +95,14 @@
                               errorDelegate:(id<MQServiceToViewInterfaceErrorDelegate>)errorDelegate;
 
 /**
- * 从服务端获取更多消息
+ * 从本地获取更多消息
  *
  * @param msgDate 获取该日期之前的历史消息;
  * @param messagesNum 获取消息的数量
  */
 + (void)getDatabaseHistoryMessagesWithMsgDate:(NSDate *)msgDate
                                messagesNumber:(NSInteger)messagesNumber
-                              successDelegate:(id<MQServiceToViewInterfaceDelegate>)successDelegate
-                                errorDelegate:(id<MQServiceToViewInterfaceErrorDelegate>)errorDelegate;
+                                     delegate:(id<MQServiceToViewInterfaceDelegate>)delegate;
 
 /**
  * 发送文字消息
@@ -139,15 +146,12 @@
  * 设置顾客上线
  * @param ;
  */
-+ (void)setClientOnlineWithSuccess:(void (^)(BOOL completion, NSArray *receivedMessages))success
-                           failure:(void (^)(NSError *error))failure;
++ (void)setClientOnlineWithSuccess:(void (^)(BOOL completion))success;
 
 /**
  * 设置顾客离线
  * @param ;
  */
-+ (void)setClientOfflineWithSuccess:(void (^)(BOOL completion))success
-                            failure:(void (^)(NSError *error))failure;
-
++ (void)setClientOfflineWithSuccess:(void (^)(BOOL completion))success;
 
 @end

@@ -65,7 +65,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     if ([MQChatViewConfig sharedConfig].enableSyncServerMessage) {
         [MQServiceToViewInterface getServerHistoryMessagesWithMsgDate:[cellModel getCellDate] messagesNumber:kMQChatGetHistoryMessageNumber successDelegate:self errorDelegate:self.errorDelegate];
     } else {
-        [MQServiceToViewInterface getDatabaseHistoryMessagesWithMsgDate:[cellModel getCellDate] messagesNumber:kMQChatGetHistoryMessageNumber successDelegate:self errorDelegate:self.errorDelegate];
+        [MQServiceToViewInterface getDatabaseHistoryMessagesWithMsgDate:[cellModel getCellDate] messagesNumber:kMQChatGetHistoryMessageNumber delegate:self];
     }
 #endif
 }
@@ -363,12 +363,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 #ifdef INCLUDE_MEIQIA_SDK
 #pragma 顾客上线的逻辑
 - (void)setClientOnline {
-    [MQServiceToViewInterface setClientOnlineWithSuccess:^(BOOL completion, NSArray *receivedMessages) {
-        if (completion && receivedMessages.count > 0) {
-            [self addMessagesToTableViewWithMessages:receivedMessages];
-        }
-    } failure:^(NSError *error) {
-        NSLog(@"上线失败");
+    [MQServiceToViewInterface setClientOnlineWithSuccess:^(BOOL completion) {
     }];
 }
 
