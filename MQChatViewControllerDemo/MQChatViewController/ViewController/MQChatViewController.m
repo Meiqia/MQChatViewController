@@ -28,7 +28,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 @implementation MQChatViewController {
     MQChatViewConfig *chatViewConfig;
     MQChatViewTableDataSource *tableDataSource;
-    MQChatViewService *chatViewModel;
+    MQChatViewService *chatViewService;
     MQInputBar *chatInputBar;
     MQRecordView *recordView;
     CGSize viewSize;
@@ -54,11 +54,16 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     viewSize = [MQDeviceFrameUtil getDeviceScreenRect].size;
     [self setNavBar];
     [self initChatTableView];
-    [self initChatViewModel];
+    [self initchatViewService];
     [self initInputBar];
     [self initTableViewDataSource];
-    chatViewModel.chatViewWidth = self.chatTableView.frame.size.width;
-    [chatViewModel sendLocalWelcomeChatMessage];
+    chatViewService.chatViewWidth = self.chatTableView.frame.size.width;
+    [chatViewService sendLocalWelcomeChatMessage];
+    
+#ifdef INCLUDE_MEIQIA_SDK
+    //美洽SDK顾客上下线的请求逻辑
+    
+#endif
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -137,23 +142,23 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 #ifndef INCLUDE_MEIQIA_SDK
 - (void)tapLoadMessageBtn:(id)sender {
-    [chatViewModel loadLastMessage];
+    [chatViewService loadLastMessage];
     [self chatTableViewScrollToBottom];
 }
 #endif
 
 #pragma 初始化viewModel
-- (void)initChatViewModel {
-    chatViewModel = [[MQChatViewService alloc] init];
-    chatViewModel.delegate = self;
+- (void)initchatViewService {
+    chatViewService = [[MQChatViewService alloc] init];
+    chatViewService.delegate = self;
 #ifdef INCLUDE_MEIQIA_SDK
-    chatViewModel.errorDelegate = self;
+    chatViewService.errorDelegate = self;
 #endif
 }
 
 #pragma 初始化tableView dataSource
 - (void)initTableViewDataSource {
-    tableDataSource = [[MQChatViewTableDataSource alloc] initWithTableView:self.chatTableView chatViewModel:chatViewModel];
+    tableDataSource = [[MQChatViewTableDataSource alloc] initWithTableView:self.chatTableView chatViewService:chatViewService];
     tableDataSource.chatCellDelegate = self;
     self.chatTableView.dataSource = tableDataSource;
 }
@@ -191,7 +196,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 #pragma UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    id<MQCellModelProtocol> cellModel = [chatViewModel.cellModels objectAtIndex:indexPath.row];
+    id<MQCellModelProtocol> cellModel = [chatViewService.cellModels objectAtIndex:indexPath.row];
     return [cellModel getCellHeight];
 }
 
@@ -230,7 +235,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
         [MQToast showToast:@"正在分配客服，请稍后发送消息" duration:3 window:self.view];
         return NO;
     }
-    [chatViewModel sendTextMessageWithContent:text];
+    [chatViewService sendTextMessageWithContent:text];
     [self chatTableViewScrollToBottom];
     return YES;
 }
@@ -252,12 +257,12 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 -(void)inputting:(NSString*)content {
     //用户正在输入
-    [chatViewModel sendUserInputtingWithContent:content];
+    [chatViewService sendUserInputtingWithContent:content];
     [self chatTableViewScrollToBottom];
 }
 
 -(void)chatTableViewScrollToBottom {
-    NSInteger lastCellIndex = chatViewModel.cellModels.count;
+    NSInteger lastCellIndex = chatViewService.cellModels.count;
     if (lastCellIndex == 0) {
         return;
     }
@@ -328,7 +333,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 #pragma MQRecordViewDelegate
 - (void)didFinishRecordingWithAMRFilePath:(NSString *)filePath {
-    [chatViewModel sendVoiceMessageWithAMRFilePath:filePath];
+    [chatViewService sendVoiceMessageWithAMRFilePath:filePath];
     [self chatTableViewScrollToBottom];
 }
 
@@ -351,7 +356,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     }
     UIImage *image          = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     [picker dismissViewControllerAnimated:YES completion:nil];
-    [chatViewModel sendImageMessageWithImage:image];
+    [chatViewService sendImageMessageWithImage:image];
     [self chatTableViewScrollToBottom];
 }
 
@@ -367,7 +372,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)resendMessageInCell:(UITableViewCell *)cell resendData:(NSDictionary *)resendData {
     //先删除之前的消息
     NSIndexPath *indexPath = [self.chatTableView indexPathForCell:cell];
-    [chatViewModel resendMessageAtIndex:indexPath.row resendData:resendData];
+    [chatViewService resendMessageAtIndex:indexPath.row resendData:resendData];
     [self chatTableViewScrollToBottom];
 }
 
@@ -411,8 +416,8 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     //更新tableView的frame
     [self setChatTableViewFrame];
     //更新cellModel的frame
-    chatViewModel.chatViewWidth = viewSize.width;
-    [chatViewModel updateCellModelsFrame];
+    chatViewService.chatViewWidth = viewSize.width;
+    [chatViewService updateCellModelsFrame];
     [self.chatTableView reloadData];
     //更新inputBar的frame
     CGRect inputBarFrame = CGRectMake(self.chatTableView.frame.origin.x, self.chatTableView.frame.origin.y+self.chatTableView.frame.size.height, self.chatTableView.frame.size.width, kMQChatViewInputBarHeight);

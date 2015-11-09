@@ -13,7 +13,7 @@
 @interface MQChatViewTableDataSource()
 
 @property (nonatomic, weak) UITableView *chatTableView;
-@property (nonatomic, weak) MQChatViewService *chatViewModel;
+@property (nonatomic, weak) MQChatViewService *chatViewService;
 
 
 @end
@@ -21,10 +21,10 @@
 @implementation MQChatViewTableDataSource {
 }
 
-- (instancetype)initWithTableView:(UITableView *)tableView chatViewModel:(MQChatViewService *)viewModel {
+- (instancetype)initWithTableView:(UITableView *)tableView chatViewService:(MQChatViewService *)chatService {
     if (self = [super init]) {
         self.chatTableView = tableView;
-        self.chatViewModel = viewModel;
+        self.chatViewService = chatService;
     }
     return self;
 }
@@ -33,13 +33,13 @@
 - (NSInteger)tableView:(UITableView *)tableView
  numberOfRowsInSection:(NSInteger)section
 {
-    return [self.chatViewModel.cellModels count];
+    return [self.chatViewService.cellModels count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    id<MQCellModelProtocol> cellModel = [self.chatViewModel.cellModels objectAtIndex:indexPath.row];
+    id<MQCellModelProtocol> cellModel = [self.chatViewService.cellModels objectAtIndex:indexPath.row];
     NSString *cellModelName = NSStringFromClass([cellModel class]);
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellModelName];
     if (!cell){

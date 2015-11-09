@@ -135,5 +135,19 @@
  */
 + (void)sendClientInputtingWithContent:(NSString *)content;
 
+/**
+ * 设置顾客上线
+ * @param ;
+ */
++ (void)setClientOnlineWithSuccess:(void (^)(BOOL completion, NSArray *receivedMessages))success
+                           failure:(void (^)(NSError *error))failure;
+
+/**
+ * 设置顾客离线
+ * @param ;
+ */
++ (void)setClientOfflineWithSuccess:(void (^)(BOOL completion))success
+                            failure:(void (^)(NSError *error))failure;
+
 
 @end

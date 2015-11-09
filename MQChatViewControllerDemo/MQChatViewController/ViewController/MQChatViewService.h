@@ -79,12 +79,6 @@
 - (void)sendVoiceMessageWithAMRFilePath:(NSString *)filePath;
 
 /**
- * 以WAV格式语音数据的形式，发送语音消息
- * @param wavData WAV格式的语音数据
- */
-- (void)sendVoiceMessageWIthWAVData:(NSData *)wavData;
-
-/**
  * 发送“用户正在输入”的消息
  */
 - (void)sendUserInputtingWithContent:(NSString *)content;
