@@ -352,13 +352,13 @@
 		CC45FD211BE36B3500DE0BFB /* ChatCells */ = {
 			isa = PBXGroup;
 			children = (
-				CC45FD221BE36B3500DE0BFB /* cell */,
-				CC45FD311BE36B3500DE0BFB /* cellModel */,
+				CC45FD221BE36B3500DE0BFB /* Cells */,
+				CC45FD311BE36B3500DE0BFB /* CellModels */,
 			);
 			path = ChatCells;
 			sourceTree = "<group>";
 		};
-		CC45FD221BE36B3500DE0BFB /* cell */ = {
+		CC45FD221BE36B3500DE0BFB /* Cells */ = {
 			isa = PBXGroup;
 			children = (
 				CC45FD231BE36B3500DE0BFB /* MQChatBaseCell.h */,
@@ -376,10 +376,11 @@
 				CC45FD2D1BE36B3500DE0BFB /* MQTipsCell.h */,
 				CC45FD2E1BE36B3500DE0BFB /* MQTipsCell.m */,
 			);
+			name = Cells;
 			path = cell;
 			sourceTree = "<group>";
 		};
-		CC45FD311BE36B3500DE0BFB /* cellModel */ = {
+		CC45FD311BE36B3500DE0BFB /* CellModels */ = {
 			isa = PBXGroup;
 			children = (
 				CC45FD321BE36B3500DE0BFB /* MQCellModelProtocol.h */,
@@ -396,6 +397,7 @@
 				CC45FD3B1BE36B3500DE0BFB /* MQTipsCellModel.h */,
 				CC45FD3C1BE36B3500DE0BFB /* MQTipsCellModel.m */,
 			);
+			name = CellModels;
 			path = cellModel;
 			sourceTree = "<group>";
 		};

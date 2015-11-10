@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-//是否是调试SDK
+//是否引入美洽SDK
 //#define INCLUDE_MEIQIA_SDK
 
 /** 关闭键盘的通知 */

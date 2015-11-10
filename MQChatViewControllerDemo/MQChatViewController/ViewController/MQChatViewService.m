@@ -105,7 +105,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [self reloadChatTableView];
     });
 #endif
-    
 }
 
 /**
