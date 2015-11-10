@@ -398,13 +398,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)setChatTableViewFrame {
     //更新tableView的frame
     if (!chatViewConfig.isCustomizedChatViewFrame) {
-//#if __IPHONE_OS_VERSION_MIN_ALLOWED >= 70000
-//        CGFloat navBarOriginY = 20;
-//        CGFloat navBarHeight = viewSize.width < viewSize.height ? 44 : 32;
-//        chatViewConfig.chatViewFrame = CGRectMake(0, navBarOriginY+navBarHeight, viewSize.width, viewSize.height - navBarOriginY - navBarHeight - kMQChatViewInputBarHeight);
-//#else
         chatViewConfig.chatViewFrame = CGRectMake(0, 0, viewSize.width, viewSize.height - kMQChatViewInputBarHeight);
-//#endif
         [self.chatTableView updateFrame:chatViewConfig.chatViewFrame];;
     }
 }

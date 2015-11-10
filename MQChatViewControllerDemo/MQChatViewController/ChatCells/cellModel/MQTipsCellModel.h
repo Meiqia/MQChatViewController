@@ -13,7 +13,7 @@
  * MQTipsCellModel定义了消息提示的基本类型数据，包括产生cell的内部所有view的显示数据，cell内部元素的frame等
  * @warning MQTipsCellModel必须满足MQCellModelProtocol协议
  */
-@interface MQTipsCellModel : NSObject
+@interface MQTipsCellModel : NSObject <MQCellModelProtocol>
 
 /**
  * @brief cell的高度

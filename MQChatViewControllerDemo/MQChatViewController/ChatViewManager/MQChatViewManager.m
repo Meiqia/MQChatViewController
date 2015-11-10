@@ -207,12 +207,16 @@
     chatViewConfig.enableRoundAvatar = enable;
 }
 
-- (void)enableWelcomeChat:(BOOL)enable {
-    chatViewConfig.enableWelcomeChat = enable;
+- (void)enableTopAutoRefresh:(BOOL)enable {
+    chatViewConfig.enableTopAutoRefresh = enable;
 }
 
 - (void)enableBottomPullRefresh:(BOOL)enable {
     chatViewConfig.enableBottomPullRefresh = enable;
+}
+
+- (void)enableWelcomeChat:(BOOL)enable {
+    chatViewConfig.enableWelcomeChat = enable;
 }
 
 - (void)setIncomingMessageSoundFileName:(NSString *)soundFileName {

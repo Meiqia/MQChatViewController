@@ -22,7 +22,6 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
 @implementation MQTextMessageCell  {
     UIImageView *avatarImageView;
     TTTAttributedLabel *textLabel;
-//    UILabel *textLabel;
     UIImageView *bubbleImageView;
     UIActivityIndicatorView *sendingIndicator;
     UIImageView *failureImageView;
