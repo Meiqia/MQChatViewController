@@ -251,6 +251,20 @@
 - (void)enableTopPullRefresh:(BOOL)enable;
 
 /**
+ *  是否开启上拉刷新（底部刷新）
+ *
+ * @param enable YES:支持 NO:不支持
+ */
+- (void)enableBottomPullRefresh:(BOOL)enable;
+
+/**
+ *  是否开启顶部自动刷新历史消息
+ *
+ * @param enable YES:支持 NO:不支持
+ */
+- (void)enableTopAutoRefresh:(BOOL)enable;
+
+/**
  *  是否开启圆形头像
  *
  * @param enable YES:支持 NO:不支持
@@ -263,13 +277,6 @@
  * @param enable YES:支持 NO:不支持
  */
 - (void)enableWelcomeChat:(BOOL)enable;
-
-/**
- *  是否开启上拉刷新（底部刷新）
- *
- * @param enable YES:支持 NO:不支持
- */
-- (void)enableBottomPullRefresh:(BOOL)enable;
 
 /**
  * 设置收到消息的声音；

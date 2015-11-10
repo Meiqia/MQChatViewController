@@ -50,7 +50,7 @@ static CGFloat const kMQChatPullRefreshDistance = 44.0;
         didPullRefreshView = false;
         isLoadingTopMessages = false;
         isLoadingBottomMessages = false;
-        enableTopAutoRefresh = [MQChatViewConfig sharedConfig].enableTopAutoRefreshIndicator;
+        enableTopAutoRefresh = [MQChatViewConfig sharedConfig].enableTopAutoRefresh;
         enableTopPullRefresh = [MQChatViewConfig sharedConfig].enableTopPullRefresh || enableTopAutoRefresh;
         enableBottomPullRefresh = [MQChatViewConfig sharedConfig].enableBottomPullRefresh;
         

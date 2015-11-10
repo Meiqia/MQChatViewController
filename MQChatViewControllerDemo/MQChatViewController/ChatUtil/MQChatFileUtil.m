@@ -42,20 +42,17 @@
     }
 }
 
-+ (void)playSoundWithSoundFile:(NSString *)fileName{
-
-    if ([[NSFileManager defaultManager] fileExistsAtPath:fileName]) {
-        NSURL *fileURL = [NSURL URLWithString:fileName];
-        SystemSoundID soundID;
-        OSStatus error = AudioServicesCreateSystemSoundID((__bridge CFURLRef)fileURL, &soundID);
-        if (error) {
-            NSLog(@"无法创建SystemSoundID");
-        }
-        else {
-            AudioServicesPlaySystemSound(soundID);
-        }
++ (void)playSoundWithSoundFile:(NSString *)fileName {
+    NSString *path = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], fileName];
+    NSURL *filePath = [NSURL fileURLWithPath:path isDirectory:false];
+    SystemSoundID soundID;
+    OSStatus error = AudioServicesCreateSystemSoundID((__bridge CFURLRef)filePath, &soundID);
+    if (error) {
+        NSLog(@"无法创建SystemSoundID");
     }
-    NSLog(@"无法加载声音文件 fileName: %@", fileName);
+    else {
+        AudioServicesPlaySystemSound(soundID);
+    }
 }
 
 @end

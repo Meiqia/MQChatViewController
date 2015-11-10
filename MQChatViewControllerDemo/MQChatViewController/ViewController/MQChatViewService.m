@@ -355,7 +355,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 #pragma 播放声音
 - (void)playReceivedMessageSound {
-    if ([MQChatViewConfig sharedConfig].enableMessageSound) {
+    if (![MQChatViewConfig sharedConfig].enableMessageSound) {
         return;
     }
     [MQChatFileUtil playSoundWithSoundFile:[MQChatViewConfig sharedConfig].incomingMsgSoundFileName];
@@ -386,7 +386,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 #pragma 顾客上线的逻辑
 - (void)setClientOnline {
     [MQServiceToViewInterface setClientOnlineWithSuccess:^(BOOL completion) {
-    }];
+    } receiveMessageDelegate:self];
 }
 
 #pragma MQServiceToViewInterfaceDelegate
@@ -415,6 +415,21 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 - (void)didReceiveVoiceMessage:(MQVoiceMessage *)message {
     MQVoiceCellModel *cellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
+    [self addCellModelAndReloadTableViewWithModel:cellModel];
+    [self playReceivedMessageSound];
+}
+
+- (void)didReceiveEventMessage:(MQEventMessage *)eventMessage {
+    if (![MQChatViewConfig sharedConfig].enableEventDispaly) {
+        return;
+    }
+    MQEventCellModel *cellModel = [[MQEventCellModel alloc] initCellModelWithMessage:eventMessage cellWidth:self.chatViewWidth];
+    [self addCellModelAndReloadTableViewWithModel:cellModel];
+    [self playReceivedMessageSound];
+}
+
+- (void)didReceiveTipsContent:(NSString *)tipsContent {
+    MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initCellModelWithTips:tipsContent cellWidth:self.chatViewWidth];
     [self addCellModelAndReloadTableViewWithModel:cellModel];
     [self playReceivedMessageSound];
 }
