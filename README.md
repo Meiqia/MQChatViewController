@@ -20,11 +20,11 @@ An easy to cutomized messages UI library for iOS.
 ---
 该聊天界面的**目标**是，**能让开发者很方便地添加自定义的cell**。
 
-为了达成该目标，该library做了如下设定：
-* 该项目为每一个cell建立一个单独的UITableViewCell类，以便开发者进行修改和替换；
-* 所有的Cell都继承于一个基cell，这样在DataSource中就可以直接使用；
-* 所有的CellModel都必须满足一个协议，这样在数据管理中即不需要区分CellModel的类型，可直接使用；
-* 只要满足Cell和CellModel的要求，`MQChatViewTableDataSource`中即不需要开发者进行更改；
+为了达成该目标，该library做了如下设计：
+* 为每一种cell建立一个单独的类，以便开发者进行修改和替换；
+* 所有的Cell都继承于一个基Cell，这样在DataSource中就可以直接使用；
+* 所有的CellModel都必须满足一个协议，这样在数据管理中不需要区分CellModel的类型，即可直接使用；
+* 只要满足Cell和CellModel的设计要求，`MQChatViewTableDataSource`中即不需要开发者进行更改；
 
 Usage
 ---
@@ -36,11 +36,11 @@ Configuration
 
 ## 框架结构
 
-[文件] | 作用
+文件 | 作用
 ----- | -----
 [ChatMessages/](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/ChatMessages) | 该文件夹中的类是该library会用到的Message实体
-[ChatCells/CellModels](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/ChatCells/cellModel) | 自定义Cell的ViewModel，进行内容转换、布局计算等等
-[ChatCells/Cells](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/ChatCells/cell) | 自定义的Cell类，cell中的自定义View直接使用在相应的CellModel中计算好的数据
+[ChatCells/CellModels](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/ChatCells/cellModel) | 自定义cell的ViewModel，进行内容转换、布局计算等等
+[ChatCells/Cells](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/ChatCells/cell) | 自定义的cell，cell中的View直接使用在相应的CellModel中计算好的数据
 [ChatViewManager/](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/ChatViewManager) | 对聊天界面进行配置的文件
 [ViewController/MQChatViewController](https://github.com/Meiqia/MQChatViewController/blob/master/MQChatViewControllerDemo/MQChatViewController/ViewController/MQChatViewController.h) | 界面的Controller类
 [ViewController/MQChatViewTableDataSource](https://github.com/Meiqia/MQChatViewController/blob/master/MQChatViewControllerDemo/MQChatViewController/ViewController/MQChatViewTableDataSource.h) | 消息的TableView的DataSource，开发者不需要修改该类
