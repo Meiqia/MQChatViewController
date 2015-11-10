@@ -59,6 +59,7 @@
 		CC5115C81BE5B47B00184CF0 /* MQRecordView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5115C71BE5B47B00184CF0 /* MQRecordView.m */; };
 		CC5115D01BE6545B00184CF0 /* MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5115CD1BE6545B00184CF0 /* MHFacebookImageViewer.m */; };
 		CC5115D11BE6545B00184CF0 /* UIImageView+MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5115CF1BE6545B00184CF0 /* UIImageView+MHFacebookImageViewer.m */; };
+		CC8726E51BF0DDC400573E0D /* MQEventMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8726E41BF0DDC400573E0D /* MQEventMessage.m */; };
 		CC99DDB81BE4B8FD00D22464 /* MQChatDateUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CC99DDB71BE4B8FD00D22464 /* MQChatDateUtil.m */; };
 		CCAD3CC91BE662C200B87A23 /* MQChatRegexUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CCAD3CC81BE662C200B87A23 /* MQChatRegexUtil.m */; };
 		CCAD3D141BE75F7500B87A23 /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCAD3D061BE75F7500B87A23 /* libopencore-amrnb.a */; };
@@ -201,6 +202,8 @@
 		CC5115CD1BE6545B00184CF0 /* MHFacebookImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MHFacebookImageViewer.m; sourceTree = "<group>"; };
 		CC5115CE1BE6545B00184CF0 /* UIImageView+MHFacebookImageViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+MHFacebookImageViewer.h"; sourceTree = "<group>"; };
 		CC5115CF1BE6545B00184CF0 /* UIImageView+MHFacebookImageViewer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+MHFacebookImageViewer.m"; sourceTree = "<group>"; };
+		CC8726E31BF0DDC400573E0D /* MQEventMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQEventMessage.h; sourceTree = "<group>"; };
+		CC8726E41BF0DDC400573E0D /* MQEventMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQEventMessage.m; sourceTree = "<group>"; };
 		CC99DDB61BE4B8FD00D22464 /* MQChatDateUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQChatDateUtil.h; sourceTree = "<group>"; };
 		CC99DDB71BE4B8FD00D22464 /* MQChatDateUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQChatDateUtil.m; sourceTree = "<group>"; };
 		CCAD3CC71BE662C200B87A23 /* MQChatRegexUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQChatRegexUtil.h; sourceTree = "<group>"; };
@@ -501,6 +504,8 @@
 				CC45FD891BE3A1B500DE0BFB /* MQImageMessage.m */,
 				CC45FD8B1BE3A1C000DE0BFB /* MQVoiceMessage.h */,
 				CC45FD8C1BE3A1C000DE0BFB /* MQVoiceMessage.m */,
+				CC8726E31BF0DDC400573E0D /* MQEventMessage.h */,
+				CC8726E41BF0DDC400573E0D /* MQEventMessage.m */,
 			);
 			path = ChatMessages;
 			sourceTree = "<group>";
@@ -825,6 +830,7 @@
 				CC45FD541BE36B3500DE0BFB /* MQChatBaseCell.m in Sources */,
 				CCAD3D2B1BE7BD2C00B87A23 /* amrFileCodec.mm in Sources */,
 				CC45FFCD1BE4962500DE0BFB /* MQToast.m in Sources */,
+				CC8726E51BF0DDC400573E0D /* MQEventMessage.m in Sources */,
 				CCAD3D2D1BE7BD2C00B87A23 /* VoiceConverter.mm in Sources */,
 				CC45FD871BE3A19F00DE0BFB /* MQTextMessage.m in Sources */,
 				CC45FCF51BE36B1900DE0BFB /* ViewController.m in Sources */,
