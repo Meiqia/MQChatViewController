@@ -19,7 +19,7 @@
 /**
  *  获取到了更多历史消息
  */
-- (void)didGetHistoryMessages;
+- (void)didGetHistoryMessagesWithMessagesNumber:(NSInteger)messageNumber;
 
 /**
  *  已经更新了这条消息的数据，通知tableView刷新界面

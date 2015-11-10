@@ -15,6 +15,7 @@
 #import "MQVoiceMessage.h"
 #import "MQTextMessage.h"
 #import "MQAgent.h"
+#import "MQEventMessage.h"
 
 /**
  *  该协议是UI层获取数据的委托方法
@@ -50,6 +51,20 @@
 - (void)didReceiveVoiceMessage:(MQVoiceMessage *)message;
 
 /**
+ *  收到了一条辅助信息（目前只有“客服不在线”、“被转接的消息”）
+ *
+ *  @param tipsContent 辅助信息
+ */
+- (void)didReceiveTipsContent:(NSString *)tipsContent;
+
+/**
+ *  收到了一条事件消息
+ *
+ *  @param eventMessage 事件消息
+ */
+- (void)didReceiveEventMessage:(MQEventMessage *)eventMessage;
+
+/**
  * 发送文字消息结果
  * @param message 发送后的消息（包含该消息当前发送状态）
  */
@@ -82,6 +97,8 @@
  *  MQServiceToViewInterface是美洽开源UI层和美洽数据逻辑层的接口
  */
 @interface MQServiceToViewInterface : NSObject
+
+@property (nonatomic, weak) id<MQServiceToViewInterfaceDelegate> serviceToViewDelegate;
 
 /**
  * 从服务端获取更多消息
@@ -146,7 +163,8 @@
  * 设置顾客上线
  * @param ;
  */
-+ (void)setClientOnlineWithSuccess:(void (^)(BOOL completion))success;
++ (void)setClientOnlineWithSuccess:(void (^)(BOOL completion))success
+            receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate;
 
 /**
  * 设置顾客离线

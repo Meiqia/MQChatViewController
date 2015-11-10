@@ -59,8 +59,8 @@ static CGFloat const kMQMessageTipsLabelFontSize = 12.0;
     line.startPoint = CGPointMake(0, 0.5);
     line.endPoint = CGPointMake(1, 0.5);
     line.colors = @[(id)[UIColor clearColor].CGColor,
-                    (id)[UIColor grayColor].CGColor,
-                    (id)[UIColor grayColor].CGColor,
+                    (id)[UIColor lightGrayColor].CGColor,
+                    (id)[UIColor lightGrayColor].CGColor,
                     (id)[UIColor clearColor].CGColor];
     return line;
 }
