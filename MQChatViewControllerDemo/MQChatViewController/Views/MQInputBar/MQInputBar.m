@@ -32,7 +32,7 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
     UIEdgeInsets chatViewInsets;    //默认chatView.contentInsets
     float keyboardDifference;
     BOOL isInputBarUp;  //工具栏被抬高
-    float bullleViewHeigth; //真实可视区域
+    float bullleViewHeight; //真实可视区域
     CGFloat senderImageWidth;
     CGFloat textViewHeight;
     BOOL enableSendVoice;
@@ -382,16 +382,16 @@ keyboardSenderImage:(UIImage *)keyboardImage
 -(void)moveToolbarUp:(float)height animate:(NSTimeInterval)duration
 {
     if (!isInputBarUp){
-        bullleViewHeigth = self.chatTableView.frame.size.height - self.chatTableView.contentInset.top;
+        bullleViewHeight = self.chatTableView.frame.size.height - self.chatTableView.contentInset.top;
         chatViewInsets   = self.chatTableView.contentInset;
     }
     
     //内容与键盘的高度差。   可视区域 - 键盘高度 - 总内容高度
-    keyboardDifference  = bullleViewHeigth - height - self.chatTableView.contentSize.height;
+    keyboardDifference  = bullleViewHeight - height - self.chatTableView.contentSize.height;
     /*
      去要调整contentInset.top的情况：
      1、keyboardDifference大于0，说明内容不饱和，及contentInset.top加上键盘高度
-     2、keyboardDifference小于0，contentInset.top加上bullleViewHeigth再加keyboardDifference（相当于减，因为keyboardDifference为负数），但keyboardDifference的绝对值不能超过bullleViewHeigth
+     2、keyboardDifference小于0，contentInset.top加上bullleViewHeight再加keyboardDifference（相当于减，因为keyboardDifference为负数），但keyboardDifference的绝对值不能超过bullleViewHeight
      */
     [UIView animateWithDuration:duration animations:^{
         if(keyboardDifference >= 0){
@@ -401,11 +401,16 @@ keyboardSenderImage:(UIImage *)keyboardImage
                                                      chatViewInsets.right);
         }else{
             //限制keyboardDifference大小
-            if (-keyboardDifference > bullleViewHeigth) keyboardDifference = -bullleViewHeigth;
-            self.chatTableView.contentInset = UIEdgeInsetsMake(self.chatTableView.contentInset.top + keyboardDifference + bullleViewHeigth,
-                                                     self.chatTableView.contentInset.left,
-                                                     self.chatTableView.contentInset.bottom,
-                                                     self.chatTableView.contentInset.right);
+            if (-keyboardDifference > bullleViewHeight) {
+                keyboardDifference = -bullleViewHeight;
+            }
+            if (!isInputBarUp) {
+                //防止键盘抬起时，键盘变化去修改tableView
+                self.chatTableView.contentInset = UIEdgeInsetsMake(self.chatTableView.contentInset.top + keyboardDifference + bullleViewHeight,
+                                                                   self.chatTableView.contentInset.left,
+                                                                   self.chatTableView.contentInset.bottom,
+                                                                   self.chatTableView.contentInset.right);
+            }
         }
         self.superview.frame = CGRectMake(self.superview.frame.origin.x,
                                           originalSuperViewFrame.origin.y - height,

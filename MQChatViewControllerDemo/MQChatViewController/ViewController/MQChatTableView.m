@@ -111,9 +111,12 @@ static CGFloat const kMQChatPullRefreshDistance = 44.0;
 
 #pragma 有关pull refresh的方法
 - (void)startLoadingAutoTopRefreshView {
-    if (self.chatTableViewDelegate) {
-        if ([self.chatTableViewDelegate respondsToSelector:@selector(startLoadingTopMessagesInTableView:)]) {
-            [self.chatTableViewDelegate startLoadingTopMessagesInTableView:self];
+    if (enableTopPullRefresh && !isLoadingTopMessages) {
+        isLoadingTopMessages = true;
+        if (self.chatTableViewDelegate) {
+            if ([self.chatTableViewDelegate respondsToSelector:@selector(startLoadingTopMessagesInTableView:)]) {
+                [self.chatTableViewDelegate startLoadingTopMessagesInTableView:self];
+            }
         }
     }
 }
