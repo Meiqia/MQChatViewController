@@ -21,13 +21,17 @@ static CGFloat const kMQChatPullRefreshDistance = 44.0;
 @end
 
 @implementation MQChatTableView {
+    //是否开启顶部的自动刷新indicator
     BOOL enableTopAutoRefresh;
+    //是否开启顶部下拉刷新
     BOOL enableTopPullRefresh;
+    //是否开启底部的上拉刷新
     BOOL enableBottomPullRefresh;
     //表明是否正在获取顶部的消息
     BOOL isLoadingTopMessages;
     //表明是否正在获取底部的消息
     BOOL isLoadingBottomMessages;
+    //自动刷新的indicator
     UIActivityIndicatorView *topAutoRefreshIndicator;
     //在开启自动刷新顶部消息时，该属性才有用
     BOOL didPullRefreshView;
@@ -50,16 +54,12 @@ static CGFloat const kMQChatPullRefreshDistance = 44.0;
         enableTopPullRefresh = [MQChatViewConfig sharedConfig].enableTopPullRefresh || enableTopAutoRefresh;
         enableBottomPullRefresh = [MQChatViewConfig sharedConfig].enableBottomPullRefresh;
         
-//        if (enableTopAutoRefresh) {
-//            [self initTopAutoRefreshIndicator];
-//        }
         if (enableTopPullRefresh) {
             [self initTopPullRefreshView];
         }
         if (enableBottomPullRefresh) {
             [self initBottomPullRefreshView];
         }
-        
     }
     return self;
 }
