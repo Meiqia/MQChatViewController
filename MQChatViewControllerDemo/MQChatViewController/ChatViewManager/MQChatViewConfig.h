@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 
 //是否是调试SDK
-#define INCLUDE_MEIQIA_SDK
+//#define INCLUDE_MEIQIA_SDK
 
 /** 关闭键盘的通知 */
 extern NSString * const MQChatViewKeyboardResignFirstResponderNotification;
@@ -47,6 +47,7 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 @property (nonatomic, assign) BOOL enableBottomPullRefresh;
 @property (nonatomic, assign) BOOL enableRoundAvatar;
 @property (nonatomic, assign) BOOL enableWelcomeChat;
+@property (nonatomic, assign) BOOL enableTopAutoRefreshIndicator;
 
 @property (nonatomic, copy) UIColor *incomingMsgTextColor;
 @property (nonatomic, copy) UIColor *incomingBubbleColor;

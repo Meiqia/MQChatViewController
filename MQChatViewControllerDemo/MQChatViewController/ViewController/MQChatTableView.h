@@ -44,7 +44,7 @@
 /**
  *  结束上拉刷新
  */
-- (void)finishLoadingTopRefreshView;
+- (void)finishLoadingTopRefreshViewWithMessagesNumber:(NSInteger)messagesNumber;
 
 /**
  *  结束下拉刷新

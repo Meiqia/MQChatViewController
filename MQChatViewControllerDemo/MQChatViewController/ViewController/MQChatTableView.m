@@ -21,12 +21,16 @@ static CGFloat const kMQChatPullRefreshDistance = 44.0;
 @end
 
 @implementation MQChatTableView {
-    BOOL enableTopRefresh;
-    BOOL enableBottomRefresh;
+    BOOL enableTopAutoRefresh;
+    BOOL enableTopPullRefresh;
+    BOOL enableBottomPullRefresh;
     //表明是否正在获取顶部的消息
     BOOL isLoadingTopMessages;
     //表明是否正在获取底部的消息
     BOOL isLoadingBottomMessages;
+    UIActivityIndicatorView *topAutoRefreshIndicator;
+    //在开启自动刷新顶部消息时，该属性才有用
+    BOOL didPullRefreshView;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style {
@@ -39,25 +43,55 @@ static CGFloat const kMQChatPullRefreshDistance = 44.0;
         self.userInteractionEnabled = true;
         [self addGestureRecognizer:tapViewGesture];
         //初始化上拉、下拉刷新
+        didPullRefreshView = false;
         isLoadingTopMessages = false;
         isLoadingBottomMessages = false;
-        enableTopRefresh = [MQChatViewConfig sharedConfig].enableTopPullRefresh;
-        enableBottomRefresh = [MQChatViewConfig sharedConfig].enableBottomPullRefresh;
-        if (enableTopRefresh) {
-            self.topRefreshView = [[MQPullRefreshView alloc] initWithSuperScrollView:self isTopRefresh:true];
-            [self.topRefreshView setRefreshTitle:@"没有更多消息啦~"];
-            [self.topRefreshView setPullRefreshStrokeColor:[MQChatViewConfig sharedConfig].pullRefreshColor];
-            [self addSubview:self.topRefreshView];
+        enableTopAutoRefresh = [MQChatViewConfig sharedConfig].enableTopAutoRefreshIndicator;
+        enableTopPullRefresh = [MQChatViewConfig sharedConfig].enableTopPullRefresh || enableTopAutoRefresh;
+        enableBottomPullRefresh = [MQChatViewConfig sharedConfig].enableBottomPullRefresh;
+        
+//        if (enableTopAutoRefresh) {
+//            [self initTopAutoRefreshIndicator];
+//        }
+        if (enableTopPullRefresh) {
+            [self initTopPullRefreshView];
         }
-        if (enableBottomRefresh) {
-            self.bottomRefreshView = [[MQPullRefreshView alloc] initWithSuperScrollView:self isTopRefresh:false];
-            [self.bottomRefreshView setRefreshTitle:@"没有更多消息啦~"];
-            [self.topRefreshView setPullRefreshStrokeColor:[MQChatViewConfig sharedConfig].pullRefreshColor];
-            [self addSubview:self.bottomRefreshView];
+        if (enableBottomPullRefresh) {
+            [self initBottomPullRefreshView];
         }
         
     }
     return self;
+}
+
+#pragma 初始化三种刷新控件
+- (void)initTopAutoRefreshIndicator {
+    if (topAutoRefreshIndicator) {
+        return;
+    }
+    self.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, kMQChatPullRefreshDistance)];
+    CGRect indicatorFrame = self.frame;
+    topAutoRefreshIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    indicatorFrame = topAutoRefreshIndicator.frame;
+    indicatorFrame.origin.x = self.frame.size.width/2-indicatorFrame.size.width/2;
+    indicatorFrame.origin.y = self.tableHeaderView.frame.size.height/2-indicatorFrame.size.height/2;
+    topAutoRefreshIndicator.frame = indicatorFrame;
+    [topAutoRefreshIndicator startAnimating];
+    [self.tableHeaderView addSubview:topAutoRefreshIndicator];
+}
+
+- (void)initTopPullRefreshView {
+    self.topRefreshView = [[MQPullRefreshView alloc] initWithSuperScrollView:self isTopRefresh:true];
+    [self.topRefreshView setRefreshTitle:@"没有更多消息啦~"];
+    [self.topRefreshView setPullRefreshStrokeColor:[MQChatViewConfig sharedConfig].pullRefreshColor];
+    [self addSubview:self.topRefreshView];
+}
+
+- (void)initBottomPullRefreshView {
+    self.bottomRefreshView = [[MQPullRefreshView alloc] initWithSuperScrollView:self isTopRefresh:false];
+    [self.bottomRefreshView setRefreshTitle:@"没有更多消息啦~"];
+    [self.topRefreshView setPullRefreshStrokeColor:[MQChatViewConfig sharedConfig].pullRefreshColor];
+    [self addSubview:self.bottomRefreshView];
 }
 
 - (void)updateTableViewAtIndexPath:(NSIndexPath *)indexPath {
@@ -76,8 +110,16 @@ static CGFloat const kMQChatPullRefreshDistance = 44.0;
 }
 
 #pragma 有关pull refresh的方法
+- (void)startLoadingAutoTopRefreshView {
+    if (self.chatTableViewDelegate) {
+        if ([self.chatTableViewDelegate respondsToSelector:@selector(startLoadingTopMessagesInTableView:)]) {
+            [self.chatTableViewDelegate startLoadingTopMessagesInTableView:self];
+        }
+    }
+}
+
 - (void)startLoadingTopRefreshView {
-    if (enableTopRefresh && !isLoadingTopMessages) {
+    if (enableTopPullRefresh && !isLoadingTopMessages) {
         isLoadingTopMessages = true;
         [self.topRefreshView startLoading];
         if (self.chatTableViewDelegate) {
@@ -88,15 +130,21 @@ static CGFloat const kMQChatPullRefreshDistance = 44.0;
     }
 }
 
-- (void)finishLoadingTopRefreshView {
-    if (enableTopRefresh && isLoadingTopMessages) {
+- (void)finishLoadingTopRefreshViewWithMessagesNumber:(NSInteger)messagesNumber {
+    if (enableTopPullRefresh && isLoadingTopMessages) {
         isLoadingTopMessages = false;
         [self.topRefreshView finishLoading];
+        //在开启自动顶部刷新，则隐藏topRefreshView
+        didPullRefreshView = true;
+        if (enableTopAutoRefresh && messagesNumber > 0) {
+            self.topRefreshView.hidden = true;
+            [self initTopAutoRefreshIndicator];
+        }
     }
 }
 
 - (void)startLoadingBottomRefreshView {
-    if (enableBottomRefresh && !isLoadingBottomMessages) {
+    if (enableBottomPullRefresh && !isLoadingBottomMessages) {
         isLoadingBottomMessages = true;
         [self.bottomRefreshView startLoading];
         if (self.chatTableViewDelegate) {
@@ -108,28 +156,32 @@ static CGFloat const kMQChatPullRefreshDistance = 44.0;
 }
 
 - (void)finishLoadingBottomRefreshView {
-    if (enableBottomRefresh && isLoadingBottomMessages) {
+    if (enableBottomPullRefresh && isLoadingBottomMessages) {
         isLoadingBottomMessages = false;
         [self.bottomRefreshView finishLoading];
     }
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if (enableTopRefresh) {
+    if (enableTopPullRefresh) {
         [self.topRefreshView scrollViewDidScroll:scrollView];
     }
-    if (enableBottomRefresh) {
+    if (enableBottomPullRefresh) {
         [self.bottomRefreshView scrollViewDidScroll:scrollView];
     }
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    if ((scrollView.contentOffset.y + scrollView.contentInset.top <= -kMQChatPullRefreshDistance)) {
+    BOOL didPullTopRefreshView = (scrollView.contentOffset.y + scrollView.contentInset.top <= -kMQChatPullRefreshDistance) && enableTopPullRefresh;
+    BOOL didPullAutoTopRefresh = (scrollView.contentOffset.y < 0) && enableTopAutoRefresh;
+    if (didPullAutoTopRefresh && didPullRefreshView && enableTopAutoRefresh) {
+        [self startLoadingAutoTopRefreshView];
+    } else if (didPullTopRefreshView) {
         //开启下拉刷新(顶部刷新)的条件
         [self startLoadingTopRefreshView];
     }else if (((scrollView.contentSize.height>scrollView.frame.size.height && scrollView.contentSize.height - scrollView.frame.size.height < scrollView.contentOffset.y + self.topRefreshView.kMQTableViewContentTopOffset - kMQChatPullRefreshDistance)
                || (scrollView.contentSize.height<scrollView.frame.size.height && scrollView.contentOffset.y + self.topRefreshView.kMQTableViewContentTopOffset > kMQChatPullRefreshDistance))
-              && enableBottomRefresh) {
+              && enableBottomPullRefresh) {
         //开启上拉刷新（底部杀心）的条件
         [self startLoadingBottomRefreshView];
     }
@@ -137,12 +189,19 @@ static CGFloat const kMQChatPullRefreshDistance = 44.0;
 
 - (void)updateFrame:(CGRect)frame {
     self.frame = frame;
-    if (enableTopRefresh) {
+    if (enableTopAutoRefresh) {
+        [self updateTopAutoRefreshViewFrame];
+    }
+    if (enableTopPullRefresh) {
         [self.topRefreshView updateFrame];
     }
-    if (enableBottomRefresh) {
+    if (enableBottomPullRefresh) {
         [self.bottomRefreshView updateFrame];
     }
+}
+
+- (void)updateTopAutoRefreshViewFrame {
+    topAutoRefreshIndicator.frame = CGRectMake(self.frame.size.width/2 - topAutoRefreshIndicator.frame.size.width/2, topAutoRefreshIndicator.frame.origin.y, topAutoRefreshIndicator.frame.size.width, topAutoRefreshIndicator.frame.size.height);
 }
 
 

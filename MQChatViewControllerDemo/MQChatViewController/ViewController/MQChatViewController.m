@@ -106,7 +106,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)startLoadingTopMessagesInTableView:(UITableView *)tableView {
 #ifndef INCLUDE_MEIQIA_SDK
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.chatTableView finishLoadingTopRefreshView];
+        [self.chatTableView finishLoadingTopRefreshViewWithMessagesNumber:1];
     });
 #endif
 }
@@ -205,8 +205,8 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 #pragma MQChatViewServiceDelegate
-- (void)didGetHistoryMessages {
-    [self.chatTableView finishLoadingTopRefreshView];
+- (void)didGetHistoryMessagesWithMessagesNumber:(NSInteger)messageNumber {
+    [self.chatTableView finishLoadingTopRefreshViewWithMessagesNumber:messageNumber];
     [self.chatTableView reloadData];
 }
 
