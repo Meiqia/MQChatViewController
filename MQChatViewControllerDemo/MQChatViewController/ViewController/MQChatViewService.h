@@ -31,6 +31,13 @@
  */
 - (void)reloadChatTableView;
 
+/**
+ *  通知viewController已经为顾客分配了一个客服，更新title
+ *
+ *  @param viewTitle 客服名字
+ */
+- (void)didScheduleClientWithViewTitle:(NSString *)viewTitle;
+
 
 @end
 

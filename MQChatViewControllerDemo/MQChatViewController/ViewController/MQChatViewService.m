@@ -384,8 +384,22 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 #ifdef INCLUDE_MEIQIA_SDK
 #pragma 顾客上线的逻辑
 - (void)setClientOnline {
+    __weak typeof(self) weakSelf = self;
     serviceToViewInterface = [[MQServiceToViewInterface alloc] init];
-    [serviceToViewInterface setClientOnlineWithSuccess:^(BOOL completion) {
+    [serviceToViewInterface setClientOnlineWithSuccess:^(BOOL completion, NSString *agentName) {
+        if (!completion || !agentName) {
+            //没有分配到客服，生成TipCell
+            [weakSelf addTipCellModelWithTips:@"抱歉，现在没有客服人员在线\n你可以继续写下你的问题，我们会尽快回复"];
+        }
+        NSString *viewTitle = agentName;
+        if (!viewTitle) {
+            viewTitle = @"留言";
+        }
+        if (weakSelf.delegate) {
+            if ([weakSelf.delegate respondsToSelector:@selector(didScheduleClientWithViewTitle:)]) {
+                [weakSelf.delegate didScheduleClientWithViewTitle:viewTitle];
+            }
+        }
     } receiveMessageDelegate:self];
 }
 
@@ -450,6 +464,12 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [cellModel updateCellMessageDate:newMessageDate];
     }
     [self updateCellWithIndex:index];
+}
+
+- (void)addTipCellModelWithTips:(NSString *)tips {
+    MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initCellModelWithTips:tips cellWidth:self.chatViewWidth];
+    [self.cellModels addObject:cellModel];
+    [self reloadChatTableView];
 }
 
 #endif
