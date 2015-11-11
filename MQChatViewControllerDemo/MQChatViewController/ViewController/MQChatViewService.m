@@ -38,7 +38,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 #endif
 
 @implementation MQChatViewService {
+#ifdef INCLUDE_MEIQIA_SDK
     MQServiceToViewInterface *serviceToViewInterface;
+#endif
 }
 
 - (instancetype)init {

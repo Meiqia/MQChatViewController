@@ -32,16 +32,18 @@
 - (void)reloadChatTableView;
 
 /**
+ *  通知viewController收到了消息
+ */
+- (void)didReceiveMessage;
+
+#ifdef INCLUDE_MEIQIA_SDK
+/**
  *  通知viewController已经为顾客分配了一个客服，更新title
  *
  *  @param viewTitle 客服名字
  */
 - (void)didScheduleClientWithViewTitle:(NSString *)viewTitle;
-
-/**
- *  通知viewController收到了消息
- */
-- (void)didReceiveMessage;
+#endif
 
 @end
 

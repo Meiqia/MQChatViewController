@@ -17,7 +17,7 @@ static CGFloat const kMQChatPullRefreshDistance = 44.0;
 static CGFloat const kMQChatNoMoreMessageLabelFontSize = 12.0;
 
 
-@interface MQChatTableView()<UIScrollViewDelegate>
+@interface MQChatTableView()
 
 @end
 
@@ -217,10 +217,6 @@ static CGFloat const kMQChatNoMoreMessageLabelFontSize = 12.0;
         //开启上拉刷新（底部刷新）的条件
         [self startLoadingBottomRefreshView];
     }
-}
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    [self tapChatTableView:nil];
 }
 
 - (void)updateFrame:(CGRect)frame {
