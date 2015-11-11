@@ -38,6 +38,10 @@
  */
 - (void)didScheduleClientWithViewTitle:(NSString *)viewTitle;
 
+/**
+ *  通知viewController收到了消息
+ */
+- (void)didReceiveMessage;
 
 @end
 

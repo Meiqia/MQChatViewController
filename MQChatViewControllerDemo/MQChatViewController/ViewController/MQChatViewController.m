@@ -232,6 +232,10 @@ static NSInteger const kMQChatNavTitleIndicatorTag  = 2002;
     [self updateNavBarTitle:viewTitle];
 }
 
+- (void)didReceiveMessage {
+    [self chatTableViewScrollToBottom];
+}
+
 #pragma MQInputBarDelegate
 -(BOOL)sendTextMessage:(NSString*)text {
     if (self.isInitializing) {

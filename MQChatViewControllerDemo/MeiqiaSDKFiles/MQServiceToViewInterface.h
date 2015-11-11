@@ -80,6 +80,13 @@
  */
 - (void)didScheduledWithAgent:(MQAgent *)agent;
 
+/**
+ *  顾客已被转接
+ *
+ *  @param agentName 被转接的客服名字
+ */
+- (void)didRedirectWithAgentName:(NSString *)agentName;
+
 @end
 
 /**
