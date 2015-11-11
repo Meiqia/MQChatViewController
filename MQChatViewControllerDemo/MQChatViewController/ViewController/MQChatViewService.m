@@ -38,7 +38,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 #endif
 
 @implementation MQChatViewService {
+#ifdef INCLUDE_MEIQIA_SDK
     MQServiceToViewInterface *serviceToViewInterface;
+#endif
 }
 
 - (instancetype)init {
@@ -397,7 +399,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 - (void)updateChatTitleWithAgentName:(NSString *)agentName {
     NSString *viewTitle = agentName;
-    if (!viewTitle) {
+    if (!viewTitle || viewTitle.length == 0) {
         viewTitle = @"留言";
     }
     if (self.delegate) {

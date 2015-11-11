@@ -115,6 +115,8 @@ static NSInteger const kMQChatNavTitleIndicatorTag  = 2002;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.chatTableView finishLoadingTopRefreshViewWithMessagesNumber:1];
     });
+#else
+    [chatViewService startGettingHistoryMessages];
 #endif
 }
 
@@ -212,6 +214,10 @@ static NSInteger const kMQChatNavTitleIndicatorTag  = 2002;
     [self.chatTableView scrollViewDidScroll:scrollView];
 }
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    [self.view endEditing:YES];
+}
+
 #pragma MQChatViewServiceDelegate
 - (void)didGetHistoryMessagesWithMessagesNumber:(NSInteger)messageNumber {
     [self.chatTableView finishLoadingTopRefreshViewWithMessagesNumber:messageNumber];
@@ -228,9 +234,11 @@ static NSInteger const kMQChatNavTitleIndicatorTag  = 2002;
     [self.chatTableView reloadData];
 }
 
+#ifdef INCLUDE_MEIQIA_SDK
 - (void)didScheduleClientWithViewTitle:(NSString *)viewTitle {
     [self updateNavBarTitle:viewTitle];
 }
+#endif
 
 - (void)didReceiveMessage {
     [self chatTableViewScrollToBottom];

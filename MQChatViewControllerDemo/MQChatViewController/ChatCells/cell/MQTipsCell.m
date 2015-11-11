@@ -25,6 +25,7 @@ static CGFloat const kMQMessageTipsLabelFontSize = 12.0;
         tipsLabel.textAlignment = NSTextAlignmentCenter;
         tipsLabel.font = [UIFont systemFontOfSize:kMQMessageTipsLabelFontSize];
         tipsLabel.backgroundColor = [UIColor clearColor];
+        tipsLabel.numberOfLines = 0;
         [self.contentView addSubview:tipsLabel];
         //画上下两条线
         topLineLayer = [self gradientLine];
@@ -56,8 +57,8 @@ static CGFloat const kMQMessageTipsLabelFontSize = 12.0;
 - (CAGradientLayer*)gradientLine {
     CAGradientLayer* line = [CAGradientLayer layer];
     line.backgroundColor = [UIColor clearColor].CGColor;
-    line.startPoint = CGPointMake(0, 0.5);
-    line.endPoint = CGPointMake(1, 0.5);
+    line.startPoint = CGPointMake(0.2, 0.5);
+    line.endPoint = CGPointMake(0.8, 0.5);
     line.colors = @[(id)[UIColor clearColor].CGColor,
                     (id)[UIColor lightGrayColor].CGColor,
                     (id)[UIColor lightGrayColor].CGColor,
