@@ -18,6 +18,9 @@
 
 static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
+static NSInteger const kMQChatNavTitleViewTag       = 2000;
+static NSInteger const kMQChatNavTitleLabelTag      = 2001;
+static NSInteger const kMQChatNavTitleIndicatorTag  = 2002;
 @interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQRecordViewDelegate, MQServiceToViewInterfaceErrorDelegate>
 #else
 @interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQRecordViewDelegate>
@@ -58,6 +61,10 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [self initTableViewDataSource];
     chatViewService.chatViewWidth = self.chatTableView.frame.size.width;
     [chatViewService sendLocalWelcomeChatMessage];
+    
+#ifdef INCLUDE_MEIQIA_SDK
+    [self updateNavBarTitle:@"正在分配客服..."];
+#endif
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -219,6 +226,14 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 - (void)reloadChatTableView {
     [self.chatTableView reloadData];
+}
+
+- (void)didScheduleClientWithViewTitle:(NSString *)viewTitle {
+    [self updateNavBarTitle:viewTitle];
+}
+
+- (void)didReceiveMessage {
+    [self chatTableViewScrollToBottom];
 }
 
 #pragma MQInputBarDelegate
@@ -413,6 +428,18 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #pragma MQServiceToViewInterfaceErrorDelegate 后端返回的数据的错误委托方法
 - (void)getLoadHistoryMessageError {
     [MQToast showToast:@"抱歉，获取历史消息出了点儿小问题，请重新试下~" duration:1.0 window:self.view];
+}
+
+/**
+ *  根据是否正在分配客服，更新导航栏title
+ *
+ *  @param isScheduling 是否正在分配客服
+ */
+- (void)updateNavBarTitle:(NSString *)title {
+//    if (self.navigationItem.titleView.tag != kMQChatNavTitleViewTag) {
+//        //生成导航栏title
+//    }
+    self.navigationItem.title = title;
 }
 
 

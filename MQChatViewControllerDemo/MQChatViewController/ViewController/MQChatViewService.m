@@ -384,9 +384,27 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 #ifdef INCLUDE_MEIQIA_SDK
 #pragma 顾客上线的逻辑
 - (void)setClientOnline {
+    __weak typeof(self) weakSelf = self;
     serviceToViewInterface = [[MQServiceToViewInterface alloc] init];
-    [serviceToViewInterface setClientOnlineWithSuccess:^(BOOL completion) {
+    [serviceToViewInterface setClientOnlineWithSuccess:^(BOOL completion, NSString *agentName) {
+        if (!completion || !agentName) {
+            //没有分配到客服，生成TipCell
+            [weakSelf addTipCellModelWithTips:@"抱歉，现在没有客服人员在线\n你可以继续写下你的问题，我们会尽快回复"];
+        }
+        [weakSelf updateChatTitleWithAgentName:agentName];
     } receiveMessageDelegate:self];
+}
+
+- (void)updateChatTitleWithAgentName:(NSString *)agentName {
+    NSString *viewTitle = agentName;
+    if (!viewTitle) {
+        viewTitle = @"留言";
+    }
+    if (self.delegate) {
+        if ([self.delegate respondsToSelector:@selector(didScheduleClientWithViewTitle:)]) {
+            [self.delegate didScheduleClientWithViewTitle:viewTitle];
+        }
+    }
 }
 
 #pragma MQServiceToViewInterfaceDelegate
@@ -403,20 +421,17 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 - (void)didReceiveTextMessage:(MQTextMessage *)message {
     MQTextCellModel *cellModel = [[MQTextCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth];
-    [self addCellModelAndReloadTableViewWithModel:cellModel];
-    [self playReceivedMessageSound];
+    [self didReceiveMessageWithCellModel:cellModel];
 }
 
 - (void)didReceiveImageMessage:(MQImageMessage *)message {
     MQImageCellModel *cellModel = [[MQImageCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
-    [self addCellModelAndReloadTableViewWithModel:cellModel];
-    [self playReceivedMessageSound];
+    [self didReceiveMessageWithCellModel:cellModel];
 }
 
 - (void)didReceiveVoiceMessage:(MQVoiceMessage *)message {
     MQVoiceCellModel *cellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
-    [self addCellModelAndReloadTableViewWithModel:cellModel];
-    [self playReceivedMessageSound];
+    [self didReceiveMessageWithCellModel:cellModel];
 }
 
 - (void)didReceiveEventMessage:(MQEventMessage *)eventMessage {
@@ -424,14 +439,26 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         return;
     }
     MQEventCellModel *cellModel = [[MQEventCellModel alloc] initCellModelWithMessage:eventMessage cellWidth:self.chatViewWidth];
-    [self addCellModelAndReloadTableViewWithModel:cellModel];
-    [self playReceivedMessageSound];
+    [self didReceiveMessageWithCellModel:cellModel];
 }
 
 - (void)didReceiveTipsContent:(NSString *)tipsContent {
     MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initCellModelWithTips:tipsContent cellWidth:self.chatViewWidth];
+    [self didReceiveMessageWithCellModel:cellModel];
+}
+
+- (void)didReceiveMessageWithCellModel:(id<MQCellModelProtocol>)cellModel {
     [self addCellModelAndReloadTableViewWithModel:cellModel];
     [self playReceivedMessageSound];
+    if (self.delegate) {
+        if ([self.delegate respondsToSelector:@selector(didReceiveMessage)]) {
+            [self.delegate didReceiveMessage];
+        }
+    }
+}
+
+- (void)didRedirectWithAgentName:(NSString *)agentName {
+    [self updateChatTitleWithAgentName:agentName];
 }
 
 - (void)didSendMessageWithNewMessageId:(NSString *)newMessageId
@@ -450,6 +477,12 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [cellModel updateCellMessageDate:newMessageDate];
     }
     [self updateCellWithIndex:index];
+}
+
+- (void)addTipCellModelWithTips:(NSString *)tips {
+    MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initCellModelWithTips:tips cellWidth:self.chatViewWidth];
+    [self.cellModels addObject:cellModel];
+    [self reloadChatTableView];
 }
 
 #endif
