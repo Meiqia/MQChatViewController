@@ -45,7 +45,7 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     self.chatWelcomeText = @"你好，请问有什么可以帮到您？";
     self.agentName = @"美洽小助手";
     
-    self.enableSyncServerMessage = false;
+    self.enableSyncServerMessage = true;
     self.enableEventDispaly = true;
     self.enableVoiceMessage = true;
     self.enableImageMessage = true;

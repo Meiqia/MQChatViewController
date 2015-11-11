@@ -8,12 +8,13 @@
 
 #import "MQChatTableView.h"
 #import "MQChatViewConfig.h"
+#import "MQStringSizeUtil.h"
 
 /**
  *  下拉多少距离开启刷新
  */
 static CGFloat const kMQChatPullRefreshDistance = 44.0;
-
+static CGFloat const kMQChatNoMoreMessageLabelFontSize = 12.0;
 
 
 @interface MQChatTableView()<UIScrollViewDelegate>
@@ -65,7 +66,7 @@ static CGFloat const kMQChatPullRefreshDistance = 44.0;
 }
 
 #pragma 初始化三种刷新控件
-- (void)initTopAutoRefreshIndicator {
+- (void)initTopAutoRefreshView {
     if (topAutoRefreshIndicator) {
         return;
     }
@@ -78,6 +79,26 @@ static CGFloat const kMQChatPullRefreshDistance = 44.0;
     topAutoRefreshIndicator.frame = indicatorFrame;
     [topAutoRefreshIndicator startAnimating];
     [self.tableHeaderView addSubview:topAutoRefreshIndicator];
+}
+
+- (void)cancelTopAutoRefreshView {
+    [topAutoRefreshIndicator removeFromSuperview];
+    UILabel *noMoreMessageLabel = [[UILabel alloc] init];
+    noMoreMessageLabel.textAlignment = NSTextAlignmentCenter;
+    noMoreMessageLabel.text = @"没有更多消息啦~";
+    noMoreMessageLabel.font = [UIFont systemFontOfSize:kMQChatNoMoreMessageLabelFontSize];
+    noMoreMessageLabel.textColor = [UIColor grayColor];
+    noMoreMessageLabel.backgroundColor = [UIColor clearColor];
+    CGFloat textHeight = [MQStringSizeUtil getHeightForText:noMoreMessageLabel.text withFont:noMoreMessageLabel.font andWidth:self.frame.size.width];
+    noMoreMessageLabel.frame = CGRectMake(0, self.tableHeaderView.frame.size.height/2 - textHeight/2, self.tableHeaderView.frame.size.width, textHeight);
+    noMoreMessageLabel.alpha = 0.0;
+    if (!self.tableHeaderView) {
+        self.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, kMQChatPullRefreshDistance)];
+    }
+    [self.tableHeaderView addSubview:noMoreMessageLabel];
+    [UIView animateWithDuration:0.5 animations:^{
+        noMoreMessageLabel.alpha = 1.0;
+    }];
 }
 
 - (void)initTopPullRefreshView {
@@ -134,6 +155,9 @@ static CGFloat const kMQChatPullRefreshDistance = 44.0;
 }
 
 - (void)finishLoadingTopRefreshViewWithMessagesNumber:(NSInteger)messagesNumber {
+    if (messagesNumber == 0) {
+        [self cancelTopAutoRefreshView];
+    }
     if (enableTopPullRefresh && isLoadingTopMessages) {
         isLoadingTopMessages = false;
         [self.topRefreshView finishLoading];
@@ -141,7 +165,12 @@ static CGFloat const kMQChatPullRefreshDistance = 44.0;
         didPullRefreshView = true;
         if (enableTopAutoRefresh && messagesNumber > 0) {
             self.topRefreshView.hidden = true;
-            [self initTopAutoRefreshIndicator];
+            [self initTopAutoRefreshView];
+        }
+        if (messagesNumber == 0) {
+            self.topRefreshView.hidden = true;
+            enableTopPullRefresh = false;
+            enableTopAutoRefresh = false;
         }
     }
 }
@@ -185,9 +214,13 @@ static CGFloat const kMQChatPullRefreshDistance = 44.0;
     }else if (((scrollView.contentSize.height>scrollView.frame.size.height && scrollView.contentSize.height - scrollView.frame.size.height < scrollView.contentOffset.y + self.topRefreshView.kMQTableViewContentTopOffset - kMQChatPullRefreshDistance)
                || (scrollView.contentSize.height<scrollView.frame.size.height && scrollView.contentOffset.y + self.topRefreshView.kMQTableViewContentTopOffset > kMQChatPullRefreshDistance))
               && enableBottomPullRefresh) {
-        //开启上拉刷新（底部杀心）的条件
+        //开启上拉刷新（底部刷新）的条件
         [self startLoadingBottomRefreshView];
     }
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    [self tapChatTableView:nil];
 }
 
 - (void)updateFrame:(CGRect)frame {

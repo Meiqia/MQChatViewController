@@ -397,7 +397,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 - (void)updateChatTitleWithAgentName:(NSString *)agentName {
     NSString *viewTitle = agentName;
-    if (!viewTitle) {
+    if (!viewTitle || viewTitle.length == 0) {
         viewTitle = @"留言";
     }
     if (self.delegate) {
