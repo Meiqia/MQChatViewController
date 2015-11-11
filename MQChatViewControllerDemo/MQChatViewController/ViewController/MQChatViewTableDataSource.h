@@ -16,8 +16,8 @@
  */
 @interface MQChatViewTableDataSource : NSObject <UITableViewDataSource>
 
-- (instancetype)initWithTableView:(UITableView *)tableView  chatViewService:(MQChatViewService *)chatService;
-
+//- (instancetype)initWithTableView:(UITableView *)tableView  chatViewService:(MQChatViewService *)chatService;
+- (instancetype)initWithChatViewService:(MQChatViewService *)chatService;
 /**
  *  ChatCell的代理
  */

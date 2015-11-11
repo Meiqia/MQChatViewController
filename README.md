@@ -4,7 +4,7 @@ MQChatViewController
 
 An easy to cutomized messages UI library for iOS.
 
-**MQChatViewController**是一套易于定制的开源聊天界面。
+**MQChatViewController**是一套易于定制的iOS开源聊天界面。
 
 该library的**初衷**是为了方便**美洽用户**集成美洽SDK、自定义美洽客服聊天界面。但为了能让该library满足其他开发者的需要，我们尽量将美洽业务逻辑从该library剥离出去。
 
@@ -18,13 +18,14 @@ An easy to cutomized messages UI library for iOS.
 
 目标
 ---
-该聊天界面的**目标**是，**能让开发者很方便地添加自定义的cell**。
+该聊天界面的**目标**是，**能让开发者很方便地进行定制**。
 
 为了达成该目标，该library做了如下设计：
-* 为每一种cell建立一个单独的类，以便开发者进行修改和替换；
-* 所有的Cell都继承于一个基Cell，这样在DataSource中就可以直接使用；
-* 所有的CellModel都必须满足一个协议，这样在数据管理中不需要区分CellModel的类型，即可直接使用；
-* 只要满足Cell和CellModel的设计要求，`MQChatViewTableDataSource`中即不需要开发者进行更改；
+* 避免MVC(Massive View Controller)，将TableView、TableView的DataSource和ViewController的数据管理都独立出去，ViewController只充当View和Model的接口；
+* 为每一种cell建立一个单独的类，以方便开发者进行修改和替换；
+* 所有的Cell都继承于一个基Cell，这样开发者就不需要修改DataSource中的逻辑；
+* 所有的CellModel都必须满足一类协议方法，避免开发者过多的修改数据管理的逻辑；
+* 如果开发者不需要再自定义其他的View，则不需要修改ViewController；
 
 Usage
 ---
@@ -69,6 +70,6 @@ Configuration
 
 ## 自定义
 **3步添加自定义cell**
-* 添加自定义的UITableViewCell类，注意该cell必须继承于`MQChatBaseCell`;
-* 添加自定义Cell的CellModel，注意CellModel必须实现`MQCellModelProtocol`协议中的方法；
+* 添加自定义的cell类，注意该cell必须继承于`MQChatBaseCell`;
+* 添加自定义cell的CellModel，注意CellModel必须实现`MQCellModelProtocol`协议中的方法；
 * 接下来你需要在`MQChatViewService.m`中，使用你自己的发送消息、接受消息的数据接口；注：你可以查看`#ifdef INCLUDE_MEIQIA_SDK`里面的内容，里面用到了我们数据层和UI层的中间接口`MQServiceToViewInterface`；
