@@ -38,7 +38,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 #endif
 
 @implementation MQChatViewService {
-    
+    MQServiceToViewInterface *serviceToViewInterface;
 }
 
 - (instancetype)init {
@@ -384,7 +384,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 #ifdef INCLUDE_MEIQIA_SDK
 #pragma 顾客上线的逻辑
 - (void)setClientOnline {
-    [MQServiceToViewInterface setClientOnlineWithSuccess:^(BOOL completion) {
+    serviceToViewInterface = [[MQServiceToViewInterface alloc] init];
+    [serviceToViewInterface setClientOnlineWithSuccess:^(BOOL completion) {
     } receiveMessageDelegate:self];
 }
 
@@ -448,6 +449,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     if (newMessageDate) {
         [cellModel updateCellMessageDate:newMessageDate];
     }
+    [self updateCellWithIndex:index];
 }
 
 #endif

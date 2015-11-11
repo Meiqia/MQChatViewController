@@ -163,7 +163,7 @@
  * 设置顾客上线
  * @param ;
  */
-+ (void)setClientOnlineWithSuccess:(void (^)(BOOL completion))success
+- (void)setClientOnlineWithSuccess:(void (^)(BOOL completion))success
             receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate;
 
 /**
