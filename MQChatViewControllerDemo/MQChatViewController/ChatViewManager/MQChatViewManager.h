@@ -192,6 +192,12 @@
 - (void)setAgentDefaultAvatarImage:(UIImage *)image;
 
 /**
+ * 设置顾客的缺省头像图片；
+ * @param image 头像image
+ */
+- (void)setClientDefaultAvatarImage:(UIImage *)image;
+
+/**
  * 设置底部自定义发送图片的按钮图片；
  * @param image 按钮image
  */

@@ -36,6 +36,8 @@ static CGFloat const kMQChatNoMoreMessageLabelFontSize = 12.0;
     UIActivityIndicatorView *topAutoRefreshIndicator;
     //在开启自动刷新顶部消息时，该属性才有用
     BOOL didPullRefreshView;
+    //在加载历史消息时的offset
+    CGFloat scrollOffsetAfterLoading;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style {
@@ -47,6 +49,7 @@ static CGFloat const kMQChatNoMoreMessageLabelFontSize = 12.0;
         tapViewGesture.cancelsTouchesInView = false;
         self.userInteractionEnabled = true;
         [self addGestureRecognizer:tapViewGesture];
+        scrollOffsetAfterLoading = 0.0;
         //初始化上拉、下拉刷新
         didPullRefreshView = false;
         isLoadingTopMessages = false;
@@ -90,11 +93,11 @@ static CGFloat const kMQChatNoMoreMessageLabelFontSize = 12.0;
     noMoreMessageLabel.textColor = [UIColor grayColor];
     noMoreMessageLabel.backgroundColor = [UIColor clearColor];
     CGFloat textHeight = [MQStringSizeUtil getHeightForText:noMoreMessageLabel.text withFont:noMoreMessageLabel.font andWidth:self.frame.size.width];
-    noMoreMessageLabel.frame = CGRectMake(0, self.tableHeaderView.frame.size.height/2 - textHeight/2, self.tableHeaderView.frame.size.width, textHeight);
-    noMoreMessageLabel.alpha = 0.0;
     if (!self.tableHeaderView) {
         self.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, kMQChatPullRefreshDistance)];
     }
+    noMoreMessageLabel.frame = CGRectMake(0, self.tableHeaderView.frame.size.height/2 - textHeight/2, self.tableHeaderView.frame.size.width, textHeight);
+    noMoreMessageLabel.alpha = 0.0;
     [self.tableHeaderView addSubview:noMoreMessageLabel];
     [UIView animateWithDuration:0.5 animations:^{
         noMoreMessageLabel.alpha = 1.0;
@@ -154,9 +157,11 @@ static CGFloat const kMQChatNoMoreMessageLabelFontSize = 12.0;
     }
 }
 
-- (void)finishLoadingTopRefreshViewWithMessagesNumber:(NSInteger)messagesNumber {
-    if (messagesNumber == 0) {
+- (void)finishLoadingTopRefreshViewWithMessagesNumber:(NSInteger)messagesNumber isLoadOver:(BOOL)isLoadOver {
+    if (isLoadOver) {
         [self cancelTopAutoRefreshView];
+    } else {
+        [self initTopAutoRefreshView];
     }
     if (enableTopPullRefresh && isLoadingTopMessages) {
         isLoadingTopMessages = false;
@@ -165,14 +170,24 @@ static CGFloat const kMQChatNoMoreMessageLabelFontSize = 12.0;
         didPullRefreshView = true;
         if (enableTopAutoRefresh && messagesNumber > 0) {
             self.topRefreshView.hidden = true;
-            [self initTopAutoRefreshView];
         }
-        if (messagesNumber == 0) {
+        if (isLoadOver) {
             self.topRefreshView.hidden = true;
             enableTopPullRefresh = false;
             enableTopAutoRefresh = false;
         }
     }
+    if (messagesNumber > 0) {
+        [self scrollToLoadedMessageIndex:messagesNumber-1];
+    }
+}
+
+- (void)scrollToLoadedMessageIndex:(NSInteger)index {
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    [self scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    CGPoint tableViewOffset = self.contentOffset;
+    tableViewOffset.y -= scrollOffsetAfterLoading;
+    self.contentOffset = tableViewOffset;
 }
 
 - (void)startLoadingBottomRefreshView {
@@ -201,14 +216,19 @@ static CGFloat const kMQChatNoMoreMessageLabelFontSize = 12.0;
     if (enableBottomPullRefresh) {
         [self.bottomRefreshView scrollViewDidScroll:scrollView];
     }
+    BOOL didPullAutoTopRefresh = (scrollView.contentOffset.y < 0) && enableTopAutoRefresh;
+    if (didPullAutoTopRefresh && didPullRefreshView && enableTopAutoRefresh) {
+        [self startLoadingAutoTopRefreshView];
+    }
+    if (self.contentOffset.y < 0) {
+        CGFloat statusHeight = [[UIApplication sharedApplication] statusBarFrame].size.height;
+        scrollOffsetAfterLoading = fabs(self.contentOffset.y)-statusHeight;
+    }
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     BOOL didPullTopRefreshView = (scrollView.contentOffset.y + scrollView.contentInset.top <= -kMQChatPullRefreshDistance) && enableTopPullRefresh;
-    BOOL didPullAutoTopRefresh = (scrollView.contentOffset.y < 0) && enableTopAutoRefresh;
-    if (didPullAutoTopRefresh && didPullRefreshView && enableTopAutoRefresh) {
-        [self startLoadingAutoTopRefreshView];
-    } else if (didPullTopRefreshView) {
+    if (didPullTopRefreshView) {
         //开启下拉刷新(顶部刷新)的条件
         [self startLoadingTopRefreshView];
     }else if (((scrollView.contentSize.height>scrollView.frame.size.height && scrollView.contentSize.height - scrollView.frame.size.height < scrollView.contentOffset.y + self.topRefreshView.kMQTableViewContentTopOffset - kMQChatPullRefreshDistance)
@@ -217,6 +237,18 @@ static CGFloat const kMQChatNoMoreMessageLabelFontSize = 12.0;
         //开启上拉刷新（底部刷新）的条件
         [self startLoadingBottomRefreshView];
     }
+}
+
+-(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{
+    //    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    //    BOOL didPullAutoTopRefresh = (scrollView.contentOffset.y < 0) && enableTopAutoRefresh;
+    //    if (didPullAutoTopRefresh && didPullRefreshView && enableTopAutoRefresh) {
+    //        [self startLoadingAutoTopRefreshView];
+    //    }
+    //    if(self.contentOffset.y < 0){
+    //        CGFloat statusHeight = [[UIApplication sharedApplication] statusBarFrame].size.height;
+    //        scrollOffsetAfterLoading = fabs(self.contentOffset.y)-statusHeight;
+    //    }
 }
 
 - (void)updateFrame:(CGRect)frame {

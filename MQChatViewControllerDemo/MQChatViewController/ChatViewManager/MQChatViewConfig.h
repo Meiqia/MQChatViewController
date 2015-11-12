@@ -60,6 +60,7 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 @property (nonatomic, copy) UIColor *pullRefreshColor;
 
 @property (nonatomic, strong) UIImage *agentDefaultAvatarImage;
+@property (nonatomic, strong) UIImage *clientDefaultAvatarImage;
 @property (nonatomic, strong) UIImage *messageSendFailureImage;
 @property (nonatomic, strong) UIImage *photoSenderImage;
 @property (nonatomic, strong) UIImage *voiceSenderImage;

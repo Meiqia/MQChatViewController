@@ -44,7 +44,7 @@
 /**
  *  结束上拉刷新
  */
-- (void)finishLoadingTopRefreshViewWithMessagesNumber:(NSInteger)messagesNumber;
+- (void)finishLoadingTopRefreshViewWithMessagesNumber:(NSInteger)messagesNumber isLoadOver:(BOOL)isLoadOver;
 
 /**
  *  结束下拉刷新
@@ -54,6 +54,8 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView;
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate;
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView;
 
 - (void)updateFrame:(CGRect)frame;
 

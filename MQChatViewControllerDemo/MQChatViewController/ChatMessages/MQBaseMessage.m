@@ -7,6 +7,7 @@
 //
 
 #import "MQBaseMessage.h"
+#import "MQChatDateUtil.h"
 
 @implementation MQBaseMessage
 
@@ -14,6 +15,7 @@
     if (self = [super init]) {
         self.messageId = [[NSUUID UUID] UUIDString];
         self.fromType = MQChatMessageOutgoing;
+//        self.date = [MQChatDateUtil getLocalDate];
         self.date = [NSDate date];
         self.userName = @"";
         self.userAvatarPath = @"";

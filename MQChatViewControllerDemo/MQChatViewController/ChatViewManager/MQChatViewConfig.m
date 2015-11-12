@@ -57,7 +57,7 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     self.enableTopPullRefresh = false;
     self.enableBottomPullRefresh = false;
     self.enableRoundAvatar = false;
-    self.enableWelcomeChat = true;
+    self.enableWelcomeChat = false;
     self.enableTopAutoRefresh = true;
     
     self.incomingMsgTextColor = [UIColor darkTextColor];
@@ -68,6 +68,7 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     self.pullRefreshColor = [UIColor colorWithRed:104.0/255.0 green:192.0/255.0 blue:160.0/255.0 alpha:1.0];
     
     self.agentDefaultAvatarImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQIcon"]];
+    self.clientDefaultAvatarImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQIcon"]];
     self.photoSenderImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQMessageCameraInputImage"]];
     self.keyboardSenderImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQMessageTextInputImage"]];
     self.voiceSenderImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQMessageVoiceInputImage"]];
