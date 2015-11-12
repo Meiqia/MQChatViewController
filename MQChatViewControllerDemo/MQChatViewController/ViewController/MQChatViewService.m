@@ -20,6 +20,7 @@
 #import "MQToast.h"
 #import "VoiceConverter.h"
 #import "MQEventCellModel.h"
+#import "MQChatDateUtil.h"
 
 static NSInteger const kMQChatMessageMaxTimeInterval = 60;
 
@@ -64,7 +65,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
  */
 - (void)startGettingHistoryMessages {
 #ifdef INCLUDE_MEIQIA_SDK
-    NSDate *firstMessageDate = [self getServiceCellModelDate];
+    NSDate *firstMessageDate = [self getFirstServiceCellModelDate];
     if ([MQChatViewConfig sharedConfig].enableSyncServerMessage) {
         [MQServiceToViewInterface getServerHistoryMessagesWithMsgDate:firstMessageDate messagesNumber:kMQChatGetHistoryMessageNumber successDelegate:self errorDelegate:self.errorDelegate];
     } else {
@@ -76,8 +77,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 /**
  *  获取最旧的cell的日期，例如text/image/voice等
  */
-- (NSDate *)getServiceCellModelDate {
-    for (NSInteger index = self.cellModels.count - 1; index >= 0; index--) {
+- (NSDate *)getFirstServiceCellModelDate {
+    for (NSInteger index = 0; index < self.cellModels.count; index++) {
         id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index];
 #pragma 开发者可在下面添加自己更多的业务cellModel，以便能正确获取历史消息
         if ([cellModel isKindOfClass:[MQTextCellModel class]] ||
@@ -87,6 +88,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             return [cellModel getCellDate];
         }
     }
+//    return [MQChatDateUtil getLocalDate];
     return [NSDate date];
 }
 
@@ -364,8 +366,16 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 #pragma 开发者可将自定义的message添加到此方法中
 //将消息数组中的消息转换成cellModel，并添加到cellModels中去
-- (void)addMessagesToTableViewWithMessages:(NSArray *)messages {
-    for (MQBaseMessage *message in messages) {
+- (void)addMessagesToTableViewWithMessages:(NSArray *)messages isInsertAtFirstIndex:(BOOL)isInsertAtFirstIndex{
+    NSMutableArray *historyMessages = [[NSMutableArray alloc] initWithArray:messages];
+    if (isInsertAtFirstIndex) {
+        //如果是历史消息，则将历史消息插入到cellModels的首部
+        [historyMessages removeAllObjects];
+        for (MQBaseMessage *message in messages) {
+            [historyMessages insertObject:message atIndex:0];
+        }
+    }
+    for (MQBaseMessage *message in historyMessages) {
         id<MQCellModelProtocol> cellModel;
         if ([message isKindOfClass:[MQTextMessage class]]) {
             cellModel = [[MQTextCellModel alloc] initCellModelWithMessage:(MQTextMessage *)message cellWidth:self.chatViewWidth];
@@ -377,7 +387,11 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             cellModel = [[MQEventCellModel alloc] initCellModelWithMessage:(MQEventMessage *)message cellWidth:self.chatViewWidth];
         }
         if (cellModel) {
-            [self.cellModels addObject:cellModel];
+            if (isInsertAtFirstIndex) {
+                [self.cellModels insertObject:cellModel atIndex:0];
+            } else {
+                [self.cellModels addObject:cellModel];
+            }
         }
     }
     [self reloadChatTableView];
@@ -393,7 +407,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             //没有分配到客服，生成TipCell
             [weakSelf addTipCellModelWithTips:@"抱歉，现在没有客服人员在线\n你可以继续写下你的问题，我们会尽快回复"];
         } else if (receivedMessages) {
-            [weakSelf addMessagesToTableViewWithMessages:receivedMessages];
+            [weakSelf addMessagesToTableViewWithMessages:receivedMessages isInsertAtFirstIndex:false];
         }
         [weakSelf updateChatTitleWithAgentName:agentName];
     } receiveMessageDelegate:(self)];
@@ -414,7 +428,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 #pragma MQServiceToViewInterfaceDelegate
 - (void)didReceiveHistoryMessages:(NSArray *)messages totalNum:(NSInteger)totalNum {
     if (totalNum > 0) {
-        [self addMessagesToTableViewWithMessages:messages];
+        [self addMessagesToTableViewWithMessages:messages isInsertAtFirstIndex:true];
     }
     if (self.delegate) {
         if ([self.delegate respondsToSelector:@selector(didGetHistoryMessagesWithMessagesNumber:isLoadOver:)]) {

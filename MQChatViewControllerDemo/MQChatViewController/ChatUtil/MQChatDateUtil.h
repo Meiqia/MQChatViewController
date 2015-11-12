@@ -12,5 +12,6 @@
 
 + (NSString *)convertToChineseDateWithDate:(NSDate *)date;
 
++ (NSDate *)getLocalDate;
 
 @end
