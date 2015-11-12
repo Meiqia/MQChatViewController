@@ -18,7 +18,7 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        chatViewConfig = [[MQChatViewConfig alloc] init];
+        chatViewConfig = [MQChatViewConfig sharedConfig];
     }
     return self;
 }
@@ -165,6 +165,10 @@
 
 - (void)setAgentDefaultAvatarImage:(UIImage *)image {
     chatViewConfig.agentDefaultAvatarImage = [UIImage imageWithCGImage:image.CGImage];
+}
+
+- (void)setClientDefaultAvatarImage:(UIImage *)image {
+    chatViewConfig.clientDefaultAvatarImage = [UIImage imageWithCGImage:image.CGImage];
 }
 
 - (void)setPhotoSenderImage:(UIImage *)image {

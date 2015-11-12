@@ -170,7 +170,7 @@
  * 设置顾客上线
  * @param ;
  */
-- (void)setClientOnlineWithSuccess:(void (^)(BOOL completion, NSString *agentName))success
+- (void)setClientOnlineWithSuccess:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
             receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate;
 
 /**

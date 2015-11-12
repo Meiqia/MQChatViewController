@@ -38,8 +38,11 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
     BOOL enableSendVoice;
     BOOL enableSendImage;
     
+    //转换成录音的btn
     UIButton *microphoneBtn;
+    //照相btn
     UIButton *cameraBtn;
+    //录音的btn
     UIButton *recordBtn;
     UIButton *toolbarDownBtn;
     
@@ -55,7 +58,7 @@ static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
 - (id)initWithFrame:(CGRect)frame
           superView:(UIView *)inputBarSuperView
           tableView:(MQChatTableView *)tableView
-   enabelSendVoice:(BOOL)enableVoice
+    enabelSendVoice:(BOOL)enableVoice
     enableSendImage:(BOOL)enableImage
    photoSenderImage:(UIImage *)photoImage
    voiceSenderImage:(UIImage *)voiceImage
@@ -72,7 +75,7 @@ keyboardSenderImage:(UIImage *)keyboardImage
         photoSenderImage        = photoImage;
         voiceSenderImage        = voiceImage;
         keyboardSenderImage     = keyboardImage;
-
+        
         senderImageWidth = photoImage.size.width;
         textViewHeight = ceil(frame.size.height * 5 / 7);
         self.backgroundColor = [UIColor whiteColor];
@@ -201,7 +204,7 @@ keyboardSenderImage:(UIImage *)keyboardImage
             //还原
             self.chatTableView.frame     = originalChatViewFrame;
             self.frame              = originalFrame;
-
+            
             self.textView.frame     = originalTextViewFrame;
             self.textView.alpha     = 0;
             recordBtn.alpha         = 1;
@@ -396,9 +399,9 @@ keyboardSenderImage:(UIImage *)keyboardImage
     [UIView animateWithDuration:duration animations:^{
         if(keyboardDifference >= 0){
             self.chatTableView.contentInset = UIEdgeInsetsMake(chatViewInsets.top + height,
-                                                     chatViewInsets.left,
-                                                     chatViewInsets.bottom,
-                                                     chatViewInsets.right);
+                                                               chatViewInsets.left,
+                                                               chatViewInsets.bottom,
+                                                               chatViewInsets.right);
         }else{
             //限制keyboardDifference大小
             if (-keyboardDifference > bullleViewHeight) {
@@ -417,7 +420,7 @@ keyboardSenderImage:(UIImage *)keyboardImage
                                           self.superview.frame.size.width,
                                           self.superview.frame.size.height);
     }];
-
+    
     isInputBarUp = YES;
 }
 
@@ -520,15 +523,15 @@ keyboardSenderImage:(UIImage *)keyboardImage
     originalFrame = frame;
     originalChatViewFrame = self.chatTableView.frame;
     originalSuperViewFrame = self.superview.frame;
-    cameraBtn.frame      = CGRectMake(kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth);
-    microphoneBtn.frame = CGRectMake(self.frame.size.width - senderImageWidth - kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth);
-    toolbarDownBtn.frame = microphoneBtn.frame;
+    cameraBtn.frame      = enableSendImage ? CGRectMake(kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth) : CGRectMake(0, 0, 0, 0);
     if (enableSendVoice) {
-        recordBtn.frame = CGRectMake(kMQInputBarHorizontalSpacing*2 + senderImageWidth, (originalFrame.size.height - textViewHeight)/2, originalFrame.size.width - kMQInputBarHorizontalSpacing * 4 - 2 * senderImageWidth, textViewHeight);
+        microphoneBtn.frame = CGRectMake(self.frame.size.width - senderImageWidth - kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth);
+        toolbarDownBtn.frame = microphoneBtn.frame;
+        recordBtn.frame = CGRectMake(cameraBtn.frame.origin.x + cameraBtn.frame.size.width + kMQInputBarHorizontalSpacing, (originalFrame.size.height - textViewHeight)/2, microphoneBtn.frame.origin.x - cameraBtn.frame.origin.x - cameraBtn.frame.size.width - 2*kMQInputBarHorizontalSpacing, textViewHeight);
         self.textView.frame     = recordBtn.frame;
         originalTextViewFrame   = recordBtn.frame;
     } else {
-        self.textView.frame = CGRectMake(kMQInputBarHorizontalSpacing*2 + senderImageWidth, (originalFrame.size.height - textViewHeight)/2, originalFrame.size.width - kMQInputBarHorizontalSpacing * 3 - senderImageWidth, textViewHeight);
+        self.textView.frame = CGRectMake(cameraBtn.frame.origin.x + cameraBtn.frame.size.width + kMQInputBarHorizontalSpacing, (originalFrame.size.height - textViewHeight)/2, self.frame.origin.x - cameraBtn.frame.origin.x - cameraBtn.frame.size.width - 2*kMQInputBarHorizontalSpacing, textViewHeight);
         originalTextViewFrame = self.textView.frame;
     }
 }
