@@ -137,6 +137,9 @@ static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
             });
         } else {
             self.avatarImage = [MQChatViewConfig sharedConfig].agentDefaultAvatarImage;
+            if (message.fromType == MQChatMessageOutgoing) {
+                self.avatarImage = [MQChatViewConfig sharedConfig].clientDefaultAvatarImage;
+            }
         }
         self.voiceDuration = 0;
         
@@ -216,7 +219,7 @@ static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
             self.avatarFrame = CGRectMake(0, 0, 0, 0);
         }
         //气泡的frame
-        self.bubbleImageFrame = CGRectMake(cellWidth-kMQCellAvatarToBubbleSpacing-bubbleWidth, kMQCellAvatarToVerticalEdgeSpacing, bubbleWidth, bubbleHeight);
+        self.bubbleImageFrame = CGRectMake(cellWidth-self.avatarFrame.size.width-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarToBubbleSpacing-bubbleWidth, kMQCellAvatarToVerticalEdgeSpacing, bubbleWidth, bubbleHeight);
         //语音图片的frame
         self.voiceImageFrame = CGRectMake(self.bubbleImageFrame.size.width-kMQCellVoiceImageToBubbleSpacing-voiceImageSize.width, self.bubbleImageFrame.size.height/2-voiceImageSize.height/2, voiceImageSize.width, voiceImageSize.height);
         //语音时长的frame
@@ -307,7 +310,7 @@ static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
             self.avatarFrame = CGRectMake(0, 0, 0, 0);
         }
         //气泡的frame
-        self.bubbleImageFrame = CGRectMake(cellWidth-self.avatarFrame.origin.x-kMQCellAvatarToBubbleSpacing-self.bubbleImageFrame.size.width, kMQCellAvatarToVerticalEdgeSpacing, self.bubbleImageFrame.size.width, self.bubbleImageFrame.size.height);
+        self.bubbleImageFrame = CGRectMake(cellWidth-self.avatarFrame.size.width-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarToBubbleSpacing-self.bubbleImageFrame.size.width, kMQCellAvatarToVerticalEdgeSpacing, self.bubbleImageFrame.size.width, self.bubbleImageFrame.size.height);
         //发送指示器的frame
         self.sendingIndicatorFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-self.sendingIndicatorFrame.size.width, self.sendingIndicatorFrame.origin.y, self.sendingIndicatorFrame.size.width, self.sendingIndicatorFrame.size.height);
         //发送出错图片的frame

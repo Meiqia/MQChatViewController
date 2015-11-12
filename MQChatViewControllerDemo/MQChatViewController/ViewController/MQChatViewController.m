@@ -69,7 +69,6 @@ static NSInteger const kMQChatNavTitleIndicatorTag  = 2002;
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    [chatViewConfig setConfigToDefault];
     [[NSNotificationCenter defaultCenter] postNotificationName:MQAudioPlayerDidInterruptNotification object:nil];
 }
 
@@ -113,7 +112,7 @@ static NSInteger const kMQChatNavTitleIndicatorTag  = 2002;
 - (void)startLoadingTopMessagesInTableView:(UITableView *)tableView {
 #ifndef INCLUDE_MEIQIA_SDK
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.chatTableView finishLoadingTopRefreshViewWithMessagesNumber:1];
+        [self.chatTableView finishLoadingTopRefreshViewWithMessagesNumber:1 isLoadOver:true];
     });
 #else
     [chatViewService startGettingHistoryMessages];
@@ -218,9 +217,13 @@ static NSInteger const kMQChatNavTitleIndicatorTag  = 2002;
     [self.view endEditing:YES];
 }
 
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
+    [self.chatTableView scrollViewDidEndScrollingAnimation:scrollView];
+}
+
 #pragma MQChatViewServiceDelegate
-- (void)didGetHistoryMessagesWithMessagesNumber:(NSInteger)messageNumber {
-    [self.chatTableView finishLoadingTopRefreshViewWithMessagesNumber:messageNumber];
+- (void)didGetHistoryMessagesWithMessagesNumber:(NSInteger)messageNumber isLoadOver:(BOOL)isLoadOver{
+    [self.chatTableView finishLoadingTopRefreshViewWithMessagesNumber:messageNumber isLoadOver:isLoadOver];
     [self.chatTableView reloadData];
 }
 

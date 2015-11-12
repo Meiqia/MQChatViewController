@@ -19,7 +19,7 @@
 /**
  *  获取到了更多历史消息
  */
-- (void)didGetHistoryMessagesWithMessagesNumber:(NSInteger)messageNumber;
+- (void)didGetHistoryMessagesWithMessagesNumber:(NSInteger)messageNumber isLoadOver:(BOOL)isLoadOver;
 
 /**
  *  已经更新了这条消息的数据，通知tableView刷新界面

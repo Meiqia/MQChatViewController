@@ -417,8 +417,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [self addMessagesToTableViewWithMessages:messages];
     }
     if (self.delegate) {
-        if ([self.delegate respondsToSelector:@selector(didGetHistoryMessagesWithMessagesNumber:)]) {
-            [self.delegate didGetHistoryMessagesWithMessagesNumber:totalNum];
+        if ([self.delegate respondsToSelector:@selector(didGetHistoryMessagesWithMessagesNumber:isLoadOver:)]) {
+            [self.delegate didGetHistoryMessagesWithMessagesNumber:totalNum isLoadOver:totalNum < kMQChatGetHistoryMessageNumber];
         }
     }
 }
