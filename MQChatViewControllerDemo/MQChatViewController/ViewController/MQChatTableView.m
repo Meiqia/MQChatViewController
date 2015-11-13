@@ -183,7 +183,7 @@ static CGFloat const kMQChatNoMoreMessageLabelFontSize = 12.0;
 }
 
 - (void)scrollToLoadedMessageIndex:(NSInteger)index {
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index+1 inSection:0];
     [self scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
     CGPoint tableViewOffset = self.contentOffset;
     tableViewOffset.y -= scrollOffsetAfterLoading;
