@@ -82,6 +82,12 @@ static NSInteger const kMQChatNavTitleIndicatorTag  = 2002;
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    [self.view endEditing:true];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [UIView setAnimationsEnabled:true];
 }
 
 - (void)dismissChatModalView {

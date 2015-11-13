@@ -232,6 +232,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         return;
     }
     id<MQCellModelProtocol> firstCellModel = [self.cellModels objectAtIndex:0];
+    if (![firstCellModel isServiceRelatedCell]) {
+        return;
+    }
     NSDate *beInsertedDate = [beInsertedCellModel getCellDate];
     firstDate = [firstCellModel getCellDate];
     //判断被insert的Cell的date和第一个cell的date的时间间隔是否超过阈值
