@@ -385,7 +385,8 @@ keyboardSenderImage:(UIImage *)keyboardImage
 -(void)moveToolbarUp:(float)height animate:(NSTimeInterval)duration
 {
     if (!isInputBarUp){
-        bullleViewHeight = self.chatTableView.frame.size.height - self.chatTableView.contentInset.top;
+        //        bullleViewHeight = self.chatTableView.frame.size.height - self.chatTableView.contentInset.top;
+        bullleViewHeight = self.chatTableView.frame.size.height;
         chatViewInsets   = self.chatTableView.contentInset;
     }
     
@@ -397,11 +398,16 @@ keyboardSenderImage:(UIImage *)keyboardImage
      2、keyboardDifference小于0，contentInset.top加上bullleViewHeight再加keyboardDifference（相当于减，因为keyboardDifference为负数），但keyboardDifference的绝对值不能超过bullleViewHeight
      */
     [UIView animateWithDuration:duration animations:^{
+        self.chatTableView.contentInset = UIEdgeInsetsMake(chatViewInsets.top + height,
+                                                           chatViewInsets.left,
+                                                           chatViewInsets.bottom,
+                                                           chatViewInsets.right);
+        
         if(keyboardDifference >= 0){
-            self.chatTableView.contentInset = UIEdgeInsetsMake(chatViewInsets.top + height,
-                                                               chatViewInsets.left,
-                                                               chatViewInsets.bottom,
-                                                               chatViewInsets.right);
+            //            self.chatTableView.contentInset = UIEdgeInsetsMake(chatViewInsets.top + height,
+            //                                                               chatViewInsets.left,
+            //                                                               chatViewInsets.bottom,
+            //                                                               chatViewInsets.right);
         }else{
             //限制keyboardDifference大小
             if (-keyboardDifference > bullleViewHeight) {
