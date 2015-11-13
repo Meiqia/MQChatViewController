@@ -41,6 +41,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 @implementation MQChatViewService {
 #ifdef INCLUDE_MEIQIA_SDK
     MQServiceToViewInterface *serviceToViewInterface;
+    BOOL isThereNoAgent;   //用来判断当前是否没有客服
 #endif
 }
 
@@ -49,6 +50,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         self.cellModels = [[NSMutableArray alloc] init];
 #ifdef INCLUDE_MEIQIA_SDK
         [self setClientOnline];
+        isThereNoAgent = false;
 #endif
     }
     return self;
@@ -102,6 +104,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self addCellModelAndReloadTableViewWithModel:cellModel];
 #ifdef INCLUDE_MEIQIA_SDK
     [MQServiceToViewInterface sendTextMessageWithContent:content messageId:message.messageId delegate:self];
+    [self addSystemTips];
 #else
     //模仿发送成功
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -121,6 +124,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self addCellModelAndReloadTableViewWithModel:cellModel];
 #ifdef INCLUDE_MEIQIA_SDK
     [MQServiceToViewInterface sendImageMessageWithImage:image messageId:message.messageId delegate:self];
+    [self addSystemTips];
 #else
     //模仿发送成功
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -142,6 +146,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 #ifdef INCLUDE_MEIQIA_SDK
     NSData *amrData = [NSData dataWithContentsOfFile:filePath];
     [MQServiceToViewInterface sendAudioMessage:amrData messageId:message.messageId delegate:self];
+    [self addSystemTips];
 #endif
 }
 
@@ -280,7 +285,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
  * 使用MQChatViewControllerDemo的时候，调试用的方法，用于收取和上一个message一样的消息
  */
 - (void)loadLastMessage {
-    id<MQCellModelProtocol> lastCellModel = [self getBussinessCellModelFromBottomToTopWithIndex:self.cellModels.count-1];
+    id<MQCellModelProtocol> lastCellModel = [self searchOneBussinessCellModelWithIndex:self.cellModels.count-1 isSearchFromBottomToTop:true];
     if (!lastCellModel) {
         [MQToast showToast:@"请输入一条消息，再收取消息~" duration:2 window:[UIApplication sharedApplication].keyWindow];
         return ;
@@ -441,7 +446,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [serviceToViewInterface setClientOnlineWithSuccess:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
         if (!completion || !agentName) {
             //没有分配到客服，生成TipCell
-            [weakSelf addTipCellModelWithTips:@"抱歉，现在没有客服人员在线\n你可以继续写下你的问题，我们会尽快回复"];
+//            [weakSelf addTipCellModelWithTips:@"抱歉，现在没有客服人员在线\n你可以继续写下你的问题，我们会尽快回复"];
         } else if (receivedMessages) {
             [weakSelf addMessagesToTableViewWithMessages:receivedMessages isInsertAtFirstIndex:false];
         }
@@ -452,13 +457,22 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 - (void)updateChatTitleWithAgentName:(NSString *)agentName {
     NSString *viewTitle = agentName;
     if (!viewTitle || viewTitle.length == 0) {
-        viewTitle = @"留言";
+        viewTitle = @"在线客服";
+        isThereNoAgent = true;
     }
     if (self.delegate) {
         if ([self.delegate respondsToSelector:@selector(didScheduleClientWithViewTitle:)]) {
             [self.delegate didScheduleClientWithViewTitle:viewTitle];
         }
     }
+}
+
+- (void)addSystemTips{
+    if (!isThereNoAgent) {
+        return;
+    }
+    isThereNoAgent = false;
+    [self addTipCellModelWithTips:@"抱歉，现在没有客服人员在线\n你可以继续写下你的问题，我们会尽快回复"];
 }
 
 #pragma MQServiceToViewInterfaceDelegate

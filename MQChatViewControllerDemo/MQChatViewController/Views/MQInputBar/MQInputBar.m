@@ -11,7 +11,7 @@
 
 //#define ButtonWidth 33
 //#define ButtonX 6.5
-static CGFloat const kMQInputBarHorizontalSpacing = 0;
+static CGFloat const kMQInputBarHorizontalSpacing = 8.0;
 static NSString * const kMQInputBarRecordButtonConfirmText = @"按住 说话";
 static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
 
@@ -109,7 +109,7 @@ keyboardSenderImage:(UIImage *)keyboardImage
             if (recordBtn) {
                 recordBtn.hidden = YES;
             }
-            self.textView.frame = CGRectMake(cameraBtn.frame.origin.x + kMQInputBarHorizontalSpacing, (originalFrame.size.height - textViewHeight)/2, originalFrame.size.width - kMQInputBarHorizontalSpacing * 3 - senderImageWidth, textViewHeight);
+            self.textView.frame = CGRectMake(cameraBtn.frame.origin.x + cameraBtn.frame.size.width + kMQInputBarHorizontalSpacing, (originalFrame.size.height - textViewHeight)/2, originalFrame.size.width - cameraBtn.frame.origin.x - cameraBtn.frame.size.width - kMQInputBarHorizontalSpacing * 2, textViewHeight);
             originalTextViewFrame = self.textView.frame;
         }
         
@@ -172,7 +172,7 @@ keyboardSenderImage:(UIImage *)keyboardImage
     
     microphoneBtn.frame = CGRectMake(self.frame.size.width - senderImageWidth - kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth);
     toolbarDownBtn.frame = microphoneBtn.frame;
-    recordBtn.frame = CGRectMake(cameraBtn.frame.origin.x + cameraBtn.frame.size.width + kMQInputBarHorizontalSpacing, (originalFrame.size.height - textViewHeight)/2, originalFrame.size.width - kMQInputBarHorizontalSpacing * 4 - 2 * senderImageWidth, textViewHeight);
+    recordBtn.frame = CGRectMake(cameraBtn.frame.origin.x + cameraBtn.frame.size.width + kMQInputBarHorizontalSpacing, (originalFrame.size.height - textViewHeight)/2, originalFrame.size.width - cameraBtn.frame.origin.x - cameraBtn.frame.size.width - kMQInputBarHorizontalSpacing * 3 - microphoneBtn.frame.size.width, textViewHeight);
     
     [self addSubview:toolbarDownBtn];
     [self addSubview:recordBtn];
@@ -501,8 +501,8 @@ keyboardSenderImage:(UIImage *)keyboardImage
 
 -(void)functionBtnCenter
 {
-    cameraBtn.frame      = CGRectMake(kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth);
-    microphoneBtn.frame = CGRectMake(self.frame.size.width - senderImageWidth - kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth);
+    cameraBtn.frame      = enableSendImage ? CGRectMake(kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth) : CGRectMake(0, 0, 0, 0);
+    microphoneBtn.frame = enableSendVoice ? CGRectMake(self.frame.size.width - senderImageWidth - kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth) : CGRectMake(0, 0, 0, 0);
 }
 
 -(void)drawRect:(CGRect)rect
@@ -531,7 +531,7 @@ keyboardSenderImage:(UIImage *)keyboardImage
         self.textView.frame     = recordBtn.frame;
         originalTextViewFrame   = recordBtn.frame;
     } else {
-        self.textView.frame = CGRectMake(cameraBtn.frame.origin.x + cameraBtn.frame.size.width + kMQInputBarHorizontalSpacing, (originalFrame.size.height - textViewHeight)/2, self.frame.origin.x - cameraBtn.frame.origin.x - cameraBtn.frame.size.width - 2*kMQInputBarHorizontalSpacing, textViewHeight);
+        self.textView.frame = CGRectMake(cameraBtn.frame.origin.x + cameraBtn.frame.size.width + kMQInputBarHorizontalSpacing, (originalFrame.size.height - textViewHeight)/2, self.frame.size.width - cameraBtn.frame.origin.x - cameraBtn.frame.size.width - 2*kMQInputBarHorizontalSpacing, textViewHeight);
         originalTextViewFrame = self.textView.frame;
     }
 }
