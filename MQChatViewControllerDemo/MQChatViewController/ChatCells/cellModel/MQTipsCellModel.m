@@ -10,6 +10,7 @@
 #import "MQChatBaseCell.h"
 #import "MQTipsCell.h"
 #import "MQStringSizeUtil.h"
+#import "MQChatViewConfig.h"
 
 //上下两条线与cell垂直边沿的间距
 static CGFloat const kMQMessageTipsLabelLineVerticalMargin = 2.0;
@@ -34,6 +35,16 @@ static CGFloat const kMQMessageTipsLineHeight = 0.5;
  * @brief 提示文字
  */
 @property (nonatomic, readwrite, copy) NSString *tipText;
+
+/**
+ * @brief 提示文字的额外属性
+ */
+@property (nonatomic, readwrite, copy) NSDictionary<NSString *, id> *tipExtraAttributes;
+
+/**
+ * @brief 提示文字的额外属性的range
+ */
+@property (nonatomic, readwrite, assign) NSRange tipExtraAttributesRange;
 
 /**
  * @brief 提示label的frame
@@ -82,6 +93,19 @@ static CGFloat const kMQMessageTipsLineHeight = 0.5;
         self.bottomLineFrame = CGRectMake(self.topLineFrame.origin.x, kMQMessageTipsCellHeight-kMQMessageTipsLabelLineVerticalMargin-kMQMessageTipsLineHeight, lineWidth, kMQMessageTipsLineHeight);
         
         self.cellHeight = self.bottomLineFrame.origin.y + self.bottomLineFrame.size.height;
+        
+        //tip的文字额外属性
+        if ([[tips substringToIndex:3] isEqualToString:@"接下来"]) {
+            NSRange firstRange = [tips rangeOfString:@" "];
+            NSString *subTips = [tips substringFromIndex:firstRange.location+1];
+            NSRange lastRange = [subTips rangeOfString:@" "];
+            NSRange agentNameRange = NSMakeRange(firstRange.location+1, lastRange.location);
+            self.tipExtraAttributesRange = agentNameRange;
+            self.tipExtraAttributes = @{
+                                        NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:13],
+                                        NSForegroundColorAttributeName : [MQChatViewConfig sharedConfig].redirectAgentNameColor
+                                        };
+        }
     }
     return self;
 }
