@@ -88,7 +88,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             return [cellModel getCellDate];
         }
     }
-//    return [MQChatDateUtil getLocalDate];
+    //    return [MQChatDateUtil getLocalDate];
     return [NSDate date];
 }
 
@@ -98,7 +98,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 - (void)sendTextMessageWithContent:(NSString *)content {
     MQTextMessage *message = [[MQTextMessage alloc] initWithContent:content];
     MQTextCellModel *cellModel = [[MQTextCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth];
-    [self generateMessageDateCellWithCurrentCellModel:cellModel];
+    [self addMessageDateCellAtLastWithCurrentCellModel:cellModel];
     [self addCellModelAndReloadTableViewWithModel:cellModel];
 #ifdef INCLUDE_MEIQIA_SDK
     [MQServiceToViewInterface sendTextMessageWithContent:content messageId:message.messageId delegate:self];
@@ -117,7 +117,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 - (void)sendImageMessageWithImage:(UIImage *)image {
     MQImageMessage *message = [[MQImageMessage alloc] initWithImage:image];
     MQImageCellModel *cellModel = [[MQImageCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
-    [self generateMessageDateCellWithCurrentCellModel:cellModel];
+    [self addMessageDateCellAtLastWithCurrentCellModel:cellModel];
     [self addCellModelAndReloadTableViewWithModel:cellModel];
 #ifdef INCLUDE_MEIQIA_SDK
     [MQServiceToViewInterface sendImageMessageWithImage:image messageId:message.messageId delegate:self];
@@ -151,7 +151,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
  */
 - (void)sendVoiceMessageWithWAVData:(NSData *)wavData voiceMessage:(MQVoiceMessage *)message{
     MQVoiceCellModel *cellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
-    [self generateMessageDateCellWithCurrentCellModel:cellModel];
+    [self addMessageDateCellAtLastWithCurrentCellModel:cellModel];
     [self addCellModelAndReloadTableViewWithModel:cellModel];
     //模仿发送成功
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -197,36 +197,70 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 }
 
 /**
- * 判断两个时间间隔是否过大，如果过大，返回一个MessageDateCellModel
+ *  在尾部增加cellModel之前，先判断两个时间间隔是否过大，如果过大，插入一个MessageDateCellModel
+ *
+ *  @param beAddedCellModel 准备被add的cellModel
  */
-- (void)generateMessageDateCellWithCurrentCellModel:(id<MQCellModelProtocol>)currentCellModel {
-    id<MQCellModelProtocol> lastCellModel = [self getBussinessCellModelWithIndex:self.cellModels.count-1];
+- (void)addMessageDateCellAtLastWithCurrentCellModel:(id<MQCellModelProtocol>)beAddedCellModel {
+    id<MQCellModelProtocol> lastCellModel = [self searchOneBussinessCellModelWithIndex:self.cellModels.count-1 isSearchFromBottomToTop:true];
     NSDate *lastDate = lastCellModel ? [lastCellModel getCellDate] : [NSDate date];
-    NSDate *nextDate = [currentCellModel getCellDate];
-    //如果上一个cell的时间比下一个cell还要大（说明currentCell是第一个业务cell，此时显示时间cell）
-    BOOL isLastDateLargerThanNextDate = lastDate.timeIntervalSince1970 > nextDate.timeIntervalSince1970;
-    //如果下一个cell比上一个cell的时间间隔没有超过阈值
-    bool isDateTimeIntervalSmallerThanThreshold = nextDate.timeIntervalSince1970 - lastDate.timeIntervalSince1970 < kMQChatMessageMaxTimeInterval;
-    if (!isLastDateLargerThanNextDate && isDateTimeIntervalSmallerThanThreshold) {
+    NSDate *beAddedDate = [beAddedCellModel getCellDate];
+    //判断被add的cell的时间比最后一个cell的时间是否要大（说明currentCell是第一个业务cell，此时显示时间cell）
+    BOOL isLastDateLargerThanNextDate = lastDate.timeIntervalSince1970 > beAddedDate.timeIntervalSince1970;
+    //判断被add的cell比最后一个cell的时间间隔是否超过阈值
+    BOOL isDateTimeIntervalLargerThanThreshold = beAddedDate.timeIntervalSince1970 - lastDate.timeIntervalSince1970 >= kMQChatMessageMaxTimeInterval;
+    if (!isLastDateLargerThanNextDate && !isDateTimeIntervalLargerThanThreshold) {
         return ;
     }
-    MQMessageDateCellModel *cellModel = [[MQMessageDateCellModel alloc] initCellModelWithDate:nextDate cellWidth:self.chatViewWidth];
+    MQMessageDateCellModel *cellModel = [[MQMessageDateCellModel alloc] initCellModelWithDate:beAddedDate cellWidth:self.chatViewWidth];
     [self.cellModels addObject:cellModel];
 }
 
 /**
- * 从cellModels中获取到业务相关的cellModel，即text, image, voice等；
+ *  在首部增加cellModel之前，先判断两个时间间隔是否过大，如果过大，插入一个MessageDateCellModel
+ *
+ *  @param beInsertedCellModel 准备被insert的cellModel
  */
-- (id<MQCellModelProtocol>)getBussinessCellModelWithIndex:(NSInteger)index {
-    if (self.cellModels.count <= index) {
+- (void)insertMessageDateCellAtFirstWithCellModel:(id<MQCellModelProtocol>)beInsertedCellModel {
+    NSDate *firstDate = [NSDate date];
+    if (self.cellModels.count == 0) {
+        return;
+    }
+    id<MQCellModelProtocol> firstCellModel = [self.cellModels objectAtIndex:0];
+    NSDate *beInsertedDate = [beInsertedCellModel getCellDate];
+    firstDate = [firstCellModel getCellDate];
+    //判断被insert的Cell的date和第一个cell的date的时间间隔是否超过阈值
+    BOOL isDateTimeIntervalLargerThanThreshold = firstDate.timeIntervalSince1970 - beInsertedDate.timeIntervalSince1970 >= kMQChatMessageMaxTimeInterval;
+    if (!isDateTimeIntervalLargerThanThreshold) {
+        return;
+    }
+    MQMessageDateCellModel *cellModel = [[MQMessageDateCellModel alloc] initCellModelWithDate:firstDate cellWidth:self.chatViewWidth];
+    [self.cellModels insertObject:cellModel atIndex:0];
+}
+
+/**
+ * 从后往前从cellModels中获取到业务相关的cellModel，即text, image, voice等；
+ */
+/**
+ *  从cellModels中搜索第一个业务相关的cellModel，即text, image, voice等；
+ *  @warning 业务相关的cellModel，必须满足协议方法isServiceRelatedCell
+ *
+ *  @param searchIndex             search的起始位置
+ *  @param isSearchFromBottomToTop search的方向 YES：从后往前搜索  NO：从前往后搜索
+ *
+ *  @return 搜索到的第一个业务相关的cellModel
+ */
+- (id<MQCellModelProtocol>)searchOneBussinessCellModelWithIndex:(NSInteger)searchIndex isSearchFromBottomToTop:(BOOL)isSearchFromBottomToTop{
+    if (self.cellModels.count <= searchIndex) {
         return nil;
     }
-    id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index];
+    id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:searchIndex];
     //判断获取到的cellModel是否是业务相关的cell，如果不是则继续往前取
     if ([cellModel isServiceRelatedCell]){
         return cellModel;
     }
-    [self getBussinessCellModelWithIndex:index - 1];
+    NSInteger nextSearchIndex = isSearchFromBottomToTop ? searchIndex - 1 : searchIndex + 1;
+    [self searchOneBussinessCellModelWithIndex:nextSearchIndex isSearchFromBottomToTop:isSearchFromBottomToTop];
     return nil;
 }
 
@@ -246,7 +280,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
  * 使用MQChatViewControllerDemo的时候，调试用的方法，用于收取和上一个message一样的消息
  */
 - (void)loadLastMessage {
-    id<MQCellModelProtocol> lastCellModel = [self getBussinessCellModelWithIndex:self.cellModels.count-1];
+    id<MQCellModelProtocol> lastCellModel = [self getBussinessCellModelFromBottomToTopWithIndex:self.cellModels.count-1];
     if (!lastCellModel) {
         [MQToast showToast:@"请输入一条消息，再收取消息~" duration:2 window:[UIApplication sharedApplication].keyWindow];
         return ;
@@ -276,14 +310,14 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     MQTextCellModel *textCellModel = [[MQTextCellModel alloc] initCellModelWithMessage:textMessage cellWidth:self.chatViewWidth];
     [self.cellModels addObject:textCellModel];
     //image message
-//    MQImageMessage *imageMessage = [[MQImageMessage alloc] initWithImagePath:@"https://s3.cn-north-1.amazonaws.com.cn/pics.meiqia.bucket/65135e4c4fde7b5f"];
-//    imageMessage.fromType = MQChatMessageIncoming;
-//    MQImageCellModel *imageCellModel = [[MQImageCellModel alloc] initCellModelWithMessage:imageMessage cellWidth:self.chatViewWidth delegate:self];
-//    [self.cellModels addObject:imageCellModel];
+    //    MQImageMessage *imageMessage = [[MQImageMessage alloc] initWithImagePath:@"https://s3.cn-north-1.amazonaws.com.cn/pics.meiqia.bucket/65135e4c4fde7b5f"];
+    //    imageMessage.fromType = MQChatMessageIncoming;
+    //    MQImageCellModel *imageCellModel = [[MQImageCellModel alloc] initCellModelWithMessage:imageMessage cellWidth:self.chatViewWidth delegate:self];
+    //    [self.cellModels addObject:imageCellModel];
     //tip message
     MQTipsCellModel *tipCellModel = [[MQTipsCellModel alloc] initCellModelWithTips:@"主人，您的客服离线啦~" cellWidth:self.chatViewWidth];
     [self.cellModels addObject:tipCellModel];
-
+    
     [self reloadChatTableView];
     [self playReceivedMessageSound];
 }
@@ -388,8 +422,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         }
         if (cellModel) {
             if (isInsertAtFirstIndex) {
+                [self insertMessageDateCellAtFirstWithCellModel:cellModel];
                 [self.cellModels insertObject:cellModel atIndex:0];
             } else {
+                [self addMessageDateCellAtLastWithCurrentCellModel:cellModel];
                 [self.cellModels addObject:cellModel];
             }
         }
@@ -439,17 +475,17 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 - (void)didReceiveTextMessage:(MQTextMessage *)message {
     MQTextCellModel *cellModel = [[MQTextCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth];
-    [self didReceiveMessageWithCellModel:cellModel];
+    [self addCellModelAfterReceivedWithCellModel:cellModel];
 }
 
 - (void)didReceiveImageMessage:(MQImageMessage *)message {
     MQImageCellModel *cellModel = [[MQImageCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
-    [self didReceiveMessageWithCellModel:cellModel];
+    [self addCellModelAfterReceivedWithCellModel:cellModel];
 }
 
 - (void)didReceiveVoiceMessage:(MQVoiceMessage *)message {
     MQVoiceCellModel *cellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
-    [self didReceiveMessageWithCellModel:cellModel];
+    [self addCellModelAfterReceivedWithCellModel:cellModel];
 }
 
 - (void)didReceiveEventMessage:(MQEventMessage *)eventMessage {
@@ -457,11 +493,16 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         return;
     }
     MQEventCellModel *cellModel = [[MQEventCellModel alloc] initCellModelWithMessage:eventMessage cellWidth:self.chatViewWidth];
-    [self didReceiveMessageWithCellModel:cellModel];
+    [self addCellModelAfterReceivedWithCellModel:cellModel];
 }
 
 - (void)didReceiveTipsContent:(NSString *)tipsContent {
     MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initCellModelWithTips:tipsContent cellWidth:self.chatViewWidth];
+    [self addCellModelAfterReceivedWithCellModel:cellModel];
+}
+
+- (void)addCellModelAfterReceivedWithCellModel:(id<MQCellModelProtocol>)cellModel {
+    [self addMessageDateCellAtLastWithCurrentCellModel:cellModel];
     [self didReceiveMessageWithCellModel:cellModel];
 }
 
