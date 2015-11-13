@@ -142,7 +142,7 @@ static NSInteger const kMQChatNavTitleIndicatorTag  = 2002;
 #ifndef INCLUDE_MEIQIA_SDK
 - (void)tapLoadMessageBtn:(id)sender {
     [chatViewService loadLastMessage];
-    [self chatTableViewScrollToBottom];
+    [self chatTableViewScrollToBottomWithAnimated:true];
 }
 #endif
 
@@ -240,11 +240,13 @@ static NSInteger const kMQChatNavTitleIndicatorTag  = 2002;
 #ifdef INCLUDE_MEIQIA_SDK
 - (void)didScheduleClientWithViewTitle:(NSString *)viewTitle {
     [self updateNavBarTitle:viewTitle];
+    //分配成功后，滚动到底部
+    [self chatTableViewScrollToBottomWithAnimated:false];
 }
 #endif
 
 - (void)didReceiveMessage {
-    [self chatTableViewScrollToBottom];
+    [self chatTableViewScrollToBottomWithAnimated:true];
 }
 
 #pragma MQInputBarDelegate
@@ -254,7 +256,7 @@ static NSInteger const kMQChatNavTitleIndicatorTag  = 2002;
         return NO;
     }
     [chatViewService sendTextMessageWithContent:text];
-    [self chatTableViewScrollToBottom];
+    [self chatTableViewScrollToBottomWithAnimated:true];
     return YES;
 }
 
@@ -276,15 +278,14 @@ static NSInteger const kMQChatNavTitleIndicatorTag  = 2002;
 -(void)inputting:(NSString*)content {
     //用户正在输入
     [chatViewService sendUserInputtingWithContent:content];
-    [self chatTableViewScrollToBottom];
 }
 
--(void)chatTableViewScrollToBottom {
+-(void)chatTableViewScrollToBottomWithAnimated:(BOOL)animated {
     NSInteger lastCellIndex = chatViewService.cellModels.count;
     if (lastCellIndex == 0) {
         return;
     }
-    [self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:lastCellIndex-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:true];
+    [self.chatTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:lastCellIndex-1 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
 }
 
 -(void)beginRecord:(CGPoint)point {
@@ -338,7 +339,7 @@ static NSInteger const kMQChatNavTitleIndicatorTag  = 2002;
 #pragma MQRecordViewDelegate
 - (void)didFinishRecordingWithAMRFilePath:(NSString *)filePath {
     [chatViewService sendVoiceMessageWithAMRFilePath:filePath];
-    [self chatTableViewScrollToBottom];
+    [self chatTableViewScrollToBottomWithAnimated:true];
 }
 
 - (void)didUpdateVolumeInRecordView:(UIView *)recordView volume:(CGFloat)volume {
@@ -355,7 +356,7 @@ static NSInteger const kMQChatNavTitleIndicatorTag  = 2002;
     UIImage *image          = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     [picker dismissViewControllerAnimated:YES completion:nil];
     [chatViewService sendImageMessageWithImage:image];
-    [self chatTableViewScrollToBottom];
+    [self chatTableViewScrollToBottomWithAnimated:true];
 }
 
 -(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
@@ -371,7 +372,7 @@ static NSInteger const kMQChatNavTitleIndicatorTag  = 2002;
     //先删除之前的消息
     NSIndexPath *indexPath = [self.chatTableView indexPathForCell:cell];
     [chatViewService resendMessageAtIndex:indexPath.row resendData:resendData];
-    [self chatTableViewScrollToBottom];
+    [self chatTableViewScrollToBottomWithAnimated:true];
 }
 
 - (void)didSelectMessageInCell:(UITableViewCell *)cell messageContent:(NSString *)content selectedContent:(NSString *)selectedContent {
