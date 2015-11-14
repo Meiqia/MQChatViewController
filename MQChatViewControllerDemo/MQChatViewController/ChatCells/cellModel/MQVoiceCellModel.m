@@ -132,6 +132,7 @@ static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
         } else if (message.userAvatarPath.length > 0) {
             self.avatarPath = message.userAvatarPath;
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+#warning 这里开发者可以使用自己的图片缓存策略，如SDWebImage
                 NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:message.userAvatarPath]];
                 self.avatarImage = [UIImage imageWithData:imageData];
             });
@@ -149,6 +150,7 @@ static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
             if (message.voicePath.length > 0) {
                 //新建线程读取远程图片
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+#warning 这里开发者可以使用自己的文件缓存策略
                     NSData *voiceData = [NSData dataWithContentsOfURL:[NSURL URLWithString:message.voicePath]];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if (voiceData) {
