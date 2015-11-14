@@ -35,6 +35,7 @@ static NSInteger const kMQChatNavTitleIndicatorTag  = 2002;
     MQInputBar *chatInputBar;
     MQRecordView *recordView;
     CGSize viewSize;
+    
 }
 
 - (void)dealloc {
