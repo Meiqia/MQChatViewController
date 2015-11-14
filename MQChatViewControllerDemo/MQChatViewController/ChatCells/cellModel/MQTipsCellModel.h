@@ -26,6 +26,16 @@
 @property (nonatomic, readonly, copy) NSString *tipText;
 
 /**
+ * @brief 提示文字的额外属性
+ */
+@property (nonatomic, readonly, copy) NSDictionary<NSString *, id> *tipExtraAttributes;
+
+/**
+ * @brief 提示文字的额外属性的range
+ */
+@property (nonatomic, readonly, assign) NSRange tipExtraAttributesRange;
+
+/**
  * @brief 提示的时间
  */
 @property (nonatomic, readonly, copy) NSDate *date;

@@ -39,6 +39,8 @@
 
 - (void)pushChatViewAction:(id)sender {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    [chatViewManager enableVoiceMessage:false];
+    [chatViewManager enableImageMessage:false];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
