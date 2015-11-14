@@ -43,11 +43,9 @@
     NSString *cellModelName = NSStringFromClass([cellModel class]);
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellModelName];
     if (!cell){
-//        if (!(cell = [tableView cellForRowAtIndexPath:indexPath])) {
-            cell = [cellModel getCellWithReuseIdentifier:cellModelName];
-            MQChatBaseCell *chatCell = (MQChatBaseCell*)cell;
-            chatCell.chatCellDelegate = self.chatCellDelegate;
-//        }
+        cell = [cellModel getCellWithReuseIdentifier:cellModelName];
+        MQChatBaseCell *chatCell = (MQChatBaseCell*)cell;
+        chatCell.chatCellDelegate = self.chatCellDelegate;
     }
     if (![cell isKindOfClass:[MQChatBaseCell class]]) {
         NSAssert(NO, @"ChatTableDataSource的cellForRow中，没有返回正确的cell类型");
