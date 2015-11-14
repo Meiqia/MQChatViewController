@@ -80,6 +80,7 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
         avatarImageView.image = cellModel.avatarImage;
     } else {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+#warning 这里开发者可以使用自己的图片缓存策略，如SDWebImage
             NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:cellModel.avatarPath]];
             avatarImageView.image = [UIImage imageWithData:imageData];
         });

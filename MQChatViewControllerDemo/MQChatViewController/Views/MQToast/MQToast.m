@@ -1,8 +1,10 @@
 #import "MQToast.h"
 #import <UIKit/UIKit.h>
 
-static const float MQToastMaxWidth = 0.8; //window宽度的80%
-static const float MQToastFontSize = 14;
+static const float kMQToastMaxWidth = 0.8; //window宽度的80%
+static const float kMQToastFontSize = 14;
+static const float kMQToastHorizontalSpacing = 8.0;
+static const float kMQToastVerticalSpacing = 6.0;
 
 @implementation MQToast
 
@@ -12,7 +14,7 @@ static const float MQToastFontSize = 14;
 
     UILabel* titleLabel        = [[UILabel alloc] init];
     titleLabel.numberOfLines   = 0;
-    titleLabel.font            = [UIFont boldSystemFontOfSize:MQToastFontSize];
+    titleLabel.font            = [UIFont boldSystemFontOfSize:kMQToastFontSize];
     titleLabel.textAlignment   = NSTextAlignmentCenter;
     titleLabel.lineBreakMode   = NSLineBreakByWordWrapping;
     titleLabel.textColor       = [UIColor whiteColor];
@@ -20,15 +22,15 @@ static const float MQToastFontSize = 14;
     titleLabel.alpha           = 1.0;
     titleLabel.text            = message;
     
-    CGSize maxSizeTitle      = CGSizeMake(windowSize.width * MQToastMaxWidth, windowSize.height);
+    CGSize maxSizeTitle      = CGSizeMake(windowSize.width * kMQToastMaxWidth, windowSize.height);
     CGSize expectedSizeTitle = [message sizeWithFont:titleLabel.font constrainedToSize:maxSizeTitle lineBreakMode:titleLabel.lineBreakMode];
-    titleLabel.frame         = CGRectMake(2, 2, expectedSizeTitle.width + 4, expectedSizeTitle.height);
+    titleLabel.frame         = CGRectMake(kMQToastHorizontalSpacing, kMQToastVerticalSpacing, expectedSizeTitle.width + 4, expectedSizeTitle.height);
     
     UIView* view             = [[UIView alloc] init];
-    view.frame               = CGRectMake((windowSize.width - titleLabel.frame.size.width) / 2,
+    view.frame               = CGRectMake((windowSize.width - titleLabel.frame.size.width) / 2 - kMQToastHorizontalSpacing,
                                           windowSize.height * .85 - titleLabel.frame.size.height,
-                                          titleLabel.frame.size.width + 4,
-                                          titleLabel.frame.size.height + 4);
+                                          titleLabel.frame.size.width + kMQToastHorizontalSpacing * 2,
+                                          titleLabel.frame.size.height + kMQToastVerticalSpacing * 2);
     view.backgroundColor     = [UIColor colorWithWhite:.2 alpha:.7];
     view.alpha               = 0;
     view.layer.cornerRadius  = view.frame.size.height * .15;
