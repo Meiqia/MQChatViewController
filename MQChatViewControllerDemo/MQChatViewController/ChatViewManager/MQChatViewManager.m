@@ -28,6 +28,7 @@
         chatViewController = [[MQChatViewController alloc] initWithChatViewManager:chatViewConfig];
     }
     if (viewController.navigationController) {
+        chatViewConfig.isPushChatView = true;
         [self updateNavAttributesWithNavigationController:viewController.navigationController];
         [viewController.navigationController pushViewController:chatViewController animated:true];
     } else {
@@ -37,6 +38,7 @@
 }
 
 - (MQChatViewController *)presentMQChatViewControllerInViewController:(UIViewController *)viewController {
+    chatViewConfig.isPresentChatView = true;
     if (!chatViewController) {
         chatViewController = [[MQChatViewController alloc] initWithChatViewManager:chatViewConfig];
     }

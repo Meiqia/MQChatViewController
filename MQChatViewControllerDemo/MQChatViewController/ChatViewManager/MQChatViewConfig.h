@@ -48,6 +48,8 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 @property (nonatomic, assign) BOOL enableRoundAvatar;
 @property (nonatomic, assign) BOOL enableWelcomeChat;
 @property (nonatomic, assign) BOOL enableTopAutoRefresh;
+@property (nonatomic, assign) BOOL isPushChatView;
+@property (nonatomic, assign) BOOL isPresentChatView;
 
 @property (nonatomic, copy) UIColor *incomingMsgTextColor;
 @property (nonatomic, copy) UIColor *incomingBubbleColor;

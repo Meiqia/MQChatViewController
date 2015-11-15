@@ -44,6 +44,11 @@
  */
 - (instancetype)initWithChatViewManager:(MQChatViewConfig *)chatViewConfig;
 
+/**
+ *  关闭聊天界面
+ */
+- (void)disappearChatViewController;
+
 #ifdef INCLUDE_MEIQIA_SDK
 /**
  *  聊天界面的委托方法

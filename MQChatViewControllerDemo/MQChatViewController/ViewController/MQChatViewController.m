@@ -100,6 +100,16 @@ static NSInteger const kMQChatNavTitleIndicatorTag  = 2002;
     // Dispose of any resources that can be recreated.
 }
 
+- (void)disappearChatViewController {
+    if ([MQChatViewConfig sharedConfig].isPushChatView) {
+        [self.navigationController popViewControllerAnimated:true];
+    } else if ([MQChatViewConfig sharedConfig].isPresentChatView) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        NSAssert(false, @"disappearChatViewController错误");
+    }
+}
+
 #pragma 添加消息通知的observer
 - (void)setNotificationObserver {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resignKeyboardFirstResponder:) name:MQChatViewKeyboardResignFirstResponderNotification object:nil];
