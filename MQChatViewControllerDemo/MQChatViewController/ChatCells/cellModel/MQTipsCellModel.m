@@ -17,8 +17,8 @@ static CGFloat const kMQMessageTipsLabelLineVerticalMargin = 2.0;
 //上下两条线超过文字label的距离
 static CGFloat const kMQMessageTipsLabelToLineSpacing = 48.0;
 static CGFloat const kMQMessageTipsCellHeight = 64.0;
-static CGFloat const kMQMessageTipsFontSize = 15.0;
 static CGFloat const kMQMessageTipsLineHeight = 0.5;
+CGFloat const kMQMessageTipsFontSize = 13.0;
 
 @interface MQTipsCellModel()
 /**

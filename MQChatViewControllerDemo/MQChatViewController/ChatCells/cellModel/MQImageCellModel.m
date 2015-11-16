@@ -122,7 +122,6 @@
             }
         }
         
-//        CGFloat bubbleWidth = cellWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToBubbleSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
         //内容图片
         self.image = message.image;
         if (!message.image) {
