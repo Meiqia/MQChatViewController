@@ -8,6 +8,7 @@
 
 #import "MQChatAudioPlayer.h"
 #import <UIKit/UIKit.h>
+#import "MQChatViewConfig.h"
 
 @interface MQChatAudioPlayer()<AVAudioPlayerDelegate>
 
@@ -67,7 +68,7 @@
     [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: nil];
     
     //接收关闭声音的通知
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioPlayerDidInterrupt:) name:@"MQAudioPlayerDidInterrupt" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioPlayerDidInterrupt:) name:MQAudioPlayerDidInterruptNotification object:nil];
     //红外线感应监听
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(sensorStateChange:)
@@ -80,7 +81,7 @@
 
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
-    [self.delegate MQAudioPlayerDidFinishPlay];
+    [self didFinishAudioPlay];
 }
 
 - (void)stopSound
@@ -88,7 +89,7 @@
     if (_player && _player.isPlaying) {
         [_player stop];
     }
-    [self removeAudioObserver];
+    [self didFinishAudioPlay];
 }
 
 - (void)removeAudioObserver {
@@ -99,6 +100,12 @@
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application{
+    [self didFinishAudioPlay];
+}
+
+//音频播放结束
+- (void)didFinishAudioPlay {
+    [self removeAudioObserver];
     [self.delegate MQAudioPlayerDidFinishPlay];
 }
 
@@ -117,7 +124,9 @@
 
 //声音播放被打断的通知
 - (void)audioPlayerDidInterrupt:(NSNotification *)notification {
-    [self stopSound];
+    if (_player && _player.isPlaying) {
+        [_player stop];
+    }
 }
 
 @end

@@ -11,6 +11,7 @@
 #import "MQChatFileUtil.h"
 #import "MQChatViewConfig.h"
 #import "MQChatAudioPlayer.h"
+#import "VoiceConverter.h"
 
 @interface MQVoiceMessageCell()<MQChatAudioPlayerDelegate>
 
@@ -29,12 +30,11 @@
 }
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"MQAudioPlayerDidInterrupt" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MQAudioPlayerDidInterruptNotification object:nil];
 }
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-//        isVoicePlaying = false;
         //初始化头像
         avatarImageView = [[UIImageView alloc] init];
         avatarImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -54,19 +54,23 @@
         durationLabel.textColor = [UIColor lightGrayColor];
         durationLabel.font = [UIFont systemFontOfSize:kMQCellVoiceDurationLabelFontSize];
         durationLabel.textAlignment = NSTextAlignmentCenter;
+        durationLabel.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:durationLabel];
         //初始化语音图片
         voiceImageView = [[UIImageView alloc] init];
         [bubbleImageView addSubview:voiceImageView];
         //初始化出错image
         failureImageView = [[UIImageView alloc] initWithImage:[MQChatViewConfig sharedConfig].messageSendFailureImage];
+        UITapGestureRecognizer *tapFailureImageGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapFailImage:)];
+        failureImageView.userInteractionEnabled = true;
+        [failureImageView addGestureRecognizer:tapFailureImageGesture];
         [self.contentView addSubview:failureImageView];
         //初始化加载数据的indicator
         loadingIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         loadingIndicator.hidden = YES;
         [bubbleImageView addSubview:loadingIndicator];
         //注册声音中断的通知
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopVoiceAnimation) name:@"MQAudioPlayerDidInterrupt" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopVoiceAnimation) name:MQAudioPlayerDidInterruptNotification object:nil];
     }
     return self;
 }
@@ -76,7 +80,7 @@
     if (!voiceData) {
         return ;
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"MQAudioPlayerDidInterrupt" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:MQAudioPlayerDidInterruptNotification object:nil];
     audioPlayer = [MQChatAudioPlayer sharedInstance];
     audioPlayer.delegate = self;
     [audioPlayer stopSound];
@@ -97,16 +101,20 @@
     MQVoiceCellModel *cellModel = (MQVoiceCellModel *)model;
     
     //刷新头像
-    if (cellModel.avatarPath.length == 0) {
-        avatarImageView.image = cellModel.avatarLocalImage;
+    if (cellModel.avatarImage) {
+        avatarImageView.image = cellModel.avatarImage;
     } else {
-#warning 使用SDWebImage或自己写获取远程图片的方法
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+#warning 这里开发者可以使用自己的图片缓存策略，如SDWebImage
             NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:cellModel.avatarPath]];
             avatarImageView.image = [UIImage imageWithData:imageData];
         });
     }
     avatarImageView.frame = cellModel.avatarFrame;
+    if ([MQChatViewConfig sharedConfig].enableRoundAvatar) {
+        avatarImageView.layer.masksToBounds = YES;
+        avatarImageView.layer.cornerRadius = cellModel.avatarFrame.size.width/2;
+    }
     
     //刷新气泡
     bubbleImageView.image = cellModel.bubbleImage;
@@ -153,7 +161,7 @@
     //刷新indicator
     sendingIndicator.hidden = true;
     [sendingIndicator stopAnimating];
-    if (cellModel.sendType == MQChatCellSending && cellModel.cellFromType == MQChatCellOutgoing) {
+    if (cellModel.sendStatus == MQChatMessageSendStatusSending && cellModel.cellFromType == MQChatCellOutgoing) {
         sendingIndicator.frame = cellModel.sendingIndicatorFrame;
         [sendingIndicator startAnimating];
     } else {
@@ -162,7 +170,7 @@
     
     //刷新出错图片
     failureImageView.hidden = true;
-    if (cellModel.sendType == MQChatCellSentFailure) {
+    if (cellModel.sendStatus == MQChatMessageSendStatusFailure) {
         failureImageView.hidden = false;
         failureImageView.frame = cellModel.sendFailureFrame;
     }
@@ -173,6 +181,8 @@
  */
 - (void)playVoice {
     [voiceImageView startAnimating];
+    //关闭键盘通知
+    [[NSNotificationCenter defaultCenter] postNotificationName:MQChatViewKeyboardResignFirstResponderNotification object:nil];
 }
 
 /**
@@ -195,6 +205,36 @@
 
 - (void)MQAudioPlayerDidFinishPlay {
     [self stopVoiceAnimation];
+}
+
+#pragma 点击发送失败消息，重新发送事件
+- (void)tapFailImage:(id)sender {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"重新发送吗？" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alertView show];
+}
+
+#pragma UIAlertViewDelegate
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        NSLog(@"重新发送");
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+            //将voiceData写进文件
+            NSString *wavPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+            wavPath = [wavPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.wav", (int)[NSDate date].timeIntervalSince1970]];
+            NSFileManager *fileManager = [NSFileManager defaultManager];
+            [fileManager createFileAtPath:wavPath contents:voiceData attributes:nil];
+            if (![fileManager fileExistsAtPath:wavPath]) {
+                NSAssert(NO, @"将voiceData写进文件失败");
+            }
+            //将wav文件转换成amr文件
+            NSString *amrPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+            amrPath = [amrPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.amr", (int)[NSDate date].timeIntervalSince1970]];
+            [VoiceConverter wavToAmr:wavPath amrSavePath:amrPath];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.chatCellDelegate resendMessageInCell:self resendData:@{@"voice" : amrPath}];
+            });
+        });
+    }
 }
 
 

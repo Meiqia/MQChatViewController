@@ -10,13 +10,18 @@
 #import "MQChatBaseCell.h"
 #import "MQImageMessageCell.h"
 #import "MQChatViewConfig.h"
-
+#import "MQImageUtil.h"
 @interface MQImageCellModel()
 
 /**
  * @brief cell中消息的id
  */
 @property (nonatomic, readwrite, strong) NSString *messageId;
+
+/**
+ * @brief cell的宽度
+ */
+@property (nonatomic, readwrite, assign) CGFloat cellWidth;
 
 /**
  * @brief cell的高度
@@ -44,9 +49,9 @@
 @property (nonatomic, readwrite, copy) NSString *avatarPath;
 
 /**
- * @brief 发送者的头像的图片 (如果在头像path不存在的情况下，才使用这个属性)
+ * @brief 发送者的头像的图片
  */
-@property (nonatomic, readwrite, copy) UIImage *avatarLocalImage;
+@property (nonatomic, readwrite, copy) UIImage *avatarImage;
 
 /**
  * @brief 聊天气泡的image（该气泡image已经进行了resize）
@@ -91,40 +96,62 @@
 /**
  *  根据MQMessage内容来生成cell model
  */
-- (MQImageCellModel *)initCellModelWithMessage:(MQImageMessage *)message cellWidth:(CGFloat)cellWidth {
+- (MQImageCellModel *)initCellModelWithMessage:(MQImageMessage *)message
+                                     cellWidth:(CGFloat)cellWidth
+                                      delegate:(id<MQCellModelDelegate>)delegator{
     if (self = [super init]) {
+        self.cellWidth = cellWidth;
+        self.delegate = delegator;
         self.messageId = message.messageId;
-        self.sendType = MQChatCellSending;
+        self.sendStatus = message.sendStatus;
         self.date = message.date;
         self.avatarPath = @"";
-        self.avatarLocalImage = [MQChatViewConfig sharedConfig].agentDefaultAvatarImage;
-        if (message.userAvatarPath) {
+        if (message.userAvatarImage) {
+            self.avatarImage = message.userAvatarImage;
+        } else if (message.userAvatarPath.length > 0) {
             self.avatarPath = message.userAvatarPath;
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+#warning 这里开发者可以使用自己的图片缓存策略，如SDWebImage
+                NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:message.userAvatarPath]];
+                self.avatarImage = [UIImage imageWithData:imageData];
+            });
+        } else {
+            self.avatarImage = [MQChatViewConfig sharedConfig].agentDefaultAvatarImage;
+            if (message.fromType == MQChatMessageOutgoing) {
+                self.avatarImage = [MQChatViewConfig sharedConfig].clientDefaultAvatarImage;
+            }
         }
         
 //        CGFloat bubbleWidth = cellWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToBubbleSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
         //内容图片
         self.image = message.image;
-//        self.imagePath = @"";
         if (!message.image) {
             if (message.imagePath.length > 0) {
                 [self setModelsWithContentImage:[MQChatViewConfig sharedConfig].incomingBubbleImage message:message cellWidth:cellWidth];
                 //新建线程读取远程图片
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:message.imagePath]];
-                    if (imageData) {
-                        UIImage *image = [UIImage imageWithData:imageData];
-                        self.image = image;
-                        if (self.delegate) {
-                            if ([self.delegate respondsToSelector:@selector(didUpdateCellDataWithMessageId:)]) {
-                                [self.delegate didUpdateCellDataWithMessageId:self.messageId];
-                            }
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+                    NSError *error;
+#warning 这里开发者可以使用自己的图片缓存策略，如SDWebImage
+                    NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:message.imagePath] options:NSDataReadingMappedIfSafe error:&error];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (error) {
+                            NSLog(@"load image error = %@", error);
                         }
-                    } else {
+                        if (imageData) {
+                            UIImage *image = [UIImage imageWithData:imageData];
+                            self.image = image;
+                            [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
+                            if (self.delegate) {
+                                if ([self.delegate respondsToSelector:@selector(didUpdateCellDataWithMessageId:)]) {
+                                    [self.delegate didUpdateCellDataWithMessageId:self.messageId];
+                                }
+                            }
+                        } else {
 #warning 这里增加加载图片出错的图片
-                        self.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@""]];
-                    }
-                    [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
+                            self.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@""]];
+                            [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
+                        }
+                    });
                 });
             } else {
 #warning 这里增加加载图片出错的图片
@@ -158,28 +185,40 @@
     
     //根据消息的来源，进行处理
     UIImage *bubbleImage = [MQChatViewConfig sharedConfig].incomingBubbleImage;
-    if (message.fromType == MQMessageOutgoing) {
+    if ([MQChatViewConfig sharedConfig].incomingBubbleColor) {
+        bubbleImage = [MQImageUtil convertImageColorWithImage:bubbleImage toColor:[MQChatViewConfig sharedConfig].incomingBubbleColor];
+    }
+    if (message.fromType == MQChatMessageOutgoing) {
         //发送出去的消息
         self.cellFromType = MQChatCellOutgoing;
         bubbleImage = [MQChatViewConfig sharedConfig].outgoingBubbleImage;
-        
+        if ([MQChatViewConfig sharedConfig].outgoingBubbleColor) {
+            bubbleImage = [MQImageUtil convertImageColorWithImage:bubbleImage toColor:[MQChatViewConfig sharedConfig].outgoingBubbleColor];
+        }
         //头像的frame
-        //            self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
-        self.avatarFrame = CGRectMake(0, 0, 0, 0);
+        if ([MQChatViewConfig sharedConfig].enableClientAvatar) {
+            self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
+        } else {
+            self.avatarFrame = CGRectMake(0, 0, 0, 0);
+        }
         //气泡的frame
-        self.bubbleImageFrame = CGRectMake(cellWidth-kMQCellAvatarToBubbleSpacing-bubbleWidth, kMQCellAvatarToVerticalEdgeSpacing, bubbleWidth, bubbleHeight);
+        self.bubbleImageFrame = CGRectMake(cellWidth-self.avatarFrame.size.width-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarToBubbleSpacing-bubbleWidth, kMQCellAvatarToVerticalEdgeSpacing, bubbleWidth, bubbleHeight);
     } else {
         //收到的消息
         self.cellFromType = MQChatCellIncoming;
         
         //头像的frame
-        self.avatarFrame = CGRectMake(kMQCellAvatarToHorizontalEdgeSpacing, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
+        if ([MQChatViewConfig sharedConfig].enableAgentAvatar) {
+            self.avatarFrame = CGRectMake(kMQCellAvatarToHorizontalEdgeSpacing, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
+        } else {
+            self.avatarFrame = CGRectMake(0, 0, 0, 0);
+        }
         //气泡的frame
         self.bubbleImageFrame = CGRectMake(self.avatarFrame.origin.x+self.avatarFrame.size.width+kMQCellAvatarToBubbleSpacing, self.avatarFrame.origin.y, bubbleWidth, bubbleHeight);
     }
     
     //loading image的indicator
-    self.loadingIndicatorFrame = CGRectMake(self.bubbleImageFrame.origin.x+self.bubbleImageFrame.size.width/2-kMQCellIndicatorDiameter/2, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-kMQCellIndicatorDiameter/2, kMQCellIndicatorDiameter, kMQCellIndicatorDiameter);
+    self.loadingIndicatorFrame = CGRectMake(self.bubbleImageFrame.size.width/2-kMQCellIndicatorDiameter/2, self.bubbleImageFrame.size.height/2-kMQCellIndicatorDiameter/2, kMQCellIndicatorDiameter, kMQCellIndicatorDiameter);
     
     //气泡图片
     CGPoint centerArea = CGPointMake(bubbleImage.size.width / 4.0f, bubbleImage.size.height*3.0f / 4.0f);
@@ -191,7 +230,8 @@
     
     //发送失败的图片frame
     UIImage *failureImage = [MQChatViewConfig sharedConfig].messageSendFailureImage;
-    self.sendFailureFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-failureImage.size.width, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-failureImage.size.height/2, failureImage.size.width, failureImage.size.height);
+    CGSize failureSize = CGSizeMake(ceil(failureImage.size.width * 2 / 3), ceil(failureImage.size.height * 2 / 3));
+    self.sendFailureFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-failureSize.width, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-failureSize.height/2, failureSize.width, failureSize.height);
     
     //计算cell的高度
     self.cellHeight = self.bubbleImageFrame.origin.y + self.bubbleImageFrame.size.height + kMQCellAvatarToVerticalEdgeSpacing;
@@ -223,5 +263,36 @@
 - (NSString *)getCellMessageId {
     return self.messageId;
 }
+
+- (void)updateCellSendStatus:(MQChatMessageSendStatus)sendStatus {
+    self.sendStatus = sendStatus;
+}
+
+- (void)updateCellMessageId:(NSString *)messageId {
+    self.messageId = messageId;
+}
+
+- (void)updateCellMessageDate:(NSDate *)messageDate {
+    self.date = messageDate;
+}
+
+- (void)updateCellFrameWithCellWidth:(CGFloat)cellWidth {
+    self.cellWidth = cellWidth;
+    if (self.cellFromType == MQChatCellOutgoing) {
+        //头像的frame
+        if ([MQChatViewConfig sharedConfig].enableClientAvatar) {
+            self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
+        } else {
+            self.avatarFrame = CGRectMake(0, 0, 0, 0);
+        }
+        //气泡的frame
+        self.bubbleImageFrame = CGRectMake(cellWidth-self.avatarFrame.size.width-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarToBubbleSpacing-self.bubbleImageFrame.size.width, kMQCellAvatarToVerticalEdgeSpacing, self.bubbleImageFrame.size.width, self.bubbleImageFrame.size.height);
+        //发送指示器的frame
+        self.sendingIndicatorFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-self.sendingIndicatorFrame.size.width, self.sendingIndicatorFrame.origin.y, self.sendingIndicatorFrame.size.width, self.sendingIndicatorFrame.size.height);
+        //发送出错图片的frame
+        self.sendFailureFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-self.sendFailureFrame.size.width, self.sendFailureFrame.origin.y, self.sendFailureFrame.size.width, self.sendFailureFrame.size.height);
+    }
+}
+
 
 @end

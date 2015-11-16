@@ -26,6 +26,10 @@
     pushChatViewBtn.frame = CGRectMake(100, 200, 200, 30);
     [pushChatViewBtn addTarget:self action:@selector(pushChatViewAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:pushChatViewBtn];
+    
+    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    [chatViewManager setchatWelcomeText:@""];
+    [chatViewManager presentMQChatViewControllerInViewController:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -35,6 +39,8 @@
 
 - (void)pushChatViewAction:(id)sender {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    [chatViewManager enableVoiceMessage:false];
+    [chatViewManager enableImageMessage:false];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 

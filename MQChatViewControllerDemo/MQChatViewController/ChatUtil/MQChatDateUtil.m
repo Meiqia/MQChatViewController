@@ -109,5 +109,11 @@
     return str;
 }
 
++ (NSDate *)getLocalDate {
+    NSTimeZone *zone = [NSTimeZone systemTimeZone];
+    NSInteger interval = [zone secondsFromGMTForDate: [NSDate date]];
+    NSDate *localeDate = [[NSDate date]  dateByAddingTimeInterval: interval];
+    return localeDate;
+}
 
 @end

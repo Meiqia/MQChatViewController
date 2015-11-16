@@ -8,6 +8,7 @@
 
 #import "MQChatViewManager.h"
 #import "MQChatViewConfig.h"
+#import "MQImageUtil.h"
 
 @implementation MQChatViewManager {
 #warning 这些属性需要如果需要实时和chatView同步，则需要在增加chatViewController中的相关方法后，再添加
@@ -17,7 +18,7 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        chatViewConfig = [[MQChatViewConfig alloc] init];
+        chatViewConfig = [MQChatViewConfig sharedConfig];
     }
     return self;
 }
@@ -27,6 +28,8 @@
         chatViewController = [[MQChatViewController alloc] initWithChatViewManager:chatViewConfig];
     }
     if (viewController.navigationController) {
+        chatViewConfig.isPushChatView = true;
+        [self updateNavAttributesWithNavigationController:viewController.navigationController];
         [viewController.navigationController pushViewController:chatViewController animated:true];
     } else {
         [self presentMQChatViewControllerInViewController:viewController];
@@ -35,11 +38,28 @@
 }
 
 - (MQChatViewController *)presentMQChatViewControllerInViewController:(UIViewController *)viewController {
-    if (chatViewController) {
+    chatViewConfig.isPresentChatView = true;
+    if (!chatViewController) {
         chatViewController = [[MQChatViewController alloc] initWithChatViewManager:chatViewConfig];
     }
-    [viewController presentViewController:chatViewController animated:true completion:nil];
+    UINavigationController *chatNavigationController = [[UINavigationController alloc] initWithRootViewController:chatViewController];
+    [self updateNavAttributesWithNavigationController:chatNavigationController];
+    UIImage *cancelImage = [MQChatViewConfig sharedConfig].navBarLeftButtomImage;
+    cancelImage = [MQImageUtil convertImageColorWithImage:cancelImage toColor:[MQChatViewConfig sharedConfig].navBarTintColor];
+    UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    cancelBtn.frame = CGRectMake(0, 0, cancelImage.size.width, cancelImage.size.height);
+    [cancelBtn setBackgroundImage:cancelImage forState:UIControlStateNormal];
+    [cancelBtn addTarget:chatViewController action:@selector(dismissChatModalView) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
+    chatViewController.navigationItem.leftBarButtonItem = leftItem;
+    [viewController presentViewController:chatNavigationController animated:true completion:nil];
     return chatViewController;
+}
+
+//修改导航栏属性
+- (void)updateNavAttributesWithNavigationController:(UINavigationController *)navigationController {
+    navigationController.navigationBar.tintColor = [MQChatViewConfig sharedConfig].navBarTintColor;
+    navigationController.navigationBar.backgroundColor = [MQChatViewConfig sharedConfig].navBarColor;
 }
 
 - (void)disappearMQChatViewController {
@@ -47,6 +67,10 @@
         return ;
     }
 #warning 需要在chatViewController中添加disappear后，再写这里
+}
+
+- (void)enableCustomChatViewFrame:(BOOL)enable {
+    chatViewConfig.isCustomizedChatViewFrame = enable;
 }
 
 - (void)setChatViewFrame:(CGRect)viewFrame {
@@ -62,7 +86,7 @@
 }
 
 - (void)setMessageEmailRegex:(NSString *)emailRegex {
-    [chatViewConfig.linkRegexs addObject:emailRegex];
+    [chatViewConfig.emailRegexs addObject:emailRegex];
 }
 
 - (void)enableSyncServerMessage:(BOOL)enable {
@@ -89,8 +113,16 @@
     chatViewConfig.incomingMsgTextColor = [textColor copy];
 }
 
+- (void)setIncomingBubbleColor:(UIColor *)bubbleColor {
+    chatViewConfig.incomingBubbleColor = bubbleColor;
+}
+
 - (void)setOutgoingMessageTextColor:(UIColor *)textColor {
     chatViewConfig.outgoingMsgTextColor = [textColor copy];
+}
+
+- (void)setOutgoingBubbleColor:(UIColor *)bubbleColor {
+    chatViewConfig.outgoingBubbleColor = bubbleColor;
 }
 
 - (void)setEventTextColor:(UIColor *)textColor {
@@ -105,6 +137,10 @@
     chatViewConfig.navBarColor = [barColor copy];
 }
 
+- (void)setPullRefreshColor:(UIColor *)pullRefreshColor {
+    chatViewConfig.pullRefreshColor = pullRefreshColor;
+}
+
 - (void)setAgentOnlineTip:(NSString *)tipText {
     chatViewConfig.agentOnlineTipText = [tipText copy];
 }
@@ -113,16 +149,28 @@
     chatViewConfig.agentOfflineTipText = [tipText copy];
 }
 
-- (void)setChatWelcomText:(NSString *)welcomText {
-    chatViewConfig.chatWelcomText = [welcomText copy];
+- (void)setchatWelcomeText:(NSString *)welcomText {
+    chatViewConfig.chatWelcomeText = [welcomText copy];
+}
+
+- (void)setAgentName:(NSString *)agentName {
+    chatViewConfig.agentName = [agentName copy];
 }
 
 - (void)enableAgentAvatar:(BOOL)enable {
     chatViewConfig.enableAgentAvatar = enable;
 }
 
+- (void)enableClientAvatar:(BOOL)enable {
+    chatViewConfig.enableClientAvatar = enable;
+}
+
 - (void)setAgentDefaultAvatarImage:(UIImage *)image {
     chatViewConfig.agentDefaultAvatarImage = [UIImage imageWithCGImage:image.CGImage];
+}
+
+- (void)setClientDefaultAvatarImage:(UIImage *)image {
+    chatViewConfig.clientDefaultAvatarImage = [UIImage imageWithCGImage:image.CGImage];
 }
 
 - (void)setPhotoSenderImage:(UIImage *)image {
@@ -141,6 +189,14 @@
     chatViewConfig.outgoingBubbleImage = [UIImage imageWithCGImage:bubbleImage.CGImage];
 }
 
+- (void)setNavLeftButtomImage:(UIImage *)leftButtomImage {
+    chatViewConfig.navBarLeftButtomImage = leftButtomImage;
+}
+
+- (void)setNavRightButtomImage:(UIImage *)rightButtomImage {
+    chatViewConfig.navBarRightButtomImage = rightButtomImage;
+}
+
 - (void)enableCustomRecordView:(BOOL)enable {
     chatViewConfig.enableCustomRecordView = enable;
 }
@@ -149,14 +205,33 @@
     chatViewConfig.enableMessageSound = enable;
 }
 
-- (void)setOutgoingMessageSound:(NSData *)soundData {
-    chatViewConfig.outgoingMsgSoundData = [NSData dataWithData:soundData];
+- (void)enableTopPullRefresh:(BOOL)enable {
+    chatViewConfig.enableTopPullRefresh = enable;
 }
 
-- (void)setIncomingMessageSound:(NSData *)soundData {
-    chatViewConfig.incomingMsgSoundData = [NSData dataWithData:soundData];
+- (void)enableRoundAvatar:(BOOL)enable {
+    chatViewConfig.enableRoundAvatar = enable;
 }
 
+- (void)enableTopAutoRefresh:(BOOL)enable {
+    chatViewConfig.enableTopAutoRefresh = enable;
+}
+
+- (void)enableBottomPullRefresh:(BOOL)enable {
+    chatViewConfig.enableBottomPullRefresh = enable;
+}
+
+- (void)enableWelcomeChat:(BOOL)enable {
+    chatViewConfig.enableWelcomeChat = enable;
+}
+
+- (void)setIncomingMessageSoundFileName:(NSString *)soundFileName {
+    chatViewConfig.incomingMsgSoundFileName = soundFileName;
+}
+
+- (void)setMaxRecordDuration:(NSTimeInterval)recordDuration {
+    chatViewConfig.maxVoiceDuration = recordDuration;
+}
 
 
 

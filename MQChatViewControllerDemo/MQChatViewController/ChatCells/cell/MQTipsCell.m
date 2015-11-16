@@ -24,6 +24,8 @@ static CGFloat const kMQMessageTipsLabelFontSize = 12.0;
         tipsLabel.textColor = [UIColor grayColor];
         tipsLabel.textAlignment = NSTextAlignmentCenter;
         tipsLabel.font = [UIFont systemFontOfSize:kMQMessageTipsLabelFontSize];
+        tipsLabel.backgroundColor = [UIColor clearColor];
+        tipsLabel.numberOfLines = 0;
         [self.contentView addSubview:tipsLabel];
         //画上下两条线
         topLineLayer = [self gradientLine];
@@ -44,7 +46,9 @@ static CGFloat const kMQMessageTipsLabelFontSize = 12.0;
     MQTipsCellModel *cellModel = (MQTipsCellModel *)model;
     
     //刷新时间label
-    tipsLabel.text = cellModel.tipText;
+    NSMutableAttributedString *tipsString = [[NSMutableAttributedString alloc] initWithString:cellModel.tipText];
+    [tipsString addAttributes:cellModel.tipExtraAttributes range:cellModel.tipExtraAttributesRange];
+    tipsLabel.attributedText = tipsString;
     tipsLabel.frame = cellModel.tipLabelFrame;
     
     //刷新上下两条线
@@ -55,11 +59,11 @@ static CGFloat const kMQMessageTipsLabelFontSize = 12.0;
 - (CAGradientLayer*)gradientLine {
     CAGradientLayer* line = [CAGradientLayer layer];
     line.backgroundColor = [UIColor clearColor].CGColor;
-    line.startPoint = CGPointMake(0, 0.5);
-    line.endPoint = CGPointMake(1, 0.5);
+    line.startPoint = CGPointMake(0.1, 0.5);
+    line.endPoint = CGPointMake(0.9, 0.5);
     line.colors = @[(id)[UIColor clearColor].CGColor,
-                    (id)[UIColor grayColor].CGColor,
-                    (id)[UIColor grayColor].CGColor,
+                    (id)[UIColor lightGrayColor].CGColor,
+                    (id)[UIColor lightGrayColor].CGColor,
                     (id)[UIColor clearColor].CGColor];
     return line;
 }

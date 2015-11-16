@@ -52,9 +52,9 @@
 @property (nonatomic, readonly, copy) NSString *avatarPath;
 
 /**
- * @brief 发送者的头像的图片 (如果在头像path不存在的情况下，才使用这个属性)
+ * @brief 发送者的头像的图片
  */
-@property (nonatomic, readonly, copy) UIImage *avatarLocalImage;
+@property (nonatomic, readonly, copy) UIImage *avatarImage;
 
 /**
  * @brief 聊天气泡的image
@@ -104,13 +104,15 @@
 /**
  * @brief 消息的发送状态
  */
-@property (nonatomic, assign) MQChatCellSendType sendType;
+@property (nonatomic, assign) MQChatMessageSendStatus sendStatus;
 
 
 /**
  *  根据MQMessage内容来生成cell model
  */
-- (MQVoiceCellModel *)initCellModelWithMessage:(MQVoiceMessage *)message cellWidth:(CGFloat)cellWidth;
+- (MQVoiceCellModel *)initCellModelWithMessage:(MQVoiceMessage *)message
+                                     cellWidth:(CGFloat)cellWidth
+                                      delegate:(id<MQCellModelDelegate>)delegator;
 
 
 

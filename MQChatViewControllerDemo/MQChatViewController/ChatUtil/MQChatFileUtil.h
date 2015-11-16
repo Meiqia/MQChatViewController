@@ -23,4 +23,11 @@
 /** 获取音频长度 */
 + (NSTimeInterval)getAudioDurationWithData:(NSData *)audioData;
 
+/**
+ *  播放文件的声音
+ *
+ *  @param fileName 声音文件名字
+ */
++ (void)playSoundWithSoundFile:(NSString *)fileName;
+
 @end

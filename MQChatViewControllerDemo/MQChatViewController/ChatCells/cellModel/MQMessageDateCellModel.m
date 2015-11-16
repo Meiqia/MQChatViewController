@@ -15,6 +15,11 @@
 
 @interface MQMessageDateCellModel()
 /**
+ * @brief cell的宽度
+ */
+@property (nonatomic, readwrite, assign) CGFloat cellWidth;
+
+/**
  * @brief cell的高度
  */
 @property (nonatomic, readwrite, assign) CGFloat cellHeight;
@@ -80,5 +85,11 @@
 - (NSString *)getCellMessageId {
     return @"";
 }
+
+- (void)updateCellFrameWithCellWidth:(CGFloat)cellWidth {
+    self.cellWidth = cellWidth;
+    self.dateLabelFrame = CGRectMake(cellWidth/2-self.dateLabelFrame.size.width/2, kMQChatMessageDateCellHeight/2-self.dateLabelFrame.size.height/2+kMQChatMessageDateLabelVerticalOffset, self.dateLabelFrame.size.width, self.dateLabelFrame.size.height);
+}
+
 
 @end

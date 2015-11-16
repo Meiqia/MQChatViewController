@@ -7,15 +7,27 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 /**
  *  message的来源枚举定义
- *  MQMessageIncoming - 收到的消息
- *  MQMessageOutgoing - 发送的消息
+ *  MQChatMessageIncoming - 收到的消息
+ *  MQChatMessageOutgoing - 发送的消息
  */
 typedef NS_ENUM(NSUInteger, MQChatMessageFromType) {
-    MQMessageIncoming,
-    MQMessageOutgoing
+    MQChatMessageIncoming,
+    MQChatMessageOutgoing
+};
+
+/**
+ *  message的来源枚举定义
+ *  MQChatMessageIncoming - 收到的消息
+ *  MQChatMessageOutgoing - 发送的消息
+ */
+typedef NS_ENUM(NSUInteger, MQChatMessageSendStatus) {
+    MQChatMessageSendStatusSuccess,
+    MQChatMessageSendStatusSending,
+    MQChatMessageSendStatusFailure
 };
 
 
@@ -35,6 +47,13 @@ typedef NS_ENUM(NSUInteger, MQChatMessageFromType) {
 
 /** 消息发送人头像Path */
 @property (nonatomic, copy) NSString *userAvatarPath;
+
+/** 消息发送人头像image */
+@property (nonatomic, strong) UIImage *userAvatarImage;
+
+/** 消息发送的状态 */
+@property (nonatomic, assign) MQChatMessageSendStatus sendStatus;
+
 
 
 @end

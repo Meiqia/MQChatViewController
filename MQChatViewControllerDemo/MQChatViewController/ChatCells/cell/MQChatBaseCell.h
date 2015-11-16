@@ -22,12 +22,39 @@
 
 @end
 
+/**
+ * 所有cell的代理方法
+ */
+@protocol MQChatCellDelegate <NSObject>
+
+- (void)showToastViewInCell:(UITableViewCell *)cell toastText:(NSString *)toastText;
+
+/**
+ * 该委托定义了cell中重新发送；
+ * @param resendData 重新发送的字典 [text/image/voice : data]
+ */
+- (void)resendMessageInCell:(UITableViewCell *)cell resendData:(NSDictionary *)resendData;
+
+/**
+ * 消息中与regexs中的正则表达式匹配上的内容被点击的协议（若regexs使用默认值，可以不用实现该方法）
+ * @param content 被点击的消息
+ * @param selectedContent 与正则表达式匹配的内容
+ */
+
+- (void)didSelectMessageInCell:(UITableViewCell *)cell messageContent:(NSString *)content selectedContent:(NSString *)selectedContent;
+
+@end
+
 
 /**
  * MQChatBaseCell定义了客服聊天界面所有cell的父cell，开发者自定义的Cell请继承该Cell
  */
 @interface MQChatBaseCell : UITableViewCell <MQChatCellProtocol>
 
+/**
+ *  ChatCell的代理
+ */
+@property (nonatomic, weak) id<MQChatCellDelegate> chatCellDelegate;
 
 /**
  *  发送过来的消息气泡图片
@@ -45,7 +72,9 @@
 @property (nonatomic, assign) CGRect cellFrame;
 
 
-
+- (void)showMenuControllerInView:(UIView *)inView
+                      targetRect:(CGRect)targetRect
+                   menuItemsName:(NSDictionary *)menuItemsName;
 
 
 @end

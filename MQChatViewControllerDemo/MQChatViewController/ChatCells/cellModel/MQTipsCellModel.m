@@ -10,17 +10,22 @@
 #import "MQChatBaseCell.h"
 #import "MQTipsCell.h"
 #import "MQStringSizeUtil.h"
+#import "MQChatViewConfig.h"
 
 //上下两条线与cell垂直边沿的间距
 static CGFloat const kMQMessageTipsLabelLineVerticalMargin = 2.0;
 //上下两条线超过文字label的距离
-static CGFloat const kMQMessageTipsLabelToLineSpacing = 8.0;
-static CGFloat const kMQMessageTipsLabelHeight = 0.5;
-static CGFloat const kMQMessageTipsCellHeight = 54.0;
-static CGFloat const kMQMessageTipsFontSize = 14.0;
+static CGFloat const kMQMessageTipsLabelToLineSpacing = 48.0;
+static CGFloat const kMQMessageTipsCellHeight = 64.0;
+static CGFloat const kMQMessageTipsFontSize = 15.0;
 static CGFloat const kMQMessageTipsLineHeight = 0.5;
 
 @interface MQTipsCellModel()
+/**
+ * @brief cell的宽度
+ */
+@property (nonatomic, readwrite, assign) CGFloat cellWidth;
+
 /**
  * @brief cell的高度
  */
@@ -30,6 +35,16 @@ static CGFloat const kMQMessageTipsLineHeight = 0.5;
  * @brief 提示文字
  */
 @property (nonatomic, readwrite, copy) NSString *tipText;
+
+/**
+ * @brief 提示文字的额外属性
+ */
+@property (nonatomic, readwrite, copy) NSDictionary<NSString *, id> *tipExtraAttributes;
+
+/**
+ * @brief 提示文字的额外属性的range
+ */
+@property (nonatomic, readwrite, assign) NSRange tipExtraAttributesRange;
 
 /**
  * @brief 提示label的frame
@@ -72,10 +87,25 @@ static CGFloat const kMQMessageTipsLineHeight = 0.5;
         
         //上线条的frame
         CGFloat lineWidth = tipsWidth + kMQMessageTipsLabelToLineSpacing * 2;
-        self.topLineFrame = CGRectMake(cellWidth/2-lineWidth/2, 0, lineWidth, kMQMessageTipsLineHeight);
+        self.topLineFrame = CGRectMake(cellWidth/2-lineWidth/2, kMQMessageTipsLabelLineVerticalMargin, lineWidth, kMQMessageTipsLineHeight);
         
         //下线条的frame
-        self.bottomLineFrame = CGRectMake(self.topLineFrame.origin.x, kMQMessageTipsCellHeight-1-kMQMessageTipsLineHeight, lineWidth, kMQMessageTipsLineHeight);
+        self.bottomLineFrame = CGRectMake(self.topLineFrame.origin.x, kMQMessageTipsCellHeight-kMQMessageTipsLabelLineVerticalMargin-kMQMessageTipsLineHeight, lineWidth, kMQMessageTipsLineHeight);
+        
+        self.cellHeight = self.bottomLineFrame.origin.y + self.bottomLineFrame.size.height;
+        
+        //tip的文字额外属性
+        if ([[tips substringToIndex:3] isEqualToString:@"接下来"]) {
+            NSRange firstRange = [tips rangeOfString:@" "];
+            NSString *subTips = [tips substringFromIndex:firstRange.location+1];
+            NSRange lastRange = [subTips rangeOfString:@" "];
+            NSRange agentNameRange = NSMakeRange(firstRange.location+1, lastRange.location);
+            self.tipExtraAttributesRange = agentNameRange;
+            self.tipExtraAttributes = @{
+                                        NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:13],
+                                        NSForegroundColorAttributeName : [MQChatViewConfig sharedConfig].redirectAgentNameColor
+                                        };
+        }
     }
     return self;
 }
@@ -103,6 +133,13 @@ static CGFloat const kMQMessageTipsLineHeight = 0.5;
 
 - (NSString *)getCellMessageId {
     return @"";
+}
+
+- (void)updateCellFrameWithCellWidth:(CGFloat)cellWidth {
+    self.cellWidth = cellWidth;
+    self.tipLabelFrame = CGRectMake(cellWidth/2-self.tipLabelFrame.size.width/2, kMQMessageTipsCellHeight/2-self.tipLabelFrame.size.height/2, self.tipLabelFrame.size.width, self.tipLabelFrame.size.height);
+    self.topLineFrame = CGRectMake(cellWidth/2-self.topLineFrame.size.width/2, kMQMessageTipsLabelLineVerticalMargin, self.topLineFrame.size.width, kMQMessageTipsLineHeight);
+    self.bottomLineFrame = CGRectMake(self.topLineFrame.origin.x, kMQMessageTipsCellHeight-kMQMessageTipsLabelLineVerticalMargin-kMQMessageTipsLineHeight, self.topLineFrame.size.width, kMQMessageTipsLineHeight);
 }
 
 

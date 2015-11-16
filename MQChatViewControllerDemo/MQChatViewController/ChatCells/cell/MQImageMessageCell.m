@@ -29,6 +29,8 @@
         [self.contentView addSubview:avatarImageView];
         //初始化气泡
         bubbleImageView = [[UIImageView alloc] init];
+        UILongPressGestureRecognizer *longPressBubbleGesture=[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressBubbleView:)];
+        [bubbleImageView addGestureRecognizer:longPressBubbleGesture];
         [self.contentView addSubview:bubbleImageView];
         //初始化indicator
         sendingIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -36,6 +38,9 @@
         [self.contentView addSubview:sendingIndicator];
         //初始化出错image
         failureImageView = [[UIImageView alloc] initWithImage:[MQChatViewConfig sharedConfig].messageSendFailureImage];
+        UITapGestureRecognizer *tapFailureImageGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapFailImage:)];
+        failureImageView.userInteractionEnabled = true;
+        [failureImageView addGestureRecognizer:tapFailureImageGesture];
         [self.contentView addSubview:failureImageView];
         //初始化加载数据的indicator
         loadingIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -54,16 +59,20 @@
     MQImageCellModel *cellModel = (MQImageCellModel *)model;
 
     //刷新头像
-    if (cellModel.avatarPath.length == 0) {
-        avatarImageView.image = cellModel.avatarLocalImage;
+    if (cellModel.avatarImage) {
+        avatarImageView.image = cellModel.avatarImage;
     } else {
-#warning 使用SDWebImage或自己写获取远程图片的方法
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+#warning 这里开发者可以使用自己的图片缓存策略，如SDWebImage
             NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:cellModel.avatarPath]];
             avatarImageView.image = [UIImage imageWithData:imageData];
         });
     }
     avatarImageView.frame = cellModel.avatarFrame;
+    if ([MQChatViewConfig sharedConfig].enableRoundAvatar) {
+        avatarImageView.layer.masksToBounds = YES;
+        avatarImageView.layer.cornerRadius = cellModel.avatarFrame.size.width/2;
+    }
     
     //刷新气泡
     bubbleImageView.frame = cellModel.bubbleImageFrame;
@@ -72,6 +81,8 @@
     loadingIndicator.frame = cellModel.loadingIndicatorFrame;
     if (cellModel.image) {
         bubbleImageView.image = cellModel.image;
+        [bubbleImageView setupImageViewer];
+        [MQImageUtil makeMaskView:bubbleImageView withImage:cellModel.bubbleImage];
         loadingIndicator.hidden = true;
         [loadingIndicator stopAnimating];
     } else {
@@ -79,23 +90,45 @@
         loadingIndicator.hidden = false;
         [loadingIndicator startAnimating];
     }
-    [bubbleImageView setupImageViewer];
-    [MQImageUtil makeMaskView:bubbleImageView withImage:cellModel.bubbleImage];
     
     //刷新indicator
     sendingIndicator.hidden = true;
     [sendingIndicator stopAnimating];
-    if (cellModel.sendType == MQChatCellSending && cellModel.cellFromType == MQChatCellOutgoing) {
+    if (cellModel.sendStatus == MQChatMessageSendStatusSending && cellModel.cellFromType == MQChatCellOutgoing) {
         sendingIndicator.frame = cellModel.sendingIndicatorFrame;
         [sendingIndicator startAnimating];
     }
     
     //刷新出错图片
     failureImageView.hidden = true;
-    if (cellModel.sendType == MQChatCellSentFailure) {
+    if (cellModel.sendStatus == MQChatMessageSendStatusFailure) {
         failureImageView.hidden = false;
         failureImageView.frame = cellModel.sendFailureFrame;
     }
 }
+
+
+#pragma 长按事件
+- (void)longPressBubbleView:(id)sender {
+    if (((UILongPressGestureRecognizer*)sender).state == UIGestureRecognizerStateBegan) {
+        [self showMenuControllerInView:self targetRect:bubbleImageView.frame menuItemsName:@{@"imageCopy" : bubbleImageView.image}];
+    }
+}
+
+#pragma 点击发送失败消息，重新发送事件
+- (void)tapFailImage:(id)sender {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"重新发送吗？" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alertView show];
+}
+
+#pragma UIAlertViewDelegate
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        NSLog(@"重新发送");
+        [self.chatCellDelegate resendMessageInCell:self resendData:@{@"image" : bubbleImageView.image}];
+    }
+}
+
+
 
 @end

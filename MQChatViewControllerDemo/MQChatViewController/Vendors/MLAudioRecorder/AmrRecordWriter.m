@@ -66,6 +66,7 @@
             return YES;
         }
         self.recordedSecondCount += recoder.bufferDurationSeconds;
+        NSLog(@"recorder time = %f", self.recordedSecondCount);
     }
     
     //编码

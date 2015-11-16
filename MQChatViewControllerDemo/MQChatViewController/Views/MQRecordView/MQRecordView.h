@@ -7,27 +7,42 @@
 //
 
 #import <UIKit/UIKit.h>
-//#import "MQMessage.h"
 
 @protocol MQRecordViewDelegate <NSObject>
-//录音结束
-//-(void)recordOver:(MQMessage*)message;
+
+/** 通知viewController完成录音 */
+- (void)didFinishRecordingWithAMRFilePath:(NSString *)filePath;
+
+/**
+ *  录音的音量有更新
+ *
+ *  @param recordView 录音界面
+ *  @param volume     音量
+ */
+- (void)didUpdateVolumeInRecordView:(UIView *)recordView volume:(CGFloat)volume;
+
 @end
 
 @interface MQRecordView : UIView
 
-@property(nonatomic,strong) id<MQRecordViewDelegate> recordOverDelegate;
-@property(nonatomic,assign) float marginBottom;
+@property(nonatomic, weak)   id<MQRecordViewDelegate> recordViewDelegate;
+@property(nonatomic, assign) float marginBottom;
 /** 是否显示撤回语音 */
 @property(nonatomic,assign) BOOL revoke;
+
+-(instancetype)initWithFrame:(CGRect)frame maxRecordDuration:(NSTimeInterval)duration;
 
 -(void)setupUI;
 
 -(void)startRecording;
 -(void)stopRecord;
--(void)revokeRecord;
 - (void)reDisplayRecordView;
 /** 语音音量的大小设置 */
 -(void)setRecordingVolume:(float)volume;
+//取消录音
+- (void)cancelRecording;
+
+/** 更新frame */
+- (void)updateFrame:(CGRect)frame;
 
 @end

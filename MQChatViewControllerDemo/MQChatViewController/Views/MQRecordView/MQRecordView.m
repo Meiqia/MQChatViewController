@@ -11,6 +11,13 @@
 #import "MQImageUtil.h"
 #import "MQChatFileUtil.h"
 #import "MQToast.h"
+#import "MQChatAudioRecorder.h"
+
+static CGFloat const kMQRecordViewDiameter = 150.0;
+
+@interface MQRecordView()<MQChatAudioRecorderDelegate>
+
+@end
 
 @implementation MQRecordView
 {
@@ -23,13 +30,13 @@
     UIImage* blurImage;
     BOOL isVisible;
     
-//    MQMessage* message;
-    
-    int recordTime; //录音时长
+    CGFloat recordTime; //录音时长
     NSTimer *recordTimer;
+    MQChatAudioRecorder *audioRecorder;
+    
 }
 
--(instancetype)initWithFrame:(CGRect)frame
+-(instancetype)initWithFrame:(CGRect)frame maxRecordDuration:(NSTimeInterval)duration
 {
     if (self = [super initWithFrame:frame]) {
         self.revoke = NO;
@@ -51,6 +58,9 @@
         [self addSubview:recordView];
         [recordView addSubview:volumeView];
         [recordView addSubview:tipLabel];
+        
+        audioRecorder = [[MQChatAudioRecorder alloc] initWithMaxRecordDuration:duration];
+        audioRecorder.delegate = self;
     }
     return self;
 }
@@ -71,15 +81,14 @@
 
 -(void)setupUI
 {
-    float recordViewWH = 150;
-    recordView.frame = CGRectMake((self.frame.size.width - recordViewWH) / 2,
-                                  (self.frame.size.height - recordViewWH) / 2,
-                                  recordViewWH, recordViewWH);
+    recordView.frame = CGRectMake((self.frame.size.width - kMQRecordViewDiameter) / 2,
+                                  (self.frame.size.height - kMQRecordViewDiameter) / 2,
+                                  kMQRecordViewDiameter, kMQRecordViewDiameter);
     self.marginBottom = self.frame.size.height - recordView.frame.origin.y - recordView.frame.size.height;
     recordView.alpha = 0;
     
     tipLabel.text = @"上滑手指,取消发送";
-    tipLabel.frame = CGRectMake(0, recordViewWH - 20 - 12, recordView.frame.size.width, 20);
+    tipLabel.frame = CGRectMake(0, kMQRecordViewDiameter - 20 - 12, recordView.frame.size.width, 20);
     
     volumeView.frame = CGRectMake((recordView.frame.size.width - 58)/2, 16, 58, 90);
     volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQRecord0"]];
@@ -132,14 +141,14 @@
 
 -(void)startRecording
 {
-//    message = [MCCore startRecordingAndSendAudioMessage:(id)self delegate:delegate];
-    recordTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(recodTime) userInfo:nil repeats:YES];
+    recordTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(recodTime) userInfo:nil repeats:YES];
     recordTime = 0;
+    [audioRecorder beginRecording];
 }
 
 -(void)recodTime
 {
-    recordTime++;
+    recordTime = recordTime + 0.1;
     if (recordTime >= 50) {
         volumeView.alpha = 0;
         if (LCDView) {
@@ -159,9 +168,10 @@
         LCDView.innerGlowColor = [UIColor grayColor];
         LCDView.innerGlowSize = 3.0;
         [recordView addSubview:LCDView];
-        LCDView.text = [NSString stringWithFormat:@"%i",60 - recordTime - 1];
+        LCDView.text = [NSString stringWithFormat:@"%d",(int)(60 - recordTime)];
         [LCDView resetSize];
     }
+    NSLog(@"recordView time = %f", recordTime);
 }
 
 -(void)setRecordingVolume:(float)volume
@@ -189,71 +199,68 @@
     }
 }
 
-//用户取消录音
-//-(void)stopRecord
-//{
-//    [MCCore stopRecordingAudioMessage];
-//    [recordTimer invalidate];
-//    recordTimer = nil;
-//}
-
 //组件终止录音
 -(void)stopRecord
 {
     [recordTimer invalidate];
     recordTimer = nil;
-//    if (![MQFileUtil fileExistsAtPath:message.content] || [MQFileUtil audioDuration:message.content] < .5) {
-//        [MQToast showToast:@"录音时间太短" duration:1 window:self.superview];
-//        [self removeFromSuperview];
-//        return;
-//    }
-    if (recordTime < 1) {
+    if (recordTime < 1 && recordTime > 0) {
         [MQToast showToast:@"录音时间太短" duration:1 window:self.superview];
-//        [self removeFromSuperview];
-        self.hidden = YES;
-        return;
+        [audioRecorder cancelRecording];
+    } else {
+        [audioRecorder finishRecording];
     }
-//    if (self.recordOverDelegate && [self.recordOverDelegate respondsToSelector:@selector(recordOver:)]) {
-//        [self.recordOverDelegate recordOver:message];
-//    }
-//    [self removeFromSuperview];
     self.hidden = YES;
+    recordTime = 0;
 }
 
--(void)revokerecord
-{
-//    [MCCore cancelSendAudioMessage];
-//    [self removeFromSuperview];
+//取消录音
+- (void)cancelRecording {
+    [recordTimer invalidate];
+    recordTimer = nil;
+    self.hidden = YES;
+    recordTime = 0;
+    [audioRecorder cancelRecording];
+}
+
+-(void)revokerecord {
     self.hidden = YES;
 }
 
 -(void)recordError:(NSError*)error
 {
-//    [self.recordOverDelegate recordOver:message];
-//    [self removeFromSuperview];
     self.hidden = YES;
 }
 
-//-(void)removeFromSuperview
-//{
-//    CABasicAnimation *opacityAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
-//    opacityAnimation.fromValue = @1.;
-//    opacityAnimation.toValue = @0.;
-//    opacityAnimation.duration = .1;
-//    [blurView.layer addAnimation:opacityAnimation forKey:nil];
-//    blurView.layer.opacity = 0;
-//    
-//    [UIView animateWithDuration:.2 animations:^{
-//        recordView.alpha = 0;
-//    }];
-//    
-//    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(opacityAnimation.duration * NSEC_PER_SEC));
-//    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-////        [super removeFromSuperview];
-//        self.hidden = YES;
-//    });
-//    
-//    isVisible = NO;
-//}
+#pragma MQChatAudioRecorderDelegate
+- (void)didFinishRecordingWithAMRFilePath:(NSString *)filePath {
+    //通知viewController已完成录音
+    if (self.recordViewDelegate) {
+        if ([self.recordViewDelegate respondsToSelector:@selector(didFinishRecordingWithAMRFilePath:)]) {
+            [self.recordViewDelegate didFinishRecordingWithAMRFilePath:filePath];
+        }
+    }
+}
+
+- (void)didUpdateAudioVolume:(Float32)volume {
+    [self setRecordingVolume:volume];
+}
+
+- (void)didEndRecording {
+    [self stopRecord];
+}
+
+- (void)didBeginRecording {
+    
+}
+
+/** 更新frame */
+- (void)updateFrame:(CGRect)frame {
+    self.frame = frame;
+    recordView.frame = CGRectMake((self.frame.size.width - kMQRecordViewDiameter) / 2,
+                                  (self.frame.size.height - kMQRecordViewDiameter) / 2,
+                                  kMQRecordViewDiameter, kMQRecordViewDiameter);
+
+}
 
 @end
