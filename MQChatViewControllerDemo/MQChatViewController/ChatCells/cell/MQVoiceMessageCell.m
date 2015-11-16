@@ -12,6 +12,7 @@
 #import "MQChatViewConfig.h"
 #import "MQChatAudioPlayer.h"
 #import "VoiceConverter.h"
+#import "MQAssetUtil.h"
 
 @interface MQVoiceMessageCell()<MQChatAudioPlayerDelegate>
 
@@ -121,20 +122,20 @@
     bubbleImageView.frame = cellModel.bubbleImageFrame;
     
     //消息图片
-    voiceImageView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQBubble_voice_animation_green3"]];
-    NSString *animationImage1 = @"MQBubble_voice_animation_green1";
-    NSString *animationImage2 = @"MQBubble_voice_animation_green2";
-    NSString *animationImage3 = @"MQBubble_voice_animation_green3";
+    voiceImageView.image = [MQAssetUtil voiceAnimationGreen3];
+    UIImage *animationImage1 = [MQAssetUtil voiceAnimationGreen1];
+    UIImage *animationImage2 = [MQAssetUtil voiceAnimationGreen2];
+    UIImage *animationImage3 = [MQAssetUtil voiceAnimationGreen3];
     if (cellModel.cellFromType == MQChatCellIncoming) {
-        animationImage1 = @"MQBubble_voice_animation_gray1";
-        animationImage2 = @"MQBubble_voice_animation_gray2";
-        animationImage3 = @"MQBubble_voice_animation_gray3";
-        voiceImageView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQBubble_voice_animation_gray3"]];
+        animationImage1 = [MQAssetUtil voiceAnimationGray_1];
+        animationImage2 = [MQAssetUtil voiceAnimationGray_2];
+        animationImage3 = [MQAssetUtil voiceAnimationGray_3];
+        voiceImageView.image = [MQAssetUtil voiceAnimationGray_3];
     }
     voiceImageView.animationImages = [NSArray arrayWithObjects:
-                                  [UIImage imageNamed:[MQChatFileUtil resourceWithName:animationImage1]],
-                                  [UIImage imageNamed:[MQChatFileUtil resourceWithName:animationImage2]],
-                                  [UIImage imageNamed:[MQChatFileUtil resourceWithName:animationImage3]],nil];
+                                  animationImage1,
+                                  animationImage2,
+                                  animationImage3,nil];
     voiceImageView.animationDuration = 1;
     voiceImageView.animationRepeatCount = 0;
 

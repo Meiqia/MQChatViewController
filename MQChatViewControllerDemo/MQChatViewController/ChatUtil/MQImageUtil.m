@@ -8,6 +8,7 @@
 
 #import "MQImageUtil.h"
 #import <Accelerate/Accelerate.h>
+#import "MQBundleUtil.h"
 
 @implementation MQImageUtil
 
