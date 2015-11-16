@@ -14,13 +14,14 @@
 + (UIImage *)bubbleImageFromBundleWithName:(NSString *)name
 {
     NSBundle *bundle = [MQBundleUtil assetBundle];
-    NSString *path = [bundle pathForResource:name ofType:@"png"];
-    return [UIImage imageWithContentsOfFile:path];
+//    NSString *path = [bundle pathForResource:name ofType:nil inDirectory:nil];
+//    return [UIImage imageWithContentsOfFile:path];
+    return [UIImage imageNamed:name inBundle:bundle compatibleWithTraitCollection:nil];
 }
 
 + (NSString*)resourceWithName:(NSString*)fileName
 {
-    return [NSString stringWithFormat:@"MQChatViewBundle.bundle/%@",fileName];
+    return [NSString stringWithFormat:@"MQChatViewAsset.bundle/%@",fileName];
 }
 
 + (UIImage *)agentDefaultAvatarImage
