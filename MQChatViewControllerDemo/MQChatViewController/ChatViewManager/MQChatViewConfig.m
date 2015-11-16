@@ -61,12 +61,13 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     self.enableTopAutoRefresh = true;
     self.isPresentChatView = false;
     self.isPushChatView = false;
+    self.enableShowNewMessageAlert = true;
     
     self.incomingMsgTextColor = [UIColor darkTextColor];
     self.outgoingMsgTextColor = [UIColor darkTextColor];
     self.eventTextColor = [UIColor grayColor];
-    self.navBarTintColor = [UIColor blueColor];
-    self.navBarColor = [UIColor whiteColor];
+//    self.navBarTintColor = [UIColor blueColor];
+//    self.navBarColor = [UIColor whiteColor];
     self.pullRefreshColor = [UIColor colorWithRed:104.0/255.0 green:192.0/255.0 blue:160.0/255.0 alpha:1.0];
     self.redirectAgentNameColor = [UIColor colorWithRed:169.0/255.0 green:169.0/255.0 blue:49.0/255.0 alpha:1.0];
     
@@ -78,7 +79,8 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     self.incomingBubbleImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQBubbleIncoming"]];
     self.outgoingBubbleImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQBubbleOutgoing"]];
     self.messageSendFailureImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQMessageWarning"]];
-    self.navBarLeftButtomImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQNavReturnCancelImage"]];
+    self.navBarLeftButtonImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQNavReturnCancelImage"]];
+    self.imageLoadErrorImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQImageLoadErrorImage"]];
     
     self.incomingMsgSoundFileName = [MQChatFileUtil resourceWithName:@"MQNewMessageRing.mp3"];
     

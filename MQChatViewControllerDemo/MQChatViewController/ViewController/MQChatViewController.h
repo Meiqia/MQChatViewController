@@ -47,7 +47,7 @@
 /**
  *  关闭聊天界面
  */
-- (void)disappearChatViewController;
+- (void)dismissChatViewController;
 
 #ifdef INCLUDE_MEIQIA_SDK
 /**

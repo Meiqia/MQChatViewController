@@ -32,7 +32,7 @@
 - (id)initWithFrame:(CGRect)frame
           superView:(UIView *)inputBarSuperView
           tableView:(MQChatTableView *)tableView
-    enabelSendVoice:(BOOL)enableVoice
+    enableSendVoice:(BOOL)enableVoice
     enableSendImage:(BOOL)enableImage
    photoSenderImage:(UIImage *)photoImage
    voiceSenderImage:(UIImage *)voiceImage

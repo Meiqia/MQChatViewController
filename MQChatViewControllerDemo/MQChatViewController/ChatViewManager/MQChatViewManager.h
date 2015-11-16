@@ -65,6 +65,37 @@
 - (void)setMessageEmailRegex:(NSString *)emailRegex;
 
 /**
+ * 设置客服上线的提示文字；
+ * @param tipText 提示文字
+ */
+- (void)setAgentOnlineTip:(NSString *)tipText;
+
+/**
+ * 设置客服下线的提示文字；
+ * @param tipText 提示文字
+ */
+- (void)setAgentOfflineTip:(NSString *)tipText;
+
+/**
+ * 设置顾客第一次进入界面显示的欢迎文字；
+ * @param tipText 提示文字
+ */
+- (void)setchatWelcomeText:(NSString *)welcomText;
+
+/**
+ *  设置客服的名字
+ *
+ *  @param agentName 客服名字
+ */
+- (void)setAgentName:(NSString *)agentName;
+
+/**
+ * 设置收到消息的声音；
+ * @param soundFileName 声音文件
+ */
+- (void)setIncomingMessageSoundFileName:(NSString *)soundFileName;
+
+/**
  * 显示的历史聊天消息是否去主动同步服务端的消息记录。因为有可能顾客在其他客户端产生了消息记录，如果设置为NO，则SDK本地消息会与服务端实际的历史消息不相符；默认NO
  * @warning 如果开启同步，将会产生一定网络请求。所以建议顾客端只使用美洽SDK的用户保持默认值
  * @warning 如果开启同步，下拉获取历史消息则会从服务端去获取；如果关闭同步，下拉获取历史消息则是从SDK本地数据库中获取；
@@ -95,6 +126,73 @@
  * @param enable YES:支持 NO:不支持
  */
 - (void)enableTipsView:(BOOL)enable;
+
+/**
+ *  客服聊天界面打开时，收到新消息，是否显示收到新消息提示
+ *
+ * @param enable YES:支持 NO:不支持
+ */
+- (void)enableShowNewMessageAlert:(BOOL)enable;
+
+/**
+ * 是否支持客服头像的显示；
+ * @param enable YES:支持 NO:不支持
+ */
+- (void)enableAgentAvatar:(BOOL)enable;
+
+/**
+ *  是否支持当前顾客头像的显示
+ *
+ * @param enable YES:支持 NO:不支持
+ */
+- (void)enableClientAvatar:(BOOL)enable;
+
+/**
+ * 是否支持自定义录音的界面；
+ * @param enable YES:支持 NO:不支持
+ */
+- (void)enableCustomRecordView:(BOOL)enable;
+
+/**
+ * 是否开启接受/发送消息的声音；
+ * @param enable YES:开启声音 NO:关闭声音
+ */
+- (void)enableMessageSound:(BOOL)enable;
+
+/**
+ *  是否开启下拉刷新（顶部刷新）
+ *
+ * @param enable YES:支持 NO:不支持
+ */
+- (void)enableTopPullRefresh:(BOOL)enable;
+
+/**
+ *  是否开启上拉刷新（底部刷新）
+ *
+ * @param enable YES:支持 NO:不支持
+ */
+- (void)enableBottomPullRefresh:(BOOL)enable;
+
+/**
+ *  是否开启顶部自动刷新历史消息
+ *
+ * @param enable YES:支持 NO:不支持
+ */
+- (void)enableTopAutoRefresh:(BOOL)enable;
+
+/**
+ *  是否开启圆形头像
+ *
+ * @param enable YES:支持 NO:不支持
+ */
+- (void)enableRoundAvatar:(BOOL)enable;
+
+/**
+ *  是否支持欢迎语
+ *
+ * @param enable YES:支持 NO:不支持
+ */
+- (void)enableWelcomeChat:(BOOL)enable;
 
 /**
  * 设置发送过来的message的文字颜色；
@@ -148,44 +246,6 @@
 - (void)setPullRefreshColor:(UIColor *)pullRefreshColor;
 
 /**
- * 设置客服上线的提示文字；
- * @param tipText 提示文字
- */
-- (void)setAgentOnlineTip:(NSString *)tipText;
-
-/**
- * 设置客服下线的提示文字；
- * @param tipText 提示文字
- */
-- (void)setAgentOfflineTip:(NSString *)tipText;
-
-/**
- * 设置顾客第一次进入界面显示的欢迎文字；
- * @param tipText 提示文字
- */
-- (void)setchatWelcomeText:(NSString *)welcomText;
-
-/**
- *  设置客服的名字
- *
- *  @param agentName 客服名字
- */
-- (void)setAgentName:(NSString *)agentName;
-
-/**
- * 是否支持客服头像的显示；
- * @param enable YES:支持 NO:不支持
- */
-- (void)enableAgentAvatar:(BOOL)enable;
-
-/**
- *  是否支持当前顾客头像的显示
- *
- * @param enable YES:支持 NO:不支持
- */
-- (void)enableClientAvatar:(BOOL)enable;
-
-/**
  * 设置客服的缺省头像图片；
  * @param image 头像image
  */
@@ -226,69 +286,16 @@
 /**
  *  设置导航栏左键的图片
  *
- *  @param leftButtomImage 左键图片
+ *  @param leftButtonImage 左键图片
  */
-- (void)setNavLeftButtomImage:(UIImage *)leftButtomImage;
+- (void)setNavLeftButtonImage:(UIImage *)leftButtonImage;
 
 /**
  *  设置导航栏右键的图片
  *
- *  @param rightButtomImage 左键图片
+ *  @param rightButtonImage 左键图片
  */
-- (void)setNavRightButtomImage:(UIImage *)rightButtomImage;
-
-/**
- * 是否支持自定义录音的界面；
- * @param enable YES:支持 NO:不支持
- */
-- (void)enableCustomRecordView:(BOOL)enable;
-
-/**
- * 是否开启接受/发送消息的声音；
- * @param enable YES:开启声音 NO:关闭声音
- */
-- (void)enableMessageSound:(BOOL)enable;
-
-/**
- *  是否开启下拉刷新（顶部刷新）
- *
- * @param enable YES:支持 NO:不支持
- */
-- (void)enableTopPullRefresh:(BOOL)enable;
-
-/**
- *  是否开启上拉刷新（底部刷新）
- *
- * @param enable YES:支持 NO:不支持
- */
-- (void)enableBottomPullRefresh:(BOOL)enable;
-
-/**
- *  是否开启顶部自动刷新历史消息
- *
- * @param enable YES:支持 NO:不支持
- */
-- (void)enableTopAutoRefresh:(BOOL)enable;
-
-/**
- *  是否开启圆形头像
- *
- * @param enable YES:支持 NO:不支持
- */
-- (void)enableRoundAvatar:(BOOL)enable;
-
-/**
- *  是否支持欢迎语
- *
- * @param enable YES:支持 NO:不支持
- */
-- (void)enableWelcomeChat:(BOOL)enable;
-
-/**
- * 设置收到消息的声音；
- * @param soundFileName 声音文件
- */
-- (void)setIncomingMessageSoundFileName:(NSString *)soundFileName;
+- (void)setNavRightButton:(UIButton *)rightButton;
 
 /**
  *  设置录音的最大时长

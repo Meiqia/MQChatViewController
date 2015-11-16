@@ -147,15 +147,13 @@
                                 }
                             }
                         } else {
-#warning 这里增加加载图片出错的图片
-                            self.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@""]];
+                            self.image = [MQChatViewConfig sharedConfig].imageLoadErrorImage;
                             [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
                         }
                     });
                 });
             } else {
-#warning 这里增加加载图片出错的图片
-                self.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@""]];
+                self.image = [MQChatViewConfig sharedConfig].imageLoadErrorImage;
                 [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
             }
         } else {
