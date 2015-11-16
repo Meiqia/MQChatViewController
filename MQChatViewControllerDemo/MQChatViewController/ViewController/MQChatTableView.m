@@ -15,7 +15,7 @@
  */
 static CGFloat const kMQChatPullRefreshDistance = 44.0;
 static CGFloat const kMQChatNoMoreMessageLabelFontSize = 12.0;
-
+static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
 
 @interface MQChatTableView()
 
@@ -269,7 +269,7 @@ static CGFloat const kMQChatNoMoreMessageLabelFontSize = 12.0;
 }
 
 - (BOOL)isTableViewScrolledToBottom {
-    if(self.contentOffset.y + self.frame.size.height < self.contentSize.height){
+    if(self.contentOffset.y + self.frame.size.height + kMQChatScrollBottomDistanceThreshold < self.contentSize.height){
         return true;
     } else {
         return false;
