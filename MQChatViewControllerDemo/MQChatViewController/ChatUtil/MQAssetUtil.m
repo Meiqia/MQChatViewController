@@ -63,6 +63,11 @@
     return [MQAssetUtil bubbleImageFromBundleWithName:@"MQNavReturnCancelImage"];
 }
 
++(UIImage *)imageLoadErrorImage
+{
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQImageLoadErrorImage"];
+}
+
 +(UIImage *)messageWarningImage
 {
     return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageWarning"];

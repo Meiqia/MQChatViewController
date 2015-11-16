@@ -26,6 +26,7 @@
 
 + (UIImage *)returnCancelImage;
 
++ (UIImage *)imageLoadErrorImage;
 + (UIImage *)messageWarningImage;
 
 + (UIImage *)voiceAnimationGray_1;
