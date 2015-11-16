@@ -8,6 +8,7 @@
 
 #import "MQInputBar.h"
 #import "MQChatFileUtil.h"
+#import "MQAssetUtil.h"
 
 //#define ButtonWidth 33
 //#define ButtonX 6.5
@@ -141,9 +142,10 @@ keyboardSenderImage:(UIImage *)keyboardImage
 
 -(void)initRecordBtn
 {
+    //横屏状态，隐藏toolbar的按钮
     toolbarDownBtn = [[UIButton alloc] init];
-    [toolbarDownBtn setImage:[UIImage imageNamed:[MQChatFileUtil resourceWithName:@"toolbarDown_normal"]] forState:UIControlStateNormal];
-    [toolbarDownBtn setImage:[UIImage imageNamed:[MQChatFileUtil resourceWithName:@"toolbarDown_click"]] forState:UIControlStateHighlighted];
+    [toolbarDownBtn setImage:[MQAssetUtil hideToolbarNormalImage] forState:UIControlStateNormal];
+    [toolbarDownBtn setImage:[MQAssetUtil hideToolbarClickImage] forState:UIControlStateHighlighted];
     [toolbarDownBtn addTarget:self action:@selector(toolbarDownClick) forControlEvents:UIControlEventTouchUpInside];
     toolbarDownBtn.hidden = YES;
     

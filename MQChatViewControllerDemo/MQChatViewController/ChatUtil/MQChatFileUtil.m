@@ -10,10 +10,6 @@
 #import <AVFoundation/AVFoundation.h>
 
 @implementation MQChatFileUtil
-+ (NSString*)resourceWithName:(NSString*)fileName
-{
-    return [NSString stringWithFormat:@"MQChatViewBundle.bundle/%@",fileName];
-}
 
 + (BOOL)fileExistsAtPath:(NSString*)_path
 {

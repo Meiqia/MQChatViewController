@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B8D72331BF9B68F00DCFFD6 /* MQBundleUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B8D72321BF9B68F00DCFFD6 /* MQBundleUtil.m */; };
+		0B8D72361BF9BB0200DCFFD6 /* MQAssetUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B8D72351BF9BB0200DCFFD6 /* MQAssetUtil.m */; };
 		CC45FCEF1BE36B1900DE0BFB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FCEE1BE36B1900DE0BFB /* main.m */; };
 		CC45FCF21BE36B1900DE0BFB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FCF11BE36B1900DE0BFB /* AppDelegate.m */; };
 		CC45FCF51BE36B1900DE0BFB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FCF41BE36B1900DE0BFB /* ViewController.m */; };
@@ -36,7 +38,7 @@
 		CC45FD671BE36B3600DE0BFB /* MQChatViewService.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD501BE36B3500DE0BFB /* MQChatViewService.m */; };
 		CC45FD681BE36B3600DE0BFB /* MQChatViewTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD521BE36B3500DE0BFB /* MQChatViewTableDataSource.m */; };
 		CC45FD721BE3745700DE0BFB /* MQAgent.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD6B1BE3745700DE0BFB /* MQAgent.m */; };
-		CC45FD761BE378E900DE0BFB /* MQChatViewBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CC45FD751BE378E900DE0BFB /* MQChatViewBundle.bundle */; };
+		CC45FD761BE378E900DE0BFB /* MQChatViewAsset.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CC45FD751BE378E900DE0BFB /* MQChatViewAsset.bundle */; };
 		CC45FD7A1BE37A9500DE0BFB /* MQChatFileUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD791BE37A9500DE0BFB /* MQChatFileUtil.m */; };
 		CC45FD811BE37C3200DE0BFB /* MQDeviceFrameUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD7C1BE37C3200DE0BFB /* MQDeviceFrameUtil.m */; };
 		CC45FD821BE37C3200DE0BFB /* MQImageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FD7E1BE37C3200DE0BFB /* MQImageUtil.m */; };
@@ -97,6 +99,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0B8D72311BF9B68F00DCFFD6 /* MQBundleUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQBundleUtil.h; sourceTree = "<group>"; };
+		0B8D72321BF9B68F00DCFFD6 /* MQBundleUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQBundleUtil.m; sourceTree = "<group>"; };
+		0B8D72341BF9BB0200DCFFD6 /* MQAssetUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQAssetUtil.h; sourceTree = "<group>"; };
+		0B8D72351BF9BB0200DCFFD6 /* MQAssetUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQAssetUtil.m; sourceTree = "<group>"; };
 		CC45FCEA1BE36B1900DE0BFB /* MQChatViewControllerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MQChatViewControllerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC45FCEE1BE36B1900DE0BFB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CC45FCF01BE36B1900DE0BFB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -157,7 +163,7 @@
 		CC45FD6A1BE3745700DE0BFB /* MQAgent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQAgent.h; sourceTree = "<group>"; };
 		CC45FD6B1BE3745700DE0BFB /* MQAgent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQAgent.m; sourceTree = "<group>"; };
 		CC45FD6C1BE3745700DE0BFB /* MQDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQDefinition.h; sourceTree = "<group>"; };
-		CC45FD751BE378E900DE0BFB /* MQChatViewBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MQChatViewBundle.bundle; sourceTree = "<group>"; };
+		CC45FD751BE378E900DE0BFB /* MQChatViewAsset.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MQChatViewAsset.bundle; sourceTree = "<group>"; };
 		CC45FD781BE37A9500DE0BFB /* MQChatFileUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQChatFileUtil.h; sourceTree = "<group>"; };
 		CC45FD791BE37A9500DE0BFB /* MQChatFileUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQChatFileUtil.m; sourceTree = "<group>"; };
 		CC45FD7B1BE37C3200DE0BFB /* MQDeviceFrameUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQDeviceFrameUtil.h; sourceTree = "<group>"; };
@@ -344,7 +350,7 @@
 				CC45FD461BE36B3500DE0BFB /* Vendors */,
 				CC45FD4A1BE36B3500DE0BFB /* ViewController */,
 				CC45FD531BE36B3500DE0BFB /* Views */,
-				CC45FD751BE378E900DE0BFB /* MQChatViewBundle.bundle */,
+				CC45FD751BE378E900DE0BFB /* MQChatViewAsset.bundle */,
 			);
 			path = MQChatViewController;
 			sourceTree = SOURCE_ROOT;
@@ -491,6 +497,10 @@
 				CCAD3D1D1BE7612D00B87A23 /* MQChatAudioRecorder.m */,
 				CCAD3D201BE79FB900B87A23 /* MQChatAudioPlayer.h */,
 				CCAD3D211BE79FB900B87A23 /* MQChatAudioPlayer.m */,
+				0B8D72311BF9B68F00DCFFD6 /* MQBundleUtil.h */,
+				0B8D72321BF9B68F00DCFFD6 /* MQBundleUtil.m */,
+				0B8D72341BF9BB0200DCFFD6 /* MQAssetUtil.h */,
+				0B8D72351BF9BB0200DCFFD6 /* MQAssetUtil.m */,
 			);
 			path = ChatUtil;
 			sourceTree = "<group>";
@@ -791,7 +801,7 @@
 			files = (
 				CC45FCFD1BE36B1900DE0BFB /* LaunchScreen.storyboard in Resources */,
 				CC45FCFA1BE36B1900DE0BFB /* Assets.xcassets in Resources */,
-				CC45FD761BE378E900DE0BFB /* MQChatViewBundle.bundle in Resources */,
+				CC45FD761BE378E900DE0BFB /* MQChatViewAsset.bundle in Resources */,
 				CC45FCF81BE36B1900DE0BFB /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -854,6 +864,7 @@
 				CC45FCF21BE36B1900DE0BFB /* AppDelegate.m in Sources */,
 				CC45FD8A1BE3A1B500DE0BFB /* MQImageMessage.m in Sources */,
 				CC45FD611BE36B3600DE0BFB /* MQChatViewConfig.m in Sources */,
+				0B8D72361BF9BB0200DCFFD6 /* MQAssetUtil.m in Sources */,
 				CC45FD551BE36B3500DE0BFB /* MQEventMessageCell.m in Sources */,
 				CC45FD811BE37C3200DE0BFB /* MQDeviceFrameUtil.m in Sources */,
 				CC5115C01BE5B3C200184CF0 /* FBFontSymbol.m in Sources */,
@@ -864,6 +875,7 @@
 				CC45FD5A1BE36B3600DE0BFB /* MQVoiceMessageCell.m in Sources */,
 				CC45FD831BE37C3200DE0BFB /* MQStringSizeUtil.m in Sources */,
 				CC5115D11BE6545B00184CF0 /* UIImageView+MHFacebookImageViewer.m in Sources */,
+				0B8D72331BF9B68F00DCFFD6 /* MQBundleUtil.m in Sources */,
 				CCAD3CC91BE662C200B87A23 /* MQChatRegexUtil.m in Sources */,
 				CC45FD681BE36B3600DE0BFB /* MQChatViewTableDataSource.m in Sources */,
 				CCCDCC9F1BEB99FF00B60667 /* MQServiceToViewInterface.m in Sources */,

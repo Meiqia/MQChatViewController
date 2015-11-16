@@ -12,6 +12,7 @@
 #import "MQChatViewConfig.h"
 #import "MQStringSizeUtil.h"
 #import "MQImageUtil.h"
+#import "MQAssetUtil.h"
 
 /**
  * 语音播放图片与聊天气泡的间距
@@ -181,7 +182,7 @@ static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
     //由于语音可能是小数，故+1
     self.voiceDuration++ ;
     //语音图片size
-    UIImage *voiceImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQBubble_voice_animation_gray3"]];
+    UIImage *voiceImage = [MQAssetUtil voiceAnimationGray_3];
     CGSize voiceImageSize = voiceImage.size;
 
     //气泡高度
@@ -256,7 +257,7 @@ static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
     self.sendingIndicatorFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-indicatorView.frame.size.width, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-indicatorView.frame.size.height/2, indicatorView.frame.size.width, indicatorView.frame.size.height);
     
     //发送失败的图片frame
-    UIImage *failureImage = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQMessageWarning"]];
+    UIImage *failureImage = [MQAssetUtil messageWarningImage];
     CGSize failureSize = CGSizeMake(ceil(failureImage.size.width * 2 / 3), ceil(failureImage.size.height * 2 / 3));
     self.sendFailureFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-failureSize.width, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-failureSize.height/2, failureSize.width, failureSize.height);
     

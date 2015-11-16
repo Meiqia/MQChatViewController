@@ -12,6 +12,7 @@
 #import "MQChatFileUtil.h"
 #import "MQToast.h"
 #import "MQChatAudioRecorder.h"
+#import "MQAssetUtil.h"
 
 static CGFloat const kMQRecordViewDiameter = 150.0;
 
@@ -70,10 +71,10 @@ static CGFloat const kMQRecordViewDiameter = 150.0;
     if (revoke != self.revoke) {
         if (revoke) {
             tipLabel.text = @"松开手指,取消发送";
-            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQRecord_back"]];
+            volumeView.image = [MQAssetUtil recordBackImage];
         }else{
             tipLabel.text = @"上滑手指,取消发送";
-            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQRecord0"]];
+            volumeView.image = [MQAssetUtil recordVolume:0];
         }
     }
     _revoke = revoke;
@@ -91,7 +92,7 @@ static CGFloat const kMQRecordViewDiameter = 150.0;
     tipLabel.frame = CGRectMake(0, kMQRecordViewDiameter - 20 - 12, recordView.frame.size.width, 20);
     
     volumeView.frame = CGRectMake((recordView.frame.size.width - 58)/2, 16, 58, 90);
-    volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQRecord0"]];
+    volumeView.image = [MQAssetUtil recordVolume:0];
     
     [UIView animateWithDuration:.2 animations:^{
         recordView.alpha = 1;
@@ -178,23 +179,23 @@ static CGFloat const kMQRecordViewDiameter = 150.0;
 {
     if (!self.revoke) {
         if (volume > .66) {
-            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQRecord8"]];
+            volumeView.image = [MQAssetUtil recordVolume:8];
         }else if (volume > .57){
-            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQRecord7"]];
+            volumeView.image = [MQAssetUtil recordVolume:7];
         }else if (volume > .48){
-            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQRecord6"]];
+            volumeView.image = [MQAssetUtil recordVolume:6];
         }else if (volume > .39){
-            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQRecord5"]];
+            volumeView.image = [MQAssetUtil recordVolume:5];
         }else if (volume > .30){
-            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQRecord4"]];
+            volumeView.image = [MQAssetUtil recordVolume:4];
         }else if (volume > .21){
-            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQRecord3"]];
+            volumeView.image = [MQAssetUtil recordVolume:3];
         }else if (volume > .12){
-            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQRecord2"]];
+            volumeView.image = [MQAssetUtil recordVolume:2];
         }else if (volume > .03){
-            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQRecord1"]];
+            volumeView.image = [MQAssetUtil recordVolume:1];
         }else{
-            volumeView.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@"MQRecord0"]];
+            volumeView.image = [MQAssetUtil recordVolume:0];
         }
     }
 }
