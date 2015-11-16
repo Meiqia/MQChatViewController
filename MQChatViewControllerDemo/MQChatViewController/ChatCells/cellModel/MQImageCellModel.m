@@ -141,21 +141,19 @@
                             UIImage *image = [UIImage imageWithData:imageData];
                             self.image = image;
                             [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
-                            if (self.delegate) {
-                                if ([self.delegate respondsToSelector:@selector(didUpdateCellDataWithMessageId:)]) {
-                                    [self.delegate didUpdateCellDataWithMessageId:self.messageId];
-                                }
-                            }
                         } else {
-#warning 这里增加加载图片出错的图片
-                            self.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@""]];
+                            self.image = [MQChatViewConfig sharedConfig].imageLoadErrorImage;
                             [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
+                        }
+                        if (self.delegate) {
+                            if ([self.delegate respondsToSelector:@selector(didUpdateCellDataWithMessageId:)]) {
+                                [self.delegate didUpdateCellDataWithMessageId:self.messageId];
+                            }
                         }
                     });
                 });
             } else {
-#warning 这里增加加载图片出错的图片
-                self.image = [UIImage imageNamed:[MQChatFileUtil resourceWithName:@""]];
+                self.image = [MQChatViewConfig sharedConfig].imageLoadErrorImage;
                 [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
             }
         } else {

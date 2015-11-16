@@ -39,8 +39,10 @@
 
 - (void)pushChatViewAction:(id)sender {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-    [chatViewManager enableVoiceMessage:false];
-    [chatViewManager enableImageMessage:false];
+    UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    rightButton.backgroundColor = [UIColor redColor];
+    rightButton.frame = CGRectMake(10, 10, 20, 20);
+    [chatViewManager setNavRightButton:rightButton];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
