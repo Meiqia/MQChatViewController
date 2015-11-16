@@ -112,7 +112,7 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
 
 #pragma MQCellModelProtocol
 - (CGFloat)getCellHeight {
-    return self.cellHeight;
+    return self.cellHeight > 0 ? self.cellHeight : 0;
 }
 
 /**

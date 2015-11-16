@@ -113,6 +113,7 @@
         self.sendStatus = message.sendStatus;
         self.cellText = message.content;
         self.date = message.date;
+        self.cellHeight = 44.0;
         if (message.userAvatarImage) {
             self.avatarImage = message.userAvatarImage;
         } else if (message.userAvatarPath.length > 0) {
@@ -135,6 +136,11 @@
         CGFloat messageTextHeight = [MQStringSizeUtil getHeightForText:message.content withFont:[UIFont systemFontOfSize:kMQCellTextFontSize] andWidth:maxLabelWidth];
         //文字宽度
         CGFloat messageTextWidth = [MQStringSizeUtil getWidthForText:message.content withFont:[UIFont systemFontOfSize:kMQCellTextFontSize] andHeight:messageTextHeight];
+#warning 注：这里textLabel的宽度之所以要增加，是因为TTTAttributedLabel的bug，在文字有"."的情况下，有可能显示不出来，开发者可以帮忙定位TTTAttributedLabel的这个bug^.^
+        NSRange periodRange = [message.content rangeOfString:@"."];
+        if (periodRange.location != NSNotFound) {
+            messageTextWidth += 8;
+        }
         if (messageTextWidth > maxLabelWidth) {
             messageTextWidth = maxLabelWidth;
         }
@@ -231,7 +237,7 @@
 
 #pragma MQCellModelProtocol
 - (CGFloat)getCellHeight {
-    return self.cellHeight;
+    return self.cellHeight > 0 ? self.cellHeight : 0;
 }
 
 /**
