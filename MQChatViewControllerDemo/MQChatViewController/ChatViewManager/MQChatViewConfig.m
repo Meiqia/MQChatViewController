@@ -59,6 +59,8 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     self.enableRoundAvatar = false;
     self.enableWelcomeChat = false;
     self.enableTopAutoRefresh = true;
+    self.isPresentChatView = false;
+    self.isPushChatView = false;
     
     self.incomingMsgTextColor = [UIColor darkTextColor];
     self.outgoingMsgTextColor = [UIColor darkTextColor];
