@@ -29,13 +29,15 @@
 + (UIImage *)imageLoadErrorImage;
 + (UIImage *)messageWarningImage;
 
-+ (UIImage *)voiceAnimationGray_1;
-+ (UIImage *)voiceAnimationGray_2;
-+ (UIImage *)voiceAnimationGray_3;
++ (UIImage *)voiceAnimationGray1;
++ (UIImage *)voiceAnimationGray2;
++ (UIImage *)voiceAnimationGray3;
++ (UIImage *)voiceAnimationGrayError;
 
 + (UIImage *)voiceAnimationGreen1;
 + (UIImage *)voiceAnimationGreen2;
 + (UIImage *)voiceAnimationGreen3;
++ (UIImage *)voiceAnimationGreenError;
 
 + (UIImage *)recordBackImage;
 

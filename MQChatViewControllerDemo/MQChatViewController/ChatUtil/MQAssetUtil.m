@@ -74,19 +74,23 @@
     return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageWarning"];
 }
 
-+ (UIImage *)voiceAnimationGray_1
++ (UIImage *)voiceAnimationGray1
 {
     return [MQAssetUtil bubbleImageFromBundleWithName:@"MQBubble_voice_animation_gray1"];
 }
 
-+ (UIImage *)voiceAnimationGray_2
++ (UIImage *)voiceAnimationGray2
 {
     return [MQAssetUtil bubbleImageFromBundleWithName:@"MQBubble_voice_animation_gray2"];
 }
 
-+ (UIImage *)voiceAnimationGray_3
++ (UIImage *)voiceAnimationGray3
 {
     return [MQAssetUtil bubbleImageFromBundleWithName:@"MQBubble_voice_animation_gray3"];
+}
+
++ (UIImage *)voiceAnimationGrayError {
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQBubble_incoming_voice_error"];
 }
 
 + (UIImage *)voiceAnimationGreen1
@@ -102,6 +106,10 @@
 + (UIImage *)voiceAnimationGreen3
 {
     return [MQAssetUtil bubbleImageFromBundleWithName:@"MQBubble_voice_animation_green3"];
+}
+
++ (UIImage *)voiceAnimationGreenError {
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQBubble_outgoing_voice_error"];
 }
 
 + (UIImage *)recordBackImage

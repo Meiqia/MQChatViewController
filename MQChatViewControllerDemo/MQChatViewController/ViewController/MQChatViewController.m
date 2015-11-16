@@ -108,59 +108,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     }
 }
 
-#pragma 添加消息通知的observer
-- (void)setNotificationObserver {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resignKeyboardFirstResponder:) name:MQChatViewKeyboardResignFirstResponderNotification object:nil];
-}
-
-#pragma 消息通知observer的处理函数
-- (void)resignKeyboardFirstResponder:(NSNotification *)notification {
-    [self.view endEditing:true];
-}
-
-#pragma MQChatTableViewDelegate
-- (void)didTapChatTableView:(UITableView *)tableView {
-    [self.view endEditing:true];
-}
-
-//下拉刷新，获取以前的消息
-- (void)startLoadingTopMessagesInTableView:(UITableView *)tableView {
-#ifndef INCLUDE_MEIQIA_SDK
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.chatTableView finishLoadingTopRefreshViewWithMessagesNumber:1 isLoadOver:true];
-    });
-#else
-    [chatViewService startGettingHistoryMessages];
-#endif
-}
-
-//上拉刷新，获取更新的消息
-- (void)startLoadingBottomMessagesInTableView:(UITableView *)tableView {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.chatTableView finishLoadingBottomRefreshView];
-    });
-}
-
-#pragma 编辑导航栏
-- (void)setNavBar {
-#ifndef INCLUDE_MEIQIA_SDK
-    UIButton *loadMessageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    loadMessageBtn.frame = CGRectMake(0, 0, 62, 22);
-    [loadMessageBtn setTitle:@"收取消息" forState:UIControlStateNormal];
-    [loadMessageBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    loadMessageBtn.titleLabel.font = [UIFont systemFontOfSize:12.0];
-    loadMessageBtn.backgroundColor = [UIColor clearColor];
-    [loadMessageBtn addTarget:self action:@selector(tapLoadMessageBtn:) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:loadMessageBtn];
-#endif
-}
-#ifndef INCLUDE_MEIQIA_SDK
-- (void)tapLoadMessageBtn:(id)sender {
-    [chatViewService loadLastMessage];
-    [self chatTableViewScrollToBottomWithAnimated:true];
-}
-#endif
-
 #pragma 初始化viewModel
 - (void)initchatViewService {
     chatViewService = [[MQChatViewService alloc] init];
@@ -208,6 +155,60 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     self.inputBarTextView = chatInputBar.textView.internalTextView;
 }
 
+#pragma 添加消息通知的observer
+- (void)setNotificationObserver {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resignKeyboardFirstResponder:) name:MQChatViewKeyboardResignFirstResponderNotification object:nil];
+}
+
+#pragma 消息通知observer的处理函数
+- (void)resignKeyboardFirstResponder:(NSNotification *)notification {
+    [self.view endEditing:true];
+}
+
+#pragma MQChatTableViewDelegate
+- (void)didTapChatTableView:(UITableView *)tableView {
+    [self.view endEditing:true];
+}
+
+//下拉刷新，获取以前的消息
+- (void)startLoadingTopMessagesInTableView:(UITableView *)tableView {
+#ifndef INCLUDE_MEIQIA_SDK
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.chatTableView finishLoadingTopRefreshViewWithMessagesNumber:1 isLoadOver:true];
+    });
+#else
+    [chatViewService startGettingHistoryMessages];
+#endif
+}
+
+//上拉刷新，获取更新的消息
+- (void)startLoadingBottomMessagesInTableView:(UITableView *)tableView {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.chatTableView finishLoadingBottomRefreshView];
+    });
+}
+
+#pragma 编辑导航栏 - Demo用到的收取消息按钮
+- (void)setNavBar {
+#ifndef INCLUDE_MEIQIA_SDK
+    UIButton *loadMessageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    loadMessageBtn.frame = CGRectMake(0, 0, 62, 22);
+    [loadMessageBtn setTitle:@"收取消息" forState:UIControlStateNormal];
+    [loadMessageBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    loadMessageBtn.titleLabel.font = [UIFont systemFontOfSize:12.0];
+    loadMessageBtn.backgroundColor = [UIColor clearColor];
+    [loadMessageBtn addTarget:self action:@selector(tapLoadMessageBtn:) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:loadMessageBtn];
+#endif
+}
+
+#ifndef INCLUDE_MEIQIA_SDK
+- (void)tapLoadMessageBtn:(id)sender {
+    [chatViewService loadLastMessage];
+    [self chatTableViewScrollToBottomWithAnimated:true];
+}
+#endif
+
 #pragma UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     id<MQCellModelProtocol> cellModel = [chatViewService.cellModels objectAtIndex:indexPath.row];
@@ -242,9 +243,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 - (void)didUpdateCellModelWithIndexPath:(NSIndexPath *)indexPath {
-    [self.chatTableView reloadData];
-//    [self tableView:self.chatTableView heightForRowAtIndexPath:indexPath];
-//    [self.chatTableView updateTableViewAtIndexPath:indexPath];
+//    [self.chatTableView reloadData];
+    [self tableView:self.chatTableView heightForRowAtIndexPath:indexPath];
+    [self.chatTableView updateTableViewAtIndexPath:indexPath];
 }
 
 - (void)reloadChatTableView {
@@ -263,7 +264,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     //判断是否显示新消息提示
     if ([self.chatTableView isTableViewScrolledToBottom]) {
         if ([MQChatViewConfig sharedConfig].enableShowNewMessageAlert) {
-            [MQToast showToast:[MQBundleUtil localizedStringForKey:@"display_new_message"] duration:1.5 window:self.view];
+            [MQToast showToast:[MQBundleUtil localizedStringForKey:@"display_new_message"] duration:1.0 window:self.view];
         }
     } else {
         [self chatTableViewScrollToBottomWithAnimated:true];

@@ -128,6 +128,7 @@ static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
         self.sendStatus = message.sendStatus;
         self.date = message.date;
         self.avatarPath = @"";
+        self.cellHeight = 44.0;
         if (message.userAvatarImage) {
             self.avatarImage = message.userAvatarImage;
         } else if (message.userAvatarPath.length > 0) {
@@ -151,26 +152,33 @@ static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
             if (message.voicePath.length > 0) {
                 //新建线程读取远程图片
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+                    NSError *error;
 #warning 这里开发者可以使用自己的文件缓存策略
-                    NSData *voiceData = [NSData dataWithContentsOfURL:[NSURL URLWithString:message.voicePath]];
+                    NSData *voiceData = [NSData dataWithContentsOfURL:[NSURL URLWithString:message.voicePath] options:NSDataReadingMappedIfSafe error:&error];
                     dispatch_async(dispatch_get_main_queue(), ^{
+                        if (error) {
+                            NSLog(@"load voice error = %@", error);
+                        }
                         if (voiceData) {
                             self.voiceData = voiceData;
                             self.voiceDuration = [MQChatFileUtil getAudioDurationWithData:voiceData];
-                            if (self.delegate) {
-                                if ([self.delegate respondsToSelector:@selector(didUpdateCellDataWithMessageId:)]) {
-                                    [self.delegate didUpdateCellDataWithMessageId:self.messageId];
-                                }
+                            [self setModelsWithMessage:message cellWidth:cellWidth isLoadVoiceSuccess:true];
+                        } else {
+                            [self setModelsWithMessage:message cellWidth:cellWidth isLoadVoiceSuccess:false];
+                        }
+                        if (self.delegate) {
+                            if ([self.delegate respondsToSelector:@selector(didUpdateCellDataWithMessageId:)]) {
+                                [self.delegate didUpdateCellDataWithMessageId:self.messageId];
                             }
                         }
-                        [self setModelsWithMessage:message cellWidth:cellWidth];
                     });
                 });
             }
+            [self setModelsWithMessage:message cellWidth:cellWidth isLoadVoiceSuccess:true];
         } else {
             self.voiceDuration = [MQChatFileUtil getAudioDurationWithData:self.voiceData];
+            [self setModelsWithMessage:message cellWidth:cellWidth isLoadVoiceSuccess:true];
         }
-        [self setModelsWithMessage:message cellWidth:cellWidth];
     }
     return self;
 }
@@ -178,11 +186,17 @@ static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
 //根据气泡中的图片生成其他model
 - (void)setModelsWithMessage:(MQVoiceMessage *)message
                    cellWidth:(CGFloat)cellWidth
+          isLoadVoiceSuccess:(BOOL)isLoadVoiceSuccess
 {
     //由于语音可能是小数，故+1
     self.voiceDuration++ ;
     //语音图片size
-    UIImage *voiceImage = [MQAssetUtil voiceAnimationGray_3];
+    UIImage *voiceImage;
+    if (message.fromType == MQChatMessageOutgoing) {
+        voiceImage = isLoadVoiceSuccess ? [MQAssetUtil voiceAnimationGreen3] : [MQAssetUtil voiceAnimationGreenError];
+    } else {
+        voiceImage = isLoadVoiceSuccess ? [MQAssetUtil voiceAnimationGray3] : [MQAssetUtil voiceAnimationGrayError];
+    }
     CGSize voiceImageSize = voiceImage.size;
 
     //气泡高度
@@ -268,7 +282,7 @@ static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
 
 #pragma MQCellModelProtocol
 - (CGFloat)getCellHeight {
-    return self.cellHeight;
+    return self.cellHeight > 0 ? self.cellHeight : 0;
 }
 
 /**
