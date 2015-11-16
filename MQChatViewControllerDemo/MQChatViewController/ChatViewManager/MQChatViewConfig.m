@@ -71,7 +71,7 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
 //    self.navBarTintColor        = [UIColor blueColor];
 //    self.navBarColor            = [UIColor whiteColor];
     self.pullRefreshColor       = [UIColor colorWithRed:104.0/255.0 green:192.0/255.0 blue:160.0/255.0 alpha:1.0];
-    self.redirectAgentNameColor = [UIColor colorWithRed:169.0/255.0 green:169.0/255.0 blue:49.0/255.0 alpha:1.0];
+    self.redirectAgentNameColor = [UIColor blueColor];
     
     self.agentDefaultAvatarImage  = [MQAssetUtil agentDefaultAvatarImage];
     self.clientDefaultAvatarImage = [MQAssetUtil clientDefaultAvatarImage];

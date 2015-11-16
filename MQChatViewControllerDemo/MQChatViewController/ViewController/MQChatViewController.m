@@ -243,9 +243,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 - (void)didUpdateCellModelWithIndexPath:(NSIndexPath *)indexPath {
-    [self.chatTableView reloadData];
-//    [self tableView:self.chatTableView heightForRowAtIndexPath:indexPath];
-//    [self.chatTableView updateTableViewAtIndexPath:indexPath];
+//    [self.chatTableView reloadData];
+    [self tableView:self.chatTableView heightForRowAtIndexPath:indexPath];
+    [self.chatTableView updateTableViewAtIndexPath:indexPath];
 }
 
 - (void)reloadChatTableView {
@@ -264,7 +264,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     //判断是否显示新消息提示
     if ([self.chatTableView isTableViewScrolledToBottom]) {
         if ([MQChatViewConfig sharedConfig].enableShowNewMessageAlert) {
-            [MQToast showToast:[MQBundleUtil localizedStringForKey:@"display_new_message"] duration:1.5 window:self.view];
+            [MQToast showToast:[MQBundleUtil localizedStringForKey:@"display_new_message"] duration:1.0 window:self.view];
         }
     } else {
         [self chatTableViewScrollToBottomWithAnimated:true];
