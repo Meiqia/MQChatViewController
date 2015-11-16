@@ -9,12 +9,12 @@
 #import "MQInputBar.h"
 #import "MQChatFileUtil.h"
 #import "MQAssetUtil.h"
+#import "MQBundleUtil.h"
+#import "MQBundleUtil.h"
 
 //#define ButtonWidth 33
 //#define ButtonX 6.5
 static CGFloat const kMQInputBarHorizontalSpacing = 8.0;
-static NSString * const kMQInputBarRecordButtonConfirmText = @"按住 说话";
-static NSString * const kMQInputBarRecordButtonFinishText = @"松开 结束";
 
 @interface MQInputBar()
 
@@ -90,7 +90,7 @@ keyboardSenderImage:(UIImage *)keyboardImage
         self.textView               = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(0, 0, 0, textViewHeight)];
         self.textView.font          = [UIFont systemFontOfSize:16];
         self.textView.returnKeyType = UIReturnKeySend;
-        self.textView.placeholder   = @"请输入...";
+        self.textView.placeholder   = [MQBundleUtil localizedStringForKey:@"new_message"];
         self.textView.delegate      = (id)self;
         self.textView.layer.borderColor     = [UIColor colorWithWhite:0.8 alpha:1].CGColor;
         self.textView.layer.borderWidth     = 1;
@@ -155,7 +155,7 @@ keyboardSenderImage:(UIImage *)keyboardImage
     [microphoneBtn addTarget:self action:@selector(microphoneClick) forControlEvents:UIControlEventTouchUpInside];
     
     recordBtn                    = [UIButton buttonWithType:UIButtonTypeCustom];
-    [recordBtn setTitle:kMQInputBarRecordButtonConfirmText forState:UIControlStateNormal];
+    [recordBtn setTitle:[MQBundleUtil localizedStringForKey:@"record_speak"] forState:UIControlStateNormal];
     [recordBtn setTitleColor:[UIColor colorWithWhite:.1 alpha:1] forState:UIControlStateNormal];
     recordBtn.backgroundColor    = [UIColor colorWithWhite:1 alpha:1];
     recordBtn.layer.cornerRadius = 4;
@@ -184,7 +184,7 @@ keyboardSenderImage:(UIImage *)keyboardImage
 -(void)cameraClick
 {
     [self textViewResignFirstResponder];
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:(id)self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"从相册选取",@"拍照", nil];
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:(id)self cancelButtonTitle:[MQBundleUtil localizedStringForKey:@"cancel"] destructiveButtonTitle:nil otherButtonTitles:[MQBundleUtil localizedStringForKey:@"select_gallery"], [MQBundleUtil localizedStringForKey:@"select_camera"], nil];
     [sheet showInView:self.superview];
 }
 
@@ -233,7 +233,7 @@ keyboardSenderImage:(UIImage *)keyboardImage
 
 -(void)reRecordBtn
 {
-    [recordBtn setTitle:kMQInputBarRecordButtonConfirmText forState:UIControlStateNormal];
+    [recordBtn setTitle:[MQBundleUtil localizedStringForKey:@"record_speak"] forState:UIControlStateNormal];
     [UIView animateWithDuration:.2 animations:^{
         recordBtn.backgroundColor = [UIColor colorWithWhite:1 alpha:1];
     }];
@@ -247,13 +247,13 @@ keyboardSenderImage:(UIImage *)keyboardImage
                 [self.delegate beginRecord:[longPressedRecognizer locationInView:[[UIApplication sharedApplication] keyWindow]]];
             }
         }
-        [recordBtn setTitle:kMQInputBarRecordButtonFinishText forState:UIControlStateNormal];
+        [recordBtn setTitle:[MQBundleUtil localizedStringForKey:@"record_end"] forState:UIControlStateNormal];
         [UIView animateWithDuration:.2 animations:^{
             recordBtn.backgroundColor = [UIColor colorWithWhite:.92 alpha:1];
         }];
     }else if(longPressedRecognizer.state == UIGestureRecognizerStateEnded || longPressedRecognizer.state == UIGestureRecognizerStateCancelled) {
         [self endRecordWithPoint:[longPressedRecognizer locationInView:[[UIApplication sharedApplication] keyWindow]]];
-        [recordBtn setTitle:kMQInputBarRecordButtonConfirmText forState:UIControlStateNormal];
+        [recordBtn setTitle:[MQBundleUtil localizedStringForKey:@"record_speak"] forState:UIControlStateNormal];
         [UIView animateWithDuration:.2 animations:^{
             recordBtn.backgroundColor = [UIColor colorWithWhite:1 alpha:1];
         }];
