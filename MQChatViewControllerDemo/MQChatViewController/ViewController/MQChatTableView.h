@@ -59,4 +59,9 @@
 
 - (void)updateFrame:(CGRect)frame;
 
+/**
+ *  判断tableView当前是否已经滑动到最低端
+ */
+- (BOOL)isTableViewScrolledToBottom;
+
 @end

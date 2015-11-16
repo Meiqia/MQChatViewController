@@ -18,9 +18,6 @@
 
 static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
-static NSInteger const kMQChatNavTitleViewTag       = 2000;
-static NSInteger const kMQChatNavTitleLabelTag      = 2001;
-static NSInteger const kMQChatNavTitleIndicatorTag  = 2002;
 @interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQRecordViewDelegate, MQServiceToViewInterfaceErrorDelegate>
 #else
 @interface MQChatViewController () <UITableViewDelegate, MQChatViewServiceDelegate, MQInputBarDelegate, UIImagePickerControllerDelegate, MQChatTableViewDelegate, MQChatCellDelegate, MQRecordViewDelegate>
@@ -35,7 +32,6 @@ static NSInteger const kMQChatNavTitleIndicatorTag  = 2002;
     MQInputBar *chatInputBar;
     MQRecordView *recordView;
     CGSize viewSize;
-    
 }
 
 - (void)dealloc {
@@ -100,7 +96,7 @@ static NSInteger const kMQChatNavTitleIndicatorTag  = 2002;
     // Dispose of any resources that can be recreated.
 }
 
-- (void)disappearChatViewController {
+- (void)dismissChatViewController {
     if ([MQChatViewConfig sharedConfig].isPushChatView) {
         [self.navigationController popViewControllerAnimated:true];
     } else if ([MQChatViewConfig sharedConfig].isPresentChatView) {
@@ -174,7 +170,6 @@ static NSInteger const kMQChatNavTitleIndicatorTag  = 2002;
 
 #pragma 初始化tableView dataSource
 - (void)initTableViewDataSource {
-//    tableDataSource = [[MQChatViewTableDataSource alloc] initWithTableView:self.chatTableView chatViewService:chatViewService];
     tableDataSource = [[MQChatViewTableDataSource alloc] initWithChatViewService:chatViewService];
     tableDataSource.chatCellDelegate = self;
     self.chatTableView.dataSource = tableDataSource;
@@ -200,7 +195,7 @@ static NSInteger const kMQChatNavTitleIndicatorTag  = 2002;
     chatInputBar = [[MQInputBar alloc] initWithFrame:inputBarFrame
                                            superView:self.view
                                            tableView:self.chatTableView
-                                     enabelSendVoice:[MQChatViewConfig sharedConfig].enableVoiceMessage
+                                     enableSendVoice:[MQChatViewConfig sharedConfig].enableVoiceMessage
                                      enableSendImage:[MQChatViewConfig sharedConfig].enableImageMessage
                                     photoSenderImage:[MQChatViewConfig sharedConfig].photoSenderImage
                                     voiceSenderImage:[MQChatViewConfig sharedConfig].voiceSenderImage
@@ -263,7 +258,14 @@ static NSInteger const kMQChatNavTitleIndicatorTag  = 2002;
 #endif
 
 - (void)didReceiveMessage {
-    [self chatTableViewScrollToBottomWithAnimated:true];
+    //判断是否显示新消息提示
+    if ([self.chatTableView isTableViewScrolledToBottom]) {
+        if ([MQChatViewConfig sharedConfig].enableShowNewMessageAlert) {
+            [MQToast showToast:@"下方有新消息" duration:1.5 window:self.view];
+        }
+    } else {
+        [self chatTableViewScrollToBottomWithAnimated:true];
+    }
 }
 
 #pragma MQInputBarDelegate
@@ -283,7 +285,7 @@ static NSInteger const kMQChatNavTitleIndicatorTag  = 2002;
         NSLog(@"当前设备没有相机");
         return;
     }
-    //兼容ipad打不开相册问题，使用队列延迟，规避ios8的警惕性
+    //兼容ipad打不开相册问题，使用队列延迟
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
         picker.sourceType               = (int)sourceType;
@@ -465,9 +467,6 @@ static NSInteger const kMQChatNavTitleIndicatorTag  = 2002;
  *  @param isScheduling 是否正在分配客服
  */
 - (void)updateNavBarTitle:(NSString *)title {
-//    if (self.navigationItem.titleView.tag != kMQChatNavTitleViewTag) {
-//        //生成导航栏title
-//    }
     self.navigationItem.title = title;
 }
 

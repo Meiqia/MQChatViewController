@@ -29,7 +29,7 @@
     }
     if (viewController.navigationController) {
         chatViewConfig.isPushChatView = true;
-        [self updateNavAttributesWithNavigationController:viewController.navigationController];
+        [self updateNavAttributesWithViewController:chatViewController navigationController:viewController.navigationController isPresentModalView:false];
         [viewController.navigationController pushViewController:chatViewController animated:true];
     } else {
         [self presentMQChatViewControllerInViewController:viewController];
@@ -43,30 +43,45 @@
         chatViewController = [[MQChatViewController alloc] initWithChatViewManager:chatViewConfig];
     }
     UINavigationController *chatNavigationController = [[UINavigationController alloc] initWithRootViewController:chatViewController];
-    [self updateNavAttributesWithNavigationController:chatNavigationController];
-    UIImage *cancelImage = [MQChatViewConfig sharedConfig].navBarLeftButtomImage;
-    cancelImage = [MQImageUtil convertImageColorWithImage:cancelImage toColor:[MQChatViewConfig sharedConfig].navBarTintColor];
-    UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    cancelBtn.frame = CGRectMake(0, 0, cancelImage.size.width, cancelImage.size.height);
-    [cancelBtn setBackgroundImage:cancelImage forState:UIControlStateNormal];
-    [cancelBtn addTarget:chatViewController action:@selector(dismissChatModalView) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
-    chatViewController.navigationItem.leftBarButtonItem = leftItem;
+    [self updateNavAttributesWithViewController:chatViewController navigationController:chatNavigationController isPresentModalView:true];
     [viewController presentViewController:chatNavigationController animated:true completion:nil];
     return chatViewController;
 }
 
 //修改导航栏属性
-- (void)updateNavAttributesWithNavigationController:(UINavigationController *)navigationController {
-    navigationController.navigationBar.tintColor = [MQChatViewConfig sharedConfig].navBarTintColor;
-    navigationController.navigationBar.backgroundColor = [MQChatViewConfig sharedConfig].navBarColor;
+- (void)updateNavAttributesWithViewController:(MQChatViewController *)viewController
+                         navigationController:(UINavigationController *)navigationController
+                           isPresentModalView:(BOOL)isPresentModalView
+{
+    if ([MQChatViewConfig sharedConfig].navBarTintColor) {
+        navigationController.navigationBar.tintColor = [MQChatViewConfig sharedConfig].navBarTintColor;
+    }
+    if ([MQChatViewConfig sharedConfig].navBarColor) {
+        navigationController.navigationBar.backgroundColor = [MQChatViewConfig sharedConfig].navBarColor;
+    }
+    //导航栏左键
+    if (isPresentModalView) {
+        UIImage *cancelImage = [MQChatViewConfig sharedConfig].navBarLeftButtonImage;
+        cancelImage = [MQImageUtil convertImageColorWithImage:cancelImage toColor:[MQChatViewConfig sharedConfig].navBarTintColor];
+        UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        cancelBtn.frame = CGRectMake(0, 0, cancelImage.size.width, cancelImage.size.height);
+        [cancelBtn setBackgroundImage:cancelImage forState:UIControlStateNormal];
+        [cancelBtn addTarget:viewController action:@selector(dismissChatModalView) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
+        viewController.navigationItem.leftBarButtonItem = leftItem;
+    }
+    //导航栏右键
+    if ([MQChatViewConfig sharedConfig].navBarRightButton) {
+        UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:[MQChatViewConfig sharedConfig].navBarRightButton];
+        viewController.navigationItem.rightBarButtonItem = rightItem;
+    }
 }
 
 - (void)disappearMQChatViewController {
     if (!chatViewController) {
         return ;
     }
-#warning 需要在chatViewController中添加disappear后，再写这里
+    [chatViewController dismissChatViewController];
 }
 
 - (void)enableCustomChatViewFrame:(BOOL)enable {
@@ -107,6 +122,10 @@
 
 - (void)enableTipsView:(BOOL)enable {
     chatViewConfig.enableTipsView = enable;
+}
+
+- (void)enableShowNewMessageAlert:(BOOL)enable {
+    chatViewConfig.enableShowNewMessageAlert = enable;
 }
 
 - (void)setIncomingMessageTextColor:(UIColor *)textColor {
@@ -189,12 +208,12 @@
     chatViewConfig.outgoingBubbleImage = [UIImage imageWithCGImage:bubbleImage.CGImage];
 }
 
-- (void)setNavLeftButtomImage:(UIImage *)leftButtomImage {
-    chatViewConfig.navBarLeftButtomImage = leftButtomImage;
+- (void)setNavLeftButtonImage:(UIImage *)leftButtonImage {
+    chatViewConfig.navBarLeftButtonImage = leftButtonImage;
 }
 
-- (void)setNavRightButtomImage:(UIImage *)rightButtomImage {
-    chatViewConfig.navBarRightButtomImage = rightButtomImage;
+- (void)setNavRightButton:(UIButton *)rightButton {
+    chatViewConfig.navBarRightButton = rightButton;
 }
 
 - (void)enableCustomRecordView:(BOOL)enable {

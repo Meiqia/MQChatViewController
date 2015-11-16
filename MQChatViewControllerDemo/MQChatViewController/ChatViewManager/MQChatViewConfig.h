@@ -33,6 +33,7 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 @property (nonatomic, copy) NSString *agentOfflineTipText;
 @property (nonatomic, copy) NSString *chatWelcomeText;
 @property (nonatomic, copy) NSString *agentName;
+@property (nonatomic, copy) NSString *incomingMsgSoundFileName;
 
 @property (nonatomic, assign) BOOL enableSyncServerMessage;
 @property (nonatomic, assign) BOOL enableEventDispaly;
@@ -50,6 +51,7 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 @property (nonatomic, assign) BOOL enableTopAutoRefresh;
 @property (nonatomic, assign) BOOL isPushChatView;
 @property (nonatomic, assign) BOOL isPresentChatView;
+@property (nonatomic, assign) BOOL enableShowNewMessageAlert;
 
 @property (nonatomic, copy) UIColor *incomingMsgTextColor;
 @property (nonatomic, copy) UIColor *incomingBubbleColor;
@@ -57,7 +59,6 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 @property (nonatomic, copy) UIColor *outgoingBubbleColor;
 @property (nonatomic, copy) UIColor *eventTextColor;
 @property (nonatomic, copy) UIColor *redirectAgentNameColor;
-
 @property (nonatomic, copy) UIColor *navBarTintColor;
 @property (nonatomic, copy) UIColor *navBarColor;
 @property (nonatomic, copy) UIColor *pullRefreshColor;
@@ -70,10 +71,10 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 @property (nonatomic, strong) UIImage *keyboardSenderImage;
 @property (nonatomic, strong) UIImage *incomingBubbleImage;
 @property (nonatomic, strong) UIImage *outgoingBubbleImage;
-@property (nonatomic, strong) UIImage *navBarLeftButtomImage;
-@property (nonatomic, strong) UIImage *navBarRightButtomImage;
+@property (nonatomic, strong) UIImage *imageLoadErrorImage;
 
-@property (nonatomic, strong) NSString *incomingMsgSoundFileName;
+@property (nonatomic, strong) UIImage  *navBarLeftButtonImage;
+@property (nonatomic, weak  ) UIButton *navBarRightButton;
 
 @property (nonatomic, assign) NSTimeInterval maxVoiceDuration;
 

@@ -74,13 +74,6 @@
                             sendStatus:(MQChatMessageSendStatus)sendStatus;
 
 /**
- *  得到为该client服务的客服信息
- *
- *  @param agent 客服实体
- */
-- (void)didScheduledWithAgent:(MQAgent *)agent;
-
-/**
  *  顾客已被转接
  *
  *  @param agentName 被转接的客服名字
