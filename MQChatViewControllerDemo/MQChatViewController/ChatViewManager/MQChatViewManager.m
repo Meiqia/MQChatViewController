@@ -112,12 +112,12 @@
     chatViewConfig.enableEventDispaly = enable;
 }
 
-- (void)enableVoiceMessage:(BOOL)enable {
-    chatViewConfig.enableVoiceMessage = enable;
+- (void)enableSendVoiceMessage:(BOOL)enable {
+    chatViewConfig.enableSendVoiceMessage = enable;
 }
 
-- (void)enableImageMessage:(BOOL)enable {
-    chatViewConfig.enableImageMessage = enable;
+- (void)enableSendImageMessage:(BOOL)enable {
+    chatViewConfig.enableSendImageMessage = enable;
 }
 
 - (void)enableTipsView:(BOOL)enable {
@@ -168,7 +168,7 @@
     chatViewConfig.agentOfflineTipText = [tipText copy];
 }
 
-- (void)setchatWelcomeText:(NSString *)welcomText {
+- (void)setChatWelcomeText:(NSString *)welcomText {
     chatViewConfig.chatWelcomeText = [welcomText copy];
 }
 

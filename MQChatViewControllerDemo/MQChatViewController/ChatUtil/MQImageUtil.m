@@ -23,7 +23,7 @@
     UIGraphicsEndImageContext();
     
     UIImage *flippedImage = [UIImage imageWithCGImage:img.CGImage
-                                                scale:1.0 orientation: UIImageOrientationDownMirrored];
+                                                scale:1.0 orientation: UIImageOrientationUp];
     return flippedImage;
 }
 

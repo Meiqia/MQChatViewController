@@ -52,7 +52,8 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    viewSize = self.view.frame.size;
+    self.view.backgroundColor = [UIColor whiteColor];
+    viewSize = [UIScreen mainScreen].bounds.size;
     [self setNavBar];
     [self initChatTableView];
     [self initchatViewService];
@@ -144,8 +145,8 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     chatInputBar = [[MQInputBar alloc] initWithFrame:inputBarFrame
                                            superView:self.view
                                            tableView:self.chatTableView
-                                     enableSendVoice:[MQChatViewConfig sharedConfig].enableVoiceMessage
-                                     enableSendImage:[MQChatViewConfig sharedConfig].enableImageMessage
+                                     enableSendVoice:[MQChatViewConfig sharedConfig].enableSendVoiceMessage
+                                     enableSendImage:[MQChatViewConfig sharedConfig].enableSendImageMessage
                                     photoSenderImage:[MQChatViewConfig sharedConfig].photoSenderImage
                                     voiceSenderImage:[MQChatViewConfig sharedConfig].voiceSenderImage
                                  keyboardSenderImage:[MQChatViewConfig sharedConfig].keyboardSenderImage];
@@ -243,9 +244,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 - (void)didUpdateCellModelWithIndexPath:(NSIndexPath *)indexPath {
-//    [self.chatTableView reloadData];
-    [self tableView:self.chatTableView heightForRowAtIndexPath:indexPath];
-    [self.chatTableView updateTableViewAtIndexPath:indexPath];
+        [self.chatTableView reloadData];
+//    [self tableView:self.chatTableView heightForRowAtIndexPath:indexPath];
+//    [self.chatTableView updateTableViewAtIndexPath:indexPath];
 }
 
 - (void)reloadChatTableView {
@@ -264,7 +265,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     //判断是否显示新消息提示
     if ([self.chatTableView isTableViewScrolledToBottom]) {
         if ([MQChatViewConfig sharedConfig].enableShowNewMessageAlert) {
-            [MQToast showToast:[MQBundleUtil localizedStringForKey:@"display_new_message"] duration:1.0 window:self.view];
+            [MQToast showToast:[MQBundleUtil localizedStringForKey:@"display_new_message"] duration:1.5 window:self.view];
         }
     } else {
         [self chatTableViewScrollToBottomWithAnimated:true];
@@ -361,7 +362,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 - (void)didEndRecord {
-
+    
 }
 
 #pragma MQRecordViewDelegate
@@ -371,7 +372,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 - (void)didUpdateVolumeInRecordView:(UIView *)recordView volume:(CGFloat)volume {
-
+    
 }
 
 #pragma UIImagePickerControllerDelegate
@@ -404,7 +405,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 - (void)didSelectMessageInCell:(UITableViewCell *)cell messageContent:(NSString *)content selectedContent:(NSString *)selectedContent {
-
+    
 }
 
 #pragma ios7以下系统的横屏的事件
@@ -437,7 +438,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     //更新tableView的frame
     [self setChatTableViewFrame];
     //更新cellModel的frame
-    chatViewService.chatViewWidth = viewSize.width;
+    chatViewService.chatViewWidth = self.chatTableView.frame.size.width;
     [chatViewService updateCellModelsFrame];
     [self.chatTableView reloadData];
     //更新inputBar的frame
@@ -456,6 +457,8 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     if (!chatViewConfig.isCustomizedChatViewFrame) {
         chatViewConfig.chatViewFrame = CGRectMake(0, 0, viewSize.width, viewSize.height - kMQChatViewInputBarHeight);
         [self.chatTableView updateFrame:chatViewConfig.chatViewFrame];;
+    } else {
+        //开发者如果自定义了TableView的frame，在这里重新处理横屏后的tableView的frame
     }
 }
 
