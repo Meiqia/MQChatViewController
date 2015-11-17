@@ -7,7 +7,6 @@
 //
 
 #import "MQBaseMessage.h"
-#import "MQChatDateUtil.h"
 
 @implementation MQBaseMessage
 

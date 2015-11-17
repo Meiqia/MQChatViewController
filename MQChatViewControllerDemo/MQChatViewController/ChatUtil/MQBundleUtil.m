@@ -20,6 +20,7 @@
 
 + (NSString *)localizedStringForKey:(NSString *)key
 {
+    NSLog(@"%@",[[NSLocale currentLocale] localeIdentifier]);
     return NSLocalizedStringFromTableInBundle(key, @"MQChatViewController", [MQBundleUtil assetBundle], nil);
 }
 

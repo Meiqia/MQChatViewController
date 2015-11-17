@@ -8,7 +8,7 @@
 
 #import "MQMessageDateCell.h"
 #import "MQMessageDateCellModel.h"
-#import "MQChatDateUtil.h"
+#import "MQDateFormatterUtil.h"
 
 static CGFloat const kMQMessageDateLabelFontSize = 12.0;
 
@@ -39,7 +39,7 @@ static CGFloat const kMQMessageDateLabelFontSize = 12.0;
     MQMessageDateCellModel *cellModel = (MQMessageDateCellModel *)model;
     
     //刷新时间label
-    dateLabel.text = [MQChatDateUtil convertToChineseDateWithDate:cellModel.date];
+    dateLabel.text = [[MQDateFormatterUtil sharedFormatter] meiqiaStyleDateForDate:cellModel.date];
     dateLabel.frame = cellModel.dateLabelFrame;
 }
 

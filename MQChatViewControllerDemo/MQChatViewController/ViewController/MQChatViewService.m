@@ -20,7 +20,6 @@
 #import "MQToast.h"
 #import "VoiceConverter.h"
 #import "MQEventCellModel.h"
-#import "MQChatDateUtil.h"
 
 static NSInteger const kMQChatMessageMaxTimeInterval = 60;
 
