@@ -72,6 +72,12 @@
         UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
         viewController.navigationItem.leftBarButtonItem = leftItem;
     }
+    UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    cancelBtn.frame = CGRectMake(0, 0, cancelImage.size.width, cancelImage.size.height);
+    [cancelBtn setBackgroundImage:cancelImage forState:UIControlStateNormal];
+    [cancelBtn addTarget:viewController action:@selector(dismissChatViewController) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
+    viewController.navigationItem.leftBarButtonItem = leftItem;
     //导航栏右键
     if ([MQChatViewConfig sharedConfig].navBarRightButton) {
         UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:[MQChatViewConfig sharedConfig].navBarRightButton];
