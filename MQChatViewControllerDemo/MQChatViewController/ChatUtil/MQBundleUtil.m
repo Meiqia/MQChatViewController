@@ -20,8 +20,10 @@
 
 + (NSString *)localizedStringForKey:(NSString *)key
 {
-    NSLog(@"%@",[[NSLocale currentLocale] localeIdentifier]);
-    return NSLocalizedStringFromTableInBundle(key, @"MQChatViewController", [MQBundleUtil assetBundle], nil);
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSLog(@"%@", [defaults objectForKey:@"AppleLanguages"][0]);
+    return [[MQBundleUtil assetBundle] localizedStringForKey:key value:nil table:@"MQChatViewController"];
+//    return NSLocalizedStringFromTableInBundle(key, @"MQChatViewController", [MQBundleUtil assetBundle], nil);
 }
 
 @end
