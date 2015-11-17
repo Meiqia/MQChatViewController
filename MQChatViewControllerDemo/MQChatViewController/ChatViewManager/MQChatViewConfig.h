@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 
 //是否引入美洽SDK
-#define INCLUDE_MEIQIA_SDK
+//#define INCLUDE_MEIQIA_SDK
 
 /** 关闭键盘的通知 */
 extern NSString * const MQChatViewKeyboardResignFirstResponderNotification;
@@ -37,8 +37,8 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 
 @property (nonatomic, assign) BOOL enableSyncServerMessage;
 @property (nonatomic, assign) BOOL enableEventDispaly;
-@property (nonatomic, assign) BOOL enableVoiceMessage;
-@property (nonatomic, assign) BOOL enableImageMessage;
+@property (nonatomic, assign) BOOL enableSendVoiceMessage;
+@property (nonatomic, assign) BOOL enableSendImageMessage;
 @property (nonatomic, assign) BOOL enableTipsView;
 @property (nonatomic, assign) BOOL enableAgentAvatar;
 @property (nonatomic, assign) BOOL enableClientAvatar;
@@ -49,9 +49,10 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 @property (nonatomic, assign) BOOL enableRoundAvatar;
 @property (nonatomic, assign) BOOL enableWelcomeChat;
 @property (nonatomic, assign) BOOL enableTopAutoRefresh;
+@property (nonatomic, assign) BOOL enableShowNewMessageAlert;
+
 @property (nonatomic, assign) BOOL isPushChatView;
 @property (nonatomic, assign) BOOL isPresentChatView;
-@property (nonatomic, assign) BOOL enableShowNewMessageAlert;
 
 @property (nonatomic, copy) UIColor *incomingMsgTextColor;
 @property (nonatomic, copy) UIColor *incomingBubbleColor;

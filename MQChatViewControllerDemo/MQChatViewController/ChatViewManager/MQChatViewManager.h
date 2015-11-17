@@ -80,7 +80,7 @@
  * 设置顾客第一次进入界面显示的欢迎文字；
  * @param tipText 提示文字
  */
-- (void)setchatWelcomeText:(NSString *)welcomText;
+- (void)setChatWelcomeText:(NSString *)welcomText;
 
 /**
  *  设置客服的名字
@@ -113,13 +113,13 @@
  * 是否支持发送语音消息；
  * @param enable YES:支持发送语音消息 NO:不支持发送语音消息
  */
-- (void)enableVoiceMessage:(BOOL)enable;
+- (void)enableSendVoiceMessage:(BOOL)enable;
 
 /**
  * 是否支持发送图片消息；
  * @param enable YES:支持发送图片消息 NO:不支持发送图片消息
  */
-- (void)enableImageMessage:(BOOL)enable;
+- (void)enableSendImageMessage:(BOOL)enable;
 
 /**
  * 是否支持状态提示的alert界面，状态提示有：网络连接不正常、SDK初始化不正确；

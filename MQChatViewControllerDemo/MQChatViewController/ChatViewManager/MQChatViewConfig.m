@@ -48,8 +48,8 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     
     self.enableSyncServerMessage = true;
     self.enableEventDispaly      = true;
-    self.enableVoiceMessage      = true;
-    self.enableImageMessage      = true;
+    self.enableSendVoiceMessage      = true;
+    self.enableSendImageMessage      = true;
     self.enableTipsView          = true;
     self.enableAgentAvatar       = true;
     self.enableCustomRecordView  = true;

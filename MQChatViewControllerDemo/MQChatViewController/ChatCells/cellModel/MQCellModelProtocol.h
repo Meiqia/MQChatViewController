@@ -52,7 +52,7 @@ static CGFloat const kMQCellTextFontSize = 16.0;
 /**
  * 聊天内容间隔的时间cell高度
  */
-static CGFloat const kMQChatMessageDateCellHeight = 32.0;
+static CGFloat const kMQChatMessageDateCellHeight = 36.0;
 /**
  * 聊天内容间隔的时间的label向下偏移的数量
  */

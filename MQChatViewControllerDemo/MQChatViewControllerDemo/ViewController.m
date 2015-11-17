@@ -28,7 +28,7 @@
     [self.view addSubview:pushChatViewBtn];
     
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-    [chatViewManager setchatWelcomeText:@""];
+    [chatViewManager setChatWelcomeText:@""];
     [chatViewManager presentMQChatViewControllerInViewController:self];
 }
 
