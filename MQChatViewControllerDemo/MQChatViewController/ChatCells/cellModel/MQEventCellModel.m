@@ -59,7 +59,7 @@ static CGFloat const kMQEventCellTextFontSize = 14.0;
         CGFloat labelWidth = cellWidth - kMQEventCellTextToEdgeHorizontalSpacing * 2;
         CGFloat labelHeight = [MQStringSizeUtil getHeightForText:message.content withFont:[UIFont systemFontOfSize:kMQEventCellTextFontSize] andWidth:labelWidth];
         self.eventLabelFrame = CGRectMake(kMQEventCellTextToEdgeHorizontalSpacing, kMQEventCellTextToEdgeVerticalSpacing, labelWidth, labelHeight);
-        self.cellHeight = self.eventLabelFrame.origin.y + self.eventLabelFrame.size.height;
+        self.cellHeight = self.eventLabelFrame.origin.y + self.eventLabelFrame.size.height + kMQEventCellTextToEdgeVerticalSpacing;
     }
     return self;
 }

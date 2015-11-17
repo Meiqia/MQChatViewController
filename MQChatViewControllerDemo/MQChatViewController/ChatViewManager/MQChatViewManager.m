@@ -60,16 +60,24 @@
         navigationController.navigationBar.backgroundColor = [MQChatViewConfig sharedConfig].navBarColor;
     }
     //导航栏左键
-    if (isPresentModalView) {
-        UIImage *cancelImage = [MQChatViewConfig sharedConfig].navBarLeftButtonImage;
+    UIImage *cancelImage = isPresentModalView ? [MQChatViewConfig sharedConfig].modalViewLeftButtonImage : [MQChatViewConfig sharedConfig].navBarLeftButtonImage;
+    if ([MQChatViewConfig sharedConfig].navBarTintColor) {
         cancelImage = [MQImageUtil convertImageColorWithImage:cancelImage toColor:[MQChatViewConfig sharedConfig].navBarTintColor];
+    }
+    if (cancelImage) {
         UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         cancelBtn.frame = CGRectMake(0, 0, cancelImage.size.width, cancelImage.size.height);
         [cancelBtn setBackgroundImage:cancelImage forState:UIControlStateNormal];
-        [cancelBtn addTarget:viewController action:@selector(dismissChatModalView) forControlEvents:UIControlEventTouchUpInside];
+        [cancelBtn addTarget:viewController action:@selector(dismissChatViewController) forControlEvents:UIControlEventTouchUpInside];
         UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
         viewController.navigationItem.leftBarButtonItem = leftItem;
     }
+    UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    cancelBtn.frame = CGRectMake(0, 0, cancelImage.size.width, cancelImage.size.height);
+    [cancelBtn setBackgroundImage:cancelImage forState:UIControlStateNormal];
+    [cancelBtn addTarget:viewController action:@selector(dismissChatViewController) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
+    viewController.navigationItem.leftBarButtonItem = leftItem;
     //导航栏右键
     if ([MQChatViewConfig sharedConfig].navBarRightButton) {
         UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:[MQChatViewConfig sharedConfig].navBarRightButton];
@@ -112,12 +120,12 @@
     chatViewConfig.enableEventDispaly = enable;
 }
 
-- (void)enableVoiceMessage:(BOOL)enable {
-    chatViewConfig.enableVoiceMessage = enable;
+- (void)enableSendVoiceMessage:(BOOL)enable {
+    chatViewConfig.enableSendVoiceMessage = enable;
 }
 
-- (void)enableImageMessage:(BOOL)enable {
-    chatViewConfig.enableImageMessage = enable;
+- (void)enableSendImageMessage:(BOOL)enable {
+    chatViewConfig.enableSendImageMessage = enable;
 }
 
 - (void)enableTipsView:(BOOL)enable {
@@ -168,7 +176,7 @@
     chatViewConfig.agentOfflineTipText = [tipText copy];
 }
 
-- (void)setchatWelcomeText:(NSString *)welcomText {
+- (void)setChatWelcomeText:(NSString *)welcomText {
     chatViewConfig.chatWelcomeText = [welcomText copy];
 }
 
@@ -210,6 +218,10 @@
 
 - (void)setNavLeftButtonImage:(UIImage *)leftButtonImage {
     chatViewConfig.navBarLeftButtonImage = leftButtonImage;
+}
+
+- (void)setModalViewNavLeftButtonImage:(UIImage *)leftButtonImage {
+    chatViewConfig.modalViewLeftButtonImage = leftButtonImage;
 }
 
 - (void)setNavRightButton:(UIButton *)rightButton {

@@ -106,6 +106,15 @@
  */
 @property (nonatomic, assign) MQChatMessageSendStatus sendStatus;
 
+/**
+ * @brief 该语音消息是否已经播放过了
+ */
+@property (nonatomic, assign) BOOL isPlayed;
+
+/**
+ * @brief 语音未播放的小红点view的frame
+ */
+@property (nonatomic, readonly, assign) CGRect notPlayViewFrame;
 
 /**
  *  根据MQMessage内容来生成cell model

@@ -22,7 +22,10 @@ static CGFloat const kMQCellVoiceImageToBubbleSpacing = 24.0;
  * 语音时长label与气泡的间隔
  */
 static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
-
+/**
+ * 语音未播放的按钮的直径
+ */
+static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
 
 @interface MQVoiceCellModel()
 
@@ -107,6 +110,11 @@ static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
 @property (nonatomic, readwrite, assign) CGRect sendFailureFrame;
 
 /**
+ * @brief 语音未播放的小红点view的frame
+ */
+@property (nonatomic, readwrite, assign) CGRect notPlayViewFrame;
+
+/**
  * @brief 消息的来源类型
  */
 @property (nonatomic, readwrite, assign) MQChatCellFromType cellFromType;
@@ -129,6 +137,7 @@ static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
         self.date = message.date;
         self.avatarPath = @"";
         self.cellHeight = 44.0;
+        self.isPlayed = message.isPlayed;
         if (message.userAvatarImage) {
             self.avatarImage = message.userAvatarImage;
         } else if (message.userAvatarPath.length > 0) {
@@ -256,6 +265,8 @@ static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
         self.voiceImageFrame = CGRectMake(kMQCellVoiceImageToBubbleSpacing, self.bubbleImageFrame.size.height/2-voiceImageSize.height/2, voiceImageSize.width, voiceImageSize.height);
         //语音时长的frame
         self.durationLabelFrame = CGRectMake(self.bubbleImageFrame.origin.x+self.bubbleImageFrame.size.width+kMQCellVoiceDurationLabelToBubbleSpacing, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-durationTextHeight/2, durationTextWidth, durationTextHeight);
+        //未播放按钮的frame
+        self.notPlayViewFrame = CGRectMake(self.bubbleImageFrame.origin.x + self.bubbleImageFrame.size.width + kMQCellVoiceDurationLabelToBubbleSpacing, self.bubbleImageFrame.origin.y, kMQCellVoiceNotPlayPointViewDiameter, kMQCellVoiceNotPlayPointViewDiameter);
     }
     
     

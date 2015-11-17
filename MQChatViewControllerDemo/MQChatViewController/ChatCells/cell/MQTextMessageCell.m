@@ -106,12 +106,22 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
     
     //刷新聊天文字
     textLabel.frame = cellModel.textLabelFrame;
-    textLabel.text = cellModel.cellText;
+    NSMutableAttributedString *contentString = [[NSMutableAttributedString alloc] initWithString:cellModel.cellText];
     if (cellModel.cellFromType == MQChatCellIncoming) {
-        textLabel.textColor = [MQChatViewConfig sharedConfig].incomingMsgTextColor;
+        //        textLabel.textColor = [MQChatViewConfig sharedConfig].incomingMsgTextColor;
+        [contentString addAttributes:@{
+                                       NSFontAttributeName : [UIFont systemFontOfSize:kMQCellTextFontSize],
+                                       NSForegroundColorAttributeName : [MQChatViewConfig sharedConfig].incomingMsgTextColor
+                                       } range:NSMakeRange(0, contentString.length)];
     } else {
-        textLabel.textColor = [MQChatViewConfig sharedConfig].outgoingMsgTextColor;
+        //        textLabel.textColor = [MQChatViewConfig sharedConfig].outgoingMsgTextColor;
+        [contentString addAttributes:@{
+                                       NSFontAttributeName : [UIFont systemFontOfSize:kMQCellTextFontSize],
+                                       NSForegroundColorAttributeName : [MQChatViewConfig sharedConfig].outgoingMsgTextColor
+                                       } range:NSMakeRange(0, contentString.length)];
     }
+    //    textLabel.text = cellModel.cellText;
+    textLabel.attributedText = contentString;
     //获取文字中的可选中的元素
     if (cellModel.numberRangeDic.count > 0) {
         NSString *longestKey = @"";
@@ -263,7 +273,7 @@ didLongPressLinkWithPhoneNumber:(NSString *)phoneNumber
 }
 
 - (void)showMenueController {
-    [self showMenuControllerInView:self targetRect:bubbleImageView.frame menuItemsName:@{@"textCopy" : textLabel.text}];    
+    [self showMenuControllerInView:self targetRect:bubbleImageView.frame menuItemsName:@{@"textCopy" : textLabel.text}];
     
 }
 

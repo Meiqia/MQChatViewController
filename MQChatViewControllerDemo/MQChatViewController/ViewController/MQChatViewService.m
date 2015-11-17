@@ -20,6 +20,7 @@
 #import "MQToast.h"
 #import "VoiceConverter.h"
 #import "MQEventCellModel.h"
+#import "MQAssetUtil.h"
 
 static NSInteger const kMQChatMessageMaxTimeInterval = 60;
 
@@ -89,7 +90,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             return [cellModel getCellDate];
         }
     }
-    //    return [MQChatDateUtil getLocalDate];
     return [NSDate date];
 }
 
@@ -397,12 +397,23 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self reloadChatTableView];
 }
 
+#pragma 点击了某个cell
+- (void)didTapMessageCellAtIndex:(NSInteger)index {
+    id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index];
+    if ([cellModel isKindOfClass:[MQVoiceCellModel class]]) {
+        MQVoiceCellModel *voiceCellModel = (MQVoiceCellModel *)cellModel;
+        voiceCellModel.isPlayed = true;
+        [self reloadChatTableView];
+        [MQServiceToViewInterface didTapMessageWithMessageId:[cellModel getCellMessageId]];
+    }
+}
+
 #pragma 播放声音
 - (void)playReceivedMessageSound {
     if (![MQChatViewConfig sharedConfig].enableMessageSound) {
         return;
     }
-    [MQChatFileUtil playSoundWithSoundFile:[MQChatViewConfig sharedConfig].incomingMsgSoundFileName];
+    [MQChatFileUtil playSoundWithSoundFile:[MQAssetUtil resourceWithName:[MQChatViewConfig sharedConfig].incomingMsgSoundFileName]];
 }
 
 #pragma 开发者可将自定义的message添加到此方法中

@@ -13,18 +13,21 @@
 @implementation MQImageUtil
 
 + (UIImage *)convertImageColorWithImage:(UIImage *)originalImage toColor:(UIColor *)toColor {
-    CGRect rect = CGRectMake(0, 0, originalImage.size.width, originalImage.size.height);
-    UIGraphicsBeginImageContext(rect.size);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextClipToMask(context, rect, originalImage.CGImage);
-    CGContextSetFillColorWithColor(context, [toColor CGColor]);
-    CGContextFillRect(context, rect);
-    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    UIImage *flippedImage = [UIImage imageWithCGImage:img.CGImage
-                                                scale:1.0 orientation: UIImageOrientationDownMirrored];
-    return flippedImage;
+    if (originalImage != nil) {
+        CGRect rect = CGRectMake(0, 0, originalImage.size.width, originalImage.size.height);
+        UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        CGContextTranslateCTM(context, 0, originalImage.size.height);
+        CGContextScaleCTM(context, 1.0, -1.0);
+        CGContextClipToMask(context, rect, originalImage.CGImage);
+        CGContextSetFillColorWithColor(context, [toColor CGColor]);
+        CGContextFillRect(context, rect);
+        UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        return img;
+    } else {
+        return nil;
+    }
 }
 
 +(UIImage *)viewScreenshot:(UIView*)view{

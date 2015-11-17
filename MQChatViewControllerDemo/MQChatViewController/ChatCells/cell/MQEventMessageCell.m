@@ -8,6 +8,7 @@
 
 #import "MQEventMessageCell.h"
 #import "MQEventCellModel.h"
+#import "MQChatViewConfig.h"
 
 static CGFloat const kMQMessageEventLabelFontSize = 14.0;
 
@@ -19,7 +20,7 @@ static CGFloat const kMQMessageEventLabelFontSize = 14.0;
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         //初始化事件label
         eventLabel = [[UILabel alloc] init];
-        eventLabel.textColor = [UIColor grayColor];
+        eventLabel.textColor = [MQChatViewConfig sharedConfig].eventTextColor;
         eventLabel.textAlignment = NSTextAlignmentCenter;
         eventLabel.font = [UIFont systemFontOfSize:kMQMessageEventLabelFontSize];
         [self.contentView addSubview:eventLabel];
