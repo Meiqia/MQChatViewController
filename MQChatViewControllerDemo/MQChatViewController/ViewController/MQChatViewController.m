@@ -90,10 +90,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [UIView setAnimationsEnabled:true];
 }
 
-- (void)dismissChatModalView {
-    [self dismissViewControllerAnimated:true completion:nil];
-}
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

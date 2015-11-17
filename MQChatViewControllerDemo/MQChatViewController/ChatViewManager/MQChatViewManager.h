@@ -227,8 +227,8 @@
 - (void)setEventTextColor:(UIColor *)textColor;
 
 /**
- * 设置导航栏的文字背景色；
- * @param tintColor 导航栏文字颜色
+ * 设置导航栏上的元素颜色；
+ * @param tintColor 导航栏上的元素颜色
  */
 - (void)setNavigationBarTintColor:(UIColor *)tintColor;
 

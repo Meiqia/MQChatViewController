@@ -47,9 +47,9 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     self.agentName           = @"美洽小助手";
     
     self.enableSyncServerMessage = true;
-    self.enableEventDispaly      = true;
-    self.enableSendVoiceMessage      = true;
-    self.enableSendImageMessage      = true;
+    self.enableEventDispaly      = false;
+    self.enableSendVoiceMessage  = true;
+    self.enableSendImageMessage  = true;
     self.enableTipsView          = true;
     self.enableAgentAvatar       = true;
     self.enableCustomRecordView  = true;
@@ -84,7 +84,7 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     self.navBarLeftButtonImage    = [MQAssetUtil returnCancelImage];
     self.imageLoadErrorImage      = [MQAssetUtil imageLoadErrorImage];
     
-    self.incomingMsgSoundFileName = [MQAssetUtil resourceWithName:@"MQNewMessageRing.mp3"];
+    self.incomingMsgSoundFileName = @"MQNewMessageRing.mp3";
     
     self.maxVoiceDuration = 60;
 }
