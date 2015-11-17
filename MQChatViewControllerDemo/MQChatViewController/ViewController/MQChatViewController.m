@@ -404,6 +404,11 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     
 }
 
+- (void)didTapMessageInCell:(UITableViewCell *)cell {
+    NSIndexPath *indexPath = [self.chatTableView indexPathForCell:cell];
+    [chatViewService didTapMessageCellAtIndex:indexPath.row];
+}
+
 #pragma ios7以下系统的横屏的事件
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {

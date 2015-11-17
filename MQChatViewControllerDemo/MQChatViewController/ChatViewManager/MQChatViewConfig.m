@@ -81,7 +81,8 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     self.incomingBubbleImage      = [MQAssetUtil bubbleIncomingImage];
     self.outgoingBubbleImage      = [MQAssetUtil bubbleOutgoingImage];
     self.messageSendFailureImage  = [MQAssetUtil messageWarningImage];
-    self.navBarLeftButtonImage    = [MQAssetUtil returnCancelImage];
+//    self.navBarLeftButtonImage    = [MQAssetUtil returnCancelImage];
+    self.modalViewLeftButtonImage = [MQAssetUtil returnCancelImage];
     self.imageLoadErrorImage      = [MQAssetUtil imageLoadErrorImage];
     
     self.incomingMsgSoundFileName = @"MQNewMessageRing.mp3";

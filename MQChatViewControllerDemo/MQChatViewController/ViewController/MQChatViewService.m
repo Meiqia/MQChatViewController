@@ -90,7 +90,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             return [cellModel getCellDate];
         }
     }
-    //    return [MQChatDateUtil getLocalDate];
     return [NSDate date];
 }
 
@@ -396,6 +395,17 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     MQTextCellModel *cellModel = [[MQTextCellModel alloc] initCellModelWithMessage:welcomeMessage cellWidth:self.chatViewWidth];
     [self.cellModels addObject:cellModel];
     [self reloadChatTableView];
+}
+
+#pragma 点击了某个cell
+- (void)didTapMessageCellAtIndex:(NSInteger)index {
+    id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index];
+    if ([cellModel isKindOfClass:[MQVoiceCellModel class]]) {
+        MQVoiceCellModel *voiceCellModel = (MQVoiceCellModel *)cellModel;
+        voiceCellModel.isPlayed = true;
+        [self reloadChatTableView];
+        [MQServiceToViewInterface didTapMessageWithMessageId:[cellModel getCellMessageId]];
+    }
 }
 
 #pragma 播放声音

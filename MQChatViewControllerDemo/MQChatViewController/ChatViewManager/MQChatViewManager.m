@@ -60,16 +60,18 @@
         navigationController.navigationBar.backgroundColor = [MQChatViewConfig sharedConfig].navBarColor;
     }
     //导航栏左键
-    UIImage *cancelImage = [MQChatViewConfig sharedConfig].navBarLeftButtonImage;
+    UIImage *cancelImage = isPresentModalView ? [MQChatViewConfig sharedConfig].modalViewLeftButtonImage : [MQChatViewConfig sharedConfig].navBarLeftButtonImage;
     if ([MQChatViewConfig sharedConfig].navBarTintColor) {
         cancelImage = [MQImageUtil convertImageColorWithImage:cancelImage toColor:[MQChatViewConfig sharedConfig].navBarTintColor];
     }
-    UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    cancelBtn.frame = CGRectMake(0, 0, cancelImage.size.width, cancelImage.size.height);
-    [cancelBtn setBackgroundImage:cancelImage forState:UIControlStateNormal];
-    [cancelBtn addTarget:viewController action:@selector(dismissChatViewController) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
-    viewController.navigationItem.leftBarButtonItem = leftItem;
+    if (cancelImage) {
+        UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        cancelBtn.frame = CGRectMake(0, 0, cancelImage.size.width, cancelImage.size.height);
+        [cancelBtn setBackgroundImage:cancelImage forState:UIControlStateNormal];
+        [cancelBtn addTarget:viewController action:@selector(dismissChatViewController) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
+        viewController.navigationItem.leftBarButtonItem = leftItem;
+    }
     //导航栏右键
     if ([MQChatViewConfig sharedConfig].navBarRightButton) {
         UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:[MQChatViewConfig sharedConfig].navBarRightButton];
@@ -210,6 +212,10 @@
 
 - (void)setNavLeftButtonImage:(UIImage *)leftButtonImage {
     chatViewConfig.navBarLeftButtonImage = leftButtonImage;
+}
+
+- (void)setModalViewNavLeftButtonImage:(UIImage *)leftButtonImage {
+    chatViewConfig.modalViewLeftButtonImage = leftButtonImage;
 }
 
 - (void)setNavRightButton:(UIButton *)rightButton {

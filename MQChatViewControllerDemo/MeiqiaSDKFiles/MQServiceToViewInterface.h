@@ -86,6 +86,7 @@
  *  界面发送的请求出错的委托方法
  */
 @protocol MQServiceToViewInterfaceErrorDelegate <NSObject>
+
 /**
  *  收到获取历史消息的错误
  */
@@ -170,6 +171,13 @@
  * 设置顾客离线
  * @param ;
  */
-+ (void)setClientOfflineWithSuccess:(void (^)(BOOL completion))success;
++ (void)setClientOffline;
+
+/**
+ *  点击了某消息
+ *
+ *  @param messageId 消息id
+ */
++ (void)didTapMessageWithMessageId:(NSString *)messageId;
 
 @end

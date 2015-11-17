@@ -114,6 +114,13 @@
  */
 - (void)sendLocalWelcomeChatMessage;
 
+/**
+ *  点击了某个消息
+ *
+ *  @param index 点击的消息index
+ */
+- (void)didTapMessageCellAtIndex:(NSInteger)index;
+
 #ifndef INCLUDE_MEIQIA_SDK
 /**
  * 使用MQChatViewControllerDemo的时候，调试用的方法，用于收取和上一个message一样的消息

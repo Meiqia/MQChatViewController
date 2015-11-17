@@ -291,6 +291,13 @@
 - (void)setNavLeftButtonImage:(UIImage *)leftButtonImage;
 
 /**
+ *  设置模态试图的导航栏左键的图片
+ *
+ *  @param leftButtonImage 左键图片
+ */
+- (void)setModalViewNavLeftButtonImage:(UIImage *)leftButtonImage;
+
+/**
  *  设置导航栏右键的图片
  *
  *  @param rightButtonImage 左键图片

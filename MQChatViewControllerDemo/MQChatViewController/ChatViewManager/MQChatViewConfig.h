@@ -75,6 +75,7 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 @property (nonatomic, strong) UIImage *imageLoadErrorImage;
 
 @property (nonatomic, strong) UIImage  *navBarLeftButtonImage;
+@property (nonatomic, strong) UIImage  *modalViewLeftButtonImage;
 @property (nonatomic, weak  ) UIButton *navBarRightButton;
 
 @property (nonatomic, assign) NSTimeInterval maxVoiceDuration;

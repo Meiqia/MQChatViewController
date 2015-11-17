@@ -18,6 +18,9 @@
 /** 消息voice */
 @property (nonatomic, strong) NSData *voiceData;
 
+/** 该语音是否已经播放了 */
+@property (nonatomic, assign) BOOL isPlayed;
+
 - (instancetype)initWithVoicePath:(NSString *)voicePath;
 
 - (instancetype)initWithVoiceData:(NSData *)voiceDate;
