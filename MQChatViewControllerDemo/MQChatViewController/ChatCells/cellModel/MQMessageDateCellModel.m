@@ -9,7 +9,7 @@
 #import "MQMessageDateCellModel.h"
 #import "MQChatBaseCell.h"
 #import "MQMessageDateCell.h"
-#import "MQChatDateUtil.h"
+#import "MQDateFormatterUtil.h"
 #import "MQStringSizeUtil.h"
 
 
@@ -50,7 +50,7 @@
 - (MQMessageDateCellModel *)initCellModelWithDate:(NSDate *)date cellWidth:(CGFloat)cellWidth{
     if (self = [super init]) {
         self.date = date;
-        self.dateString = [MQChatDateUtil convertToChineseDateWithDate:date];
+        self.dateString = [[MQDateFormatterUtil sharedFormatter] meiqiaStyleDateForDate:date];
         //时间文字size
         CGFloat dateLabelWidth = cellWidth - kMQChatMessageDateLabelToEdgeSpacing * 2;
         CGFloat dateLabelHeight = [MQStringSizeUtil getHeightForText:self.dateString withFont:[UIFont systemFontOfSize:kMQChatMessageDateLabelFontSize] andWidth:dateLabelWidth];

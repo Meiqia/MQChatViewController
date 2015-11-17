@@ -10,7 +10,7 @@
 #import "MQChatBaseCell.h"
 #import "MQChatFileUtil.h"
 #import "MQBaseMessage.h"
-#import "MQChatDateUtil.h"
+#import "MQDateFormatterUtil.h"
 
 //定义cell中的布局间距等
 /**

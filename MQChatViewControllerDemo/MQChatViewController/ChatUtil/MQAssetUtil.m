@@ -13,10 +13,7 @@
 
 + (UIImage *)bubbleImageFromBundleWithName:(NSString *)name
 {
-    NSBundle *bundle = [MQBundleUtil assetBundle];
-//    NSString *path = [bundle pathForResource:name ofType:nil inDirectory:nil];
-//    return [UIImage imageWithContentsOfFile:path];
-    return [UIImage imageNamed:name inBundle:bundle compatibleWithTraitCollection:nil];
+    return [UIImage imageNamed:[MQAssetUtil resourceWithName:name]];
 }
 
 + (NSString*)resourceWithName:(NSString*)fileName
