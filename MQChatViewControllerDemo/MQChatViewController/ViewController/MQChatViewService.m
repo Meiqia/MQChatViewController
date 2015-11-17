@@ -21,6 +21,7 @@
 #import "VoiceConverter.h"
 #import "MQEventCellModel.h"
 #import "MQChatDateUtil.h"
+#import "MQAssetUtil.h"
 
 static NSInteger const kMQChatMessageMaxTimeInterval = 60;
 
@@ -403,7 +404,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     if (![MQChatViewConfig sharedConfig].enableMessageSound) {
         return;
     }
-    [MQChatFileUtil playSoundWithSoundFile:[MQChatViewConfig sharedConfig].incomingMsgSoundFileName];
+    [MQChatFileUtil playSoundWithSoundFile:[MQAssetUtil resourceWithName:[MQChatViewConfig sharedConfig].incomingMsgSoundFileName]];
 }
 
 #pragma 开发者可将自定义的message添加到此方法中
