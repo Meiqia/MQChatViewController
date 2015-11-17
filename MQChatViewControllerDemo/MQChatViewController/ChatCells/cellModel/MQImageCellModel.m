@@ -106,6 +106,7 @@
         self.sendStatus = message.sendStatus;
         self.date = message.date;
         self.avatarPath = @"";
+        self.cellHeight = 44.0;
         if (message.userAvatarImage) {
             self.avatarImage = message.userAvatarImage;
         } else if (message.userAvatarPath.length > 0) {
@@ -122,7 +123,6 @@
             }
         }
         
-//        CGFloat bubbleWidth = cellWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToBubbleSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
         //内容图片
         self.image = message.image;
         if (!message.image) {
@@ -239,7 +239,7 @@
 
 #pragma MQCellModelProtocol
 - (CGFloat)getCellHeight {
-    return self.cellHeight;
+    return self.cellHeight > 0 ? self.cellHeight : 0;
 }
 
 /**

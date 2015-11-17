@@ -16,9 +16,11 @@
 static CGFloat const kMQMessageTipsLabelLineVerticalMargin = 2.0;
 //上下两条线超过文字label的距离
 static CGFloat const kMQMessageTipsLabelToLineSpacing = 48.0;
-static CGFloat const kMQMessageTipsCellHeight = 64.0;
-static CGFloat const kMQMessageTipsFontSize = 15.0;
+//static CGFloat const kMQMessageTipsCellHeight = 64.0;
+static CGFloat const kMQMessageTipsCellVerticalSpacing = 24.0;
+static CGFloat const kMQMessageTipsCellHorizontalSpacing = 24.0;
 static CGFloat const kMQMessageTipsLineHeight = 0.5;
+CGFloat const kMQMessageTipsFontSize = 13.0;
 
 @interface MQTipsCellModel()
 /**
@@ -80,19 +82,18 @@ static CGFloat const kMQMessageTipsLineHeight = 0.5;
         self.tipText = tips;
         
         //tip frame
-        CGFloat maxTipWidth = ceil(cellWidth * 2 / 3);
-        CGFloat tipsHeight = [MQStringSizeUtil getHeightForText:tips withFont:[UIFont systemFontOfSize:kMQMessageTipsFontSize] andWidth:maxTipWidth];
-        CGFloat tipsWidth = [MQStringSizeUtil getWidthForText:tips withFont:[UIFont systemFontOfSize:kMQMessageTipsFontSize] andHeight:tipsHeight];
-        self.tipLabelFrame = CGRectMake(cellWidth/2-tipsWidth/2, kMQMessageTipsCellHeight/2-tipsHeight/2, tipsWidth, tipsHeight);
+        CGFloat tipsWidth = cellWidth - kMQMessageTipsCellHorizontalSpacing * 2;
+        CGFloat tipsHeight = [MQStringSizeUtil getHeightForText:tips withFont:[UIFont systemFontOfSize:kMQMessageTipsFontSize] andWidth:tipsWidth];
+        self.tipLabelFrame = CGRectMake(kMQMessageTipsCellHorizontalSpacing, kMQMessageTipsCellVerticalSpacing, tipsWidth, tipsHeight);
+        
+        self.cellHeight = kMQMessageTipsCellVerticalSpacing * 2 + tipsHeight;
         
         //上线条的frame
-        CGFloat lineWidth = tipsWidth + kMQMessageTipsLabelToLineSpacing * 2;
+        CGFloat lineWidth = cellWidth;
         self.topLineFrame = CGRectMake(cellWidth/2-lineWidth/2, kMQMessageTipsLabelLineVerticalMargin, lineWidth, kMQMessageTipsLineHeight);
         
         //下线条的frame
-        self.bottomLineFrame = CGRectMake(self.topLineFrame.origin.x, kMQMessageTipsCellHeight-kMQMessageTipsLabelLineVerticalMargin-kMQMessageTipsLineHeight, lineWidth, kMQMessageTipsLineHeight);
-        
-        self.cellHeight = self.bottomLineFrame.origin.y + self.bottomLineFrame.size.height;
+        self.bottomLineFrame = CGRectMake(self.topLineFrame.origin.x, self.cellHeight - kMQMessageTipsLabelLineVerticalMargin - kMQMessageTipsLineHeight, lineWidth, kMQMessageTipsLineHeight);
         
         //tip的文字额外属性
         if ([[tips substringToIndex:3] isEqualToString:@"接下来"]) {
@@ -112,7 +113,7 @@ static CGFloat const kMQMessageTipsLineHeight = 0.5;
 
 #pragma MQCellModelProtocol
 - (CGFloat)getCellHeight {
-    return self.cellHeight;
+    return self.cellHeight > 0 ? self.cellHeight : 0;
 }
 
 /**
@@ -136,10 +137,7 @@ static CGFloat const kMQMessageTipsLineHeight = 0.5;
 }
 
 - (void)updateCellFrameWithCellWidth:(CGFloat)cellWidth {
-    self.cellWidth = cellWidth;
-    self.tipLabelFrame = CGRectMake(cellWidth/2-self.tipLabelFrame.size.width/2, kMQMessageTipsCellHeight/2-self.tipLabelFrame.size.height/2, self.tipLabelFrame.size.width, self.tipLabelFrame.size.height);
-    self.topLineFrame = CGRectMake(cellWidth/2-self.topLineFrame.size.width/2, kMQMessageTipsLabelLineVerticalMargin, self.topLineFrame.size.width, kMQMessageTipsLineHeight);
-    self.bottomLineFrame = CGRectMake(self.topLineFrame.origin.x, kMQMessageTipsCellHeight-kMQMessageTipsLabelLineVerticalMargin-kMQMessageTipsLineHeight, self.topLineFrame.size.width, kMQMessageTipsLineHeight);
+    //不需要更新cell
 }
 
 

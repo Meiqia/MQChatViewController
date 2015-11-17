@@ -127,10 +127,10 @@
     UIImage *animationImage2 = [MQAssetUtil voiceAnimationGreen2];
     UIImage *animationImage3 = [MQAssetUtil voiceAnimationGreen3];
     if (cellModel.cellFromType == MQChatCellIncoming) {
-        animationImage1 = [MQAssetUtil voiceAnimationGray_1];
-        animationImage2 = [MQAssetUtil voiceAnimationGray_2];
-        animationImage3 = [MQAssetUtil voiceAnimationGray_3];
-        voiceImageView.image = [MQAssetUtil voiceAnimationGray_3];
+        animationImage1 = [MQAssetUtil voiceAnimationGray1];
+        animationImage2 = [MQAssetUtil voiceAnimationGray2];
+        animationImage3 = [MQAssetUtil voiceAnimationGray3];
+        voiceImageView.image = [MQAssetUtil voiceAnimationGray3];
     }
     voiceImageView.animationImages = [NSArray arrayWithObjects:
                                   animationImage1,

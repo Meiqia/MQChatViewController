@@ -9,8 +9,6 @@
 #import "MQTipsCell.h"
 #import "MQTipsCellModel.h"
 
-static CGFloat const kMQMessageTipsLabelFontSize = 12.0;
-
 @implementation MQTipsCell {
     UILabel *tipsLabel;
     CALayer *topLineLayer;
@@ -23,7 +21,7 @@ static CGFloat const kMQMessageTipsLabelFontSize = 12.0;
         tipsLabel = [[UILabel alloc] init];
         tipsLabel.textColor = [UIColor grayColor];
         tipsLabel.textAlignment = NSTextAlignmentCenter;
-        tipsLabel.font = [UIFont systemFontOfSize:kMQMessageTipsLabelFontSize];
+        tipsLabel.font = [UIFont systemFontOfSize:kMQMessageTipsFontSize];
         tipsLabel.backgroundColor = [UIColor clearColor];
         tipsLabel.numberOfLines = 0;
         [self.contentView addSubview:tipsLabel];
