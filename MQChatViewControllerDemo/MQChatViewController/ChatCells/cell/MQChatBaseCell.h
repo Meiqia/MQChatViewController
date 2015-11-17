@@ -43,6 +43,11 @@
 
 - (void)didSelectMessageInCell:(UITableViewCell *)cell messageContent:(NSString *)content selectedContent:(NSString *)selectedContent;
 
+/**
+ *  点击了语音消息的委托方法
+ */
+- (void)didTapMessageInCell:(UITableViewCell *)cell;
+
 @end
 
 

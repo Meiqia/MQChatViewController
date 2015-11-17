@@ -28,6 +28,7 @@
     UIActivityIndicatorView *loadingIndicator;
     MQChatAudioPlayer *audioPlayer;
     NSData *voiceData;
+    UIView *notPlayPointView;
 }
 
 - (void)dealloc {
@@ -70,6 +71,11 @@
         loadingIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         loadingIndicator.hidden = YES;
         [bubbleImageView addSubview:loadingIndicator];
+        //初始化未播放的小红点view
+        notPlayPointView = [[UIView alloc] init];
+        notPlayPointView.backgroundColor = [UIColor redColor];
+        notPlayPointView.hidden = true;
+        [self.contentView addSubview:notPlayPointView];
         //注册声音中断的通知
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopVoiceAnimation) name:MQAudioPlayerDidInterruptNotification object:nil];
     }
@@ -87,6 +93,12 @@
     [audioPlayer stopSound];
     [audioPlayer playSongWithData:voiceData];
     [voiceImageView startAnimating];
+    //通知代理点击了语音
+    if (self.chatCellDelegate) {
+        if ([self.chatCellDelegate respondsToSelector:@selector(didTapMessageInCell:)]) {
+            [self.chatCellDelegate didTapMessageInCell:self];
+        }
+    }
 }
 
 - (void)stopVoiceAnimation {
@@ -174,6 +186,14 @@
     if (cellModel.sendStatus == MQChatMessageSendStatusFailure) {
         failureImageView.hidden = false;
         failureImageView.frame = cellModel.sendFailureFrame;
+    }
+    
+    //未播放按钮
+    if (cellModel.cellFromType == MQChatCellIncoming && !cellModel.isPlayed) {
+        notPlayPointView.frame = cellModel.notPlayViewFrame;
+        notPlayPointView.hidden = false;
+    } else {
+        notPlayPointView.hidden = true;
     }
 }
 
