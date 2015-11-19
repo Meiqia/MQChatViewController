@@ -29,26 +29,28 @@ An easy to cutomized messages UI library for iOS.
 
 Usage
 ---
-最简单的使用方式，即初始化`MQChatViewManager`，并对界面进行配置，然后调用`presentMQChatViewControllerInViewController`或`pushMQChatViewControllerInViewController`即可；
+最简单的使用方式，即初始化`MQChatViewManager`，并对界面进行配置，然后调用启动接口即可；
+
+如果你想在某一个ViewController，Push一个聊天界面，可复制下面两行代码：
 ```objective-c
 	MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 	[chatViewManager pushMQChatViewControllerInViewController:self];
 ```
 有关聊天界面的配置，请见文档末尾的**Configuration**小节.
 
-框架结构
+代码结构
 ---
 
 文件 | 作用
 ----- | -----
-[ChatMessages/](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/ChatMessages) | 该文件夹中的类是该library会用到的Message实体
-[ChatCells/CellModels](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/ChatCells/cellModel) | 自定义cell的ViewModel，进行内容转换、布局计算等等
-[ChatCells/Cells](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/ChatCells/cell) | 自定义的cell，cell中的View直接使用在相应的CellModel中计算好的数据
 [ChatViewManager/](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/ChatViewManager) | 对聊天界面进行配置的文件
 [ViewController/MQChatViewController](https://github.com/Meiqia/MQChatViewController/blob/master/MQChatViewControllerDemo/MQChatViewController/ViewController/MQChatViewController.h) | 界面的Controller类
-[ViewController/MQChatViewTableDataSource](https://github.com/Meiqia/MQChatViewController/blob/master/MQChatViewControllerDemo/MQChatViewController/ViewController/MQChatViewTableDataSource.h) | 消息的TableView的DataSource，开发者不需要修改该类
 [ViewController/MQChatViewService](https://github.com/Meiqia/MQChatViewController/blob/master/MQChatViewControllerDemo/MQChatViewController/ViewController/MQChatViewService.h) | 界面的数据管理类，开发者可在该类中对接自己项目的APIManager，来进行发送、收取消息等业务逻辑
+[ViewController/MQChatViewTableDataSource](https://github.com/Meiqia/MQChatViewController/blob/master/MQChatViewControllerDemo/MQChatViewController/ViewController/MQChatViewTableDataSource.h) | 消息的TableView的DataSource，开发者不需要修改该类
 [ViewController/MQChatTableView](https://github.com/Meiqia/MQChatViewController/blob/master/MQChatViewControllerDemo/MQChatViewController/ViewController/MQChatTableView.h) | 消息的TableView
+[ChatCells/CellModels](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/ChatCells/cellModel) | 自定义cell的ViewModel，进行内容转换、布局计算等等
+[ChatCells/Cells](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/ChatCells/cell) | 自定义的cell，cell中的View直接使用在相应的CellModel中计算好的数据
+[ChatMessages/](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/ChatMessages) | 该文件夹中的类是该library会用到的Message实体
 [ChatUtil/](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/ChatUtil) | 自定义的工具类
 [Views/](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/Views) | 界面中用到的自定义View，如下拉刷新、输入框等等
 [MQChatViewAsset.bundle](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/MQChatViewBundle.bundle) | 资源文件，如图片、声音文件等，**注意**用户如果需要通过MQChatViewManager修改自定义元素图片，需要将图片放在该bundle种
@@ -202,6 +204,7 @@ Configuration
 Vendors - 用到的第三方开源库
 ---
 以下是该library用到的第三方开源代码，如果开发者的项目中用到了相同的库，需要删除一份，避免类名冲突：
+
 第三方开源库 | 说明
 ----- | -----
 VoiceConvert | AMR和WAV语音格式的互转；没找到出处，哪位童鞋找到来源后，请更新下文档~
