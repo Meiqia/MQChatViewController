@@ -22,6 +22,11 @@
 @property (nonatomic, readonly, strong) NSString *messageId;
 
 /**
+ * @brief 该cellModel的委托对象
+ */
+@property (nonatomic, weak) id<MQCellModelDelegate> delegate;
+
+/**
  * @brief cell的高度
  */
 @property (nonatomic, readonly, assign) CGFloat cellHeight;
@@ -109,7 +114,9 @@
 /**
  *  根据MQMessage内容来生成cell model
  */
-- (MQTextCellModel *)initCellModelWithMessage:(MQTextMessage *)message cellWidth:(CGFloat)cellWidth;
+- (MQTextCellModel *)initCellModelWithMessage:(MQTextMessage *)message
+                                    cellWidth:(CGFloat)cellWidth
+                                     delegate:(id<MQCellModelDelegate>)delegator;
 
 
 @end
