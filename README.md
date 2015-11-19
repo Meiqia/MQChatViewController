@@ -210,10 +210,12 @@ Vendors - 用到的第三方开源库
 VoiceConvert | AMR和WAV语音格式的互转；没找到出处，哪位童鞋找到来源后，请更新下文档~
 [MLAudioRecorder](https://github.com/molon/MLAudioRecorder) | 边录边转码，播放网络音频Button(本地缓存)，实时语音。
 [MHFacebookImageViewer](https://github.com/michaelhenry/MHFacebookImageViewer) | 图片查看器；**注意**，我们对该开源库进行了修改，以支持单击关闭Viewer等一些操作，该修改版本可见[MHFacebookImageViewer](https://github.com/ijinmao/MHFacebookImageViewer)；
-[FBDigitalFont](https://github.com/lyokato/FBDigitalFont) | 类LED显示效果，用于本项目中的语音倒计时；
+[FBDigitalFont](https://github.com/lyokato/FBDigitalFont) | 类LED显示效果，用于本项目中的语音倒计时显示；
 [GrowingTextView](https://github.com/HansPinckaers/GrowingTextView) | 随文字改变高度的的textView，用于本项目中的聊天输入框；
 [TTTAttributedLabel](https://github.com/TTTAttributedLabel/TTTAttributedLabel) | 支持多种效果的Lable，用于本项目中的聊天气泡的文字Label；
 
 Hope to Help Each Other - 互助
 ---
 如果该library有帮助到你，或是你想完善此library，欢迎通过任何形式联系我们，一起讨论、一起互帮互助总是好的^.^
+美洽官方开发者群:  295646206
+该项目开发者邮箱:  340052204@qq.com
