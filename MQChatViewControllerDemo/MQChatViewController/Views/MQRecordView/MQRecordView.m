@@ -13,8 +13,10 @@
 #import "MQToast.h"
 #import "MQChatAudioRecorder.h"
 #import "MQAssetUtil.h"
+#import "MQBundleUtil.h"
 
 static CGFloat const kMQRecordViewDiameter = 150.0;
+static CGFloat const kMQVolumeViewTopMargin = 16.0;
 
 @interface MQRecordView()<MQChatAudioRecorderDelegate>
 
@@ -70,10 +72,10 @@ static CGFloat const kMQRecordViewDiameter = 150.0;
 {
     if (revoke != self.revoke) {
         if (revoke) {
-            tipLabel.text = @"松开手指,取消发送";
+            tipLabel.text = [MQBundleUtil localizedStringForKey:@"record_cancel_realse"];
             volumeView.image = [MQAssetUtil recordBackImage];
         }else{
-            tipLabel.text = @"上滑手指,取消发送";
+            tipLabel.text = [MQBundleUtil localizedStringForKey:@"record_cancel_swipe"];
             volumeView.image = [MQAssetUtil recordVolume:0];
         }
     }
@@ -88,10 +90,13 @@ static CGFloat const kMQRecordViewDiameter = 150.0;
     self.marginBottom = self.frame.size.height - recordView.frame.origin.y - recordView.frame.size.height;
     recordView.alpha = 0;
     
-    tipLabel.text = @"上滑手指,取消发送";
+    tipLabel.text = [MQBundleUtil localizedStringForKey:@"record_cancel_swipe"];
     tipLabel.frame = CGRectMake(0, kMQRecordViewDiameter - 20 - 12, recordView.frame.size.width, 20);
     
-    volumeView.frame = CGRectMake((recordView.frame.size.width - 58)/2, 16, 58, 90);
+    UIImage *volumeImage = [MQAssetUtil recordVolume:0];
+    CGFloat volumeViewHeight = ceilf(recordView.frame.size.height * 4 / 7);
+    CGFloat volumeViewWidth = ceilf(volumeImage.size.width / volumeImage.size.height * volumeViewHeight);
+    volumeView.frame = CGRectMake(recordView.frame.size.width/2 - volumeViewWidth/2, kMQVolumeViewTopMargin, volumeViewWidth, volumeViewHeight);
     volumeView.image = [MQAssetUtil recordVolume:0];
     
     [UIView animateWithDuration:.2 animations:^{
@@ -101,8 +106,12 @@ static CGFloat const kMQRecordViewDiameter = 150.0;
 
 - (void)reDisplayRecordView {
     self.hidden = NO;
-    if ([recordView.superview isEqual:self]) [recordView removeFromSuperview];
-    if ([blurView.superview isEqual:self]) [blurView removeFromSuperview];
+    if ([recordView.superview isEqual:self]) {
+        [recordView removeFromSuperview];
+    }
+    if ([blurView.superview isEqual:self]) {
+        [blurView removeFromSuperview];
+    }
     blurImage = [[MQImageUtil viewScreenshot:self.superview] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
     [self addSubview:blurView];
     [self addSubview:recordView];
@@ -154,13 +163,13 @@ static CGFloat const kMQRecordViewDiameter = 150.0;
         volumeView.alpha = 0;
         if (LCDView) {
             [LCDView removeFromSuperview];
+            LCDView = nil;
         }
-        
         LCDView = [[FBLCDFontView alloc] initWithFrame:volumeView.frame];
         LCDView.lineWidth = 4.0;
         LCDView.drawOffLine = NO;
         LCDView.edgeLength = 30;
-        LCDView.margin = 10.0;
+        LCDView.margin = 0.0;
         LCDView.backgroundColor = [UIColor clearColor];
         LCDView.horizontalPadding = 20;
         LCDView.verticalPadding = 14;
@@ -203,25 +212,31 @@ static CGFloat const kMQRecordViewDiameter = 150.0;
 //组件终止录音
 -(void)stopRecord
 {
-    [recordTimer invalidate];
-    recordTimer = nil;
     if (recordTime < 1 && recordTime > 0) {
         [MQToast showToast:@"录音时间太短" duration:1 window:self.superview];
         [audioRecorder cancelRecording];
     } else {
         [audioRecorder finishRecording];
     }
-    self.hidden = YES;
-    recordTime = 0;
+    [self setRecordViewToDefaultStatus];
 }
 
 //取消录音
 - (void)cancelRecording {
+    [self setRecordViewToDefaultStatus];
+    [audioRecorder cancelRecording];
+}
+
+//将录音界面置为默认状态
+- (void)setRecordViewToDefaultStatus {
     [recordTimer invalidate];
     recordTimer = nil;
     self.hidden = YES;
     recordTime = 0;
-    [audioRecorder cancelRecording];
+    if (LCDView) {
+        [LCDView removeFromSuperview];
+    }
+    volumeView.alpha = 1.0;
 }
 
 -(void)revokerecord {
@@ -241,6 +256,8 @@ static CGFloat const kMQRecordViewDiameter = 150.0;
             [self.recordViewDelegate didFinishRecordingWithAMRFilePath:filePath];
         }
     }
+    //恢复录音界面
+    [self setRecordViewToDefaultStatus];
 }
 
 - (void)didUpdateAudioVolume:(Float32)volume {

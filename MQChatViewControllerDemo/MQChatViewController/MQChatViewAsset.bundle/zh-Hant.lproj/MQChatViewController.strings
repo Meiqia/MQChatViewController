@@ -17,3 +17,7 @@
 "display_new_message" = "下方有新消息";
 
 "network_jam"         = "網絡不太通常，請檢查網絡";
+
+"record_cancel_swipe"   = "上滑手指，取消發送"
+
+"record_cancel_realse"  = "松開手指，取消發送"

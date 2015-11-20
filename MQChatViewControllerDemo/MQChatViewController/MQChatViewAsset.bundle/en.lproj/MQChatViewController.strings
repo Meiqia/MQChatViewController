@@ -2,7 +2,7 @@
 
 "record_speak"        = "Hold to talk";
 
-"record_end"          = "Release to send your voice";
+"record_end"          = "Release to send";
 
 "cancel"              = "cancel";
 
@@ -17,3 +17,7 @@
 "display_new_message" = "Received a new message";
 
 "network_jam"         = "Please check your internet connection and try again.";
+
+"record_cancel_swipe"   = "Swipe up to cancel"
+
+"record_cancel_realse"  = "Release to cancel"

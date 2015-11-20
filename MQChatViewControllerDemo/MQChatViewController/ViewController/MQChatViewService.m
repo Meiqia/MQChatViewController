@@ -403,7 +403,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     if ([cellModel isKindOfClass:[MQVoiceCellModel class]]) {
         MQVoiceCellModel *voiceCellModel = (MQVoiceCellModel *)cellModel;
         voiceCellModel.isPlayed = true;
-        [self reloadChatTableView];
 #ifdef INCLUDE_MEIQIA_SDK
         [MQServiceToViewInterface didTapMessageWithMessageId:[cellModel getCellMessageId]];
 #endif
