@@ -1,18 +1,18 @@
-"new_message"         = "請輸入...";
+"new_message"         = "请输入...";
 
-"record_speak"        = "按住 說話";
+"record_speak"        = "按住 说话";
 
-"record_end"          = "鬆開 結束";
+"record_end"          = "松开 结束";
 
 "cancel"              = "取消";
 
-"select_gallery"      = "從相冊選取";
+"select_gallery"      = "从相册选取";
 
-"select_camera"       = "相機";
+"select_camera"       = "相机";
 
 "wait_agent"          = "正在分配客服...";
 
-"not_access_camera"   = "請在系統設置中允許該App訪問相機";
+"not_access_camera"   = "请在系统设置中允许该App访问相机";
 
 "display_new_message" = "下方有新消息";
 
