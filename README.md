@@ -196,6 +196,7 @@ Configuration
 由于SDK发布催的很紧，以下问题还没有得到妥善解决，但影响不大，所以还没有修复，开发者打怪得分后可提PR：
 * 录音时长不太准确；主要是及时的Timer是在自定义的录音界面中，没有真正获得录音开始和结束的时间，记录的时间比真实时长要多1-2秒；
 * tableView中有图片显示在屏幕上，转屏会很卡；
+* 目前只支持单张图片全屏浏览，还不支持多张图片浏览；
 * 下拉刷新的瞬间，tableView会跳跃一下，给人造成一种"卡了一下"的感觉；
 * 启动上拉刷新(底部刷新)，只显示了loading的indicator，没有显示出loading的path效果；
 * TTTAttributedLabel中使用了NSUnderlineColorAttributeName，导致不兼容iOS6，所以对于iOS7以下的用户，消息气泡中的文字用的是UILabel；所以对于iOS7以下用户，没有文字选中的效果；

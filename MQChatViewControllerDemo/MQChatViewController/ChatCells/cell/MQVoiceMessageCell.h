@@ -17,12 +17,12 @@
 /**
  *  开始播放声音
  */
-- (void)playVoice;
+//- (void)playVoice;
 
 /**
  *  停止播放声音
  */
-- (void)stopVoice;
+- (void)stopVoiceDisplay;
 
 
 @end

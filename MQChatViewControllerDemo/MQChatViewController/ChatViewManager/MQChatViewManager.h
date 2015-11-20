@@ -65,18 +65,6 @@
 - (void)setMessageEmailRegex:(NSString *)emailRegex;
 
 /**
- * 设置客服上线的提示文字；
- * @param tipText 提示文字
- */
-- (void)setAgentOnlineTip:(NSString *)tipText;
-
-/**
- * 设置客服下线的提示文字；
- * @param tipText 提示文字
- */
-- (void)setAgentOfflineTip:(NSString *)tipText;
-
-/**
  * 设置顾客第一次进入界面显示的欢迎文字；
  * @param tipText 提示文字
  */

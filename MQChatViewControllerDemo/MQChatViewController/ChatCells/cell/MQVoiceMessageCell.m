@@ -29,6 +29,7 @@
     MQChatAudioPlayer *audioPlayer;
     NSData *voiceData;
     UIView *notPlayPointView;
+    BOOL isPlaying;
 }
 
 - (void)dealloc {
@@ -37,6 +38,8 @@
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
+        isPlaying = false;
+        [MQChatAudioPlayer sharedInstance].delegate = self;
         //初始化头像
         avatarImageView = [[UIImageView alloc] init];
         avatarImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -77,7 +80,7 @@
         notPlayPointView.hidden = true;
         [self.contentView addSubview:notPlayPointView];
         //注册声音中断的通知
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopVoiceAnimation) name:MQAudioPlayerDidInterruptNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopVoiceDisplay) name:MQAudioPlayerDidInterruptNotification object:nil];
     }
     return self;
 }
@@ -87,22 +90,22 @@
     if (!voiceData) {
         return ;
     }
+    notPlayPointView.hidden = true;
+    if (isPlaying) {
+        [self stopVoiceDisplay];
+        [[MQChatAudioPlayer sharedInstance] stopSound];
+        return;
+    }
     [[NSNotificationCenter defaultCenter] postNotificationName:MQAudioPlayerDidInterruptNotification object:nil];
-    audioPlayer = [MQChatAudioPlayer sharedInstance];
-    audioPlayer.delegate = self;
-    [audioPlayer stopSound];
-    [audioPlayer playSongWithData:voiceData];
+    isPlaying = true;
     [voiceImageView startAnimating];
+    [[MQChatAudioPlayer sharedInstance] playSongWithData:voiceData];
     //通知代理点击了语音
     if (self.chatCellDelegate) {
         if ([self.chatCellDelegate respondsToSelector:@selector(didTapMessageInCell:)]) {
             [self.chatCellDelegate didTapMessageInCell:self];
         }
     }
-}
-
-- (void)stopVoiceAnimation {
-    [voiceImageView stopAnimating];
 }
 
 #pragma MQChatCellProtocol
@@ -117,13 +120,6 @@
     if (cellModel.avatarImage) {
         avatarImageView.image = cellModel.avatarImage;
     }
-//    else {
-//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-//#warning 这里开发者可以使用自己的图片缓存策略，如SDWebImage
-//            NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:cellModel.avatarPath]];
-//            avatarImageView.image = [UIImage imageWithData:imageData];
-//        });
-//    }
     avatarImageView.frame = cellModel.avatarFrame;
     if ([MQChatViewConfig sharedConfig].enableRoundAvatar) {
         avatarImageView.layer.masksToBounds = YES;
@@ -135,23 +131,25 @@
     bubbleImageView.frame = cellModel.bubbleImageFrame;
     
     //消息图片
-    voiceImageView.image = [MQAssetUtil voiceAnimationGreen3];
-    UIImage *animationImage1 = [MQAssetUtil voiceAnimationGreen1];
-    UIImage *animationImage2 = [MQAssetUtil voiceAnimationGreen2];
-    UIImage *animationImage3 = [MQAssetUtil voiceAnimationGreen3];
-    if (cellModel.cellFromType == MQChatCellIncoming) {
-        animationImage1 = [MQAssetUtil voiceAnimationGray1];
-        animationImage2 = [MQAssetUtil voiceAnimationGray2];
-        animationImage3 = [MQAssetUtil voiceAnimationGray3];
-        voiceImageView.image = [MQAssetUtil voiceAnimationGray3];
+    if (!voiceImageView.isAnimating) {
+        voiceImageView.image = [MQAssetUtil voiceAnimationGreen3];
+        UIImage *animationImage1 = [MQAssetUtil voiceAnimationGreen1];
+        UIImage *animationImage2 = [MQAssetUtil voiceAnimationGreen2];
+        UIImage *animationImage3 = [MQAssetUtil voiceAnimationGreen3];
+        if (cellModel.cellFromType == MQChatCellIncoming) {
+            animationImage1 = [MQAssetUtil voiceAnimationGray1];
+            animationImage2 = [MQAssetUtil voiceAnimationGray2];
+            animationImage3 = [MQAssetUtil voiceAnimationGray3];
+            voiceImageView.image = [MQAssetUtil voiceAnimationGray3];
+        }
+        voiceImageView.animationImages = [NSArray arrayWithObjects:
+                                          animationImage1,
+                                          animationImage2,
+                                          animationImage3,nil];
+        voiceImageView.animationDuration = 1;
+        voiceImageView.animationRepeatCount = 0;
     }
-    voiceImageView.animationImages = [NSArray arrayWithObjects:
-                                  animationImage1,
-                                  animationImage2,
-                                  animationImage3,nil];
-    voiceImageView.animationDuration = 1;
-    voiceImageView.animationRepeatCount = 0;
-
+    
     //刷新语音时长label
     NSString *durationText = [NSString stringWithFormat:@"%d\"", (int)cellModel.voiceDuration];
     durationLabel.text = durationText;
@@ -201,19 +199,20 @@
 /**
  *  开始播放声音
  */
-- (void)playVoice {
-    [voiceImageView startAnimating];
-    //关闭键盘通知
-    [[NSNotificationCenter defaultCenter] postNotificationName:MQChatViewKeyboardResignFirstResponderNotification object:nil];
-}
+//- (void)playVoice {
+//    [voiceImageView startAnimating];
+//    //关闭键盘通知
+//    [[NSNotificationCenter defaultCenter] postNotificationName:MQChatViewKeyboardResignFirstResponderNotification object:nil];
+//}
 
 /**
  *  停止播放声音
  */
-- (void)stopVoice {
+- (void)stopVoiceDisplay {
     if (voiceImageView.isAnimating) {
         [voiceImageView stopAnimating];
     }
+    isPlaying = false;
 }
 
 #pragma MQChatAudioPlayerDelegate
@@ -226,7 +225,7 @@
 }
 
 - (void)MQAudioPlayerDidFinishPlay {
-    [self stopVoiceAnimation];
+    [self stopVoiceDisplay];
 }
 
 #pragma 点击发送失败消息，重新发送事件

@@ -29,11 +29,9 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 @property (nonatomic, strong) NSMutableArray *linkRegexs;
 @property (nonatomic, strong) NSMutableArray *emailRegexs;
 
-@property (nonatomic, copy) NSString *agentOnlineTipText;
-@property (nonatomic, copy) NSString *agentOfflineTipText;
-@property (nonatomic, copy) NSString *chatWelcomeText;
-@property (nonatomic, copy) NSString *agentName;
-@property (nonatomic, copy) NSString *incomingMsgSoundFileName;
+@property (nonatomic, copy  ) NSString *chatWelcomeText;
+@property (nonatomic, copy  ) NSString *agentName;
+@property (nonatomic, copy  ) NSString *incomingMsgSoundFileName;
 
 @property (nonatomic, assign) BOOL enableSyncServerMessage;
 @property (nonatomic, assign) BOOL enableEventDispaly;

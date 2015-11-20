@@ -163,14 +163,6 @@
     chatViewConfig.pullRefreshColor = pullRefreshColor;
 }
 
-- (void)setAgentOnlineTip:(NSString *)tipText {
-    chatViewConfig.agentOnlineTipText = [tipText copy];
-}
-
-- (void)setAgentOfflineTip:(NSString *)tipText {
-    chatViewConfig.agentOfflineTipText = [tipText copy];
-}
-
 - (void)setChatWelcomeText:(NSString *)welcomText {
     chatViewConfig.chatWelcomeText = [welcomText copy];
 }
