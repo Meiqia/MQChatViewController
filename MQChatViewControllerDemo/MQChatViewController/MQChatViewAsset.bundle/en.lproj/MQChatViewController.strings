@@ -1,19 +1,19 @@
-"new_message"         = "请输入...";
+"new_message"         = "Send your message...";
 
-"record_speak"        = "按住 说话";
+"record_speak"        = "Hold to talk";
 
-"record_end"          = "松开 结束";
+"record_end"          = "Release to send your voice";
 
-"cancel"              = "取消";
+"cancel"              = "cancel";
 
-"select_gallery"      = "从相册选取";
+"select_gallery"      = "Albums";
 
-"select_camera"       = "相机";
+"select_camera"       = "Camera";
 
-"wait_agent"          = "正在分配客服...";
+"wait_agent"          = "Meiqia is scheduling an agent for you...";
 
-"not_access_camera"   = "请在系统设置中允许该App访问相机";
+"not_access_camera"   = "Meiqia needs access to your photos. Please go to Settings — Privacy — Photos. Then select ON for Meiqia.";
 
-"display_new_message" = "下方有新消息";
+"display_new_message" = "Received a new message";
 
-"network_jam"         = "网络不太通畅，请检查网络";
+"network_jam"         = "Please check your internet connection and try again.";

@@ -47,19 +47,19 @@
 - (void)setChatViewFrame:(CGRect)viewFrame;
 
 /**
- * 数字的正则表达式，用于匹配消息，满足条件段落可以被用户点击。
+ * 增加消息中可选中的数字的正则表达式，用于匹配消息，满足条件段落可以被用户点击。
  * @param numberRegex 数字的正则表达式
  */
 - (void)setMessageNumberRegex:(NSString *)numberRegex;
 
 /**
- * 链接的正则表达式，用于匹配消息，满足条件段落可以被用户点击。
+ * 增加消息中可选中的链接的正则表达式，用于匹配消息，满足条件段落可以被用户点击。
  * @param numberRegex 链接的正则表达式
  */
 - (void)setMessageLinkRegex:(NSString *)linkRegex;
 
 /**
- * email的正则表达式，用于匹配消息，满足条件段落可以被用户点击。
+ * 增加消息中可选中的email的正则表达式，用于匹配消息，满足条件段落可以被用户点击。
  * @param emailRegex email的正则表达式
  */
 - (void)setMessageEmailRegex:(NSString *)emailRegex;
@@ -122,12 +122,6 @@
 - (void)enableSendImageMessage:(BOOL)enable;
 
 /**
- * 是否支持状态提示的alert界面，状态提示有：网络连接不正常、SDK初始化不正确；
- * @param enable YES:支持 NO:不支持
- */
-- (void)enableTipsView:(BOOL)enable;
-
-/**
  *  客服聊天界面打开时，收到新消息，是否显示收到新消息提示
  *
  * @param enable YES:支持 NO:不支持
@@ -162,6 +156,7 @@
 /**
  *  是否开启下拉刷新（顶部刷新）
  *
+ * @warning 如果开发者要禁用下拉刷新，则需要将enableTopPullRefresh和enableTopAutoRefresh都置为false
  * @param enable YES:支持 NO:不支持
  */
 - (void)enableTopPullRefresh:(BOOL)enable;
@@ -176,6 +171,7 @@
 /**
  *  是否开启顶部自动刷新历史消息
  *
+ * @warning 如果开发者要禁用下拉刷新，则需要将enableTopPullRefresh和enableTopAutoRefresh都置为false
  * @param enable YES:支持 NO:不支持
  */
 - (void)enableTopAutoRefresh:(BOOL)enable;

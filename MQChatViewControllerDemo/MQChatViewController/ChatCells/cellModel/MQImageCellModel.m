@@ -115,6 +115,12 @@
 #warning 这里开发者可以使用自己的图片缓存策略，如SDWebImage
                 NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:message.userAvatarPath]];
                 self.avatarImage = [UIImage imageWithData:imageData];
+                if (self.delegate) {
+                    if ([self.delegate respondsToSelector:@selector(didUpdateCellDataWithMessageId:)]) {
+                        //通知ViewController去刷新tableView
+                        [self.delegate didUpdateCellDataWithMessageId:self.messageId];
+                    }
+                }
             });
         } else {
             self.avatarImage = [MQChatViewConfig sharedConfig].agentDefaultAvatarImage;

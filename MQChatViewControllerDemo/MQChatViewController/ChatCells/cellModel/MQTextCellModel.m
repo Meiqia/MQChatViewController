@@ -107,13 +107,17 @@
 
 @implementation MQTextCellModel
 
-- (MQTextCellModel *)initCellModelWithMessage:(MQTextMessage *)message cellWidth:(CGFloat)cellWidth {
+- (MQTextCellModel *)initCellModelWithMessage:(MQTextMessage *)message
+                                    cellWidth:(CGFloat)cellWidth
+                                     delegate:(id<MQCellModelDelegate>)delegator
+{
     if (self = [super init]) {
         self.messageId = message.messageId;
         self.sendStatus = message.sendStatus;
         self.cellText = message.content;
         self.date = message.date;
         self.cellHeight = 44.0;
+        self.delegate = delegator;
         if (message.userAvatarImage) {
             self.avatarImage = message.userAvatarImage;
         } else if (message.userAvatarPath.length > 0) {
@@ -122,6 +126,12 @@
 #warning 这里开发者可以使用自己的图片缓存策略，如SDWebImage
                 NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:message.userAvatarPath]];
                 self.avatarImage = [UIImage imageWithData:imageData];
+                if (self.delegate) {
+                    if ([self.delegate respondsToSelector:@selector(didUpdateCellDataWithMessageId:)]) {
+                        //通知ViewController去刷新tableView
+                        [self.delegate didUpdateCellDataWithMessageId:self.messageId];
+                    }
+                }
             });
         } else {
             self.avatarImage = [MQChatViewConfig sharedConfig].agentDefaultAvatarImage;

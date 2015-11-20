@@ -11,7 +11,6 @@
 #import "MQImageUtil.h"
 
 @implementation MQChatViewManager {
-#warning 这些属性需要如果需要实时和chatView同步，则需要在增加chatViewController中的相关方法后，再添加
     MQChatViewController *chatViewController;
     MQChatViewConfig *chatViewConfig;
 }
@@ -126,10 +125,6 @@
 
 - (void)enableSendImageMessage:(BOOL)enable {
     chatViewConfig.enableSendImageMessage = enable;
-}
-
-- (void)enableTipsView:(BOOL)enable {
-    chatViewConfig.enableTipsView = enable;
 }
 
 - (void)enableShowNewMessageAlert:(BOOL)enable {
