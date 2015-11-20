@@ -296,7 +296,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         MQTextCellModel *textCellModel = (MQTextCellModel *)lastCellModel;
         MQTextMessage *message = [[MQTextMessage alloc] initWithContent:textCellModel.cellText];
         message.fromType = MQChatMessageIncoming;
-        MQTextCellModel *newCellModel = [[MQTextCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth];
+        MQTextCellModel *newCellModel = [[MQTextCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
         [self.cellModels addObject:newCellModel];
     } else if ([lastCellModel isKindOfClass:[MQImageCellModel class]]) {
         MQImageCellModel *imageCellModel = (MQImageCellModel *)lastCellModel;
@@ -314,7 +314,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     //text message
     MQTextMessage *textMessage = [[MQTextMessage alloc] initWithContent:@"测试测试kjdjfkadsjlfkadfasdkf"];
     textMessage.fromType = MQChatMessageIncoming;
-    MQTextCellModel *textCellModel = [[MQTextCellModel alloc] initCellModelWithMessage:textMessage cellWidth:self.chatViewWidth];
+    MQTextCellModel *textCellModel = [[MQTextCellModel alloc] initCellModelWithMessage:textMessage cellWidth:self.chatViewWidth delegate:self];
     [self.cellModels addObject:textCellModel];
     //image message
     MQImageMessage *imageMessage = [[MQImageMessage alloc] initWithImagePath:@"https://s3.cn-north-1.amazonaws.com.cn/pics.meiqia.bucket/65135e4c4fde7b5f"];
@@ -404,7 +404,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         MQVoiceCellModel *voiceCellModel = (MQVoiceCellModel *)cellModel;
         voiceCellModel.isPlayed = true;
         [self reloadChatTableView];
+#ifdef INCLUDE_MEIQIA_SDK
         [MQServiceToViewInterface didTapMessageWithMessageId:[cellModel getCellMessageId]];
+#endif
     }
 }
 
