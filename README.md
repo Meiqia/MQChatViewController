@@ -16,7 +16,7 @@ An easy to cutomized messages UI library for iOS.
 ---
 之前在其他项目中用过[JSQMessagesViewController](https://github.com/jessesquires/JSQMessagesViewController)和[UUChatTableView](https://github.com/ZhipingYang/UUChatTableView)，两个开源项目都很好，但由于JSQMessage多文字气泡[卡顿的问题](https://github.com/jessesquires/JSQMessagesViewController/issues/492)迟迟得不到解决，UUChatView增加自定义Cell并不是那么方便，所以决定写一套方便自定义的聊天界面。
 
-目标
+Goal - 目标
 ---
 该聊天界面的**目标**是，**能让开发者很方便地进行定制**。
 
@@ -27,7 +27,7 @@ An easy to cutomized messages UI library for iOS.
 * 所有的CellModel都必须满足一类协议方法，避免开发者过多的修改数据管理的逻辑；
 * 如果开发者不需要再自定义其他的View，则不需要修改ViewController；
 
-Usage
+Usage - 使用方法
 ---
 最简单的使用方式，即初始化`MQChatViewManager`，并对界面进行配置，然后调用启动接口即可；
 
@@ -38,7 +38,7 @@ Usage
 ```
 有关聊天界面的配置，请见文档末尾的**Configuration**小节.
 
-代码结构
+Project Structure - 代码结构
 ---
 
 文件 | 作用
@@ -72,7 +72,7 @@ Usage
 	//#define INCLUDE_MEIQIA_SDK
 ```
 
-自定义
+Customization - 自定义
 ---
 **3步添加自定义cell**
 * 添加自定义的cell类，注意该cell必须继承于`MQChatBaseCell`;
@@ -89,7 +89,7 @@ Usage
     });
 ```
 
-Configuration
+Configuration - 配置
 ---
 如果你不想修改聊天界面的内部逻辑，`MQChatViewManager`提供了很多接口，可以实现一些自定义设置。
 
@@ -191,7 +191,7 @@ Configuration
 	- (void)setOutgoingBubbleColor:(UIColor *)bubbleColor;
 ```
 
-待修复问题
+To-do-list - 待修复问题
 ---
 由于SDK发布催的很紧，以下问题还没有得到妥善解决，但影响不大，所以还没有修复，开发者打怪得分后可提PR：
 * 录音时长不太准确；主要是及时的Timer是在自定义的录音界面中，没有真正获得录音开始和结束的时间，记录的时间比真实时长要多1-2秒；
@@ -220,5 +220,3 @@ Hope to Help Each Other - 互助
 如果该library有帮助到你，或是你想完善此library，欢迎通过任何形式联系我们，一起讨论、一起互帮互助总是好的^.^
 
 美洽官方开发者群:  295646206
-
-该项目开发者邮箱:  340052204@qq.com

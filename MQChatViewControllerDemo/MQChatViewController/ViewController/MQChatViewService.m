@@ -457,15 +457,16 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 - (void)setClientOnline {
     __weak typeof(self) weakSelf = self;
     serviceToViewInterface = [[MQServiceToViewInterface alloc] init];
-    [serviceToViewInterface setClientOnlineWithSuccess:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
+    [serviceToViewInterface setClientOnlineWithAgentId:[MQChatViewConfig sharedConfig].scheduledAgentId agentGroupId:[MQChatViewConfig sharedConfig].scheduledGroupId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
         if (!completion || !agentName) {
-            //没有分配到客服，生成TipCell
-//            [weakSelf addTipCellModelWithTips:@"抱歉，现在没有客服人员在线\n你可以继续写下你的问题，我们会尽快回复"];
-        } else if (receivedMessages) {
+            //没有分配到客服
+        } else {
+            [weakSelf updateChatTitleWithAgentName:agentName];
+        }
+        if (receivedMessages) {
             [weakSelf addMessagesToTableViewWithMessages:receivedMessages isInsertAtFirstIndex:false];
         }
-        [weakSelf updateChatTitleWithAgentName:agentName];
-    } receiveMessageDelegate:(self)];
+    } receiveMessageDelegate:self];
 }
 
 - (void)updateChatTitleWithAgentName:(NSString *)agentName {

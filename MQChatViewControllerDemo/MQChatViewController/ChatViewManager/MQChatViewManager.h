@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "MQChatViewController.h"
+#import "MQChatViewConfig.h"
 
 /**
  * @brief 客服聊天界面的配置类
@@ -296,7 +297,24 @@
 - (void)setMaxRecordDuration:(NSTimeInterval)recordDuration;
 
 
+#ifdef INCLUDE_MEIQIA_SDK
 
+/**
+ *  设置分配给指定的客服id
+ *
+ *  @param agentId 客服id
+ */
+- (void)setScheduledAgentId:(NSString *)agentId;
+
+/**
+ *  设置分配给指定的客服组id
+ *
+ *  @warning 如果设置了分配给客服id，以分配给客服id为优先
+ *  @param groupId 客服组id
+ */
+- (void)setScheduledGroupId:(NSString *)groupId;
+
+#endif
 
 
 @end
