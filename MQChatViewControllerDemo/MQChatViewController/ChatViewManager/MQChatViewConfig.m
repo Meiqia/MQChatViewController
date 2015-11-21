@@ -43,6 +43,8 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     
     self.chatWelcomeText     = @"你好，请问有什么可以帮到您？";
     self.agentName           = @"美洽小助手";
+    self.scheduledAgentId    = @"";
+    self.scheduledGroupId    = @"";
     
     self.enableSyncServerMessage = true;
     self.enableEventDispaly      = false;
@@ -78,7 +80,6 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     self.incomingBubbleImage      = [MQAssetUtil bubbleIncomingImage];
     self.outgoingBubbleImage      = [MQAssetUtil bubbleOutgoingImage];
     self.messageSendFailureImage  = [MQAssetUtil messageWarningImage];
-//    self.navBarLeftButtonImage    = [MQAssetUtil returnCancelImage];
     self.modalViewLeftButtonImage = [MQAssetUtil returnCancelImage];
     self.imageLoadErrorImage      = [MQAssetUtil imageLoadErrorImage];
     

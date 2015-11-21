@@ -7,7 +7,6 @@
 //
 
 #import "MQChatViewManager.h"
-#import "MQChatViewConfig.h"
 #import "MQImageUtil.h"
 
 @implementation MQChatViewManager {
@@ -71,12 +70,6 @@
         UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
         viewController.navigationItem.leftBarButtonItem = leftItem;
     }
-    UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    cancelBtn.frame = CGRectMake(0, 0, cancelImage.size.width, cancelImage.size.height);
-    [cancelBtn setBackgroundImage:cancelImage forState:UIControlStateNormal];
-    [cancelBtn addTarget:viewController action:@selector(dismissChatViewController) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
-    viewController.navigationItem.leftBarButtonItem = leftItem;
     //导航栏右键
     if ([MQChatViewConfig sharedConfig].navBarRightButton) {
         UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:[MQChatViewConfig sharedConfig].navBarRightButton];
@@ -251,6 +244,17 @@
     chatViewConfig.maxVoiceDuration = recordDuration;
 }
 
+#ifdef INCLUDE_MEIQIA_SDK
 
+- (void)setScheduledAgentId:(NSString *)agentId {
+    chatViewConfig.scheduledAgentId = agentId;
+}
+
+
+- (void)setScheduledGroupId:(NSString *)groupId {
+    chatViewConfig.scheduledGroupId = groupId;
+}
+
+#endif
 
 @end

@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 
 //是否引入美洽SDK
-//#define INCLUDE_MEIQIA_SDK
+#define INCLUDE_MEIQIA_SDK
 
 /** 关闭键盘的通知 */
 extern NSString * const MQChatViewKeyboardResignFirstResponderNotification;
@@ -32,6 +32,9 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 @property (nonatomic, copy  ) NSString *chatWelcomeText;
 @property (nonatomic, copy  ) NSString *agentName;
 @property (nonatomic, copy  ) NSString *incomingMsgSoundFileName;
+@property (nonatomic, copy  ) NSString *scheduledAgentId;
+@property (nonatomic, copy  ) NSString *scheduledGroupId;
+
 
 @property (nonatomic, assign) BOOL enableSyncServerMessage;
 @property (nonatomic, assign) BOOL enableEventDispaly;
