@@ -25,7 +25,12 @@
 /**
  * @brief 消息的文字
  */
-@property (nonatomic, readwrite, copy) NSString *cellText;
+@property (nonatomic, readwrite, copy) NSAttributedString *cellText;
+
+/**
+ * @brief 消息的文字属性
+ */
+@property (nonatomic, readwrite, copy) NSDictionary *cellTextAttributes;
 
 /**
  * @brief 消息的时间
@@ -114,7 +119,18 @@
     if (self = [super init]) {
         self.messageId = message.messageId;
         self.sendStatus = message.sendStatus;
-        self.cellText = message.content;
+        if (message.fromType == MQChatMessageOutgoing) {
+            self.cellTextAttributes = @{
+                                        NSFontAttributeName : [UIFont systemFontOfSize:kMQCellTextFontSize],
+                                        NSForegroundColorAttributeName : [MQChatViewConfig sharedConfig].outgoingMsgTextColor
+                                        };
+        } else {
+            self.cellTextAttributes = @{
+                                        NSFontAttributeName : [UIFont systemFontOfSize:kMQCellTextFontSize],
+                                        NSForegroundColorAttributeName : [MQChatViewConfig sharedConfig].incomingMsgTextColor
+                                        };
+        }
+        self.cellText = [[NSAttributedString alloc] initWithString:message.content attributes:self.cellTextAttributes];
         self.date = message.date;
         self.cellHeight = 44.0;
         self.delegate = delegator;
@@ -143,9 +159,9 @@
         //文字最大宽度
         CGFloat maxLabelWidth = cellWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToBubbleSpacing - kMQCellBubbleToTextHorizontalLargerSpacing - kMQCellBubbleToTextHorizontalSmallerSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
         //文字高度
-        CGFloat messageTextHeight = [MQStringSizeUtil getHeightForText:message.content withFont:[UIFont systemFontOfSize:kMQCellTextFontSize] andWidth:maxLabelWidth];
+        CGFloat messageTextHeight = [MQStringSizeUtil getHeightForText:message.content withAttributes:self.cellTextAttributes andWidth:maxLabelWidth];
         //文字宽度
-        CGFloat messageTextWidth = [MQStringSizeUtil getWidthForText:message.content withFont:[UIFont systemFontOfSize:kMQCellTextFontSize] andHeight:messageTextHeight];
+        CGFloat messageTextWidth = [MQStringSizeUtil getWidthForText:message.content withAttributes:self.cellTextAttributes andHeight:messageTextHeight];
 #warning 注：这里textLabel的宽度之所以要增加，是因为TTTAttributedLabel的bug，在文字有"."的情况下，有可能显示不出来，开发者可以帮忙定位TTTAttributedLabel的这个bug^.^
         NSRange periodRange = [message.content rangeOfString:@"."];
         if (periodRange.location != NSNotFound) {
@@ -205,6 +221,7 @@
         //发送消息的indicator的frame
         UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, kMQCellIndicatorDiameter, kMQCellIndicatorDiameter)];
         self.sendingIndicatorFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-indicatorView.frame.size.width, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-indicatorView.frame.size.height/2, indicatorView.frame.size.width, indicatorView.frame.size.height);
+        
         //发送失败的图片frame
         UIImage *failureImage = [MQChatViewConfig sharedConfig].messageSendFailureImage;
         CGSize failureSize = CGSizeMake(ceil(failureImage.size.width * 2 / 3), ceil(failureImage.size.height * 2 / 3));

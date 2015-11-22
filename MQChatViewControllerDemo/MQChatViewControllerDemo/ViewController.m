@@ -29,6 +29,8 @@
     
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager setChatWelcomeText:@""];
+    [chatViewManager setOutgoingMessageTextColor:[UIColor yellowColor]];
+    [chatViewManager setIncomingMessageTextColor:[UIColor blueColor]];
     [chatViewManager presentMQChatViewControllerInViewController:self];
 }
 

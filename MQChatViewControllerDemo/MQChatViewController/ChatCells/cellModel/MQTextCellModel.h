@@ -39,7 +39,12 @@
 /**
  * @brief 消息的文字
  */
-@property (nonatomic, readonly, copy) NSString *cellText;
+@property (nonatomic, readonly, copy) NSAttributedString *cellText;
+
+/**
+ * @brief 消息的文字属性
+ */
+@property (nonatomic, readonly, copy) NSDictionary *cellTextAttributes;
 
 /**
  * @brief 消息的时间

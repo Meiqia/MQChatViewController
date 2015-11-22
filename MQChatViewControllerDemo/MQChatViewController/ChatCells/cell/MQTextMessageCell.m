@@ -46,8 +46,8 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
         } else {
             textLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 20)];
         }
-        textLabel.font = [UIFont systemFontOfSize:kMQCellTextFontSize];
-        textLabel.textColor = [UIColor darkTextColor];
+//        textLabel.font = [UIFont systemFontOfSize:kMQCellTextFontSize];
+//        textLabel.textColor = [UIColor darkTextColor];
         textLabel.numberOfLines = 0;
         textLabel.textAlignment = NSTextAlignmentLeft;
         textLabel.userInteractionEnabled = true;
@@ -79,13 +79,6 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
     if (cellModel.avatarImage) {
         avatarImageView.image = cellModel.avatarImage;
     }
-//    else {
-//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-//#warning 这里开发者可以使用自己的图片缓存策略，如SDWebImage
-//            NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:cellModel.avatarPath]];
-//            avatarImageView.image = [UIImage imageWithData:imageData];
-//        });
-//    }
     avatarImageView.frame = cellModel.avatarFrame;
     if ([MQChatViewConfig sharedConfig].enableRoundAvatar) {
         avatarImageView.layer.masksToBounds = YES;
@@ -107,22 +100,21 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
     
     //刷新聊天文字
     textLabel.frame = cellModel.textLabelFrame;
-    NSMutableAttributedString *contentString = [[NSMutableAttributedString alloc] initWithString:cellModel.cellText];
-    if (cellModel.cellFromType == MQChatCellIncoming) {
-        //        textLabel.textColor = [MQChatViewConfig sharedConfig].incomingMsgTextColor;
-        [contentString addAttributes:@{
-                                       NSFontAttributeName : [UIFont systemFontOfSize:kMQCellTextFontSize],
-                                       NSForegroundColorAttributeName : [MQChatViewConfig sharedConfig].incomingMsgTextColor
-                                       } range:NSMakeRange(0, contentString.length)];
+    if ([textLabel isKindOfClass:[TTTAttributedLabel class]]) {
+#warning 此处之所以不使用"textLabel.text = cellModel.cellText"，原因是如果该cellText中，包含emoji，TTTAttributedLabel的高度将整体下移，可能是TTTAttributedLabel的一个bug
+        //        textLabel.text = cellModel.cellText;
+        [textLabel setText:cellModel.cellText afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
+            NSRange textRange = NSMakeRange(0, cellModel.cellText.length);
+            [mutableAttributedString addAttributes:cellModel.cellTextAttributes range:textRange];
+            if ([cellModel.cellTextAttributes objectForKey:NSForegroundColorAttributeName]) {
+                [mutableAttributedString removeAttribute:(NSString *)kCTForegroundColorAttributeName range:textRange];
+                [mutableAttributedString addAttribute:(NSString *)kCTForegroundColorAttributeName value:(__bridge id)[[cellModel.cellTextAttributes objectForKey:NSForegroundColorAttributeName] CGColor] range:textRange];
+            }
+            return mutableAttributedString;
+        }];
     } else {
-        //        textLabel.textColor = [MQChatViewConfig sharedConfig].outgoingMsgTextColor;
-        [contentString addAttributes:@{
-                                       NSFontAttributeName : [UIFont systemFontOfSize:kMQCellTextFontSize],
-                                       NSForegroundColorAttributeName : [MQChatViewConfig sharedConfig].outgoingMsgTextColor
-                                       } range:NSMakeRange(0, contentString.length)];
+        textLabel.attributedText = cellModel.cellText;
     }
-    //    textLabel.text = cellModel.cellText;
-    textLabel.attributedText = contentString;
     //获取文字中的可选中的元素
     if (cellModel.numberRangeDic.count > 0) {
         NSString *longestKey = @"";

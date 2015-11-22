@@ -14,9 +14,6 @@
 
 //上下两条线与cell垂直边沿的间距
 static CGFloat const kMQMessageTipsLabelLineVerticalMargin = 2.0;
-//上下两条线超过文字label的距离
-static CGFloat const kMQMessageTipsLabelToLineSpacing = 48.0;
-//static CGFloat const kMQMessageTipsCellHeight = 64.0;
 static CGFloat const kMQMessageTipsCellVerticalSpacing = 24.0;
 static CGFloat const kMQMessageTipsCellHorizontalSpacing = 24.0;
 static CGFloat const kMQMessageTipsLineHeight = 0.5;

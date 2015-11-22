@@ -294,7 +294,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     }
     if ([lastCellModel isKindOfClass:[MQTextCellModel class]]) {
         MQTextCellModel *textCellModel = (MQTextCellModel *)lastCellModel;
-        MQTextMessage *message = [[MQTextMessage alloc] initWithContent:textCellModel.cellText];
+        MQTextMessage *message = [[MQTextMessage alloc] initWithContent:[textCellModel.cellText string]];
         message.fromType = MQChatMessageIncoming;
         MQTextCellModel *newCellModel = [[MQTextCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
         [self.cellModels addObject:newCellModel];
