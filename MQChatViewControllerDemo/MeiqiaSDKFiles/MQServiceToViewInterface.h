@@ -161,13 +161,27 @@
 + (void)sendClientInputtingWithContent:(NSString *)content;
 
 /**
- * 设置顾客上线
+ * 根据开发者自定义的id，登陆美洽客服系统
  * @param ;
  */
-- (void)setClientOnlineWithAgentToken:(NSString *)agentToken
-                      agentGroupToken:(NSString *)agentGroupToken
+- (void)setClientOnlineWithCustomizedId:(NSString *)customizedId
+                                success:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
+                 receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate;
+
+/**
+ * 根据美洽的顾客id，登陆美洽客服系统
+ * @param ;
+ */
+- (void)setClientOnlineWithMQClientId:(NSString *)MQClientId
                               success:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
                receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate;
+
+/**
+ *  设置指定分配的客服或客服组
+ *
+ */
++ (void)setScheduledAgentWithAgentToken:(NSString *)agentToken
+                        agentGroupToken:(NSString *)agentGroupToken;
 
 /**
  * 设置顾客离线

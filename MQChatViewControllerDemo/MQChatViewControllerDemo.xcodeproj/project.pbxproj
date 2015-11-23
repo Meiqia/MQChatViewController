@@ -79,6 +79,7 @@
 		CCAD3D2D1BE7BD2C00B87A23 /* VoiceConverter.mm in Sources */ = {isa = PBXBuildFile; fileRef = CCAD3D2A1BE7BD2C00B87A23 /* VoiceConverter.mm */; };
 		CCCDCC9C1BEB09F900B60667 /* MQPullRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCDCC9B1BEB09F900B60667 /* MQPullRefreshView.m */; };
 		CCCDCC9F1BEB99FF00B60667 /* MQServiceToViewInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCDCC9E1BEB99FF00B60667 /* MQServiceToViewInterface.m */; };
+		CCF5DAFB1C0314370092FDD6 /* MQChatEmojize.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF5DAFA1C0314370092FDD6 /* MQChatEmojize.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -246,6 +247,8 @@
 		CCCDCC9B1BEB09F900B60667 /* MQPullRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MQPullRefreshView.m; path = MQPullRefreshView/MQPullRefreshView.m; sourceTree = "<group>"; };
 		CCCDCC9D1BEB99FF00B60667 /* MQServiceToViewInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQServiceToViewInterface.h; sourceTree = "<group>"; };
 		CCCDCC9E1BEB99FF00B60667 /* MQServiceToViewInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQServiceToViewInterface.m; sourceTree = "<group>"; };
+		CCF5DAF91C0314370092FDD6 /* MQChatEmojize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQChatEmojize.h; sourceTree = "<group>"; };
+		CCF5DAFA1C0314370092FDD6 /* MQChatEmojize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQChatEmojize.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -501,6 +504,8 @@
 				0B8D72351BF9BB0200DCFFD6 /* MQAssetUtil.m */,
 				0B482A7B1BFB021D00391D1D /* MQDateFormatterUtil.h */,
 				0B482A7C1BFB021D00391D1D /* MQDateFormatterUtil.m */,
+				CCF5DAF91C0314370092FDD6 /* MQChatEmojize.h */,
+				CCF5DAFA1C0314370092FDD6 /* MQChatEmojize.m */,
 			);
 			path = ChatUtil;
 			sourceTree = "<group>";
@@ -832,6 +837,7 @@
 				CC45FD5B1BE36B3600DE0BFB /* MQEventCellModel.m in Sources */,
 				CC5115C21BE5B3C200184CF0 /* FBLCDFontView.m in Sources */,
 				CC5115C31BE5B3C200184CF0 /* FBSquareFont.m in Sources */,
+				CCF5DAFB1C0314370092FDD6 /* MQChatEmojize.m in Sources */,
 				CC45FD661BE36B3600DE0BFB /* MQChatViewController.m in Sources */,
 				CC45FD5D1BE36B3600DE0BFB /* MQMessageDateCellModel.m in Sources */,
 				CC5115BE1BE5B3C200184CF0 /* FBBitmapFont.m in Sources */,

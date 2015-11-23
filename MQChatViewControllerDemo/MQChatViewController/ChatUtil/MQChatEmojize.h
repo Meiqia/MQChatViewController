@@ -1,5 +1,5 @@
 //
-//  MQChatEmojiize.h
+//  MQChatEmojize.h
 //  MQChatViewControllerDemo
 //
 //  Created by ijinmao on 15/11/23.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface MQChatEmojiize : NSObject
+@interface MQChatEmojize : NSObject
 
 + (BOOL)stringContainsEmoji:(NSString *)string;
 

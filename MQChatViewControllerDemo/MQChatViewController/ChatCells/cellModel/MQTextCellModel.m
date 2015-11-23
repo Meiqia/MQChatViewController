@@ -14,6 +14,8 @@
 #import <UIKit/UIKit.h>
 #import "MQChatViewConfig.h"
 #import "MQImageUtil.h"
+#import "TTTAttributedLabel.h"
+#import "MQChatEmojize.h"
 
 @interface MQTextCellModel()
 
@@ -119,17 +121,23 @@
     if (self = [super init]) {
         self.messageId = message.messageId;
         self.sendStatus = message.sendStatus;
+        NSMutableParagraphStyle *contentParagraphStyle = [[NSMutableParagraphStyle alloc] init];
+        contentParagraphStyle.lineSpacing = kMQTextCellLineSpacing;
+        contentParagraphStyle.lineHeightMultiple = 1.0;
+        contentParagraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
+        contentParagraphStyle.alignment = NSTextAlignmentLeft;
+        NSMutableDictionary *contentAttributes
+          = [[NSMutableDictionary alloc]
+           initWithDictionary:@{
+                                NSParagraphStyleAttributeName : contentParagraphStyle,
+                                NSFontAttributeName : [UIFont systemFontOfSize:kMQCellTextFontSize]
+                                }];
         if (message.fromType == MQChatMessageOutgoing) {
-            self.cellTextAttributes = @{
-                                        NSFontAttributeName : [UIFont systemFontOfSize:kMQCellTextFontSize],
-                                        NSForegroundColorAttributeName : [MQChatViewConfig sharedConfig].outgoingMsgTextColor
-                                        };
+            [contentAttributes setObject:(__bridge id)[MQChatViewConfig sharedConfig].outgoingMsgTextColor.CGColor forKey:(__bridge id)kCTForegroundColorAttributeName];
         } else {
-            self.cellTextAttributes = @{
-                                        NSFontAttributeName : [UIFont systemFontOfSize:kMQCellTextFontSize],
-                                        NSForegroundColorAttributeName : [MQChatViewConfig sharedConfig].incomingMsgTextColor
-                                        };
+            [contentAttributes setObject:(__bridge id)[MQChatViewConfig sharedConfig].incomingMsgTextColor.CGColor forKey:(__bridge id)kCTForegroundColorAttributeName];
         }
+        self.cellTextAttributes = [[NSDictionary alloc] initWithDictionary:contentAttributes];
         self.cellText = [[NSAttributedString alloc] initWithString:message.content attributes:self.cellTextAttributes];
         self.date = message.date;
         self.cellHeight = 44.0;
@@ -159,9 +167,16 @@
         //文字最大宽度
         CGFloat maxLabelWidth = cellWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToBubbleSpacing - kMQCellBubbleToTextHorizontalLargerSpacing - kMQCellBubbleToTextHorizontalSmallerSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
         //文字高度
-        CGFloat messageTextHeight = [MQStringSizeUtil getHeightForText:message.content withAttributes:self.cellTextAttributes andWidth:maxLabelWidth];
+        CGFloat messageTextHeight = [MQStringSizeUtil getHeightForAttributedText:self.cellText textWidth:maxLabelWidth];
+        //判断文字中是否有emoji
+        if ([MQChatEmojize stringContainsEmoji:[self.cellText string]]) {
+            NSAttributedString *oneLineText = [[NSAttributedString alloc] initWithString:@"haha" attributes:self.cellTextAttributes];
+            CGFloat oneLineTextHeight = [MQStringSizeUtil getHeightForAttributedText:oneLineText textWidth:maxLabelWidth];
+            NSInteger textLines = ceil(messageTextHeight / oneLineTextHeight);
+            messageTextHeight += 8 * textLines;
+        }
         //文字宽度
-        CGFloat messageTextWidth = [MQStringSizeUtil getWidthForText:message.content withAttributes:self.cellTextAttributes andHeight:messageTextHeight];
+        CGFloat messageTextWidth = [MQStringSizeUtil getWidthForAttributedText:self.cellText textHeight:messageTextHeight];
 #warning 注：这里textLabel的宽度之所以要增加，是因为TTTAttributedLabel的bug，在文字有"."的情况下，有可能显示不出来，开发者可以帮忙定位TTTAttributedLabel的这个bug^.^
         NSRange periodRange = [message.content rangeOfString:@"."];
         if (periodRange.location != NSNotFound) {

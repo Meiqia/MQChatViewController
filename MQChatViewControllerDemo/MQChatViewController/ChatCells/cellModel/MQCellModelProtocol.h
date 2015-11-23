@@ -77,6 +77,10 @@ static CGFloat const kMQCellIndicatorDiameter = 33.0;
  * 语音时长label的font size
  */
 static CGFloat const kMQCellVoiceDurationLabelFontSize = 12.0;
+/**
+ * text label的line spacing
+ */
+static CGFloat const kMQTextCellLineSpacing = 6.0;
 
 
 /**

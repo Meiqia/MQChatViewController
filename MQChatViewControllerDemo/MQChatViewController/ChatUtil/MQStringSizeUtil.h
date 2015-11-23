@@ -58,4 +58,16 @@
 + (NSString *)convertNaturalNumToShortAbNum:(NSUInteger)number;
 
 
+/**
+ *  获取NSAttributedString的宽度
+ */
++ (CGFloat)getHeightForAttributedText:(NSAttributedString *)attributedText
+                            textWidth:(CGFloat)textWidth;
+
+/**
+ *  获取NSAttributedString的高度
+ */
++ (CGFloat)getWidthForAttributedText:(NSAttributedString *)attributedText
+                          textHeight:(CGFloat)textHeight;
+
 @end

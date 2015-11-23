@@ -457,7 +457,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 - (void)setClientOnline {
     __weak typeof(self) weakSelf = self;
     serviceToViewInterface = [[MQServiceToViewInterface alloc] init];
-    [serviceToViewInterface setClientOnlineWithAgentToken:[MQChatViewConfig sharedConfig].scheduledAgentToken agentGroupToken:[MQChatViewConfig sharedConfig].scheduledGroupToken success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
+    [MQServiceToViewInterface setScheduledAgentWithAgentToken:[MQChatViewConfig sharedConfig].scheduledAgentToken agentGroupToken:[MQChatViewConfig sharedConfig].scheduledGroupToken];
+    [serviceToViewInterface setClientOnlineWithMQClientId:@"" success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
         if (!completion || !agentName) {
             //没有分配到客服
         } else {
@@ -466,6 +467,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         if (receivedMessages) {
             [weakSelf addMessagesToTableViewWithMessages:receivedMessages isInsertAtFirstIndex:false];
         }
+
     } receiveMessageDelegate:self];
 }
 
