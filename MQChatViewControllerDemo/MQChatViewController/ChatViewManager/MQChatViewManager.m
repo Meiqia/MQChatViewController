@@ -246,13 +246,13 @@
 
 #ifdef INCLUDE_MEIQIA_SDK
 
-- (void)setScheduledAgentId:(NSString *)agentId {
-    chatViewConfig.scheduledAgentId = agentId;
+- (void)setScheduledAgentToken:(NSString *)agentToken {
+    chatViewConfig.scheduledAgentToken = agentToken;
 }
 
 
-- (void)setScheduledGroupId:(NSString *)groupId {
-    chatViewConfig.scheduledGroupId = groupId;
+- (void)setScheduledGroupToken:(NSString *)groupToken {
+    chatViewConfig.scheduledGroupToken = groupToken;
 }
 
 #endif

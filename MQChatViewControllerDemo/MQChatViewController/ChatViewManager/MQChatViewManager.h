@@ -304,7 +304,7 @@
  *
  *  @param agentId 客服id
  */
-- (void)setScheduledAgentId:(NSString *)agentId;
+- (void)setScheduledAgentToken:(NSString *)agentToken;
 
 /**
  *  设置分配给指定的客服组id
@@ -312,7 +312,7 @@
  *  @warning 如果设置了分配给客服id，以分配给客服id为优先
  *  @param groupId 客服组id
  */
-- (void)setScheduledGroupId:(NSString *)groupId;
+- (void)setScheduledGroupToken:(NSString *)groupToken;
 
 #endif
 

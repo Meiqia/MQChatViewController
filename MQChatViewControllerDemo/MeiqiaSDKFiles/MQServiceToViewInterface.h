@@ -164,10 +164,10 @@
  * 设置顾客上线
  * @param ;
  */
-- (void)setClientOnlineWithAgentId:(NSString *)agentId
-                      agentGroupId:(NSString *)agentGroupId
-                           success:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
-            receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate;
+- (void)setClientOnlineWithAgentToken:(NSString *)agentToken
+                      agentGroupToken:(NSString *)agentGroupToken
+                              success:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
+               receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate;
 
 /**
  * 设置顾客离线

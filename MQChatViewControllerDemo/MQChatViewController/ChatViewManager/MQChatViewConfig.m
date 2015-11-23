@@ -43,8 +43,8 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     
     self.chatWelcomeText     = @"你好，请问有什么可以帮到您？";
     self.agentName           = @"美洽小助手";
-    self.scheduledAgentId    = @"";
-    self.scheduledGroupId    = @"";
+    self.scheduledAgentToken    = @"";
+    self.scheduledGroupToken    = @"";
     
     self.enableSyncServerMessage = true;
     self.enableEventDispaly      = false;
