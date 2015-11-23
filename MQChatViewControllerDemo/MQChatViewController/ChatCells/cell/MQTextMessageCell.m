@@ -101,17 +101,21 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
     //刷新聊天文字
     textLabel.frame = cellModel.textLabelFrame;
     if ([textLabel isKindOfClass:[TTTAttributedLabel class]]) {
-#warning 此处之所以不使用"textLabel.text = cellModel.cellText"，原因是如果该cellText中，包含emoji，TTTAttributedLabel的高度将整体下移，可能是TTTAttributedLabel的一个bug
-        //        textLabel.text = cellModel.cellText;
-        [textLabel setText:cellModel.cellText afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
-            NSRange textRange = NSMakeRange(0, cellModel.cellText.length);
-            [mutableAttributedString addAttributes:cellModel.cellTextAttributes range:textRange];
-            if ([cellModel.cellTextAttributes objectForKey:NSForegroundColorAttributeName]) {
-                [mutableAttributedString removeAttribute:(NSString *)kCTForegroundColorAttributeName range:textRange];
-                [mutableAttributedString addAttribute:(NSString *)kCTForegroundColorAttributeName value:(__bridge id)[[cellModel.cellTextAttributes objectForKey:NSForegroundColorAttributeName] CGColor] range:textRange];
-            }
-            return mutableAttributedString;
-        }];
+#warning 此处之所以不使用"textLabel.text = cellModel.cellText"，原因是如果该cellText中，包含emoji，TTTAttributedLabel的高度将整体下移，可能是TTTAttributedLabel的一个bug，或是我用错了
+        textLabel.text = cellModel.cellText;
+//        [textLabel setText:[cellModel.cellText string] afterInheritingLabelAttributesAndConfiguringWithBlock:^NSMutableAttributedString *(NSMutableAttributedString *mutableAttributedString) {
+//            NSRange textRange = NSMakeRange(0, cellModel.cellText.length);
+//            [mutableAttributedString enumerateAttributesInRange:textRange options:NSAttributedStringEnumerationReverse usingBlock:^(NSDictionary<NSString *,id> * _Nonnull attrs, NSRange range, BOOL * _Nonnull stop) {
+//                for (NSString *attributeName in attrs.allKeys) {
+//                    [mutableAttributedString removeAttribute:attributeName range:textRange];
+//                }
+//            }];
+//            for (NSString *attributeName in cellModel.cellTextAttributes.allKeys) {
+//                [mutableAttributedString removeAttribute:attributeName range:textRange];
+//                [mutableAttributedString addAttribute:attributeName value:[cellModel.cellTextAttributes objectForKey:attributeName] range:textRange];
+//            }
+//            return mutableAttributedString;
+//        }];
     } else {
         textLabel.attributedText = cellModel.cellText;
     }
