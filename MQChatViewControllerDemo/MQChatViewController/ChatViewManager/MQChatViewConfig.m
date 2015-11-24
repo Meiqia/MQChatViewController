@@ -45,6 +45,8 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     self.agentName           = @"美洽小助手";
     self.scheduledAgentToken    = @"";
     self.scheduledGroupToken    = @"";
+    self.MQClientId             = @"";
+    self.customizedId           = @"";
     
     self.enableSyncServerMessage = true;
     self.enableEventDispaly      = false;
@@ -67,8 +69,6 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     self.incomingMsgTextColor   = [UIColor darkTextColor];
     self.outgoingMsgTextColor   = [UIColor darkTextColor];
     self.eventTextColor         = [UIColor grayColor];
-//    self.navBarTintColor        = [UIColor blueColor];
-//    self.navBarColor            = [UIColor whiteColor];
     self.pullRefreshColor       = [UIColor colorWithRed:104.0/255.0 green:192.0/255.0 blue:160.0/255.0 alpha:1.0];
     self.redirectAgentNameColor = [UIColor blueColor];
     

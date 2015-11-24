@@ -255,6 +255,14 @@
     chatViewConfig.scheduledGroupToken = groupToken;
 }
 
+- (void)setLoginCustomizedId:(NSString *)customizedId {
+    chatViewConfig.customizedId = customizedId;
+}
+
+- (void)setLoginMQClientId:(NSString *)MQClientId {
+    chatViewConfig.MQClientId = MQClientId;
+}
+
 #endif
 
 @end

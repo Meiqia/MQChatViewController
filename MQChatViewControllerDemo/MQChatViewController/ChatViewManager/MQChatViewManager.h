@@ -296,7 +296,6 @@
  */
 - (void)setMaxRecordDuration:(NSTimeInterval)recordDuration;
 
-
 #ifdef INCLUDE_MEIQIA_SDK
 
 /**
@@ -313,6 +312,23 @@
  *  @param groupId 客服组id
  */
 - (void)setScheduledGroupToken:(NSString *)groupToken;
+
+/**
+ *  设置登录客服的开发者自定义id，设置该id后，聊天将会以该自定义id的顾客上线
+ *
+ *  @warning 如果setLoginMQClientId接口，优先使用setLoginMQClientId来进行登录
+ *  @param customizedId 开发者自定义id
+ */
+- (void)setLoginCustomizedId:(NSString *)customizedId;
+
+/**
+ *  设置登录客服的顾客的id，设置该id后，聊天将会以该顾客id的顾客上线
+ *
+ *  @warning 如果调用了setLoginCustomizedId接口，优先使用此接口来进行登录
+ *  @param MQClientId 顾客id
+ */
+- (void)setLoginMQClientId:(NSString *)MQClientId;
+
 
 #endif
 

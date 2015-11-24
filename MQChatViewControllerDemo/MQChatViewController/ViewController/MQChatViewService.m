@@ -453,12 +453,26 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 }
 
 #ifdef INCLUDE_MEIQIA_SDK
+
 #pragma 顾客上线的逻辑
 - (void)setClientOnline {
     __weak typeof(self) weakSelf = self;
     serviceToViewInterface = [[MQServiceToViewInterface alloc] init];
     [MQServiceToViewInterface setScheduledAgentWithAgentToken:[MQChatViewConfig sharedConfig].scheduledAgentToken agentGroupToken:[MQChatViewConfig sharedConfig].scheduledGroupToken];
-    [serviceToViewInterface setClientOnlineWithMQClientId:@"" success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
+    if ([MQChatViewConfig sharedConfig].MQClientId.length == 0 && [MQChatViewConfig sharedConfig].customizedId.length > 0) {
+        [serviceToViewInterface setClientOnlineWithCustomizedId:[MQChatViewConfig sharedConfig].customizedId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
+            if (!completion || !agentName) {
+                //没有分配到客服
+            } else {
+                [weakSelf updateChatTitleWithAgentName:agentName];
+            }
+            if (receivedMessages) {
+                [weakSelf addMessagesToTableViewWithMessages:receivedMessages isInsertAtFirstIndex:false];
+            }
+        } receiveMessageDelegate:self];
+        return;
+    }
+    [serviceToViewInterface setClientOnlineWithMQClientId:[MQChatViewConfig sharedConfig].MQClientId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
         if (!completion || !agentName) {
             //没有分配到客服
         } else {
@@ -467,7 +481,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         if (receivedMessages) {
             [weakSelf addMessagesToTableViewWithMessages:receivedMessages isInsertAtFirstIndex:false];
         }
-
     } receiveMessageDelegate:self];
 }
 

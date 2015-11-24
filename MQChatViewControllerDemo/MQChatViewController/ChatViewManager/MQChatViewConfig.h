@@ -34,7 +34,8 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 @property (nonatomic, copy  ) NSString *incomingMsgSoundFileName;
 @property (nonatomic, copy  ) NSString *scheduledAgentToken;
 @property (nonatomic, copy  ) NSString *scheduledGroupToken;
-
+@property (nonatomic, copy  ) NSString *MQClientId;
+@property (nonatomic, copy  ) NSString *customizedId;
 
 @property (nonatomic, assign) BOOL enableSyncServerMessage;
 @property (nonatomic, assign) BOOL enableEventDispaly;
