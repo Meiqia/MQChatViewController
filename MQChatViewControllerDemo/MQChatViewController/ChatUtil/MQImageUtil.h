@@ -32,5 +32,13 @@
  */
 + (void)makeMaskView:(UIView *)view withImage:(UIImage *)image;
 
+/**
+ *  判断该设备是否支持打开系统的media工具，如相册或相机
+ *
+ *  @param sourceType UIImagePickerControllerSourceType
+ *
+ *  @return 如果支持则返回@"ok" 如果不支持返回一个localizedString 如果返回nil则表示不支持该sourceType
+ */
++ (NSString *)isDeviceSupportImageSourceType:(UIImagePickerControllerSourceType)sourceType;
 
 @end
