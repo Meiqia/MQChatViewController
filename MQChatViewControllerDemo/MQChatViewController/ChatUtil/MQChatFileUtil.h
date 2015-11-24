@@ -11,7 +11,7 @@
 @interface MQChatFileUtil : NSObject
 
 //判断文件是否存在
-+ (BOOL)fileExistsAtPath:(NSString *)_path;
++ (BOOL)fileExistsAtPath:(NSString*)path isDirectory:(BOOL)isDirectory;
 
 //删除文件
 + (BOOL)deleteFileAtPath:(NSString *)_path;

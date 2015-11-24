@@ -14,10 +14,18 @@
 
 "not_access_camera"   = "请在系统设置中允许该App访问相机";
 
+"not_access_photos"   = "请在系统设置中允许该App访问相册";
+
 "display_new_message" = "下方有新消息";
 
 "network_jam"         = "网络不太通畅，请检查网络";
 
-"record_cancel_swipe"   = "上滑手指，取消发送"
+"simulator_not_support_camera" = "模拟器无法使用相机";
+
+"simulator_not_support_microphone" = "模拟器无法使用麦克风";
+
+"recode_time_too_short" = "录音时间太短";
+
+"record_cancel_swipe"   = "上滑手指，取消发送";
 
 "record_cancel_realse"  = "松开手指，取消发送"

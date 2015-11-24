@@ -11,9 +11,9 @@
 
 @implementation MQChatFileUtil
 
-+ (BOOL)fileExistsAtPath:(NSString*)_path
++ (BOOL)fileExistsAtPath:(NSString*)path isDirectory:(BOOL)isDirectory
 {
-    return [[NSFileManager defaultManager] fileExistsAtPath:_path];
+    return [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDirectory];
 }
 
 + (BOOL)deleteFileAtPath:(NSString*)_path

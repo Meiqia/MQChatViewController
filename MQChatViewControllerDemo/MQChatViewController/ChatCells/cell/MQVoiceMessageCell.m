@@ -190,6 +190,8 @@
     //未播放按钮
     if (cellModel.cellFromType == MQChatCellIncoming && !cellModel.isPlayed) {
         notPlayPointView.frame = cellModel.notPlayViewFrame;
+        notPlayPointView.layer.masksToBounds = true;
+        notPlayPointView.layer.cornerRadius = cellModel.notPlayViewFrame.size.width / 2;
         notPlayPointView.hidden = false;
     } else {
         notPlayPointView.hidden = true;

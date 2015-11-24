@@ -17,6 +17,7 @@
 #import "MQRecordView.h"
 #import "VoiceConverter.h"
 #import "MQBundleUtil.h"
+#import "MQImageUtil.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
@@ -271,7 +272,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #pragma MQInputBarDelegate
 -(BOOL)sendTextMessage:(NSString*)text {
     if (self.isInitializing) {
-        [MQToast showToast:@"正在分配客服，请稍后发送消息" duration:3 window:self.view];
+        [MQToast showToast:@"wait_agent" duration:3 window:self.view];
         return NO;
     }
     [chatViewService sendTextMessageWithContent:text];
@@ -280,18 +281,14 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 -(void)sendImageWithSourceType:(UIImagePickerControllerSourceType *)sourceType {
-    if (TARGET_IPHONE_SIMULATOR && (int)sourceType == UIImagePickerControllerSourceTypeCamera){
-        [MQToast showToast:@"The simulator not camera" duration:2 window:self.view];
+    NSString *mediaPermission = [MQImageUtil isDeviceSupportImageSourceType:(int)sourceType];
+    if (!mediaPermission) {
         return;
     }
-    if ((int)sourceType == UIImagePickerControllerSourceTypeCamera) {
-        AVAuthorizationStatus status =[AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
-        if ((int)sourceType == UIImagePickerControllerSourceTypeCamera && (status == AVAuthorizationStatusDenied || status == AVAuthorizationStatusRestricted)) {
-            [MQToast showToast:[MQBundleUtil localizedStringForKey:@"not_access_camera"] duration:2 window:self.view];
-            return;
-        }
+    if (![mediaPermission isEqualToString:@"ok"]) {
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:mediaPermission] duration:2 window:self.view];
+        return;
     }
-    
     //兼容ipad打不开相册问题，使用队列延迟
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
@@ -316,7 +313,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 -(void)beginRecord:(CGPoint)point {
     if (TARGET_IPHONE_SIMULATOR){
-        [MQToast showToast:@"The simulator not recorder" duration:2 window:self.view];
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"simulator_not_support_microphone"] duration:2 window:self.view];
         return;
     }
     
@@ -471,7 +468,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
 #pragma MQServiceToViewInterfaceErrorDelegate 后端返回的数据的错误委托方法
 - (void)getLoadHistoryMessageError {
-    [MQToast showToast:[MQBundleUtil localizedStringForKey:@"network_jam"] duration:1.0 window:self.view];
+    [MQToast showToast:[MQBundleUtil localizedStringForKey:@"recode_time_too_short"] duration:1.0 window:self.view];
 }
 
 /**

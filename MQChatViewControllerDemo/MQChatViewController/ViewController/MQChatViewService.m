@@ -288,28 +288,26 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
  */
 - (void)loadLastMessage {
     id<MQCellModelProtocol> lastCellModel = [self searchOneBussinessCellModelWithIndex:self.cellModels.count-1 isSearchFromBottomToTop:true];
-    if (!lastCellModel) {
-        [MQToast showToast:@"请输入一条消息，再收取消息~" duration:2 window:[UIApplication sharedApplication].keyWindow];
-        return ;
-    }
-    if ([lastCellModel isKindOfClass:[MQTextCellModel class]]) {
-        MQTextCellModel *textCellModel = (MQTextCellModel *)lastCellModel;
-        MQTextMessage *message = [[MQTextMessage alloc] initWithContent:[textCellModel.cellText string]];
-        message.fromType = MQChatMessageIncoming;
-        MQTextCellModel *newCellModel = [[MQTextCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
-        [self.cellModels addObject:newCellModel];
-    } else if ([lastCellModel isKindOfClass:[MQImageCellModel class]]) {
-        MQImageCellModel *imageCellModel = (MQImageCellModel *)lastCellModel;
-        MQImageMessage *message = [[MQImageMessage alloc] initWithImage:imageCellModel.image];
-        message.fromType = MQChatMessageIncoming;
-        MQImageCellModel *newCellModel = [[MQImageCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
-        [self.cellModels addObject:newCellModel];
-    } else if ([lastCellModel isKindOfClass:[MQVoiceCellModel class]]) {
-        MQVoiceCellModel *voiceCellModel = (MQVoiceCellModel *)lastCellModel;
-        MQVoiceMessage *message = [[MQVoiceMessage alloc] initWithVoiceData:voiceCellModel.voiceData];
-        message.fromType = MQChatMessageIncoming;
-        MQVoiceCellModel *newCellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
-        [self.cellModels addObject:newCellModel];
+    if (lastCellModel) {
+        if ([lastCellModel isKindOfClass:[MQTextCellModel class]]) {
+            MQTextCellModel *textCellModel = (MQTextCellModel *)lastCellModel;
+            MQTextMessage *message = [[MQTextMessage alloc] initWithContent:[textCellModel.cellText string]];
+            message.fromType = MQChatMessageIncoming;
+            MQTextCellModel *newCellModel = [[MQTextCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
+            [self.cellModels addObject:newCellModel];
+        } else if ([lastCellModel isKindOfClass:[MQImageCellModel class]]) {
+            MQImageCellModel *imageCellModel = (MQImageCellModel *)lastCellModel;
+            MQImageMessage *message = [[MQImageMessage alloc] initWithImage:imageCellModel.image];
+            message.fromType = MQChatMessageIncoming;
+            MQImageCellModel *newCellModel = [[MQImageCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
+            [self.cellModels addObject:newCellModel];
+        } else if ([lastCellModel isKindOfClass:[MQVoiceCellModel class]]) {
+            MQVoiceCellModel *voiceCellModel = (MQVoiceCellModel *)lastCellModel;
+            MQVoiceMessage *message = [[MQVoiceMessage alloc] initWithVoiceData:voiceCellModel.voiceData];
+            message.fromType = MQChatMessageIncoming;
+            MQVoiceCellModel *newCellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
+            [self.cellModels addObject:newCellModel];
+        }
     }
     //text message
     MQTextMessage *textMessage = [[MQTextMessage alloc] initWithContent:@"测试测试kjdjfkadsjlfkadfasdkf"];
@@ -324,7 +322,12 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     //tip message
     MQTipsCellModel *tipCellModel = [[MQTipsCellModel alloc] initCellModelWithTips:@"主人，您的客服离线啦~" cellWidth:self.chatViewWidth];
     [self.cellModels addObject:tipCellModel];
-    
+    //voice message
+    MQVoiceMessage *voiceMessage = [[MQVoiceMessage alloc] initWithVoicePath:@"http://7xiy8i.com1.z0.glb.clouddn.com/test.amr"];
+    voiceMessage.fromType = MQChatMessageIncoming;
+    MQVoiceCellModel *voiceCellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:voiceMessage cellWidth:self.chatViewWidth delegate:self];
+    [self.cellModels addObject:voiceCellModel];
+
     [self reloadChatTableView];
     [self playReceivedMessageSound];
 }

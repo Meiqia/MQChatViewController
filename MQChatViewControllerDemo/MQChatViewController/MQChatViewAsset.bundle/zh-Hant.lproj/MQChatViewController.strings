@@ -14,10 +14,18 @@
 
 "not_access_camera"   = "請在系統設置中允許該App訪問相機";
 
+"not_access_photos"   = "請在系統設置中允許該App訪問相冊";
+
 "display_new_message" = "下方有新消息";
 
 "network_jam"         = "網絡不太通常，請檢查網絡";
 
-"record_cancel_swipe"   = "上滑手指，取消發送"
+"simulator_not_support_camera" = "模擬器無法使用相機";
+
+"simulator_not_support_microphone" = "模擬器無法使用麥克風";
+
+"recode_time_too_short" = "錄音時間太短";
+
+"record_cancel_swipe"   = "上滑手指，取消發送";
 
 "record_cancel_realse"  = "松開手指，取消發送"

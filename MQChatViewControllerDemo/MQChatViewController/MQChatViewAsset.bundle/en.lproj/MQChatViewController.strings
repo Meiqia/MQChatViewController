@@ -10,14 +10,22 @@
 
 "select_camera"       = "Camera";
 
-"wait_agent"          = "Meiqia is scheduling an agent for you...";
+"wait_agent"          = "Scheduling an agent for you...";
 
-"not_access_camera"   = "Meiqia needs access to your photos. Please go to Settings — Privacy — Photos. Then select ON for Meiqia.";
+"not_access_camera"   = "Please go to Settings — Privacy — Photos. Then select ON for Meiqia.";
+
+"not_access_photos"   = "Please go to Settings — Privacy — Camera. Then select ON for Meiqia.";
 
 "display_new_message" = "Received a new message";
 
 "network_jam"         = "Please check your internet connection and try again.";
 
-"record_cancel_swipe"   = "Swipe up to cancel"
+"simulator_not_support_camera"      = "The simulator cannot access camera";
+
+"simulator_not_support_microphone"  = "The simulator cannot access microphone";
+
+"recode_time_too_short" = "Message too short";
+
+"record_cancel_swipe"   = "Swipe up to cancel";
 
 "record_cancel_realse"  = "Release to cancel"

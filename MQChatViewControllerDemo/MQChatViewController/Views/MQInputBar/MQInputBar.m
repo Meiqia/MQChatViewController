@@ -45,6 +45,7 @@ static CGFloat const kMQInputBarHorizontalSpacing = 8.0;
     UIButton *cameraBtn;
     //录音的btn
     UIButton *recordBtn;
+    //键盘收取的btn
     UIButton *toolbarDownBtn;
     
     UIImage *photoSenderImage;
@@ -192,7 +193,7 @@ keyboardSenderImage:(UIImage *)keyboardImage
 {
     microphoneBtn.hidden = NO;
     toolbarDownBtn.hidden = YES;
-    [self resignFirstResponder];
+    [self textViewResignFirstResponder];
 }
 
 -(void)microphoneClick
