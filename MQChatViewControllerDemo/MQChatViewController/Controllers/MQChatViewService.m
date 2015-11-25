@@ -21,6 +21,7 @@
 #import "VoiceConverter.h"
 #import "MQEventCellModel.h"
 #import "MQAssetUtil.h"
+#import "MQBundleUtil.h"
 
 static NSInteger const kMQChatMessageMaxTimeInterval = 60;
 
@@ -490,7 +491,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 - (void)updateChatTitleWithAgentName:(NSString *)agentName {
     NSString *viewTitle = agentName;
     if (!viewTitle || viewTitle.length == 0) {
-        viewTitle = @"在线客服";
+        viewTitle = [MQBundleUtil localizedStringForKey:@"no_agent_title"];
         isThereNoAgent = true;
     }
     if (self.delegate) {
@@ -505,7 +506,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         return;
     }
     isThereNoAgent = false;
-    [self addTipCellModelWithTips:@"抱歉，现在没有客服人员在线\n你可以继续写下你的问题，我们会尽快回复"];
+    [self addTipCellModelWithTips:[MQBundleUtil localizedStringForKey:@"no_agent_tips"]];
 }
 
 #pragma MQServiceToViewInterfaceDelegate

@@ -9,6 +9,7 @@
 #import "MQChatBaseCell.h"
 #import "MQChatFileUtil.h"
 #import "MQChatViewConfig.h"
+#import "MQBundleUtil.h"
 
 @implementation MQChatBaseCell {
     NSString *copiedText;
@@ -44,12 +45,12 @@
     NSMutableArray *menuItems = [[NSMutableArray alloc] init];
     if ([menuItemsName[@"textCopy"] isKindOfClass:[NSString class]]) {
         copiedText = menuItemsName[@"textCopy"];
-        UIMenuItem *copyTextItem = [[UIMenuItem alloc] initWithTitle:@"复制" action:@selector(copyTextSender:)];
+        UIMenuItem *copyTextItem = [[UIMenuItem alloc] initWithTitle:[MQBundleUtil localizedStringForKey:@"save_text"] action:@selector(copyTextSender:)];
         [menuItems addObject:copyTextItem];
     }
     if ([menuItemsName[@"imageCopy"] isKindOfClass:[UIImage class]]) {
         copiedImage = menuItemsName[@"imageCopy"];
-        UIMenuItem *copyImageItem = [[UIMenuItem alloc] initWithTitle:@"保存" action:@selector(copyImageSender:)];
+        UIMenuItem *copyImageItem = [[UIMenuItem alloc] initWithTitle:[MQBundleUtil localizedStringForKey:@"save_photo"] action:@selector(copyImageSender:)];
         [menuItems addObject:copyImageItem];
     }
     UIMenuController *menu = [UIMenuController sharedMenuController];
@@ -78,7 +79,7 @@
 -(void)copyTextSender:(id)sender {
     UIPasteboard *pasteboard=[UIPasteboard generalPasteboard];
     pasteboard.string = copiedText;
-    [self.chatCellDelegate showToastViewInCell:self toastText:@"已复制"];
+    [self.chatCellDelegate showToastViewInCell:self toastText:[MQBundleUtil localizedStringForKey:@"save_text_success"]];
 }
 
 -(void)copyImageSender:(id)sender {
@@ -91,9 +92,9 @@ didFinishSavingWithError:(NSError *)error
   contextInfo:(void *)contextInfo
 {
     if(error != NULL){
-        [self.chatCellDelegate showToastViewInCell:self toastText:@"抱歉，保存失败"];
+        [self.chatCellDelegate showToastViewInCell:self toastText:[MQBundleUtil localizedStringForKey:@"save_photo_error"]];
     }else{
-        [self.chatCellDelegate showToastViewInCell:self toastText:@"已保存图片到本地相册"];
+        [self.chatCellDelegate showToastViewInCell:self toastText:[MQBundleUtil localizedStringForKey:@"save_photo_success"]];
     }
 }
 

@@ -12,6 +12,7 @@
 #import "MQImageUtil.h"
 #import "MQChatViewConfig.h"
 #import "UIImageView+MHFacebookImageViewer.h"
+#import "MQBundleUtil.h"
 
 @implementation MQImageMessageCell {
     UIImageView *avatarImageView;
@@ -111,7 +112,7 @@
 
 #pragma 点击发送失败消息，重新发送事件
 - (void)tapFailImage:(id)sender {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"重新发送吗？" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:[MQBundleUtil localizedStringForKey:@"retry_send_message"] message:nil delegate:self cancelButtonTitle:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"] otherButtonTitles:[MQBundleUtil localizedStringForKey:@"alert_view_confirm"], nil];
     [alertView show];
 }
 

@@ -9,6 +9,7 @@
 #import "MQChatTableView.h"
 #import "MQChatViewConfig.h"
 #import "MQStringSizeUtil.h"
+#import "MQBundleUtil.h"
 
 /**
  *  下拉多少距离开启刷新
@@ -88,7 +89,7 @@ static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
     [topAutoRefreshIndicator removeFromSuperview];
     UILabel *noMoreMessageLabel = [[UILabel alloc] init];
     noMoreMessageLabel.textAlignment = NSTextAlignmentCenter;
-    noMoreMessageLabel.text = @"没有更多消息啦~";
+    noMoreMessageLabel.text = [MQBundleUtil localizedStringForKey:@"no_more_messages"];
     noMoreMessageLabel.font = [UIFont systemFontOfSize:kMQChatNoMoreMessageLabelFontSize];
     noMoreMessageLabel.textColor = [UIColor grayColor];
     noMoreMessageLabel.backgroundColor = [UIColor clearColor];
@@ -106,14 +107,14 @@ static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
 
 - (void)initTopPullRefreshView {
     self.topRefreshView = [[MQPullRefreshView alloc] initWithSuperScrollView:self isTopRefresh:true];
-    [self.topRefreshView setRefreshTitle:@"没有更多消息啦~"];
+    [self.topRefreshView setRefreshTitle:[MQBundleUtil localizedStringForKey:@"no_more_messages"]];
     [self.topRefreshView setPullRefreshStrokeColor:[MQChatViewConfig sharedConfig].pullRefreshColor];
     [self addSubview:self.topRefreshView];
 }
 
 - (void)initBottomPullRefreshView {
     self.bottomRefreshView = [[MQPullRefreshView alloc] initWithSuperScrollView:self isTopRefresh:false];
-    [self.bottomRefreshView setRefreshTitle:@"没有更多消息啦~"];
+    [self.bottomRefreshView setRefreshTitle:[MQBundleUtil localizedStringForKey:@"no_more_messages"]];
     [self.topRefreshView setPullRefreshStrokeColor:[MQChatViewConfig sharedConfig].pullRefreshColor];
     [self addSubview:self.bottomRefreshView];
 }

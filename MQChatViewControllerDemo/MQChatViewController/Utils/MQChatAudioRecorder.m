@@ -12,6 +12,7 @@
 #import "MLAudioMeterObserver.h"
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
+#import "MQBundleUtil.h"
 
 @interface MQChatAudioRecorder() <MLAudioRecorderDelegate>
 @property (nonatomic, strong) MLAudioRecorder *recorder;
@@ -56,7 +57,7 @@
             }
         };
         meterObserver.errorBlock = ^(NSError *error,MLAudioMeterObserver *meterObserver){
-            [[[UIAlertView alloc]initWithTitle:@"抱歉，录音出现了点小问题-_-" message:error.userInfo[NSLocalizedDescriptionKey] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"知道了", nil]show];
+            [[[UIAlertView alloc]initWithTitle:[MQBundleUtil localizedStringForKey:@"record_error"] message:error.userInfo[NSLocalizedDescriptionKey] delegate:nil cancelButtonTitle:nil otherButtonTitles:[MQBundleUtil localizedStringForKey:@"user_confirm"], nil]show];
         };
         self.meterObserver = meterObserver;
         
@@ -68,7 +69,7 @@
         };
         recorder.receiveErrorBlock = ^(NSError *error){
             weakSelf.meterObserver.audioQueue = nil;
-            [[[UIAlertView alloc]initWithTitle:@"抱歉，录音出现了点小问题-_-" message:error.userInfo[NSLocalizedDescriptionKey] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"知道了", nil]show];
+            [[[UIAlertView alloc]initWithTitle:[MQBundleUtil localizedStringForKey:@"record_error"] message:error.userInfo[NSLocalizedDescriptionKey] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"user_confirm", nil]show];
         };
         
         recorder.bufferDurationSeconds = 0.25;

@@ -10,6 +10,7 @@
 #import "MQDeviceFrameUtil.h"
 #import "MQChatFileUtil.h"
 #import "MQAssetUtil.h"
+#import "MQBundleUtil.h"
 
 NSString * const MQChatViewKeyboardResignFirstResponderNotification = @"MQChatViewKeyboardResignFirstResponderNotification";
 NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInterruptNotification";
@@ -41,8 +42,8 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     self.linkRegexs   = [[NSMutableArray alloc] initWithArray:@[@"((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)|(www.[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)"]];
     self.emailRegexs  = [[NSMutableArray alloc] initWithArray:@[@"[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}"]];
     
-    self.chatWelcomeText     = @"你好，请问有什么可以帮到您？";
-    self.agentName           = @"美洽小助手";
+    self.chatWelcomeText        = [MQBundleUtil localizedStringForKey:@"welcome_chat"];
+    self.agentName              = [MQBundleUtil localizedStringForKey:@"default_assistant"];
     self.scheduledAgentToken    = @"";
     self.scheduledGroupToken    = @"";
     self.MQClientId             = @"";

@@ -10,6 +10,7 @@
 #import "MQTextCellModel.h"
 #import "MQChatFileUtil.h"
 #import "MQChatViewConfig.h"
+#import "MQBundleUtil.h"
 
 static const NSInteger kMQTextCellSelectedUrlActionSheetTag = 2000;
 static const NSInteger kMQTextCellSelectedNumberActionSheetTag = 2001;
@@ -173,13 +174,13 @@ didLongPressLinkWithPhoneNumber:(NSString *)phoneNumber
 }
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithPhoneNumber:(NSString *)phoneNumber {
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:phoneNumber delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:[NSString stringWithFormat:@"拨打至 %@", phoneNumber], [NSString stringWithFormat:@"短信至 %@", phoneNumber], @"复制", nil];
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:phoneNumber delegate:self cancelButtonTitle:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"] destructiveButtonTitle:nil otherButtonTitles:[NSString stringWithFormat:@"%@%@", [MQBundleUtil localizedStringForKey:@"make_call_to"], phoneNumber], [NSString stringWithFormat:@"%@%@", [MQBundleUtil localizedStringForKey:@"make_message_to"], phoneNumber], [MQBundleUtil localizedStringForKey:@"save_text"], nil];
     sheet.tag = kMQTextCellSelectedNumberActionSheetTag;
     [sheet showInView:[UIApplication sharedApplication].keyWindow];
 }
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:[url absoluteString] delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"用Safari打开该链接", @"复制", nil];
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:[url absoluteString] delegate:self cancelButtonTitle:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"] destructiveButtonTitle:nil otherButtonTitles:[MQBundleUtil localizedStringForKey:@"open_url_by_safari"], [MQBundleUtil localizedStringForKey:@"save_text"], nil];
     sheet.tag = kMQTextCellSelectedUrlActionSheetTag;
     [sheet showInView:[UIApplication sharedApplication].keyWindow];
 }
@@ -188,7 +189,7 @@ didLongPressLinkWithPhoneNumber:(NSString *)phoneNumber
     if (!components[@"email"]) {
         return ;
     }
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:components[@"email"] delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"向该email发送邮件", @"复制", nil];
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:components[@"email"] delegate:self cancelButtonTitle:[MQBundleUtil localizedStringForKey:@"alert_view_cancel"] destructiveButtonTitle:nil otherButtonTitles:[MQBundleUtil localizedStringForKey:@"make_email_to"], [MQBundleUtil localizedStringForKey:@"save_text"], nil];
     sheet.tag = kMQTextCellSelectedEmailActionSheetTag;
     [sheet showInView:[UIApplication sharedApplication].keyWindow];
 }
