@@ -29,3 +29,43 @@
 "record_cancel_swipe"   = "Swipe up to cancel";
 
 "record_cancel_realse"  = "Release to cancel";
+
+"save_photo_error"      = "Sorry, failed to save photo";
+
+"save_photo_success"    = "Saved photo";
+
+"save_text_success"     = "Copied";
+
+"save_photo"            = "save";
+
+"save_text"             = "copy";
+
+"record_error"          = "Sorry, failed to record-_-";
+
+"user_confirm"          = "OK";
+
+"no_more_messages"      = "No more messages";
+
+"welcome_chat"          = "What could we help you?";
+
+"default_assistant"     = "Assistant";
+
+"no_agent_title"        = "Online Customer Service";
+
+"no_agent_tips"         = "Sorry, there are no agents.\nYou can still send your problems to us. We will contact you as soon as possible.";
+
+"retry_send_message"    = "Resend message?";
+
+"alert_view_cancel"     = "cancel";
+
+"alert_view_confirm"    = "confirm";
+
+"cannot_refresh"        = "Cannot refresh anymore~";
+
+"make_call_to"          = "Call ";
+
+"make_message_to"       = "Send a message to ";
+
+"open_url_by_safari"    = "Open this url by Safari";
+
+"make_email_to"         = "Send email";

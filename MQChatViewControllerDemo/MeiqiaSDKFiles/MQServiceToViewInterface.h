@@ -172,9 +172,9 @@
  * 根据美洽的顾客id，登陆美洽客服系统
  * @param ;
  */
-- (void)setClientOnlineWithMQClientId:(NSString *)MQClientId
-                              success:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
-               receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate;
+- (void)setClientOnlineWithClientId:(NSString *)clientId
+                            success:(void (^)(BOOL completion, NSString *agentName, NSArray *receivedMessages))success
+             receiveMessageDelegate:(id<MQServiceToViewInterfaceDelegate>)receiveMessageDelegate;
 
 /**
  *  设置指定分配的客服或客服组

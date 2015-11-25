@@ -64,7 +64,7 @@
 
 "make_call_to"          = "拨打至 ";
 
-"make_message_to"       = "短信至 ";
+"send_message_to"       = "短信至 ";
 
 "open_url_by_safari"    = "用Safari打开该链接";
 

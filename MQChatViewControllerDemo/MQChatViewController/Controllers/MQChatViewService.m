@@ -477,7 +477,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         } receiveMessageDelegate:self];
         return;
     }
-    [serviceToViewInterface setClientOnlineWithMQClientId:[MQChatViewConfig sharedConfig].MQClientId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
+    [serviceToViewInterface setClientOnlineWithClientId:[MQChatViewConfig sharedConfig].MQClientId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
         if (!completion || !agentName) {
             //没有分配到客服
             isThereNoAgent = true;
