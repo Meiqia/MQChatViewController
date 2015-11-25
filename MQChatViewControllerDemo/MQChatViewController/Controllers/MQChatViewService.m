@@ -467,9 +467,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [serviceToViewInterface setClientOnlineWithCustomizedId:[MQChatViewConfig sharedConfig].customizedId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
             if (!completion || !agentName) {
                 //没有分配到客服
-            } else {
-                [weakSelf updateChatTitleWithAgentName:agentName];
+                isThereNoAgent = true;
+                agentName = [MQBundleUtil localizedStringForKey:@"no_agent_title"];
             }
+            [weakSelf updateChatTitleWithAgentName:agentName];
             if (receivedMessages) {
                 [weakSelf addMessagesToTableViewWithMessages:receivedMessages isInsertAtFirstIndex:false];
             }
@@ -479,9 +480,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [serviceToViewInterface setClientOnlineWithMQClientId:[MQChatViewConfig sharedConfig].MQClientId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
         if (!completion || !agentName) {
             //没有分配到客服
-        } else {
-            [weakSelf updateChatTitleWithAgentName:agentName];
+            isThereNoAgent = true;
+            agentName = [MQBundleUtil localizedStringForKey:@"no_agent_title"];
         }
+        [weakSelf updateChatTitleWithAgentName:agentName];
         if (receivedMessages) {
             [weakSelf addMessagesToTableViewWithMessages:receivedMessages isInsertAtFirstIndex:false];
         }
@@ -490,10 +492,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 - (void)updateChatTitleWithAgentName:(NSString *)agentName {
     NSString *viewTitle = agentName;
-    if (!viewTitle || viewTitle.length == 0) {
-        viewTitle = [MQBundleUtil localizedStringForKey:@"no_agent_title"];
-        isThereNoAgent = true;
-    }
     if (self.delegate) {
         if ([self.delegate respondsToSelector:@selector(didScheduleClientWithViewTitle:)]) {
             [self.delegate didScheduleClientWithViewTitle:viewTitle];

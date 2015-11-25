@@ -212,8 +212,8 @@ static CGFloat const kMQVolumeViewTopMargin = 16.0;
 //组件终止录音
 -(void)stopRecord
 {
-    if (recordTime < 1 && recordTime > 0) {
-        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"network_jam"] duration:1 window:self.superview];
+    if (recordTime < 1 && recordTime >= 0) {
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"recode_time_too_short"] duration:1 window:self.superview];
         [audioRecorder cancelRecording];
     } else {
         [audioRecorder finishRecording];

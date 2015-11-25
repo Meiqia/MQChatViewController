@@ -122,7 +122,9 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
 
 @end
 
-@implementation MQVoiceCellModel
+@implementation MQVoiceCellModel {
+    NSTimeInterval voiceTimeInterval;
+}
 
 #pragma initialize
 /**
@@ -132,6 +134,7 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
                                      cellWidth:(CGFloat)cellWidth
                                       delegate:(id<MQCellModelDelegate>)delegator{
     if (self = [super init]) {
+        voiceTimeInterval = 0;
         self.delegate = delegator;
         self.messageId = message.messageId;
         self.sendStatus = message.sendStatus;
@@ -198,7 +201,7 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
                         }
                         if (voiceData) {
                             self.voiceData = voiceData;
-                            self.voiceDuration = [MQChatFileUtil getAudioDurationWithData:voiceData];
+                            voiceTimeInterval = [MQChatFileUtil getAudioDurationWithData:voiceData];
                             [self setModelsWithMessage:message cellWidth:cellWidth isLoadVoiceSuccess:true];
                         } else {
                             [self setModelsWithMessage:message cellWidth:cellWidth isLoadVoiceSuccess:false];
@@ -213,7 +216,7 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
             }
             [self setModelsWithMessage:message cellWidth:cellWidth isLoadVoiceSuccess:true];
         } else {
-            self.voiceDuration = [MQChatFileUtil getAudioDurationWithData:self.voiceData];
+            voiceTimeInterval = [MQChatFileUtil getAudioDurationWithData:self.voiceData];
             [self setModelsWithMessage:message cellWidth:cellWidth isLoadVoiceSuccess:true];
         }
     }
@@ -225,10 +228,7 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
                    cellWidth:(CGFloat)cellWidth
           isLoadVoiceSuccess:(BOOL)isLoadVoiceSuccess
 {
-    //由于语音可能是小数，故+1
-    if (self.voiceDuration > 0) {
-        self.voiceDuration++ ;
-    }
+    self.voiceDuration = ceilf((CGFloat)voiceTimeInterval);
     //语音图片size
     UIImage *voiceImage;
     if (message.fromType == MQChatMessageOutgoing) {

@@ -39,7 +39,6 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         isPlaying = false;
-        [MQChatAudioPlayer sharedInstance].delegate = self;
         //初始化头像
         avatarImageView = [[UIImageView alloc] init];
         avatarImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -99,6 +98,8 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:MQAudioPlayerDidInterruptNotification object:nil];
     isPlaying = true;
     [voiceImageView startAnimating];
+    //由于MQChatAudioPlayer是单例，所以每次点击某个cell进行播放，都必须重新设置audioPlayer的delegate
+    [MQChatAudioPlayer sharedInstance].delegate = self;
     [[MQChatAudioPlayer sharedInstance] playSongWithData:voiceData];
     //通知代理点击了语音
     if (self.chatCellDelegate) {
@@ -211,9 +212,7 @@
  *  停止播放声音
  */
 - (void)stopVoiceDisplay {
-    if (voiceImageView.isAnimating) {
-        [voiceImageView stopAnimating];
-    }
+    [voiceImageView stopAnimating];
     isPlaying = false;
 }
 
