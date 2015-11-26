@@ -17,6 +17,8 @@
 
 static CGFloat const kMQRecordViewDiameter = 150.0;
 static CGFloat const kMQVolumeViewTopMargin = 16.0;
+//最大时长的误差修正，这里主要是解决最大时长的文件读出的时长与配置最大市场不准确的问题；这里写的不好，请开发者指正；
+static NSInteger const kMQMaxRecordVoiceDurationDeviation = 2;
 
 @interface MQRecordView()<MQChatAudioRecorderDelegate>
 
@@ -36,12 +38,13 @@ static CGFloat const kMQVolumeViewTopMargin = 16.0;
     CGFloat recordTime; //录音时长
     NSTimer *recordTimer;
     MQChatAudioRecorder *audioRecorder;
-    
+    NSInteger maxVoiceDuration;
 }
 
 -(instancetype)initWithFrame:(CGRect)frame maxRecordDuration:(NSTimeInterval)duration
 {
     if (self = [super initWithFrame:frame]) {
+        maxVoiceDuration = duration;
         self.revoke = NO;
         self.layer.masksToBounds = YES;
         recordView = [[UIView alloc] init];
@@ -62,7 +65,7 @@ static CGFloat const kMQVolumeViewTopMargin = 16.0;
         [recordView addSubview:volumeView];
         [recordView addSubview:tipLabel];
         
-        audioRecorder = [[MQChatAudioRecorder alloc] initWithMaxRecordDuration:duration];
+        audioRecorder = [[MQChatAudioRecorder alloc] initWithMaxRecordDuration:duration+kMQMaxRecordVoiceDurationDeviation];
         audioRecorder.delegate = self;
     }
     return self;
@@ -159,7 +162,7 @@ static CGFloat const kMQVolumeViewTopMargin = 16.0;
 -(void)recodTime
 {
     recordTime = recordTime + 0.1;
-    if (recordTime >= 50) {
+    if (recordTime >= maxVoiceDuration + kMQMaxRecordVoiceDurationDeviation - 10) {
         volumeView.alpha = 0;
         if (LCDView) {
             [LCDView removeFromSuperview];
@@ -178,7 +181,7 @@ static CGFloat const kMQVolumeViewTopMargin = 16.0;
         LCDView.innerGlowColor = [UIColor grayColor];
         LCDView.innerGlowSize = 3.0;
         [recordView addSubview:LCDView];
-        LCDView.text = [NSString stringWithFormat:@"%d",(int)(60 - recordTime)];
+        LCDView.text = [NSString stringWithFormat:@"%d",(int)(maxVoiceDuration + kMQMaxRecordVoiceDurationDeviation - recordTime)];
         [LCDView resetSize];
     }
     NSLog(@"recordView time = %f", recordTime);
@@ -213,7 +216,9 @@ static CGFloat const kMQVolumeViewTopMargin = 16.0;
 -(void)stopRecord
 {
     if (recordTime < 1 && recordTime >= 0) {
-        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"recode_time_too_short"] duration:1 window:self.superview];
+        if (!self.hidden) {
+            [MQToast showToast:[MQBundleUtil localizedStringForKey:@"recode_time_too_short"] duration:1 window:self.superview];
+        }
         [audioRecorder cancelRecording];
     } else {
         [audioRecorder finishRecording];
@@ -237,6 +242,8 @@ static CGFloat const kMQVolumeViewTopMargin = 16.0;
         [LCDView removeFromSuperview];
     }
     volumeView.alpha = 1.0;
+    tipLabel.text = [MQBundleUtil localizedStringForKey:@"record_cancel_swipe"];
+    volumeView.image = [MQAssetUtil recordVolume:0];
 }
 
 -(void)revokerecord {
