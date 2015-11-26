@@ -96,30 +96,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     return [NSDate date];
 }
 
-//没有客服情况下，发送消息
-- (void)reScheduleAndSendMessageWithContent:(id)content messageId:(NSString *)messageId {
-    __weak typeof(self) weakSelf = self;
-    [serviceToViewInterface setClientOnlineWithClientId:@"" success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
-        if (!completion || !agentName) {
-            //没有分配到客服，发送留言
-            isThereNoAgent = true;
-            agentName = [MQBundleUtil localizedStringForKey:@"no_agent_title"];
-#warning 这里增加留言接口
-        } else {
-            //分配到客服，重新发送
-            isThereNoAgent = false;
-            if ([content isKindOfClass:[NSString class]]) {
-                [MQServiceToViewInterface sendTextMessageWithContent:content messageId:messageId delegate:weakSelf];
-            } else if ([content isKindOfClass:[UIImage class]]) {
-                [MQServiceToViewInterface sendImageMessageWithImage:content messageId:messageId delegate:weakSelf];
-            } else if ([content isKindOfClass:[NSData class]]) {
-                [MQServiceToViewInterface sendAudioMessage:content messageId:messageId delegate:weakSelf];
-            }
-        }
-        [weakSelf updateChatTitleWithAgentName:agentName];
-    } receiveMessageDelegate:self];
-}
-
 /**
  * 发送文字消息
  */
@@ -129,12 +105,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self addMessageDateCellAtLastWithCurrentCellModel:cellModel];
     [self addCellModelAndReloadTableViewWithModel:cellModel];
 #ifdef INCLUDE_MEIQIA_SDK
-    if (isThereNoAgent) {
-        //没有客服重新分配一次
-        [self reScheduleAndSendMessageWithContent:content messageId:message.messageId];
-    } else {
-        [MQServiceToViewInterface sendTextMessageWithContent:content messageId:message.messageId delegate:self];
-    }
+    [MQServiceToViewInterface sendTextMessageWithContent:content messageId:message.messageId delegate:self];
     [self addSystemTips];
 #else
     //模仿发送成功
@@ -154,12 +125,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self addMessageDateCellAtLastWithCurrentCellModel:cellModel];
     [self addCellModelAndReloadTableViewWithModel:cellModel];
 #ifdef INCLUDE_MEIQIA_SDK
-    if (isThereNoAgent) {
-        //没有客服重新分配一次
-        [self reScheduleAndSendMessageWithContent:image messageId:message.messageId];
-    } else {
-        [MQServiceToViewInterface sendImageMessageWithImage:image messageId:message.messageId delegate:self];
-    }
+    [MQServiceToViewInterface sendImageMessageWithImage:image messageId:message.messageId delegate:self];
     [self addSystemTips];
 #else
     //模仿发送成功
@@ -181,12 +147,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self sendVoiceMessageWithWAVData:wavData voiceMessage:message];
 #ifdef INCLUDE_MEIQIA_SDK
     NSData *amrData = [NSData dataWithContentsOfFile:filePath];
-    if (isThereNoAgent) {
-        //没有客服重新分配一次
-        [self reScheduleAndSendMessageWithContent:amrData messageId:message.messageId];
-    } else {
-        [MQServiceToViewInterface sendAudioMessage:amrData messageId:message.messageId delegate:self];
-    }
+    [MQServiceToViewInterface sendAudioMessage:amrData messageId:message.messageId delegate:self];
     [self addSystemTips];
 #endif
 }
@@ -199,11 +160,13 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     MQVoiceCellModel *cellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
     [self addMessageDateCellAtLastWithCurrentCellModel:cellModel];
     [self addCellModelAndReloadTableViewWithModel:cellModel];
+#ifndef INCLUDE_MEIQIA_SDK
     //模仿发送成功
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         cellModel.sendStatus = MQChatMessageSendStatusSuccess;
         [self reloadChatTableView];
     });
+#endif
 }
 
 /**
@@ -617,6 +580,14 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                         newMessageDate:(NSDate *)newMessageDate
                             sendStatus:(MQChatMessageSendStatus)sendStatus
 {
+    //如果新的messageId和旧的messageId不同，且是发送成功状态，则表明肯定是分配成功的
+    if (![newMessageId isEqualToString:oldMessageId] && sendStatus == MQChatMessageSendStatusSuccess) {
+        NSString *agentName = [MQServiceToViewInterface getCurrentAgentName];
+        if (agentName.length > 0) {
+            isThereNoAgent = false;
+            [self updateChatTitleWithAgentName:agentName];
+        }
+    }
     NSInteger index = [self getIndexOfCellWithMessageId:oldMessageId];
     if (index < 0) {
         return;

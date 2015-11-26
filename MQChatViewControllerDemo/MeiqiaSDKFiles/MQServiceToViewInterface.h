@@ -27,7 +27,7 @@
  * @param messages 消息数组，元素为MQBaseMessage类型
  * @warning 该数组是按时间从旧到新排序
  */
-- (void)didReceiveHistoryMessages:(NSArray *)messages totalNum:(NSInteger)totalNum;
+- (void)didReceiveHistoryMessages:(NSArray *)messages;
 
 /**
  *  收到了一条MQTextMessage类型的即时消息
@@ -200,5 +200,10 @@
  *  @param messageId 消息id
  */
 + (void)didTapMessageWithMessageId:(NSString *)messageId;
+
+/**
+ *  获取当前客服名字
+ */
++ (NSString *)getCurrentAgentName;
 
 @end
