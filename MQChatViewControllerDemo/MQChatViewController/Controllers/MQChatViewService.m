@@ -106,7 +106,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self addCellModelAndReloadTableViewWithModel:cellModel];
 #ifdef INCLUDE_MEIQIA_SDK
     [MQServiceToViewInterface sendTextMessageWithContent:content messageId:message.messageId delegate:self];
-    [self addSystemTips];
 #else
     //模仿发送成功
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -126,7 +125,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self addCellModelAndReloadTableViewWithModel:cellModel];
 #ifdef INCLUDE_MEIQIA_SDK
     [MQServiceToViewInterface sendImageMessageWithImage:image messageId:message.messageId delegate:self];
-    [self addSystemTips];
 #else
     //模仿发送成功
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -148,7 +146,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 #ifdef INCLUDE_MEIQIA_SDK
     NSData *amrData = [NSData dataWithContentsOfFile:filePath];
     [MQServiceToViewInterface sendAudioMessage:amrData messageId:message.messageId delegate:self];
-    [self addSystemTips];
 #endif
 }
 
@@ -471,7 +468,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [serviceToViewInterface setClientOnlineWithCustomizedId:[MQChatViewConfig sharedConfig].customizedId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
             if (!completion || !agentName) {
                 //没有分配到客服
-                isThereNoAgent = true;
+//                isThereNoAgent = true;
                 agentName = [MQBundleUtil localizedStringForKey:@"no_agent_title"];
             }
             [weakSelf updateChatTitleWithAgentName:agentName];
@@ -484,7 +481,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [serviceToViewInterface setClientOnlineWithClientId:[MQChatViewConfig sharedConfig].MQClientId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
         if (!completion || !agentName) {
             //没有分配到客服
-            isThereNoAgent = true;
+//            isThereNoAgent = true;
             agentName = [MQBundleUtil localizedStringForKey:@"no_agent_title"];
         }
         [weakSelf updateChatTitleWithAgentName:agentName];
@@ -586,7 +583,14 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         if (agentName.length > 0) {
             isThereNoAgent = false;
             [self updateChatTitleWithAgentName:agentName];
+        } else {
+            isThereNoAgent = true;
         }
+    } else {
+        isThereNoAgent = true;
+    }
+    if (isThereNoAgent) {
+        [self addSystemTips];
     }
     NSInteger index = [self getIndexOfCellWithMessageId:oldMessageId];
     if (index < 0) {
