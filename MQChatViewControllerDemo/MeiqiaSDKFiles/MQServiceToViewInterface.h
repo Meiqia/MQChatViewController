@@ -80,6 +80,11 @@
  */
 - (void)didRedirectWithAgentName:(NSString *)agentName;
 
+/**
+ *  表示发送消息后，没有客服在线
+ */
+- (void)sentMessageWithNoAgent;
+
 @end
 
 /**

@@ -43,6 +43,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 #ifdef INCLUDE_MEIQIA_SDK
     MQServiceToViewInterface *serviceToViewInterface;
     BOOL isThereNoAgent;   //用来判断当前是否没有客服
+    BOOL addedNoAgentTip;  //是否已经说明了没有客服标记
 #endif
 }
 
@@ -52,6 +53,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 #ifdef INCLUDE_MEIQIA_SDK
         [self setClientOnline];
         isThereNoAgent = false;
+        addedNoAgentTip = false;
 #endif
     }
     return self;
@@ -94,6 +96,30 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     return [NSDate date];
 }
 
+//没有客服情况下，发送消息
+- (void)reScheduleAndSendMessageWithContent:(id)content messageId:(NSString *)messageId {
+    __weak typeof(self) weakSelf = self;
+    [serviceToViewInterface setClientOnlineWithClientId:@"" success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
+        if (!completion || !agentName) {
+            //没有分配到客服，发送留言
+            isThereNoAgent = true;
+            agentName = [MQBundleUtil localizedStringForKey:@"no_agent_title"];
+#warning 这里增加留言接口
+        } else {
+            //分配到客服，重新发送
+            isThereNoAgent = false;
+            if ([content isKindOfClass:[NSString class]]) {
+                [MQServiceToViewInterface sendTextMessageWithContent:content messageId:messageId delegate:weakSelf];
+            } else if ([content isKindOfClass:[UIImage class]]) {
+                [MQServiceToViewInterface sendImageMessageWithImage:content messageId:messageId delegate:weakSelf];
+            } else if ([content isKindOfClass:[NSData class]]) {
+                [MQServiceToViewInterface sendAudioMessage:content messageId:messageId delegate:weakSelf];
+            }
+        }
+        [weakSelf updateChatTitleWithAgentName:agentName];
+    } receiveMessageDelegate:self];
+}
+
 /**
  * 发送文字消息
  */
@@ -103,7 +129,12 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self addMessageDateCellAtLastWithCurrentCellModel:cellModel];
     [self addCellModelAndReloadTableViewWithModel:cellModel];
 #ifdef INCLUDE_MEIQIA_SDK
-    [MQServiceToViewInterface sendTextMessageWithContent:content messageId:message.messageId delegate:self];
+    if (isThereNoAgent) {
+        //没有客服重新分配一次
+        [self reScheduleAndSendMessageWithContent:content messageId:message.messageId];
+    } else {
+        [MQServiceToViewInterface sendTextMessageWithContent:content messageId:message.messageId delegate:self];
+    }
     [self addSystemTips];
 #else
     //模仿发送成功
@@ -123,7 +154,12 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self addMessageDateCellAtLastWithCurrentCellModel:cellModel];
     [self addCellModelAndReloadTableViewWithModel:cellModel];
 #ifdef INCLUDE_MEIQIA_SDK
-    [MQServiceToViewInterface sendImageMessageWithImage:image messageId:message.messageId delegate:self];
+    if (isThereNoAgent) {
+        //没有客服重新分配一次
+        [self reScheduleAndSendMessageWithContent:image messageId:message.messageId];
+    } else {
+        [MQServiceToViewInterface sendImageMessageWithImage:image messageId:message.messageId delegate:self];
+    }
     [self addSystemTips];
 #else
     //模仿发送成功
@@ -145,7 +181,12 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self sendVoiceMessageWithWAVData:wavData voiceMessage:message];
 #ifdef INCLUDE_MEIQIA_SDK
     NSData *amrData = [NSData dataWithContentsOfFile:filePath];
-    [MQServiceToViewInterface sendAudioMessage:amrData messageId:message.messageId delegate:self];
+    if (isThereNoAgent) {
+        //没有客服重新分配一次
+        [self reScheduleAndSendMessageWithContent:amrData messageId:message.messageId];
+    } else {
+        [MQServiceToViewInterface sendAudioMessage:amrData messageId:message.messageId delegate:self];
+    }
     [self addSystemTips];
 #endif
 }
@@ -504,17 +545,22 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         return;
     }
     isThereNoAgent = false;
-    [self addTipCellModelWithTips:[MQBundleUtil localizedStringForKey:@"no_agent_tips"]];
+    if (!addedNoAgentTip) {
+        addedNoAgentTip = true;
+        [self addTipCellModelWithTips:[MQBundleUtil localizedStringForKey:@"no_agent_tips"]];
+    }
 }
 
 #pragma MQServiceToViewInterfaceDelegate
-- (void)didReceiveHistoryMessages:(NSArray *)messages totalNum:(NSInteger)totalNum {
-    if (totalNum > 0) {
+- (void)didReceiveHistoryMessages:(NSArray *)messages {
+    NSInteger messageNumber = 0;
+    if (messages.count > 0) {
         [self addMessagesToTableViewWithMessages:messages isInsertAtFirstIndex:true];
+        messageNumber = messages.count;
     }
     if (self.delegate) {
         if ([self.delegate respondsToSelector:@selector(didGetHistoryMessagesWithMessagesNumber:isLoadOver:)]) {
-            [self.delegate didGetHistoryMessagesWithMessagesNumber:totalNum isLoadOver:totalNum < kMQChatGetHistoryMessageNumber];
+            [self.delegate didGetHistoryMessagesWithMessagesNumber:messageNumber isLoadOver:messageNumber < kMQChatGetHistoryMessageNumber];
         }
     }
 }
