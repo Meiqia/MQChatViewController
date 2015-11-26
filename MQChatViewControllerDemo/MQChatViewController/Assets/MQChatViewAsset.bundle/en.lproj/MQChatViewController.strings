@@ -1,0 +1,71 @@
+"new_message"         = "Send your message...";
+
+"record_speak"        = "Hold to talk";
+
+"record_end"          = "Release to send";
+
+"cancel"              = "cancel";
+
+"select_gallery"      = "Albums";
+
+"select_camera"       = "Camera";
+
+"wait_agent"          = "Scheduling an agent for you...";
+
+"not_access_camera"   = "Please go to Settings — Privacy — Photos. Then select ON for Meiqia.";
+
+"not_access_photos"   = "Please go to Settings — Privacy — Camera. Then select ON for Meiqia.";
+
+"display_new_message" = "Received a new message";
+
+"network_jam"         = "Please check your internet connection and try again.";
+
+"simulator_not_support_camera"      = "The simulator cannot access camera";
+
+"simulator_not_support_microphone"  = "The simulator cannot access microphone";
+
+"recode_time_too_short" = "Message too short";
+
+"record_cancel_swipe"   = "Swipe up to cancel";
+
+"record_cancel_realse"  = "Release to cancel";
+
+"save_photo_error"      = "Sorry, failed to save photo";
+
+"save_photo_success"    = "Saved photo";
+
+"save_text_success"     = "Copied";
+
+"save_photo"            = "save";
+
+"save_text"             = "copy";
+
+"record_error"          = "Sorry, failed to record-_-";
+
+"user_confirm"          = "OK";
+
+"no_more_messages"      = "No more messages";
+
+"welcome_chat"          = "What could we help you?";
+
+"default_assistant"     = "Assistant";
+
+"no_agent_title"        = "Online Customer Service";
+
+"no_agent_tips"         = "Sorry, there are no agents.\nYou can still send your problems to us. We will contact you as soon as possible.";
+
+"retry_send_message"    = "Resend message?";
+
+"alert_view_cancel"     = "cancel";
+
+"alert_view_confirm"    = "confirm";
+
+"cannot_refresh"        = "Cannot refresh anymore~";
+
+"make_call_to"          = "Call ";
+
+"make_message_to"       = "Send a message to ";
+
+"open_url_by_safari"    = "Open this url by Safari";
+
+"make_email_to"         = "Send email";

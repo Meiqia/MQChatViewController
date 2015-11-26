@@ -199,6 +199,7 @@ To-do-list - 待修复问题
 * 目前只支持单张图片全屏浏览，还不支持多张图片浏览；
 * 下拉刷新的瞬间，tableView会跳跃一下，给人造成一种"卡了一下"的感觉；
 * 启动上拉刷新(底部刷新)，只显示了loading的indicator，没有显示出loading的path效果；
+* 使用TTTAttributedLabel，输入emoji，text会往下偏移；
 * TTTAttributedLabel中使用了NSUnderlineColorAttributeName，导致不兼容iOS6，所以对于iOS7以下的用户，消息气泡中的文字用的是UILabel；所以对于iOS7以下用户，没有文字选中的效果；
 * 开发者可在项目中搜索#warning，其中有一个warning是TTTAttributedLabel的bug，开发者感兴趣可以解决一下；
 

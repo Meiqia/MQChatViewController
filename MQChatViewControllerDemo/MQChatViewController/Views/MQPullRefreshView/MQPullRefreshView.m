@@ -7,6 +7,7 @@
 //
 
 #import "MQPullRefreshView.h"
+#import "MQBundleUtil.h"
 
 static CGFloat const kMQPullRefreshViewHeight = 44.0;
 static CGFloat const kMQPullRefreshIndicatorDiameter = 20.0;
@@ -64,7 +65,7 @@ static CGFloat const kMQPullRefreshTitleFontSize = 12.0;
         bezierPath = [UIBezierPath bezierPath];
         //初始化注释title
         titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.frame.size.height/2 - kMQPullRefreshIndicatorDiameter/2, self.frame.size.height, kMQPullRefreshIndicatorDiameter)];
-        titleLabel.text = @"刷新不了啦~";
+        titleLabel.text = [MQBundleUtil localizedStringForKey:@"cannot_refresh"];
         titleLabel.textColor = [UIColor grayColor];
         titleLabel.font = [UIFont systemFontOfSize:kMQPullRefreshTitleFontSize];
         titleLabel.textAlignment = NSTextAlignmentCenter;
