@@ -36,7 +36,7 @@
 }
 
 - (MQChatViewController *)presentMQChatViewControllerInViewController:(UIViewController *)viewController {
-    chatViewConfig.isPresentChatView = true;
+    chatViewConfig.isPushChatView = false;
     if (!chatViewController) {
         chatViewController = [[MQChatViewController alloc] initWithChatViewManager:chatViewConfig];
     }
@@ -57,22 +57,23 @@
     if ([MQChatViewConfig sharedConfig].navBarColor) {
         navigationController.navigationBar.backgroundColor = [MQChatViewConfig sharedConfig].navBarColor;
     }
+
     //导航栏左键
-    UIImage *cancelImage = isPresentModalView ? [MQChatViewConfig sharedConfig].modalViewLeftButtonImage : [MQChatViewConfig sharedConfig].navBarLeftButtonImage;
-    if ([MQChatViewConfig sharedConfig].navBarTintColor) {
-        cancelImage = [MQImageUtil convertImageColorWithImage:cancelImage toColor:[MQChatViewConfig sharedConfig].navBarTintColor];
+    UIBarButtonItem *leftItem;
+    if ([MQChatViewConfig sharedConfig].navBarLeftButton) {
+        leftItem = [[UIBarButtonItem alloc] initWithCustomView:[MQChatViewConfig sharedConfig].navBarLeftButton];
+        [[MQChatViewConfig sharedConfig].navBarLeftButton addTarget:viewController action:@selector(dismissChatViewController) forControlEvents:UIControlEventTouchUpInside];
+    } else {
+        if (![MQChatViewConfig sharedConfig].isPushChatView) {
+            leftItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:viewController action:@selector(dismissChatViewController)];
+        }
     }
-    if (cancelImage) {
-        UIButton *cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        cancelBtn.frame = CGRectMake(0, 0, cancelImage.size.width, cancelImage.size.height);
-        [cancelBtn setBackgroundImage:cancelImage forState:UIControlStateNormal];
-        [cancelBtn addTarget:viewController action:@selector(dismissChatViewController) forControlEvents:UIControlEventTouchUpInside];
-        UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:cancelBtn];
-        viewController.navigationItem.leftBarButtonItem = leftItem;
-    }
+    viewController.navigationItem.leftBarButtonItem = leftItem;
+    
     //导航栏右键
     if ([MQChatViewConfig sharedConfig].navBarRightButton) {
         UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:[MQChatViewConfig sharedConfig].navBarRightButton];
+        [[MQChatViewConfig sharedConfig].navBarRightButton addTarget:viewController action:@selector(didSelectNavigationRightButton) forControlEvents:UIControlEventTouchUpInside];
         viewController.navigationItem.rightBarButtonItem = rightItem;
     }
 }
@@ -180,12 +181,32 @@
     chatViewConfig.clientDefaultAvatarImage = [UIImage imageWithCGImage:image.CGImage];
 }
 
-- (void)setPhotoSenderImage:(UIImage *)image {
+- (void)setPhotoSenderImage:(UIImage *)image
+           highlightedImage:(UIImage *)highlightedImage
+{
     chatViewConfig.photoSenderImage = [UIImage imageWithCGImage:image.CGImage];
+    chatViewConfig.photoSenderHighlightedImage = [UIImage imageWithCGImage:highlightedImage.CGImage];
 }
 
-- (void)setVoiceSenderImage:(UIImage *)image {
+- (void)setVoiceSenderImage:(UIImage *)image
+           highlightedImage:(UIImage *)highlightedImage
+{
     chatViewConfig.voiceSenderImage = [UIImage imageWithCGImage:image.CGImage];
+    chatViewConfig.voiceSenderHighlightedImage = [UIImage imageWithCGImage:highlightedImage.CGImage];
+}
+
+- (void)setTextSenderImage:(UIImage *)image
+          highlightedImage:(UIImage *)highlightedImage
+{
+    chatViewConfig.keyboardSenderImage = [UIImage imageWithCGImage:image.CGImage];
+    chatViewConfig.keyboardSenderHighlightedImage = [UIImage imageWithCGImage:highlightedImage.CGImage];
+}
+
+- (void)setResignKeyboardImage:(UIImage *)image
+              highlightedImage:(UIImage *)highlightedImage
+{
+    chatViewConfig.resignKeyboardImage = [UIImage imageWithCGImage:image.CGImage];
+    chatViewConfig.resignKeyboardHighlightedImage = [UIImage imageWithCGImage:highlightedImage.CGImage];
 }
 
 - (void)setIncomingBubbleImage:(UIImage *)bubbleImage {
@@ -196,20 +217,20 @@
     chatViewConfig.outgoingBubbleImage = [UIImage imageWithCGImage:bubbleImage.CGImage];
 }
 
-- (void)setNavLeftButtonImage:(UIImage *)leftButtonImage {
-    chatViewConfig.navBarLeftButtonImage = leftButtonImage;
-}
-
-- (void)setModalViewNavLeftButtonImage:(UIImage *)leftButtonImage {
-    chatViewConfig.modalViewLeftButtonImage = leftButtonImage;
-}
+//- (void)setNavLeftButtonImage:(UIImage *)leftButtonImage {
+//    chatViewConfig.navBarLeftButtonImage = leftButtonImage;
+//}
+//
+//- (void)setModalViewNavLeftButtonImage:(UIImage *)leftButtonImage {
+//    chatViewConfig.modalViewLeftButtonImage = leftButtonImage;
+//}
 
 - (void)setNavRightButton:(UIButton *)rightButton {
     chatViewConfig.navBarRightButton = rightButton;
 }
 
-- (void)enableCustomRecordView:(BOOL)enable {
-    chatViewConfig.enableCustomRecordView = enable;
+- (void)setNavLeftButton:(UIButton *)leftButton {
+    chatViewConfig.navBarLeftButton = leftButton;
 }
 
 - (void)enableMessageSound:(BOOL)enable {
@@ -232,8 +253,8 @@
     chatViewConfig.enableBottomPullRefresh = enable;
 }
 
-- (void)enableWelcomeChat:(BOOL)enable {
-    chatViewConfig.enableWelcomeChat = enable;
+- (void)enableChatWelcome:(BOOL)enable {
+    chatViewConfig.enableChatWelcome = enable;
 }
 
 - (void)setIncomingMessageSoundFileName:(NSString *)soundFileName {

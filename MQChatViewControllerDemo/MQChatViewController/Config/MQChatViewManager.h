@@ -85,20 +85,6 @@
 - (void)setIncomingMessageSoundFileName:(NSString *)soundFileName;
 
 /**
- * 显示的历史聊天消息是否去主动同步服务端的消息记录。因为有可能顾客在其他客户端产生了消息记录，如果设置为NO，则SDK本地消息会与服务端实际的历史消息不相符；默认NO
- * @warning 如果开启同步，将会产生一定网络请求。所以建议顾客端只使用美洽SDK的用户保持默认值
- * @warning 如果开启同步，下拉获取历史消息则会从服务端去获取；如果关闭同步，下拉获取历史消息则是从SDK本地数据库中获取；
- * @param enable YES:同步 NO:不同步
- */
-- (void)enableSyncServerMessage:(BOOL)enable;
-
-/**
- * 是否显示事件状态流；事件的状态流有：初始化对话、对话被转接给其他客服、对话超时、客服主动结束了对话、客服正在输入；
- * @param enable YES:开启事件状态流 NO:关闭事件状态流
- */
-- (void)enableEventDispaly:(BOOL)enable;
-
-/**
  * 是否支持发送语音消息；
  * @param enable YES:支持发送语音消息 NO:不支持发送语音消息
  */
@@ -129,12 +115,6 @@
  * @param enable YES:支持 NO:不支持
  */
 - (void)enableClientAvatar:(BOOL)enable;
-
-/**
- * 是否支持自定义录音的界面；
- * @param enable YES:支持 NO:不支持
- */
-- (void)enableCustomRecordView:(BOOL)enable;
 
 /**
  * 是否开启接受/发送消息的声音；
@@ -177,7 +157,7 @@
  *
  * @param enable YES:支持 NO:不支持
  */
-- (void)enableWelcomeChat:(BOOL)enable;
+- (void)enableChatWelcome:(BOOL)enable;
 
 /**
  * 设置发送过来的message的文字颜色；
@@ -206,12 +186,6 @@
 - (void)setOutgoingBubbleColor:(UIColor *)bubbleColor;
 
 /**
- * 设置事件流的显示文字的颜色；
- * @param textColor 文字颜色
- */
-- (void)setEventTextColor:(UIColor *)textColor;
-
-/**
  * 设置导航栏上的元素颜色；
  * @param tintColor 导航栏上的元素颜色
  */
@@ -222,6 +196,20 @@
  * @param barColor 导航栏背景颜色
  */
 - (void)setNavigationBarColor:(UIColor *)barColor;
+
+/**
+ *  设置导航栏右键的图片
+ *
+ *  @param rightButtonImage 右键图片
+ */
+- (void)setNavRightButton:(UIButton *)rightButton;
+
+/**
+ *  设置导航栏左键的图片
+ *
+ *  @param leftButton 左键图片
+ */
+- (void)setNavLeftButton:(UIButton *)leftButton;
 
 /**
  *  设置下拉/上拉刷新的颜色
@@ -243,16 +231,34 @@
 - (void)setClientDefaultAvatarImage:(UIImage *)image;
 
 /**
- * 设置底部自定义发送图片的按钮图片；
- * @param image 按钮image
+ *  设置底部自定义发送图片的按钮图片；
+ *  @param image 图片发送按钮image
+ *  @param highlightedImage 图片发送按钮选中image
  */
-- (void)setPhotoSenderImage:(UIImage *)image;
+- (void)setPhotoSenderImage:(UIImage *)image highlightedImage:(UIImage *)highlightedImage;
 
 /**
- * 设置底部自定义发送语音的按钮图片；
- * @param image 按钮image
+ *  设置底部自定义发送语音的按钮图片；
+ *  @param image 语音发送按钮image
+ *  @param highlightedImage 语音发送按钮选中image
  */
-- (void)setVoiceSenderImage:(UIImage *)image;
+- (void)setVoiceSenderImage:(UIImage *)image highlightedImage:(UIImage *)highlightedImage;
+
+/**
+ *  设置底部自定义发送文字的按钮图片
+ *
+ *  @param image            文字发送按钮image
+ *  @param highlightedImage 文字发送按钮选中image
+ */
+- (void)setTextSenderImage:(UIImage *)image highlightedImage:(UIImage *)highlightedImage;
+
+/**
+ *  设置底部自定义取消键盘的按钮图片
+ *
+ *  @param image            取消键盘按钮image
+ *  @param highlightedImage 取消键盘按钮选中image
+ */
+- (void)setResignKeyboardImage:(UIImage *)image highlightedImage:(UIImage *)highlightedImage;
 
 /**
  * 设置自定义客服的消息气泡（发送过来的消息气泡）的背景图片；
@@ -269,34 +275,21 @@
 - (void)setOutgoingBubbleImage:(UIImage *)bubbleImage;
 
 /**
- *  设置导航栏左键的图片
- *
- *  @param leftButtonImage 左键图片
- */
-- (void)setNavLeftButtonImage:(UIImage *)leftButtonImage;
-
-/**
- *  设置模态试图的导航栏左键的图片
- *
- *  @param leftButtonImage 左键图片
- */
-- (void)setModalViewNavLeftButtonImage:(UIImage *)leftButtonImage;
-
-/**
- *  设置导航栏右键的图片
- *
- *  @param rightButtonImage 左键图片
- */
-- (void)setNavRightButton:(UIButton *)rightButton;
-
-/**
  *  设置录音的最大时长
  *
  *  @param recordDuration 时长
  */
 - (void)setMaxRecordDuration:(NSTimeInterval)recordDuration;
 
+#pragma 以下配置是美洽SDK用户所用到的配置
 #ifdef INCLUDE_MEIQIA_SDK
+/**
+ * 显示的历史聊天消息是否去主动同步服务端的消息记录。因为有可能顾客在其他客户端产生了消息记录，如果设置为NO，则SDK本地消息会与服务端实际的历史消息不相符；默认NO
+ * @warning 如果开启同步，将会产生一定网络请求。所以建议顾客端只使用美洽SDK的用户保持默认值
+ * @warning 如果开启同步，下拉获取历史消息则会从服务端去获取；如果关闭同步，下拉获取历史消息则是从SDK本地数据库中获取；
+ * @param enable YES:同步 NO:不同步
+ */
+- (void)enableSyncServerMessage:(BOOL)enable;
 
 /**
  *  设置分配给指定的客服id
@@ -328,6 +321,18 @@
  *  @param MQClientId 顾客id
  */
 - (void)setLoginMQClientId:(NSString *)MQClientId;
+
+/**
+ * 是否显示事件状态流；事件的状态流有：初始化对话、对话被转接给其他客服、对话超时、客服主动结束了对话、客服正在输入；
+ * @param enable YES:开启事件状态流 NO:关闭事件状态流
+ */
+- (void)enableEventDispaly:(BOOL)enable;
+
+/**
+ * 设置事件流的显示文字的颜色；
+ * @param textColor 文字颜色
+ */
+- (void)setEventTextColor:(UIColor *)textColor;
 
 
 #endif

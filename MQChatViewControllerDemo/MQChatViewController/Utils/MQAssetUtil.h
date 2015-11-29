@@ -18,8 +18,16 @@
 + (UIImage *)clientDefaultAvatarImage;
 
 + (UIImage *)messageCameraInputImage;
++ (UIImage *)messageCameraInputHighlightedImage;
+
 + (UIImage *)messageTextInputImage;
++ (UIImage *)messageTextInputHighlightedImage;
+
 + (UIImage *)messageVoiceInputImage;
++ (UIImage *)messageVoiceInputHighlightedImage;
+
++ (UIImage *)messageResignKeyboardImage;
++ (UIImage *)messageResignKeyboardHighlightedImage;
 
 + (UIImage *)bubbleIncomingImage;
 + (UIImage *)bubbleOutgoingImage;
@@ -42,8 +50,5 @@
 + (UIImage *)recordBackImage;
 
 + (UIImage *)recordVolume:(NSInteger)volume;
-
-+ (UIImage *)hideToolbarNormalImage;
-+ (UIImage *)hideToolbarClickImage;
 
 @end

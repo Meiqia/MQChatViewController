@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 
 //是否引入美洽SDK
-#define INCLUDE_MEIQIA_SDK
+//#define INCLUDE_MEIQIA_SDK
 
 /** 关闭键盘的通知 */
 extern NSString * const MQChatViewKeyboardResignFirstResponderNotification;
@@ -43,17 +43,14 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 @property (nonatomic, assign) BOOL enableSendImageMessage;
 @property (nonatomic, assign) BOOL enableAgentAvatar;
 @property (nonatomic, assign) BOOL enableClientAvatar;
-@property (nonatomic, assign) BOOL enableCustomRecordView;
 @property (nonatomic, assign) BOOL enableMessageSound;
 @property (nonatomic, assign) BOOL enableTopPullRefresh;
 @property (nonatomic, assign) BOOL enableBottomPullRefresh;
 @property (nonatomic, assign) BOOL enableRoundAvatar;
-@property (nonatomic, assign) BOOL enableWelcomeChat;
+@property (nonatomic, assign) BOOL enableChatWelcome;
 @property (nonatomic, assign) BOOL enableTopAutoRefresh;
 @property (nonatomic, assign) BOOL enableShowNewMessageAlert;
-
 @property (nonatomic, assign) BOOL isPushChatView;
-@property (nonatomic, assign) BOOL isPresentChatView;
 
 @property (nonatomic, copy) UIColor *incomingMsgTextColor;
 @property (nonatomic, copy) UIColor *incomingBubbleColor;
@@ -69,14 +66,21 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 @property (nonatomic, strong) UIImage *clientDefaultAvatarImage;
 @property (nonatomic, strong) UIImage *messageSendFailureImage;
 @property (nonatomic, strong) UIImage *photoSenderImage;
+@property (nonatomic, strong) UIImage *photoSenderHighlightedImage;
 @property (nonatomic, strong) UIImage *voiceSenderImage;
+@property (nonatomic, strong) UIImage *voiceSenderHighlightedImage;
 @property (nonatomic, strong) UIImage *keyboardSenderImage;
+@property (nonatomic, strong) UIImage *keyboardSenderHighlightedImage;
+@property (nonatomic, strong) UIImage *resignKeyboardImage;
+@property (nonatomic, strong) UIImage *resignKeyboardHighlightedImage;
 @property (nonatomic, strong) UIImage *incomingBubbleImage;
 @property (nonatomic, strong) UIImage *outgoingBubbleImage;
 @property (nonatomic, strong) UIImage *imageLoadErrorImage;
 
-@property (nonatomic, strong) UIImage  *navBarLeftButtonImage;
-@property (nonatomic, strong) UIImage  *modalViewLeftButtonImage;
+//@property (nonatomic, strong) UIImage  *navBarLeftButtonImage;
+//@property (nonatomic, strong) UIImage  *modalViewLeftButtonImage;
+
+@property (nonatomic, weak  ) UIButton *navBarLeftButton;
 @property (nonatomic, weak  ) UIButton *navBarRightButton;
 
 @property (nonatomic, assign) NSTimeInterval maxVoiceDuration;

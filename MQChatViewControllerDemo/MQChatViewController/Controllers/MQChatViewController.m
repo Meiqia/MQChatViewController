@@ -99,11 +99,14 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)dismissChatViewController {
     if ([MQChatViewConfig sharedConfig].isPushChatView) {
         [self.navigationController popViewControllerAnimated:true];
-    } else if ([MQChatViewConfig sharedConfig].isPresentChatView) {
-        [self dismissViewControllerAnimated:YES completion:nil];
     } else {
-        NSAssert(false, @"disappearChatViewController错误");
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
+}
+
+- (void)didSelectNavigationRightButton {
+#warning 开发者可在这里增加点击导航栏右按钮的事件
+    NSLog(@"点击了导航栏右键");
 }
 
 #pragma 初始化viewModel
@@ -145,8 +148,13 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
                                      enableSendVoice:[MQChatViewConfig sharedConfig].enableSendVoiceMessage
                                      enableSendImage:[MQChatViewConfig sharedConfig].enableSendImageMessage
                                     photoSenderImage:[MQChatViewConfig sharedConfig].photoSenderImage
+                               photoHighlightedImage:[MQChatViewConfig sharedConfig].photoSenderHighlightedImage
                                     voiceSenderImage:[MQChatViewConfig sharedConfig].voiceSenderImage
-                                 keyboardSenderImage:[MQChatViewConfig sharedConfig].keyboardSenderImage];
+                               voiceHighlightedImage:[MQChatViewConfig sharedConfig].voiceSenderHighlightedImage
+                                 keyboardSenderImage:[MQChatViewConfig sharedConfig].keyboardSenderImage
+                            keyboardHighlightedImage:[MQChatViewConfig sharedConfig].keyboardSenderHighlightedImage
+                                 resignKeyboardImage:[MQChatViewConfig sharedConfig].resignKeyboardImage
+                      resignKeyboardHighlightedImage:[MQChatViewConfig sharedConfig].resignKeyboardHighlightedImage];
     chatInputBar.delegate = self;
     [self.view addSubview:chatInputBar];
     self.inputBarView = chatInputBar;
@@ -189,6 +197,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #pragma 编辑导航栏 - Demo用到的收取消息按钮
 - (void)setNavBar {
 #ifndef INCLUDE_MEIQIA_SDK
+    if ([MQChatViewConfig sharedConfig].navBarRightButton) {
+        return;
+    }
     UIButton *loadMessageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     loadMessageBtn.frame = CGRectMake(0, 0, 62, 22);
     [loadMessageBtn setTitle:@"收取消息" forState:UIControlStateNormal];
@@ -248,6 +259,10 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 - (void)reloadChatTableView {
     [self.chatTableView reloadData];
+}
+
+- (void)scrollTableViewToBottom {
+    [self chatTableViewScrollToBottomWithAnimated:false];
 }
 
 #ifdef INCLUDE_MEIQIA_SDK
@@ -328,9 +343,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
                                                                     viewSize.height - chatInputBar.frame.size.height)
                                        maxRecordDuration:[MQChatViewConfig sharedConfig].maxVoiceDuration];
         recordView.recordViewDelegate = self;
-        if ([MQChatViewConfig sharedConfig].enableCustomRecordView) {
-            [self.view addSubview:recordView];
-        }
+        [self.view addSubview:recordView];
     }
     [recordView reDisplayRecordView];
     [recordView startRecording];

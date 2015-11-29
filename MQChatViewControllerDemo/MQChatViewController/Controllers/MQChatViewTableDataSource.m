@@ -23,7 +23,6 @@
 
 - (instancetype)initWithChatViewService:(MQChatViewService *)chatService {
     if (self = [super init]) {
-//        self.chatTableView = tableView;
         self.chatViewService = chatService;
     }
     return self;

@@ -385,7 +385,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 #pragma 欢迎语
 - (void)sendLocalWelcomeChatMessage {
-    if (![MQChatViewConfig sharedConfig].enableWelcomeChat) {
+    if (![MQChatViewConfig sharedConfig].enableChatWelcome) {
         return ;
     }
     //消息时间
@@ -487,6 +487,11 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [weakSelf updateChatTitleWithAgentName:agentName];
         if (receivedMessages) {
             [weakSelf addMessagesToTableViewWithMessages:receivedMessages isInsertAtFirstIndex:false];
+            if (weakSelf.delegate) {
+                if ([weakSelf.delegate respondsToSelector:@selector(scrollTableViewToBottom)]) {
+                    [weakSelf.delegate scrollTableViewToBottom];
+                }
+            }
         }
     } receiveMessageDelegate:self];
 }

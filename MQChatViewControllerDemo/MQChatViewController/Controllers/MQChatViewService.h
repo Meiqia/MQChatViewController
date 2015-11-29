@@ -32,6 +32,11 @@
 - (void)reloadChatTableView;
 
 /**
+ *  通知viewController将tableView滚动到底部
+ */
+- (void)scrollTableViewToBottom;
+
+/**
  *  通知viewController收到了消息
  */
 - (void)didReceiveMessage;
