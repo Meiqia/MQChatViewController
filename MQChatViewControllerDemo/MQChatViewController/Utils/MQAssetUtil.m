@@ -33,17 +33,42 @@
 
 + (UIImage *)messageCameraInputImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageCameraInputImage"];
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageCameraInputImageNormalStyle1"];
+}
+
++ (UIImage *)messageCameraInputHighlightedImage
+{
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageCameraInputHighlightedImageStyle1"];
 }
 
 + (UIImage *)messageTextInputImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageTextInputImage"];
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageTextInputImageNormalStyle1"];
+}
+
++ (UIImage *)messageTextInputHighlightedImage
+{
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageTextInputHighlightedImageStyle1"];
 }
 
 + (UIImage *)messageVoiceInputImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageVoiceInputImage"];
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageVoiceInputImageNormalStyle1"];
+}
+
++ (UIImage *)messageVoiceInputHighlightedImage
+{
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageVoiceInputHighlightedImageStyle1"];
+}
+
++ (UIImage *)messageResignKeyboardImage
+{
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageKeyboardDownImageNormalStyle1"];
+}
+
++ (UIImage *)messageResignKeyboardHighlightedImage
+{
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageKeyboardDownHighlightedImageStyle1"];
 }
 
 + (UIImage *)bubbleIncomingImage
@@ -150,16 +175,6 @@
             break;
     }
     return [MQAssetUtil bubbleImageFromBundleWithName:imageName];
-}
-
-+ (UIImage *)hideToolbarNormalImage
-{
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQToolbarDown_click"];
-}
-
-+ (UIImage *)hideToolbarClickImage
-{
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQToolbarDown_normal"];
 }
 
 @end
