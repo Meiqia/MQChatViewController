@@ -33,42 +33,42 @@
 
 + (UIImage *)messageCameraInputImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageCameraInputImageNormalStyle1"];
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageCameraInputImageNormalStyleOne"];
 }
 
 + (UIImage *)messageCameraInputHighlightedImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageCameraInputHighlightedImageStyle1"];
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageCameraInputHighlightedImageStyleOne"];
 }
 
 + (UIImage *)messageTextInputImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageTextInputImageNormalStyle1"];
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageTextInputImageNormalStyleOne"];
 }
 
 + (UIImage *)messageTextInputHighlightedImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageTextInputHighlightedImageStyle1"];
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageTextInputHighlightedImageStyleOne"];
 }
 
 + (UIImage *)messageVoiceInputImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageVoiceInputImageNormalStyle1"];
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageVoiceInputImageNormalStyleOne"];
 }
 
 + (UIImage *)messageVoiceInputHighlightedImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageVoiceInputHighlightedImageStyle1"];
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageVoiceInputHighlightedImageStyleOne"];
 }
 
 + (UIImage *)messageResignKeyboardImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageKeyboardDownImageNormalStyle1"];
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageKeyboardDownImageNormalStyleOne"];
 }
 
 + (UIImage *)messageResignKeyboardHighlightedImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageKeyboardDownHighlightedImageStyle1"];
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageKeyboardDownHighlightedImageStyleOne"];
 }
 
 + (UIImage *)bubbleIncomingImage
