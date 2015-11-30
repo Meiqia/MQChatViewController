@@ -171,6 +171,7 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager enableTopPullRefresh:true];
     [chatViewManager setPullRefreshColor:[UIColor redColor]];
+    [chatViewManager setNavTitleText:@"美洽SDK"];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
@@ -179,6 +180,8 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
     UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
     rightButton.backgroundColor = [UIColor redColor];
     rightButton.frame = CGRectMake(10, 10, 20, 20);
+    [chatViewManager setNavTitleText:@"美洽SDK"];
+    [chatViewManager setNavigationBarTintColor:[UIColor redColor]];
     [chatViewManager setNavRightButton:rightButton];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }

@@ -178,7 +178,7 @@ static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
             enableTopAutoRefresh = false;
         }
     }
-    if (messagesNumber > 0) {
+    if (messagesNumber > 1) {
         [self scrollToLoadedMessageIndex:messagesNumber-1];
     }
 }

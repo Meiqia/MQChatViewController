@@ -36,6 +36,7 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 @property (nonatomic, copy  ) NSString *scheduledGroupToken;
 @property (nonatomic, copy  ) NSString *MQClientId;
 @property (nonatomic, copy  ) NSString *customizedId;
+@property (nonatomic, copy  ) NSString *navTitleText;
 
 @property (nonatomic, assign) BOOL enableSyncServerMessage;
 @property (nonatomic, assign) BOOL enableEventDispaly;
@@ -76,9 +77,6 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 @property (nonatomic, strong) UIImage *incomingBubbleImage;
 @property (nonatomic, strong) UIImage *outgoingBubbleImage;
 @property (nonatomic, strong) UIImage *imageLoadErrorImage;
-
-//@property (nonatomic, strong) UIImage  *navBarLeftButtonImage;
-//@property (nonatomic, strong) UIImage  *modalViewLeftButtonImage;
 
 @property (nonatomic, weak  ) UIButton *navBarLeftButton;
 @property (nonatomic, weak  ) UIButton *navBarRightButton;

@@ -212,6 +212,13 @@
 - (void)setNavLeftButton:(UIButton *)leftButton;
 
 /**
+ *  设置导航栏标题
+ *
+ *  @param titleText 标题文字
+ */
+- (void)setNavTitleText:(NSString *)titleText;
+
+/**
  *  设置下拉/上拉刷新的颜色
  *
  *  @param pullRefreshColor 颜色

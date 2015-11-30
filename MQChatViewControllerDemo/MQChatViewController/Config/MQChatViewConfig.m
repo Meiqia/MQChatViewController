@@ -48,6 +48,7 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     self.scheduledGroupToken    = @"";
     self.MQClientId             = @"";
     self.customizedId           = @"";
+    self.navTitleText           = @"";
     
     self.enableSyncServerMessage = true;
     self.enableEventDispaly      = false;

@@ -76,6 +76,16 @@
         [[MQChatViewConfig sharedConfig].navBarRightButton addTarget:viewController action:@selector(didSelectNavigationRightButton) forControlEvents:UIControlEventTouchUpInside];
         viewController.navigationItem.rightBarButtonItem = rightItem;
     }
+    
+    //导航栏标题
+    if ([MQChatViewConfig sharedConfig].navTitleText) {
+        viewController.navigationItem.title = [MQChatViewConfig sharedConfig].navTitleText;
+        if ([MQChatViewConfig sharedConfig].navBarTintColor) {
+            navigationController.navigationBar.titleTextAttributes = @{
+                                                                       UITextAttributeTextColor : [MQChatViewConfig sharedConfig].navBarTintColor
+                                                                       };
+        }
+    }
 }
 
 - (void)disappearMQChatViewController {
@@ -217,20 +227,16 @@
     chatViewConfig.outgoingBubbleImage = [UIImage imageWithCGImage:bubbleImage.CGImage];
 }
 
-//- (void)setNavLeftButtonImage:(UIImage *)leftButtonImage {
-//    chatViewConfig.navBarLeftButtonImage = leftButtonImage;
-//}
-//
-//- (void)setModalViewNavLeftButtonImage:(UIImage *)leftButtonImage {
-//    chatViewConfig.modalViewLeftButtonImage = leftButtonImage;
-//}
-
 - (void)setNavRightButton:(UIButton *)rightButton {
     chatViewConfig.navBarRightButton = rightButton;
 }
 
 - (void)setNavLeftButton:(UIButton *)leftButton {
     chatViewConfig.navBarLeftButton = leftButton;
+}
+
+- (void)setNavTitleText:(NSString *)titleText {
+    chatViewConfig.navTitleText = titleText;
 }
 
 - (void)enableMessageSound:(BOOL)enable {
