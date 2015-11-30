@@ -271,15 +271,20 @@
  * 设置自定义客服的消息气泡（发送过来的消息气泡）的背景图片；
  * @param bubbleImage 气泡图片
  */
-#warning 增加气泡图片的比例限制
 - (void)setIncomingBubbleImage:(UIImage *)bubbleImage;
 
 /**
  * 设置自定义顾客的消息气泡（发送出去的消息气泡）的背景图片；
  * @param bubbleImage 气泡图片
  */
-#warning 增加气泡图片的比例限制
 - (void)setOutgoingBubbleImage:(UIImage *)bubbleImage;
+
+/**
+ *  设置消息气泡的拉伸insets
+ *
+ *  @param stretchInsets 拉伸insets
+ */
+- (void)setBubbleImageStretchInsets:(UIEdgeInsets)stretchInsets;
 
 /**
  *  设置录音的最大时长

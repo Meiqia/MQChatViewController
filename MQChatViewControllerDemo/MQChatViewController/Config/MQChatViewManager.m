@@ -184,47 +184,51 @@
 }
 
 - (void)setAgentDefaultAvatarImage:(UIImage *)image {
-    chatViewConfig.agentDefaultAvatarImage = [UIImage imageWithCGImage:image.CGImage];
+    chatViewConfig.agentDefaultAvatarImage = image;
 }
 
 - (void)setClientDefaultAvatarImage:(UIImage *)image {
-    chatViewConfig.clientDefaultAvatarImage = [UIImage imageWithCGImage:image.CGImage];
+    chatViewConfig.clientDefaultAvatarImage = image;
 }
 
 - (void)setPhotoSenderImage:(UIImage *)image
            highlightedImage:(UIImage *)highlightedImage
 {
-    chatViewConfig.photoSenderImage = [UIImage imageWithCGImage:image.CGImage];
-    chatViewConfig.photoSenderHighlightedImage = [UIImage imageWithCGImage:highlightedImage.CGImage];
+    chatViewConfig.photoSenderImage = image;
+    chatViewConfig.photoSenderHighlightedImage = highlightedImage;
 }
 
 - (void)setVoiceSenderImage:(UIImage *)image
            highlightedImage:(UIImage *)highlightedImage
 {
-    chatViewConfig.voiceSenderImage = [UIImage imageWithCGImage:image.CGImage];
-    chatViewConfig.voiceSenderHighlightedImage = [UIImage imageWithCGImage:highlightedImage.CGImage];
+    chatViewConfig.voiceSenderImage = image;
+    chatViewConfig.voiceSenderHighlightedImage = highlightedImage;
 }
 
 - (void)setTextSenderImage:(UIImage *)image
           highlightedImage:(UIImage *)highlightedImage
 {
-    chatViewConfig.keyboardSenderImage = [UIImage imageWithCGImage:image.CGImage];
-    chatViewConfig.keyboardSenderHighlightedImage = [UIImage imageWithCGImage:highlightedImage.CGImage];
+    chatViewConfig.keyboardSenderImage = image;
+    chatViewConfig.keyboardSenderHighlightedImage = highlightedImage;
 }
 
 - (void)setResignKeyboardImage:(UIImage *)image
               highlightedImage:(UIImage *)highlightedImage
 {
-    chatViewConfig.resignKeyboardImage = [UIImage imageWithCGImage:image.CGImage];
-    chatViewConfig.resignKeyboardHighlightedImage = [UIImage imageWithCGImage:highlightedImage.CGImage];
+    chatViewConfig.resignKeyboardImage = image;
+    chatViewConfig.resignKeyboardHighlightedImage = highlightedImage;
 }
 
 - (void)setIncomingBubbleImage:(UIImage *)bubbleImage {
-    chatViewConfig.incomingBubbleImage = [UIImage imageWithCGImage:bubbleImage.CGImage];
+    chatViewConfig.incomingBubbleImage = bubbleImage;
 }
 
 - (void)setOutgoingBubbleImage:(UIImage *)bubbleImage {
-    chatViewConfig.outgoingBubbleImage = [UIImage imageWithCGImage:bubbleImage.CGImage];
+    chatViewConfig.outgoingBubbleImage = bubbleImage;
+}
+
+- (void)setBubbleImageStretchInsets:(UIEdgeInsets)stretchInsets {
+    chatViewConfig.bubbleImageStretchInsets = stretchInsets;
 }
 
 - (void)setNavRightButton:(UIButton *)rightButton {

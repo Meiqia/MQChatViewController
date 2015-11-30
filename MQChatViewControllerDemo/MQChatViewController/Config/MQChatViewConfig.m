@@ -91,6 +91,9 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     self.messageSendFailureImage        = [MQAssetUtil messageWarningImage];
     self.imageLoadErrorImage            = [MQAssetUtil imageLoadErrorImage];
     
+    CGPoint stretchPoint                = CGPointMake(self.incomingBubbleImage.size.width / 4.0f, self.incomingBubbleImage.size.height * 3.0f / 4.0f - 4.0);
+    self.bubbleImageStretchInsets       = UIEdgeInsetsMake(stretchPoint.y, stretchPoint.x, self.incomingBubbleImage.size.height-stretchPoint.y+0.5, stretchPoint.x);
+    
     self.incomingMsgSoundFileName = @"MQNewMessageRing.mp3";
     
     self.maxVoiceDuration = 60;

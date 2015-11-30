@@ -78,6 +78,8 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 @property (nonatomic, strong) UIImage *outgoingBubbleImage;
 @property (nonatomic, strong) UIImage *imageLoadErrorImage;
 
+@property (nonatomic, assign) UIEdgeInsets bubbleImageStretchInsets;
+
 @property (nonatomic, weak  ) UIButton *navBarLeftButton;
 @property (nonatomic, weak  ) UIButton *navBarRightButton;
 

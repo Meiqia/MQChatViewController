@@ -28,8 +28,8 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
     tableCellTextArray = @[
                      @"push chatView",
                      @"present chatView",
-                     @"chatViewStyleOne",
-                     @"chatViewStyleTwo",
+                     @"chatViewStyle1",
+                     @"chatViewStyle2",
                      @"chatViewStyle3",
                      @"chatViewStyle4",
                      @"chatViewStyle5",
@@ -143,10 +143,13 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     UIImage *incomingBubbleImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQBubbleIncomingStyleTwo"];
     UIImage *outgoingBubbleImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQBubbleOutgoingStyleTwo"];
+    CGPoint stretchPoint = CGPointMake(incomingBubbleImage.size.width / 2.0f - 4.0, incomingBubbleImage.size.height / 2.0f);
     [chatViewManager enableSendVoiceMessage:false];
     [chatViewManager enableClientAvatar:false];
     [chatViewManager setIncomingBubbleImage:incomingBubbleImage];
     [chatViewManager setOutgoingBubbleImage:outgoingBubbleImage];
+    [chatViewManager setIncomingBubbleColor:[UIColor yellowColor]];
+    [chatViewManager setBubbleImageStretchInsets:UIEdgeInsetsMake(stretchPoint.y, stretchPoint.x, incomingBubbleImage.size.height-stretchPoint.y+0.5, stretchPoint.x)];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 

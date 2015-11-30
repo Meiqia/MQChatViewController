@@ -110,10 +110,11 @@ Demo - 示例
 
 **开发者可这样不支持发送语音、不显示本机头像、修改气泡的样式**
 ```objective-c
-	[chatViewManager enableSendVoiceMessage:false];
+    [chatViewManager enableSendVoiceMessage:false];
     [chatViewManager enableClientAvatar:false];
     [chatViewManager setIncomingBubbleImage:incomingBubbleImage];
     [chatViewManager setOutgoingBubbleImage:outgoingBubbleImage];
+    [chatViewManager setBubbleImageStretchInsets:UIEdgeInsetsMake(stretchPoint.y, stretchPoint.x, incomingBubbleImage.size.height-stretchPoint.y+0.5, stretchPoint.x)];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 ```
 ![screenshot4]()
