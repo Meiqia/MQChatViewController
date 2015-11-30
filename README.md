@@ -117,7 +117,7 @@ Demo - 示例
     [chatViewManager setBubbleImageStretchInsets:UIEdgeInsetsMake(stretchPoint.y, stretchPoint.x, incomingBubbleImage.size.height-stretchPoint.y+0.5, stretchPoint.x)];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 ```
-![screenshot4]()
+![screenshot4](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo4.gif)
 
 
 **开发者可这样增加可点击链接的正则表达式(library本身已支持多种格式链接，如未满足需求可增加)、增加欢迎语、开启消息声音、修改接受消息的铃声**
@@ -137,7 +137,7 @@ Demo - 示例
 	[chatViewManager enableShowNewMessageAlert:true];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 ```
-![screenshot6]()
+![screenshot6](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo6.gif)
 
 
 **开发者可这样支持下拉刷新、修改下拉刷新颜色、增加导航栏标题**
