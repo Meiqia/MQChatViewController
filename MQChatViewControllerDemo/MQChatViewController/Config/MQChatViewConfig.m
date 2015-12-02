@@ -54,9 +54,9 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     self.enableEventDispaly      = false;
     self.enableSendVoiceMessage  = true;
     self.enableSendImageMessage  = true;
-    self.enableAgentAvatar       = true;
+    self.enableIncomingAvatar       = true;
     self.enableMessageSound      = true;
-    self.enableClientAvatar      = false;
+    self.enableOutgoingAvatar      = false;
     self.enableTopPullRefresh    = false;
     self.enableBottomPullRefresh = false;
     
@@ -76,8 +76,8 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     self.incomingBubbleColor    = nil;
     self.outgoingBubbleColor    = nil;
     
-    self.agentDefaultAvatarImage        = [MQAssetUtil agentDefaultAvatarImage];
-    self.clientDefaultAvatarImage       = [MQAssetUtil clientDefaultAvatarImage];
+    self.incomingDefaultAvatarImage        = [MQAssetUtil incomingDefaultAvatarImage];
+    self.outgoingDefaultAvatarImage       = [MQAssetUtil outgoingDefaultAvatarImage];
     self.photoSenderImage               = [MQAssetUtil messageCameraInputImage];
     self.photoSenderHighlightedImage    = [MQAssetUtil messageCameraInputHighlightedImage];
     self.keyboardSenderImage            = [MQAssetUtil messageTextInputImage];

@@ -395,7 +395,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     MQTextMessage *welcomeMessage = [[MQTextMessage alloc] initWithContent:[MQChatViewConfig sharedConfig].chatWelcomeText];
     welcomeMessage.fromType = MQChatMessageIncoming;
     welcomeMessage.userName = [MQChatViewConfig sharedConfig].agentName;
-    welcomeMessage.userAvatarImage = [MQChatViewConfig sharedConfig].agentDefaultAvatarImage;
+    welcomeMessage.userAvatarImage = [MQChatViewConfig sharedConfig].incomingDefaultAvatarImage;
     welcomeMessage.sendStatus = MQChatMessageSendStatusSuccess;
     MQTextCellModel *cellModel = [[MQTextCellModel alloc] initCellModelWithMessage:welcomeMessage cellWidth:self.chatViewWidth delegate:self];
     [self.cellModels addObject:cellModel];

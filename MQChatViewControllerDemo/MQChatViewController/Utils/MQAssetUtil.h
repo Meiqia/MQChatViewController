@@ -14,8 +14,8 @@
 + (UIImage *)bubbleImageFromBundleWithName:(NSString *)name;
 + (NSString*)resourceWithName:(NSString*)fileName;
 
-+ (UIImage *)agentDefaultAvatarImage;
-+ (UIImage *)clientDefaultAvatarImage;
++ (UIImage *)incomingDefaultAvatarImage;
++ (UIImage *)outgoingDefaultAvatarImage;
 
 + (UIImage *)messageCameraInputImage;
 + (UIImage *)messageCameraInputHighlightedImage;

@@ -107,14 +107,14 @@
  * 是否支持客服头像的显示；
  * @param enable YES:支持 NO:不支持
  */
-- (void)enableAgentAvatar:(BOOL)enable;
+- (void)enableIncomingAvatar:(BOOL)enable;
 
 /**
  *  是否支持当前顾客头像的显示
  *
  * @param enable YES:支持 NO:不支持
  */
-- (void)enableClientAvatar:(BOOL)enable;
+- (void)enableOutgoingAvatar:(BOOL)enable;
 
 /**
  * 是否开启接受/发送消息的声音；
@@ -229,13 +229,13 @@
  * 设置客服的缺省头像图片；
  * @param image 头像image
  */
-- (void)setAgentDefaultAvatarImage:(UIImage *)image;
+- (void)setincomingDefaultAvatarImage:(UIImage *)image;
 
 /**
  * 设置顾客的缺省头像图片；
  * @param image 头像image
  */
-- (void)setClientDefaultAvatarImage:(UIImage *)image;
+- (void)setoutgoingDefaultAvatarImage:(UIImage *)image;
 
 /**
  *  设置底部自定义发送图片的按钮图片；

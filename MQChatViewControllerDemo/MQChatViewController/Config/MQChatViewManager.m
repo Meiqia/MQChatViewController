@@ -175,20 +175,20 @@
     chatViewConfig.agentName = [agentName copy];
 }
 
-- (void)enableAgentAvatar:(BOOL)enable {
-    chatViewConfig.enableAgentAvatar = enable;
+- (void)enableIncomingAvatar:(BOOL)enable {
+    chatViewConfig.enableIncomingAvatar = enable;
 }
 
-- (void)enableClientAvatar:(BOOL)enable {
-    chatViewConfig.enableClientAvatar = enable;
+- (void)enableOutgoingAvatar:(BOOL)enable {
+    chatViewConfig.enableOutgoingAvatar = enable;
 }
 
-- (void)setAgentDefaultAvatarImage:(UIImage *)image {
-    chatViewConfig.agentDefaultAvatarImage = image;
+- (void)setincomingDefaultAvatarImage:(UIImage *)image {
+    chatViewConfig.incomingDefaultAvatarImage = image;
 }
 
-- (void)setClientDefaultAvatarImage:(UIImage *)image {
-    chatViewConfig.clientDefaultAvatarImage = image;
+- (void)setoutgoingDefaultAvatarImage:(UIImage *)image {
+    chatViewConfig.outgoingDefaultAvatarImage = image;
 }
 
 - (void)setPhotoSenderImage:(UIImage *)image

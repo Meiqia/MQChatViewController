@@ -123,9 +123,9 @@
                 }
             });
         } else {
-            self.avatarImage = [MQChatViewConfig sharedConfig].agentDefaultAvatarImage;
+            self.avatarImage = [MQChatViewConfig sharedConfig].incomingDefaultAvatarImage;
             if (message.fromType == MQChatMessageOutgoing) {
-                self.avatarImage = [MQChatViewConfig sharedConfig].clientDefaultAvatarImage;
+                self.avatarImage = [MQChatViewConfig sharedConfig].outgoingDefaultAvatarImage;
             }
         }
         
@@ -200,7 +200,7 @@
             bubbleImage = [MQImageUtil convertImageColorWithImage:bubbleImage toColor:[MQChatViewConfig sharedConfig].outgoingBubbleColor];
         }
         //头像的frame
-        if ([MQChatViewConfig sharedConfig].enableClientAvatar) {
+        if ([MQChatViewConfig sharedConfig].enableOutgoingAvatar) {
             self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
         } else {
             self.avatarFrame = CGRectMake(0, 0, 0, 0);
@@ -212,7 +212,7 @@
         self.cellFromType = MQChatCellIncoming;
         
         //头像的frame
-        if ([MQChatViewConfig sharedConfig].enableAgentAvatar) {
+        if ([MQChatViewConfig sharedConfig].enableIncomingAvatar) {
             self.avatarFrame = CGRectMake(kMQCellAvatarToHorizontalEdgeSpacing, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
         } else {
             self.avatarFrame = CGRectMake(0, 0, 0, 0);
@@ -283,7 +283,7 @@
     self.cellWidth = cellWidth;
     if (self.cellFromType == MQChatCellOutgoing) {
         //头像的frame
-        if ([MQChatViewConfig sharedConfig].enableClientAvatar) {
+        if ([MQChatViewConfig sharedConfig].enableOutgoingAvatar) {
             self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
         } else {
             self.avatarFrame = CGRectMake(0, 0, 0, 0);

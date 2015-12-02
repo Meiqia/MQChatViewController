@@ -145,7 +145,7 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
     UIImage *outgoingBubbleImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQBubbleOutgoingStyleTwo"];
     CGPoint stretchPoint = CGPointMake(incomingBubbleImage.size.width / 2.0f - 4.0, incomingBubbleImage.size.height / 2.0f);
     [chatViewManager enableSendVoiceMessage:false];
-    [chatViewManager enableClientAvatar:false];
+    [chatViewManager enableOutgoingAvatar:false];
     [chatViewManager setIncomingBubbleImage:incomingBubbleImage];
     [chatViewManager setOutgoingBubbleImage:outgoingBubbleImage];
     [chatViewManager setIncomingBubbleColor:[UIColor yellowColor]];

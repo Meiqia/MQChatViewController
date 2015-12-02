@@ -89,6 +89,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [UIView setAnimationsEnabled:true];
+    [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
 }
 
 - (void)didReceiveMemoryWarning {

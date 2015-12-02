@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 
 //是否引入美洽SDK
-//#define INCLUDE_MEIQIA_SDK
+#define INCLUDE_MEIQIA_SDK
 
 /** 关闭键盘的通知 */
 extern NSString * const MQChatViewKeyboardResignFirstResponderNotification;
@@ -42,8 +42,8 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 @property (nonatomic, assign) BOOL enableEventDispaly;
 @property (nonatomic, assign) BOOL enableSendVoiceMessage;
 @property (nonatomic, assign) BOOL enableSendImageMessage;
-@property (nonatomic, assign) BOOL enableAgentAvatar;
-@property (nonatomic, assign) BOOL enableClientAvatar;
+@property (nonatomic, assign) BOOL enableIncomingAvatar;
+@property (nonatomic, assign) BOOL enableOutgoingAvatar;
 @property (nonatomic, assign) BOOL enableMessageSound;
 @property (nonatomic, assign) BOOL enableTopPullRefresh;
 @property (nonatomic, assign) BOOL enableBottomPullRefresh;
@@ -63,8 +63,8 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 @property (nonatomic, copy) UIColor *navBarColor;
 @property (nonatomic, copy) UIColor *pullRefreshColor;
 
-@property (nonatomic, strong) UIImage *agentDefaultAvatarImage;
-@property (nonatomic, strong) UIImage *clientDefaultAvatarImage;
+@property (nonatomic, strong) UIImage *incomingDefaultAvatarImage;
+@property (nonatomic, strong) UIImage *outgoingDefaultAvatarImage;
 @property (nonatomic, strong) UIImage *messageSendFailureImage;
 @property (nonatomic, strong) UIImage *photoSenderImage;
 @property (nonatomic, strong) UIImage *photoSenderHighlightedImage;

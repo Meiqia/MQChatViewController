@@ -21,12 +21,12 @@
     return [NSString stringWithFormat:@"MQChatViewAsset.bundle/%@",fileName];
 }
 
-+ (UIImage *)agentDefaultAvatarImage
++ (UIImage *)incomingDefaultAvatarImage
 {
     return [MQAssetUtil bubbleImageFromBundleWithName:@"MQIcon"];
 }
 
-+ (UIImage *)clientDefaultAvatarImage
++ (UIImage *)outgoingDefaultAvatarImage
 {
     return [MQAssetUtil bubbleImageFromBundleWithName:@"MQIcon"];
 }

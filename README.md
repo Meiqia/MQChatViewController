@@ -132,12 +132,14 @@ Demo - 示例
 ![screenshot5](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo5.gif)
 
 
+
 **如果tableView没有在底部，开发者可这样打开消息的提示**
 ```objective-c
 	[chatViewManager enableShowNewMessageAlert:true];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 ```
 ![screenshot6](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo6.gif)
+
 
 
 **开发者可这样支持下拉刷新、修改下拉刷新颜色、增加导航栏标题**
