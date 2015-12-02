@@ -35,8 +35,8 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
 }
 
 - (void)setConfigToDefault {
-    self.isCustomizedChatViewFrame = false;
-    self.chatViewFrame = [MQDeviceFrameUtil getDeviceScreenRect];
+    self.isCustomizedChatViewFrame  = false;
+    self.chatViewFrame              = [MQDeviceFrameUtil getDeviceScreenRect];
 
     self.numberRegexs = [[NSMutableArray alloc] initWithArray:@[@"^(\\d{3,4}-?)\\d{7,8}$", @"^1[3|4|5|7|8]\\d{9}", @"[0-9]\\d{4,10}"]];
     self.linkRegexs   = [[NSMutableArray alloc] initWithArray:@[@"((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)|([a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)"]];
@@ -54,9 +54,9 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     self.enableEventDispaly      = false;
     self.enableSendVoiceMessage  = true;
     self.enableSendImageMessage  = true;
-    self.enableIncomingAvatar       = true;
+    self.enableIncomingAvatar    = true;
     self.enableMessageSound      = true;
-    self.enableOutgoingAvatar      = false;
+    self.enableOutgoingAvatar    = true;
     self.enableTopPullRefresh    = false;
     self.enableBottomPullRefresh = false;
     
@@ -76,8 +76,8 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     self.incomingBubbleColor    = nil;
     self.outgoingBubbleColor    = nil;
     
-    self.incomingDefaultAvatarImage        = [MQAssetUtil incomingDefaultAvatarImage];
-    self.outgoingDefaultAvatarImage       = [MQAssetUtil outgoingDefaultAvatarImage];
+    self.incomingDefaultAvatarImage     = [MQAssetUtil incomingDefaultAvatarImage];
+    self.outgoingDefaultAvatarImage     = [MQAssetUtil outgoingDefaultAvatarImage];
     self.photoSenderImage               = [MQAssetUtil messageCameraInputImage];
     self.photoSenderHighlightedImage    = [MQAssetUtil messageCameraInputHighlightedImage];
     self.keyboardSenderImage            = [MQAssetUtil messageTextInputImage];
@@ -94,9 +94,9 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     CGPoint stretchPoint                = CGPointMake(self.incomingBubbleImage.size.width / 4.0f, self.incomingBubbleImage.size.height * 3.0f / 4.0f - 4.0);
     self.bubbleImageStretchInsets       = UIEdgeInsetsMake(stretchPoint.y, stretchPoint.x, self.incomingBubbleImage.size.height-stretchPoint.y+0.5, stretchPoint.x);
     
-    self.incomingMsgSoundFileName = @"MQNewMessageRing.mp3";
+    self.incomingMsgSoundFileName       = @"MQNewMessageRing.mp3";
     
-    self.maxVoiceDuration = 60;
+    self.maxVoiceDuration               = 60;
 }
 
 @end

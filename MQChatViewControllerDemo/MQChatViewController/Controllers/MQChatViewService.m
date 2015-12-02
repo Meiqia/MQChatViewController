@@ -466,10 +466,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [MQServiceToViewInterface setScheduledAgentWithAgentToken:[MQChatViewConfig sharedConfig].scheduledAgentToken agentGroupToken:[MQChatViewConfig sharedConfig].scheduledGroupToken];
     if ([MQChatViewConfig sharedConfig].MQClientId.length == 0 && [MQChatViewConfig sharedConfig].customizedId.length > 0) {
         [serviceToViewInterface setClientOnlineWithCustomizedId:[MQChatViewConfig sharedConfig].customizedId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
-            if (!completion || !agentName) {
+            if (!completion) {
                 //没有分配到客服
-//                isThereNoAgent = true;
-                agentName = [MQBundleUtil localizedStringForKey:@"no_agent_title"];
+                //            isThereNoAgent = true;
+                agentName = [MQBundleUtil localizedStringForKey: agentName && agentName.length>0 ? agentName : @"no_agent_title"];
             }
             [weakSelf updateChatTitleWithAgentName:agentName];
             if (receivedMessages) {
@@ -479,10 +479,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         return;
     }
     [serviceToViewInterface setClientOnlineWithClientId:[MQChatViewConfig sharedConfig].MQClientId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
-        if (!completion || !agentName) {
+        if (!completion) {
             //没有分配到客服
 //            isThereNoAgent = true;
-            agentName = [MQBundleUtil localizedStringForKey:@"no_agent_title"];
+            agentName = [MQBundleUtil localizedStringForKey: agentName && agentName.length>0 ? agentName : @"no_agent_title"];
         }
         [weakSelf updateChatTitleWithAgentName:agentName];
         if (receivedMessages) {

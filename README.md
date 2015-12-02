@@ -92,7 +92,7 @@ Demo - 示例
 ![screenshot2](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo2.gif)
 
 
-**开发者可这样修改底部按钮、修改气泡颜色、文字颜色、使头像设为圆形**
+**开发者可这样配置：底部按钮、修改气泡颜色、文字颜色、使头像设为圆形**
 ```objective-c
 	[chatViewManager setPhotoSenderImage:photoImage highlightedImage:photoHighlightedImage];
     [chatViewManager setVoiceSenderImage:voiceImage highlightedImage:voiceHighlightedImage];
@@ -108,7 +108,7 @@ Demo - 示例
 ![screenshot3](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo3.gif)
 
 
-**开发者可这样不支持发送语音、不显示本机头像、修改气泡的样式**
+**开发者可这样配置：是否支持发送语音、是否显示本机头像、修改气泡的样式**
 ```objective-c
     [chatViewManager enableSendVoiceMessage:false];
     [chatViewManager enableClientAvatar:false];
@@ -120,7 +120,7 @@ Demo - 示例
 ![screenshot4](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo4.gif)
 
 
-**开发者可这样增加可点击链接的正则表达式(library本身已支持多种格式链接，如未满足需求可增加)、增加欢迎语、开启消息声音、修改接受消息的铃声**
+**开发者可这样配置：增加可点击链接的正则表达式(library本身已支持多种格式链接，如未满足需求可增加)、增加欢迎语、是否开启消息声音、修改接受消息的铃声**
 ```objective-c
 	[chatViewManager setMessageLinkRegex:@"((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)|([a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)"];
     [chatViewManager enableChatWelcome:true];
@@ -142,7 +142,7 @@ Demo - 示例
 
 
 
-**开发者可这样支持下拉刷新、修改下拉刷新颜色、增加导航栏标题**
+**开发者可这样配置：是否支持下拉刷新、修改下拉刷新颜色、增加导航栏标题**
 ```objective-c
 	[chatViewManager enableTopPullRefresh:true];
     [chatViewManager setPullRefreshColor:[UIColor redColor]];
