@@ -46,7 +46,7 @@
 
 "no_more_messages"      = "没有更多消息啦~";
 
-"welcome_chat"          = "妳好，請問有什麽可以幫到您？";
+"welcome_chat"          = "";
 
 "default_assistant"     = "美洽小助手";
 

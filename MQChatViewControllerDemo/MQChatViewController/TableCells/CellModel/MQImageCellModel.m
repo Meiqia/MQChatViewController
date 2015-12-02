@@ -1,34 +1,17 @@
 //
-//  MQVoiceCellModel.m
+//  MQImageCellModel.m
 //  MeiQiaSDK
 //
 //  Created by ijinmao on 15/10/29.
 //  Copyright © 2015年 MeiQia Inc. All rights reserved.
 //
 
-#import "MQVoiceCellModel.h"
+#import "MQImageCellModel.h"
 #import "MQChatBaseCell.h"
-#import "MQVoiceMessageCell.h"
+#import "MQImageMessageCell.h"
 #import "MQChatViewConfig.h"
-#import "MQStringSizeUtil.h"
 #import "MQImageUtil.h"
-#import "MQAssetUtil.h"
-#import "VoiceConverter.h"
-
-/**
- * 语音播放图片与聊天气泡的间距
- */
-static CGFloat const kMQCellVoiceImageToBubbleSpacing = 24.0;
-/**
- * 语音时长label与气泡的间隔
- */
-static CGFloat const kMQCellVoiceDurationLabelToBubbleSpacing = 8.0;
-/**
- * 语音未播放的按钮的直径
- */
-static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
-
-@interface MQVoiceCellModel()
+@interface MQImageCellModel()
 
 /**
  * @brief cell中消息的id
@@ -46,14 +29,14 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
 @property (nonatomic, readwrite, assign) CGFloat cellHeight;
 
 /**
- * @brief 语音data
+ * @brief 图片path
  */
-@property (nonatomic, readwrite, copy) NSData *voiceData;
+//@property (nonatomic, readwrite, copy) NSString *imagePath;
 
 /**
- * @brief 语音的时长
+ * @brief 图片image(当imagePath不存在时使用)
  */
-@property (nonatomic, readwrite, assign) NSInteger voiceDuration;
+@property (nonatomic, readwrite, strong) UIImage *image;
 
 /**
  * @brief 消息的时间
@@ -66,17 +49,17 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
 @property (nonatomic, readwrite, copy) NSString *avatarPath;
 
 /**
- * @brief 发送者的头像的图片名字
+ * @brief 发送者的头像的图片
  */
 @property (nonatomic, readwrite, copy) UIImage *avatarImage;
 
 /**
- * @brief 聊天气泡的image
+ * @brief 聊天气泡的image（该气泡image已经进行了resize）
  */
 @property (nonatomic, readwrite, copy) UIImage *bubbleImage;
 
 /**
- * @brief 消息气泡button的frame
+ * @brief 消息气泡的frame
  */
 @property (nonatomic, readwrite, assign) CGRect bubbleImageFrame;
 
@@ -91,29 +74,14 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
 @property (nonatomic, readwrite, assign) CGRect sendingIndicatorFrame;
 
 /**
- * @brief 读取语音数据的指示器的frame
+ * @brief 读取照片的指示器的frame
  */
 @property (nonatomic, readwrite, assign) CGRect loadingIndicatorFrame;
-
-/**
- * @brief 语音时长的frame
- */
-@property (nonatomic, readwrite, assign) CGRect durationLabelFrame;
-
-/**
- * @brief 语音图片的frame
- */
-@property (nonatomic, readwrite, assign) CGRect voiceImageFrame;
 
 /**
  * @brief 发送出错图片的frame
  */
 @property (nonatomic, readwrite, assign) CGRect sendFailureFrame;
-
-/**
- * @brief 语音未播放的小红点view的frame
- */
-@property (nonatomic, readwrite, assign) CGRect notPlayViewFrame;
 
 /**
  * @brief 消息的来源类型
@@ -122,26 +90,23 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
 
 @end
 
-@implementation MQVoiceCellModel {
-    NSTimeInterval voiceTimeInterval;
-}
+@implementation MQImageCellModel
 
 #pragma initialize
 /**
  *  根据MQMessage内容来生成cell model
  */
-- (MQVoiceCellModel *)initCellModelWithMessage:(MQVoiceMessage *)message
+- (MQImageCellModel *)initCellModelWithMessage:(MQImageMessage *)message
                                      cellWidth:(CGFloat)cellWidth
                                       delegate:(id<MQCellModelDelegate>)delegator{
     if (self = [super init]) {
-        voiceTimeInterval = 0;
+        self.cellWidth = cellWidth;
         self.delegate = delegator;
         self.messageId = message.messageId;
         self.sendStatus = message.sendStatus;
         self.date = message.date;
         self.avatarPath = @"";
         self.cellHeight = 44.0;
-        self.isPlayed = message.isPlayed;
         if (message.userAvatarImage) {
             self.avatarImage = message.userAvatarImage;
         } else if (message.userAvatarPath.length > 0) {
@@ -158,53 +123,33 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
                 }
             });
         } else {
-            self.avatarImage = [MQChatViewConfig sharedConfig].agentDefaultAvatarImage;
+            self.avatarImage = [MQChatViewConfig sharedConfig].incomingDefaultAvatarImage;
             if (message.fromType == MQChatMessageOutgoing) {
-                self.avatarImage = [MQChatViewConfig sharedConfig].clientDefaultAvatarImage;
+                self.avatarImage = [MQChatViewConfig sharedConfig].outgoingDefaultAvatarImage;
             }
         }
-        self.voiceDuration = 0;
         
-        //获取语音数据
-        self.voiceData = message.voiceData;
-        if (!self.voiceData) {
-            if (message.voicePath.length > 0) {
+        //内容图片
+        self.image = message.image;
+        if (!message.image) {
+            if (message.imagePath.length > 0) {
+                [self setModelsWithContentImage:[MQChatViewConfig sharedConfig].incomingBubbleImage message:message cellWidth:cellWidth];
                 //新建线程读取远程图片
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                     NSError *error;
-#warning 这里开发者可以使用自己的文件缓存策略
-                    NSData *voiceData = [NSData dataWithContentsOfURL:[NSURL URLWithString:message.voicePath] options:NSDataReadingMappedIfSafe error:&error];
-#warning 美洽服务端传给SDK的语音格式是AMR格式，所以这里将AMR转成了WAV，开发者可根据自己的语音格式进行转换
-                    if (message.fromType == MQChatMessageIncoming) {
-                        NSString *amrPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-                        amrPath = [amrPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.amr", (int)[NSDate date].timeIntervalSince1970]];
-                        NSFileManager *fileManager = [NSFileManager defaultManager];
-                        [fileManager createFileAtPath:amrPath contents:voiceData attributes:nil];
-                        if (![fileManager fileExistsAtPath:amrPath]) {
-                            NSAssert(NO, @"写进Amr文件失败");
-                        }
-                        NSString *wavPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-                        wavPath = [wavPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.wav", (int)[NSDate date].timeIntervalSince1970]];
-                        if ([VoiceConverter amrToWav:amrPath wavSavePath:wavPath] == 0) {
-                            NSLog(@"AMR转换WAV失败");
-                        }
-                        if (![fileManager fileExistsAtPath:wavPath]) {
-                            NSAssert(NO, @"将写进文件失败");
-                        }
-                        voiceData = [NSData dataWithContentsOfFile:wavPath];
-                        [[NSFileManager defaultManager] removeItemAtPath:amrPath error:nil];
-                        [[NSFileManager defaultManager] removeItemAtPath:wavPath error:nil];
-                    }
+#warning 这里开发者可以使用自己的图片缓存策略，如SDWebImage
+                    NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:message.imagePath] options:NSDataReadingMappedIfSafe error:&error];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if (error) {
-                            NSLog(@"load voice error = %@", error);
+                            NSLog(@"load image error = %@", error);
                         }
-                        if (voiceData) {
-                            self.voiceData = voiceData;
-                            voiceTimeInterval = [MQChatFileUtil getAudioDurationWithData:voiceData];
-                            [self setModelsWithMessage:message cellWidth:cellWidth isLoadVoiceSuccess:true];
+                        if (imageData) {
+                            UIImage *image = [UIImage imageWithData:imageData];
+                            self.image = image;
+                            [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
                         } else {
-                            [self setModelsWithMessage:message cellWidth:cellWidth isLoadVoiceSuccess:false];
+                            self.image = [MQChatViewConfig sharedConfig].imageLoadErrorImage;
+                            [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
                         }
                         if (self.delegate) {
                             if ([self.delegate respondsToSelector:@selector(didUpdateCellDataWithMessageId:)]) {
@@ -213,48 +158,34 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
                         }
                     });
                 });
+            } else {
+                self.image = [MQChatViewConfig sharedConfig].imageLoadErrorImage;
+                [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
             }
-            [self setModelsWithMessage:message cellWidth:cellWidth isLoadVoiceSuccess:true];
         } else {
-            voiceTimeInterval = [MQChatFileUtil getAudioDurationWithData:self.voiceData];
-            [self setModelsWithMessage:message cellWidth:cellWidth isLoadVoiceSuccess:true];
+            [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
         }
+        
     }
     return self;
 }
 
 //根据气泡中的图片生成其他model
-- (void)setModelsWithMessage:(MQVoiceMessage *)message
-                   cellWidth:(CGFloat)cellWidth
-          isLoadVoiceSuccess:(BOOL)isLoadVoiceSuccess
+- (void)setModelsWithContentImage:(UIImage *)contentImage
+                          message:(MQImageMessage *)message
+                        cellWidth:(CGFloat)cellWidth
 {
-    self.voiceDuration = ceilf((CGFloat)voiceTimeInterval);
-    //语音图片size
-    UIImage *voiceImage;
-    if (message.fromType == MQChatMessageOutgoing) {
-        voiceImage = isLoadVoiceSuccess ? [MQAssetUtil voiceAnimationGreen3] : [MQAssetUtil voiceAnimationGreenError];
-    } else {
-        voiceImage = isLoadVoiceSuccess ? [MQAssetUtil voiceAnimationGray3] : [MQAssetUtil voiceAnimationGrayError];
+    //限定图片的最大直径
+    CGFloat maxBubbleDiameter = ceil(cellWidth / 2);  //限定图片的最大直径
+    CGSize contentImageSize = contentImage.size;
+    //先限定图片宽度来计算高度
+    CGFloat bubbleWidth = contentImageSize.width < maxBubbleDiameter ? contentImageSize.width : maxBubbleDiameter;
+    CGFloat bubbleHeight = ceil(contentImageSize.height/contentImageSize.width*bubbleWidth);
+    //判断如果气泡高度计算结果超过图片的最大直径，则限制高度
+    if (bubbleHeight > maxBubbleDiameter) {
+        bubbleHeight = maxBubbleDiameter;
+        bubbleWidth = ceil(contentImageSize.width / contentImageSize.height * bubbleHeight);
     }
-    CGSize voiceImageSize = voiceImage.size;
-
-    //气泡高度
-    CGFloat bubbleHeight = kMQCellAvatarDiameter;
-    
-    //根据语音时长来确定气泡宽度
-    CGFloat maxBubbleWidth = cellWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToBubbleSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
-    CGFloat bubbleWidth = maxBubbleWidth;
-//    if (self.voiceDuration < [MQChatViewConfig sharedConfig].maxVoiceDuration * 2) {
-        CGFloat upWidth = floor(cellWidth / 4);   //根据语音时间来递增的基准
-        CGFloat voiceWidthScale = self.voiceDuration / [MQChatViewConfig sharedConfig].maxVoiceDuration;
-        bubbleWidth = floor(upWidth*voiceWidthScale) + floor(cellWidth/4);
-//    } else {
-//        NSAssert(NO, @"语音超过最大时长！");
-//    }
-    
-    //语音时长label的宽高
-    CGFloat durationTextHeight = [MQStringSizeUtil getHeightForText:[NSString stringWithFormat:@"%d\"", (int)self.voiceDuration] withFont:[UIFont systemFontOfSize:kMQCellVoiceDurationLabelFontSize] andWidth:cellWidth];
-    CGFloat durationTextWidth = [MQStringSizeUtil getWidthForText:[NSString stringWithFormat:@"%d\"", (int)self.voiceDuration] withFont:[UIFont systemFontOfSize:kMQCellVoiceDurationLabelFontSize] andHeight:durationTextHeight];
     
     //根据消息的来源，进行处理
     UIImage *bubbleImage = [MQChatViewConfig sharedConfig].incomingBubbleImage;
@@ -269,57 +200,47 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
             bubbleImage = [MQImageUtil convertImageColorWithImage:bubbleImage toColor:[MQChatViewConfig sharedConfig].outgoingBubbleColor];
         }
         //头像的frame
-        if ([MQChatViewConfig sharedConfig].enableClientAvatar) {
+        if ([MQChatViewConfig sharedConfig].enableOutgoingAvatar) {
             self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
         } else {
             self.avatarFrame = CGRectMake(0, 0, 0, 0);
         }
         //气泡的frame
         self.bubbleImageFrame = CGRectMake(cellWidth-self.avatarFrame.size.width-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarToBubbleSpacing-bubbleWidth, kMQCellAvatarToVerticalEdgeSpacing, bubbleWidth, bubbleHeight);
-        //语音图片的frame
-        self.voiceImageFrame = CGRectMake(self.bubbleImageFrame.size.width-kMQCellVoiceImageToBubbleSpacing-voiceImageSize.width, self.bubbleImageFrame.size.height/2-voiceImageSize.height/2, voiceImageSize.width, voiceImageSize.height);
-        //语音时长的frame
-        self.durationLabelFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellVoiceDurationLabelToBubbleSpacing-durationTextWidth, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-durationTextHeight/2, durationTextWidth, durationTextHeight);
     } else {
         //收到的消息
         self.cellFromType = MQChatCellIncoming;
+        
         //头像的frame
-        if ([MQChatViewConfig sharedConfig].enableAgentAvatar) {
+        if ([MQChatViewConfig sharedConfig].enableIncomingAvatar) {
             self.avatarFrame = CGRectMake(kMQCellAvatarToHorizontalEdgeSpacing, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
         } else {
             self.avatarFrame = CGRectMake(0, 0, 0, 0);
         }
         //气泡的frame
         self.bubbleImageFrame = CGRectMake(self.avatarFrame.origin.x+self.avatarFrame.size.width+kMQCellAvatarToBubbleSpacing, self.avatarFrame.origin.y, bubbleWidth, bubbleHeight);
-        //语音图片的frame
-        self.voiceImageFrame = CGRectMake(kMQCellVoiceImageToBubbleSpacing, self.bubbleImageFrame.size.height/2-voiceImageSize.height/2, voiceImageSize.width, voiceImageSize.height);
-        //语音时长的frame
-        self.durationLabelFrame = CGRectMake(self.bubbleImageFrame.origin.x+self.bubbleImageFrame.size.width+kMQCellVoiceDurationLabelToBubbleSpacing, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-durationTextHeight/2, durationTextWidth, durationTextHeight);
-        //未播放按钮的frame
-        self.notPlayViewFrame = CGRectMake(self.bubbleImageFrame.origin.x + self.bubbleImageFrame.size.width + kMQCellVoiceDurationLabelToBubbleSpacing, self.bubbleImageFrame.origin.y, kMQCellVoiceNotPlayPointViewDiameter, kMQCellVoiceNotPlayPointViewDiameter);
     }
-    
     
     //loading image的indicator
     self.loadingIndicatorFrame = CGRectMake(self.bubbleImageFrame.size.width/2-kMQCellIndicatorDiameter/2, self.bubbleImageFrame.size.height/2-kMQCellIndicatorDiameter/2, kMQCellIndicatorDiameter, kMQCellIndicatorDiameter);
     
     //气泡图片
-    CGPoint centerArea = CGPointMake(bubbleImage.size.width / 4.0f, bubbleImage.size.height*3.0f / 4.0f);
-    self.bubbleImage = [bubbleImage resizableImageWithCapInsets:UIEdgeInsetsMake(centerArea.y, centerArea.x, bubbleImage.size.height-centerArea.y+1, centerArea.x)];
+    self.bubbleImage = [bubbleImage resizableImageWithCapInsets:[MQChatViewConfig sharedConfig].bubbleImageStretchInsets];
     
     //发送消息的indicator的frame
     UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, kMQCellIndicatorDiameter, kMQCellIndicatorDiameter)];
     self.sendingIndicatorFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-indicatorView.frame.size.width, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-indicatorView.frame.size.height/2, indicatorView.frame.size.width, indicatorView.frame.size.height);
     
     //发送失败的图片frame
-    UIImage *failureImage = [MQAssetUtil messageWarningImage];
+    UIImage *failureImage = [MQChatViewConfig sharedConfig].messageSendFailureImage;
     CGSize failureSize = CGSizeMake(ceil(failureImage.size.width * 2 / 3), ceil(failureImage.size.height * 2 / 3));
     self.sendFailureFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-failureSize.width, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-failureSize.height/2, failureSize.width, failureSize.height);
     
     //计算cell的高度
     self.cellHeight = self.bubbleImageFrame.origin.y + self.bubbleImageFrame.size.height + kMQCellAvatarToVerticalEdgeSpacing;
-    
+
 }
+
 
 #pragma MQCellModelProtocol
 - (CGFloat)getCellHeight {
@@ -331,7 +252,7 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
  *  @return 初始化了一个cell
  */
 - (MQChatBaseCell *)getCellWithReuseIdentifier:(NSString *)cellReuseIdentifer {
-    return [[MQVoiceMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellReuseIdentifer];
+    return [[MQImageMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellReuseIdentifer];
 }
 
 - (NSDate *)getCellDate {
@@ -362,7 +283,7 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
     self.cellWidth = cellWidth;
     if (self.cellFromType == MQChatCellOutgoing) {
         //头像的frame
-        if ([MQChatViewConfig sharedConfig].enableClientAvatar) {
+        if ([MQChatViewConfig sharedConfig].enableOutgoingAvatar) {
             self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
         } else {
             self.avatarFrame = CGRectMake(0, 0, 0, 0);
@@ -373,8 +294,6 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
         self.sendingIndicatorFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-self.sendingIndicatorFrame.size.width, self.sendingIndicatorFrame.origin.y, self.sendingIndicatorFrame.size.width, self.sendingIndicatorFrame.size.height);
         //发送出错图片的frame
         self.sendFailureFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-self.sendFailureFrame.size.width, self.sendFailureFrame.origin.y, self.sendFailureFrame.size.width, self.sendFailureFrame.size.height);
-        //语音时长的frame
-        self.durationLabelFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-self.durationLabelFrame.size.width, self.durationLabelFrame.origin.y, self.durationLabelFrame.size.width, self.durationLabelFrame.size.height);
     }
 }
 

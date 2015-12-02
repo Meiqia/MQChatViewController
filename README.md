@@ -43,17 +43,17 @@ Project Structure - 代码结构
 
 文件 | 作用
 ----- | -----
-[ChatViewManager/](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/ChatViewManager) | 对聊天界面进行配置的文件
-[ViewController/MQChatViewController](https://github.com/Meiqia/MQChatViewController/blob/master/MQChatViewControllerDemo/MQChatViewController/ViewController/MQChatViewController.h) | 界面的Controller类
-[ViewController/MQChatViewService](https://github.com/Meiqia/MQChatViewController/blob/master/MQChatViewControllerDemo/MQChatViewController/ViewController/MQChatViewService.h) | 界面的数据管理类，开发者可在该类中对接自己项目的APIManager，来进行发送、收取消息等业务逻辑
-[ViewController/MQChatViewTableDataSource](https://github.com/Meiqia/MQChatViewController/blob/master/MQChatViewControllerDemo/MQChatViewController/ViewController/MQChatViewTableDataSource.h) | 消息的TableView的DataSource，开发者不需要修改该类
-[ViewController/MQChatTableView](https://github.com/Meiqia/MQChatViewController/blob/master/MQChatViewControllerDemo/MQChatViewController/ViewController/MQChatTableView.h) | 消息的TableView
-[ChatCells/CellModels](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/ChatCells/cellModel) | 自定义cell的ViewModel，进行内容转换、布局计算等等
-[ChatCells/Cells](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/ChatCells/cell) | 自定义的cell，cell中的View直接使用在相应的CellModel中计算好的数据
-[ChatMessages/](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/ChatMessages) | 该文件夹中的类是该library会用到的Message实体
-[ChatUtil/](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/ChatUtil) | 自定义的工具类
-[Views/](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/Views) | 界面中用到的自定义View，如下拉刷新、输入框等等
-[MQChatViewAsset.bundle](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/MQChatViewBundle.bundle) | 资源文件，如图片、声音文件等，**注意**用户如果需要通过MQChatViewManager修改自定义元素图片，需要将图片放在该bundle种
+[Config/](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/ChatViewManager) | 对聊天界面进行配置的文件
+[Controllers/MQChatViewController](https://github.com/Meiqia/MQChatViewController/blob/master/MQChatViewControllerDemo/MQChatViewController/ViewController/MQChatViewController.h) | 界面的Controller类
+[Controllers/MQChatViewService](https://github.com/Meiqia/MQChatViewController/blob/master/MQChatViewControllerDemo/MQChatViewController/ViewController/MQChatViewService.h) | 界面的数据管理类，开发者可在该类中对接自己项目的APIManager，来进行发送、收取消息等业务逻辑
+[Controllers/MQChatViewTableDataSource](https://github.com/Meiqia/MQChatViewController/blob/master/MQChatViewControllerDemo/MQChatViewController/ViewController/MQChatViewTableDataSource.h) | 消息的TableView的DataSource，开发者不需要修改该类
+[Views/MQChatTableView](https://github.com/Meiqia/MQChatViewController/blob/master/MQChatViewControllerDemo/MQChatViewController/ViewController/MQChatTableView.h) | 消息的TableView
+[TableCells/CellModel](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/ChatCells/cellModel) | 自定义cell的ViewModel，进行内容转换、布局计算等等
+[TableCells/CellView](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/ChatCells/cell) | 自定义的cell，cell中的View直接使用在相应的CellModel中计算好的数据
+[MessageModels/](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/ChatMessages) | 该文件夹中的类是该library会用到的Message实体
+[Utils/](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/ChatUtil) | 自定义的工具类
+[Views/](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/Views) | 界面中用到的自定义View，如聊天TableView、下拉刷新、输入框等等
+[Assets/MQChatViewAsset.bundle](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/MQChatViewBundle.bundle) | 资源文件，如图片、声音文件等，**注意**用户如果需要通过MQChatViewManager修改自定义元素图片，需要将图片放在该bundle中
 [Vendors/](https://github.com/Meiqia/MQChatViewController/tree/master/MQChatViewControllerDemo/MQChatViewController/Vendors) | 第三方开源库
 
 注意：
@@ -72,7 +72,97 @@ Project Structure - 代码结构
 	//#define INCLUDE_MEIQIA_SDK
 ```
 
-Customization - 自定义
+Demo - 示例
+---
+开发者可参考demo中的用法，对聊天界面进行配置，来进行基本的自定义功能，例如下面的示例：
+
+**开发者可这样push出聊天界面**
+```objective-c
+	MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    [chatViewManager pushMQChatViewControllerInViewController:self];
+```
+![screenshot1](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo1.gif)
+
+
+**开发者可这样present出聊天界面的模态视图**
+```objective-c
+	MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    [chatViewManager presentMQChatViewControllerInViewController:self];
+```
+![screenshot2](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo2.gif)
+
+
+**开发者可这样修改底部按钮、修改气泡颜色、文字颜色、使头像设为圆形**
+```objective-c
+	[chatViewManager setPhotoSenderImage:photoImage highlightedImage:photoHighlightedImage];
+    [chatViewManager setVoiceSenderImage:voiceImage highlightedImage:voiceHighlightedImage];
+    [chatViewManager setTextSenderImage:keyboardImage highlightedImage:keyboardHighlightedImage];
+    [chatViewManager setResignKeyboardImage:resightKeyboardImage highlightedImage:resightKeyboardHighlightedImage];
+    [chatViewManager setIncomingBubbleColor:[UIColor redColor]];
+    [chatViewManager setIncomingMessageTextColor:[UIColor whiteColor]];
+    [chatViewManager setOutgoingBubbleColor:[UIColor yellowColor]];
+    [chatViewManager setOutgoingMessageTextColor:[UIColor darkTextColor]];
+    [chatViewManager enableRoundAvatar:true];
+    [chatViewManager pushMQChatViewControllerInViewController:self];
+```
+![screenshot3](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo3.gif)
+
+
+**开发者可这样不支持发送语音、不显示本机头像、修改气泡的样式**
+```objective-c
+    [chatViewManager enableSendVoiceMessage:false];
+    [chatViewManager enableClientAvatar:false];
+    [chatViewManager setIncomingBubbleImage:incomingBubbleImage];
+    [chatViewManager setOutgoingBubbleImage:outgoingBubbleImage];
+    [chatViewManager setBubbleImageStretchInsets:UIEdgeInsetsMake(stretchPoint.y, stretchPoint.x, incomingBubbleImage.size.height-stretchPoint.y+0.5, stretchPoint.x)];
+    [chatViewManager pushMQChatViewControllerInViewController:self];
+```
+![screenshot4](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo4.gif)
+
+
+**开发者可这样增加可点击链接的正则表达式(library本身已支持多种格式链接，如未满足需求可增加)、增加欢迎语、开启消息声音、修改接受消息的铃声**
+```objective-c
+	[chatViewManager setMessageLinkRegex:@"((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)|([a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)"];
+    [chatViewManager enableChatWelcome:true];
+    [chatViewManager setChatWelcomeText:@"你好，请问有什么可以帮助到您？"];
+    [chatViewManager setIncomingMessageSoundFileName:@"MQNewMessageRingStyle2.wav"];
+    [chatViewManager enableMessageSound:true];
+    [chatViewManager pushMQChatViewControllerInViewController:self];
+```
+![screenshot5](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo5.gif)
+
+
+
+**如果tableView没有在底部，开发者可这样打开消息的提示**
+```objective-c
+	[chatViewManager enableShowNewMessageAlert:true];
+    [chatViewManager pushMQChatViewControllerInViewController:self];
+```
+![screenshot6](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo6.gif)
+
+
+
+**开发者可这样支持下拉刷新、修改下拉刷新颜色、增加导航栏标题**
+```objective-c
+	[chatViewManager enableTopPullRefresh:true];
+    [chatViewManager setPullRefreshColor:[UIColor redColor]];
+    [chatViewManager setNavTitleText:@"美洽SDK"];
+    [chatViewManager pushMQChatViewControllerInViewController:self];
+```
+![screenshot7](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo7.gif)
+
+
+**开发者可这样修改导航栏颜色、导航栏左右键**
+```objective-c
+	[chatViewManager setNavTitleText:@"美洽SDK"];
+    [chatViewManager setNavigationBarTintColor:[UIColor redColor]];
+    [chatViewManager setNavRightButton:rightButton];
+    [chatViewManager pushMQChatViewControllerInViewController:self];
+```
+![screenshot8](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo8.gif)
+
+
+Customization - 深度自定义
 ---
 **3步添加自定义cell**
 * 添加自定义的cell类，注意该cell必须继承于`MQChatBaseCell`;
@@ -93,6 +183,12 @@ Configuration - 配置
 ---
 如果你不想修改聊天界面的内部逻辑，`MQChatViewManager`提供了很多接口，可以实现一些自定义设置。
 
+名词解释
+名词 | 说明
+--- | ---
+incoming | 表示聊天对方
+outgoing | 表示本机用户
+
 下面列举一些常用的配置聊天界面的接口如下：(详细请见[MQChatViewManager.h](https://github.com/ijinmao/MQChatViewController/blob/master/MQChatViewControllerDemo/MQChatViewController/ChatViewManager/MQChatViewManager.h))
 ```objective-c
 	/**
@@ -106,12 +202,6 @@ Configuration - 配置
 	 * @param emailRegex email的正则表达式
 	 */
 	- (void)setMessageEmailRegex:(NSString *)emailRegex;
-
-	/**
-	 * @brief 设置客服上线的提示文字；
-	 * @param tipText 提示文字
-	 */
-	- (void)setAgentOnlineTip:(NSString *)tipText;
 
 	/**
 	 * @brief 设置收到消息的声音；
@@ -132,17 +222,17 @@ Configuration - 配置
 	- (void)enableSendImageMessage:(BOOL)enable;
 
 	/**
-	 * @brief 是否支持客服头像的显示；
+	 * @brief 是否支持对方头像的显示；
 	 * @param enable YES:支持 NO:不支持
 	 */
-	- (void)enableAgentAvatar:(BOOL)enable;
+	- (void)enableIncomingAvatar:(BOOL)enable;
 
 	/**
-	 * @brief 是否支持当前顾客头像的显示
+	 * @brief 是否支持当前用户头像的显示
 	 *
 	 * @param enable YES:支持 NO:不支持
 	 */
-	- (void)enableClientAvatar:(BOOL)enable;
+	- (void)enableOutgoingAvatar:(BOOL)enable;
 
 	/**
 	 * @brief 是否开启接受/发送消息的声音；
@@ -190,12 +280,12 @@ Configuration - 配置
 	 */
 	- (void)setOutgoingBubbleColor:(UIColor *)bubbleColor;
 ```
+更多配置请见MQChatViewManager.h文件。
 
 To-do-list - 待修复问题
 ---
-由于SDK发布催的很紧，以下问题还没有得到妥善解决，但影响不大，所以还没有修复，开发者打怪得分后可提PR：
-* 录音时长不太准确；主要是及时的Timer是在自定义的录音界面中，没有真正获得录音开始和结束的时间，记录的时间比真实时长要多1-2秒；
-* tableView中有图片显示在屏幕上，转屏会很卡；
+由于SDK发布催的很紧，以下问题还没有得到妥善解决，但影响不大，所以还没有修复，开发者打怪得分后可提PR^.^：
+* tableView中有图片显示在屏幕上，转屏会很卡；(测试显示，iOS6和iOS7不会出现卡顿)
 * 目前只支持单张图片全屏浏览，还不支持多张图片浏览；
 * 下拉刷新的瞬间，tableView会跳跃一下，给人造成一种"卡了一下"的感觉；
 * 启动上拉刷新(底部刷新)，只显示了loading的indicator，没有显示出loading的path效果；
@@ -218,6 +308,8 @@ VoiceConvert | AMR和WAV语音格式的互转；没找到出处，哪位童鞋�
 
 Hope to Help Each Other - 互助
 ---
+由于开发进度紧张，该项目写的较快，肯定有很多地方没有考虑周到，欢迎开发者指正和建议~
+
 如果该library有帮助到你，或是你想完善此library，欢迎通过任何形式联系我们，一起讨论、一起互帮互助总是好的^.^
 
 美洽官方开发者群:  295646206

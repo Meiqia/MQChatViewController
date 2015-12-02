@@ -158,9 +158,9 @@
                 }
             });
         } else {
-            self.avatarImage = [MQChatViewConfig sharedConfig].agentDefaultAvatarImage;
+            self.avatarImage = [MQChatViewConfig sharedConfig].incomingDefaultAvatarImage;
             if (message.fromType == MQChatMessageOutgoing) {
-                self.avatarImage = [MQChatViewConfig sharedConfig].clientDefaultAvatarImage;
+                self.avatarImage = [MQChatViewConfig sharedConfig].outgoingDefaultAvatarImage;
             }
         }
         
@@ -204,7 +204,7 @@
             }
             
             //头像的frame
-            if ([MQChatViewConfig sharedConfig].enableClientAvatar) {
+            if ([MQChatViewConfig sharedConfig].enableOutgoingAvatar) {
                 self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
             } else {
                 self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, 0, 0);
@@ -218,7 +218,7 @@
             self.cellFromType = MQChatCellIncoming;
             
             //头像的frame
-            if ([MQChatViewConfig sharedConfig].enableAgentAvatar) {
+            if ([MQChatViewConfig sharedConfig].enableIncomingAvatar) {
                 self.avatarFrame = CGRectMake(kMQCellAvatarToHorizontalEdgeSpacing, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
             } else {
                 self.avatarFrame = CGRectMake(kMQCellAvatarToHorizontalEdgeSpacing, kMQCellAvatarToVerticalEdgeSpacing, 0, 0);
@@ -230,8 +230,7 @@
         }
         
         //气泡图片
-        CGPoint centerArea = CGPointMake(bubbleImage.size.width / 4.0f, bubbleImage.size.height*3.0f / 4.0f);
-        self.bubbleImage = [bubbleImage resizableImageWithCapInsets:UIEdgeInsetsMake(centerArea.y, centerArea.x, bubbleImage.size.height-centerArea.y+1, centerArea.x)];
+        self.bubbleImage = [bubbleImage resizableImageWithCapInsets:[MQChatViewConfig sharedConfig].bubbleImageStretchInsets];
         
         //发送消息的indicator的frame
         UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, kMQCellIndicatorDiameter, kMQCellIndicatorDiameter)];
@@ -318,7 +317,7 @@
     self.cellWidth = cellWidth;
     if (self.cellFromType == MQChatCellOutgoing) {
         //头像的frame
-        if ([MQChatViewConfig sharedConfig].enableClientAvatar) {
+        if ([MQChatViewConfig sharedConfig].enableOutgoingAvatar) {
             self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
         } else {
             self.avatarFrame = CGRectMake(0, 0, 0, 0);

@@ -312,7 +312,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         }
     }
     //text message
-    MQTextMessage *textMessage = [[MQTextMessage alloc] initWithContent:@"测试测试kjdjfkadsjlfkadfasdkf"];
+    MQTextMessage *textMessage = [[MQTextMessage alloc] initWithContent:@"Let's Rooooooooooock~"];
     textMessage.fromType = MQChatMessageIncoming;
     MQTextCellModel *textCellModel = [[MQTextCellModel alloc] initCellModelWithMessage:textMessage cellWidth:self.chatViewWidth delegate:self];
     [self.cellModels addObject:textCellModel];
@@ -322,8 +322,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     MQImageCellModel *imageCellModel = [[MQImageCellModel alloc] initCellModelWithMessage:imageMessage cellWidth:self.chatViewWidth delegate:self];
     [self.cellModels addObject:imageCellModel];
     //tip message
-    MQTipsCellModel *tipCellModel = [[MQTipsCellModel alloc] initCellModelWithTips:@"主人，您的客服离线啦~" cellWidth:self.chatViewWidth];
-    [self.cellModels addObject:tipCellModel];
+//    MQTipsCellModel *tipCellModel = [[MQTipsCellModel alloc] initCellModelWithTips:@"主人，您的客服离线啦~" cellWidth:self.chatViewWidth];
+//    [self.cellModels addObject:tipCellModel];
     //voice message
     MQVoiceMessage *voiceMessage = [[MQVoiceMessage alloc] initWithVoicePath:@"http://7xiy8i.com1.z0.glb.clouddn.com/test.amr"];
     voiceMessage.fromType = MQChatMessageIncoming;
@@ -385,7 +385,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 #pragma 欢迎语
 - (void)sendLocalWelcomeChatMessage {
-    if (![MQChatViewConfig sharedConfig].enableWelcomeChat) {
+    if (![MQChatViewConfig sharedConfig].enableChatWelcome) {
         return ;
     }
     //消息时间
@@ -395,7 +395,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     MQTextMessage *welcomeMessage = [[MQTextMessage alloc] initWithContent:[MQChatViewConfig sharedConfig].chatWelcomeText];
     welcomeMessage.fromType = MQChatMessageIncoming;
     welcomeMessage.userName = [MQChatViewConfig sharedConfig].agentName;
-    welcomeMessage.userAvatarImage = [MQChatViewConfig sharedConfig].agentDefaultAvatarImage;
+    welcomeMessage.userAvatarImage = [MQChatViewConfig sharedConfig].incomingDefaultAvatarImage;
     welcomeMessage.sendStatus = MQChatMessageSendStatusSuccess;
     MQTextCellModel *cellModel = [[MQTextCellModel alloc] initCellModelWithMessage:welcomeMessage cellWidth:self.chatViewWidth delegate:self];
     [self.cellModels addObject:cellModel];
@@ -487,6 +487,11 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [weakSelf updateChatTitleWithAgentName:agentName];
         if (receivedMessages) {
             [weakSelf addMessagesToTableViewWithMessages:receivedMessages isInsertAtFirstIndex:false];
+            if (weakSelf.delegate) {
+                if ([weakSelf.delegate respondsToSelector:@selector(scrollTableViewToBottom)]) {
+                    [weakSelf.delegate scrollTableViewToBottom];
+                }
+            }
         }
     } receiveMessageDelegate:self];
 }

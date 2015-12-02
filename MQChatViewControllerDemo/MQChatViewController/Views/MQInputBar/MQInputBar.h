@@ -35,8 +35,13 @@
     enableSendVoice:(BOOL)enableVoice
     enableSendImage:(BOOL)enableImage
    photoSenderImage:(UIImage *)photoImage
+photoHighlightedImage:(UIImage *)photoHighlightedImage
    voiceSenderImage:(UIImage *)voiceImage
-keyboardSenderImage:(UIImage *)keyboardImage;
+voiceHighlightedImage:(UIImage *)voiceHighlightedImage
+keyboardSenderImage:(UIImage *)keyboardImage
+keyboardHighlightedImage:(UIImage *)keyboardHighlightedImage
+resignKeyboardImage:(UIImage *)resignKeyboardImage
+resignKeyboardHighlightedImage:(UIImage *)resignKeyboardHighlightedImage;
 
 -(void)textViewResignFirstResponder;
 

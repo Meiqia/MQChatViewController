@@ -46,7 +46,7 @@
 
 "no_more_messages"      = "No more messages";
 
-"welcome_chat"          = "What could we help you?";
+"welcome_chat"          = "";
 
 "default_assistant"     = "Assistant";
 
