@@ -104,13 +104,13 @@
 - (void)enableShowNewMessageAlert:(BOOL)enable;
 
 /**
- * 是否支持客服头像的显示；
+ * 是否支持对方头像的显示；
  * @param enable YES:支持 NO:不支持
  */
 - (void)enableIncomingAvatar:(BOOL)enable;
 
 /**
- *  是否支持当前顾客头像的显示
+ *  是否支持当前用户头像的显示
  *
  * @param enable YES:支持 NO:不支持
  */

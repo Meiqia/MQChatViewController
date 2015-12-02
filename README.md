@@ -183,6 +183,12 @@ Configuration - 配置
 ---
 如果你不想修改聊天界面的内部逻辑，`MQChatViewManager`提供了很多接口，可以实现一些自定义设置。
 
+名词解释
+名词 | 说明
+--- | ---
+incoming | 表示聊天对方
+outgoing | 表示本机用户
+
 下面列举一些常用的配置聊天界面的接口如下：(详细请见[MQChatViewManager.h](https://github.com/ijinmao/MQChatViewController/blob/master/MQChatViewControllerDemo/MQChatViewController/ChatViewManager/MQChatViewManager.h))
 ```objective-c
 	/**
@@ -196,12 +202,6 @@ Configuration - 配置
 	 * @param emailRegex email的正则表达式
 	 */
 	- (void)setMessageEmailRegex:(NSString *)emailRegex;
-
-	/**
-	 * @brief 设置客服上线的提示文字；
-	 * @param tipText 提示文字
-	 */
-	- (void)setAgentOnlineTip:(NSString *)tipText;
 
 	/**
 	 * @brief 设置收到消息的声音；
@@ -222,17 +222,17 @@ Configuration - 配置
 	- (void)enableSendImageMessage:(BOOL)enable;
 
 	/**
-	 * @brief 是否支持客服头像的显示；
+	 * @brief 是否支持对方头像的显示；
 	 * @param enable YES:支持 NO:不支持
 	 */
-	- (void)enableAgentAvatar:(BOOL)enable;
+	- (void)enableIncomingAvatar:(BOOL)enable;
 
 	/**
-	 * @brief 是否支持当前顾客头像的显示
+	 * @brief 是否支持当前用户头像的显示
 	 *
 	 * @param enable YES:支持 NO:不支持
 	 */
-	- (void)enableClientAvatar:(BOOL)enable;
+	- (void)enableOutgoingAvatar:(BOOL)enable;
 
 	/**
 	 * @brief 是否开启接受/发送消息的声音；
@@ -280,12 +280,12 @@ Configuration - 配置
 	 */
 	- (void)setOutgoingBubbleColor:(UIColor *)bubbleColor;
 ```
+更多配置请见MQChatViewManager.h文件。
 
 To-do-list - 待修复问题
 ---
-由于SDK发布催的很紧，以下问题还没有得到妥善解决，但影响不大，所以还没有修复，开发者打怪得分后可提PR：
-* 录音时长不太准确；主要是及时的Timer是在自定义的录音界面中，没有真正获得录音开始和结束的时间，记录的时间比真实时长要多1-2秒；
-* tableView中有图片显示在屏幕上，转屏会很卡；
+由于SDK发布催的很紧，以下问题还没有得到妥善解决，但影响不大，所以还没有修复，开发者打怪得分后可提PR^.^：
+* tableView中有图片显示在屏幕上，转屏会很卡；(测试显示，iOS6和iOS7不会出现卡顿)
 * 目前只支持单张图片全屏浏览，还不支持多张图片浏览；
 * 下拉刷新的瞬间，tableView会跳跃一下，给人造成一种"卡了一下"的感觉；
 * 启动上拉刷新(底部刷新)，只显示了loading的indicator，没有显示出loading的path效果；
