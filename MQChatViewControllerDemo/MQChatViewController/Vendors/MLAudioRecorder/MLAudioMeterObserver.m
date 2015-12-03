@@ -125,7 +125,7 @@ return; \
 
 - (void)refresh
 {
-    UInt32 data_sz = sizeof(AudioQueueLevelMeterState) * self.channelCount;
+    UInt32 data_sz = sizeof(AudioQueueLevelMeterState) * (int)self.channelCount;
 
     IfAudioQueueErrorPostAndReturn(AudioQueueGetProperty(_audioQueue, kAudioQueueProperty_CurrentLevelMeterDB, _levelMeterStates, &data_sz),@"获取meter数据失败");
     

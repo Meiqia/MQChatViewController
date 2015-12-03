@@ -3,7 +3,7 @@
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
-      "filename" : "Simulator Screen Shot 2015年10月20日 下午2.42.26.png",
+      "filename" : "lanchImage960-1.png",
       "extent" : "full-screen",
       "minimum-system-version" : "7.0",
       "scale" : "2x"
@@ -26,7 +26,7 @@
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
-      "filename" : "Simulator Screen Shot 2015年10月20日 下午2.42.26-3.png",
+      "filename" : "lanchImage960.png",
       "extent" : "full-screen",
       "scale" : "2x"
     },
@@ -35,35 +35,6 @@
       "idiom" : "iphone",
       "filename" : "Simulator Screen Shot 2015年10月20日 下午2.42.26-1.png",
       "extent" : "full-screen",
-      "subtype" : "retina4",
-      "scale" : "2x"
-    },
-    {
-      "orientation" : "portrait",
-      "idiom" : "iphone",
-      "minimum-system-version" : "7.0",
-      "scale" : "2x"
-    },
-    {
-      "orientation" : "portrait",
-      "idiom" : "iphone",
-      "minimum-system-version" : "7.0",
-      "subtype" : "retina4",
-      "scale" : "2x"
-    },
-    {
-      "idiom" : "iphone",
-      "scale" : "1x",
-      "orientation" : "portrait"
-    },
-    {
-      "idiom" : "iphone",
-      "scale" : "2x",
-      "orientation" : "portrait"
-    },
-    {
-      "orientation" : "portrait",
-      "idiom" : "iphone",
       "subtype" : "retina4",
       "scale" : "2x"
     }
