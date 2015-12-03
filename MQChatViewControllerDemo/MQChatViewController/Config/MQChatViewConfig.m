@@ -63,7 +63,7 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     self.enableRoundAvatar         = false;
     self.enableChatWelcome         = false;
     self.enableTopAutoRefresh      = true;
-    self.isPushChatView            = false;
+    self.isPushChatView            = true;
     self.enableShowNewMessageAlert = true;
     
     self.incomingMsgTextColor   = [UIColor darkTextColor];
@@ -91,7 +91,7 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     self.messageSendFailureImage        = [MQAssetUtil messageWarningImage];
     self.imageLoadErrorImage            = [MQAssetUtil imageLoadErrorImage];
     
-    CGPoint stretchPoint                = CGPointMake(self.incomingBubbleImage.size.width / 4.0f, self.incomingBubbleImage.size.height * 3.0f / 4.0f - 4.0);
+    CGPoint stretchPoint                = CGPointMake(self.incomingBubbleImage.size.width / 4.0f, self.incomingBubbleImage.size.height * 3.0f / 4.0f);
     self.bubbleImageStretchInsets       = UIEdgeInsetsMake(stretchPoint.y, stretchPoint.x, self.incomingBubbleImage.size.height-stretchPoint.y+0.5, stretchPoint.x);
     
     self.incomingMsgSoundFileName       = @"MQNewMessageRing.mp3";

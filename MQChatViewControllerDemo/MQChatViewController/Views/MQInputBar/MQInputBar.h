@@ -43,13 +43,6 @@ keyboardHighlightedImage:(UIImage *)keyboardHighlightedImage
 resignKeyboardImage:(UIImage *)resignKeyboardImage
 resignKeyboardHighlightedImage:(UIImage *)resignKeyboardHighlightedImage;
 
--(void)textViewResignFirstResponder;
-
--(void)moveToolbarUp:(float)height animate:(NSTimeInterval)duration;
--(void)moveToolbarDown:(float)animateDuration;
-
--(void)reRecordBtn;
-
 /** 更新frame */
 - (void)updateFrame:(CGRect)frame;
 

@@ -454,6 +454,9 @@ resignKeyboardHighlightedImage:(UIImage *)resignKeyboardHighlightedImage
 
 -(void)moveToolbarDown:(float)animateDuration
 {
+    if (!isInputBarUp) {
+        return ;
+    }
     [UIView animateWithDuration:animateDuration
                      animations:^{
                          self.superview.frame  = originalSuperViewFrame;
