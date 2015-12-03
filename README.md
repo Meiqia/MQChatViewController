@@ -29,14 +29,14 @@ Goal - 目标
 
 Usage - 使用方法
 ---
-最简单的使用方式，即初始化 `MQChatViewManager`，并对界面进行配置，然后调用启动接口即可；
+最简单的使用方式，即初始化 `MQChatViewManager`，然后对界面进行配置，最后调用启动聊天界面接口即可；
 
 如果你想在某一个 ViewController，Push 一个聊天界面，可复制下面两行代码：
 ```objective-c
 	MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 	[chatViewManager pushMQChatViewControllerInViewController:self];
 ```
-有关聊天界面的配置，请见文档末尾的 [Configuration](#Configuration - 配置) 小节.
+有关聊天界面的配置，请见文档末尾的 [Configuration](#configuration---配置) 小节.
 
 Project Structure - 代码结构
 ---
