@@ -36,7 +36,7 @@ Usage - 使用方法
 	MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
 	[chatViewManager pushMQChatViewControllerInViewController:self];
 ```
-有关聊天界面的配置，请见文档末尾的 [Configuration](#Configuration) 小节.
+有关聊天界面的配置，请见文档末尾的 [Configuration](#Configuration - 配置) 小节.
 
 Project Structure - 代码结构
 ---
