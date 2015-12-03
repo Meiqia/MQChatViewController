@@ -73,7 +73,10 @@
     //导航栏右键
     if ([MQChatViewConfig sharedConfig].navBarRightButton) {
         UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithCustomView:[MQChatViewConfig sharedConfig].navBarRightButton];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
         [[MQChatViewConfig sharedConfig].navBarRightButton addTarget:viewController action:@selector(didSelectNavigationRightButton) forControlEvents:UIControlEventTouchUpInside];
+#pragma clang diagnostic pop
         viewController.navigationItem.rightBarButtonItem = rightItem;
     }
     

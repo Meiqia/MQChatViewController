@@ -39,7 +39,7 @@
 		CCAD3D191BE75F7500B87A23 /* MLAudioRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = CCAD3D0F1BE75F7500B87A23 /* MLAudioRecorder.m */; };
 		CCAD3D1A1BE75F7500B87A23 /* lame.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCAD3D111BE75F7500B87A23 /* lame.framework */; };
 		CCAD3D1B1BE75F7500B87A23 /* Mp3RecordWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = CCAD3D131BE75F7500B87A23 /* Mp3RecordWriter.m */; };
-		CCAD3D2B1BE7BD2C00B87A23 /* amrFileCodec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CCAD3D261BE7BD2C00B87A23 /* amrFileCodec.mm */; };
+		CCAD3D2B1BE7BD2C00B87A23 /* amrFileCodec.mm in Sources */ = {isa = PBXBuildFile; fileRef = CCAD3D261BE7BD2C00B87A23 /* amrFileCodec.mm */; settings = {COMPILER_FLAGS = "-w"; }; };
 		CCAD3D2C1BE7BD2C00B87A23 /* wav.mm in Sources */ = {isa = PBXBuildFile; fileRef = CCAD3D281BE7BD2C00B87A23 /* wav.mm */; };
 		CCAD3D2D1BE7BD2C00B87A23 /* VoiceConverter.mm in Sources */ = {isa = PBXBuildFile; fileRef = CCAD3D2A1BE7BD2C00B87A23 /* VoiceConverter.mm */; };
 		CCCDCC9C1BEB09F900B60667 /* MQPullRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCDCC9B1BEB09F900B60667 /* MQPullRefreshView.m */; };
