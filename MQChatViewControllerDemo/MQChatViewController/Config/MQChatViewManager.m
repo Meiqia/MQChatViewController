@@ -22,6 +22,9 @@
 }
 
 - (MQChatViewController *)pushMQChatViewControllerInViewController:(UIViewController *)viewController {
+    if (chatViewConfig) {
+        chatViewConfig = [MQChatViewConfig sharedConfig];
+    }
     if (!chatViewController) {
         chatViewController = [[MQChatViewController alloc] initWithChatViewManager:chatViewConfig];
     }
@@ -36,6 +39,9 @@
 }
 
 - (MQChatViewController *)presentMQChatViewControllerInViewController:(UIViewController *)viewController {
+    if (chatViewConfig) {
+        chatViewConfig = [MQChatViewConfig sharedConfig];
+    }
     chatViewConfig.isPushChatView = false;
     if (!chatViewController) {
         chatViewController = [[MQChatViewController alloc] initWithChatViewManager:chatViewConfig];
@@ -57,7 +63,7 @@
     if ([MQChatViewConfig sharedConfig].navBarColor) {
         navigationController.navigationBar.backgroundColor = [MQChatViewConfig sharedConfig].navBarColor;
     }
-
+    
     //导航栏左键
     UIBarButtonItem *leftItem;
     if ([MQChatViewConfig sharedConfig].navBarLeftButton) {
