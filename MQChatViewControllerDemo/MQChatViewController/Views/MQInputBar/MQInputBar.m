@@ -49,8 +49,13 @@ static CGFloat const kMQInputBarHorizontalSpacing = 8.0;
     UIButton *toolbarDownBtn;
     
     UIImage *photoSenderImage;
+    UIImage *photoSenderHighlightedImage;
     UIImage *voiceSenderImage;
+    UIImage *voiceSenderHighlightedImage;
     UIImage *keyboardSenderImage;
+    UIImage *keyboardSenderHighlightedImage;
+    UIImage *resignKeyboardSenderImage;
+    UIImage *resignKeyboardSenderHighlightedImage;
 }
 
 - (void)dealloc {
@@ -63,8 +68,13 @@ static CGFloat const kMQInputBarHorizontalSpacing = 8.0;
     enableSendVoice:(BOOL)enableVoice
     enableSendImage:(BOOL)enableImage
    photoSenderImage:(UIImage *)photoImage
+photoHighlightedImage:(UIImage *)photoHighlightedImage
    voiceSenderImage:(UIImage *)voiceImage
+voiceHighlightedImage:(UIImage *)voiceHighlightedImage
 keyboardSenderImage:(UIImage *)keyboardImage
+keyboardHighlightedImage:(UIImage *)keyboardHighlightedImage
+resignKeyboardImage:(UIImage *)resignKeyboardImage
+resignKeyboardHighlightedImage:(UIImage *)resignKeyboardHighlightedImage
 {
     if (self = [super init]) {
         self.frame              = frame;
@@ -75,16 +85,25 @@ keyboardSenderImage:(UIImage *)keyboardImage
         enableSendImage         = enableImage;
         enableSendVoice         = enableVoice;
         photoSenderImage        = photoImage;
-        voiceSenderImage        = voiceImage;
-        keyboardSenderImage     = keyboardImage;
+        photoSenderHighlightedImage = photoHighlightedImage;
+        voiceSenderImage            = voiceImage;
+        voiceSenderHighlightedImage = voiceHighlightedImage;
+        keyboardSenderImage         = keyboardImage;
+        keyboardSenderHighlightedImage = keyboardHighlightedImage;
+        resignKeyboardSenderImage      = resignKeyboardImage;
+        resignKeyboardSenderHighlightedImage = resignKeyboardHighlightedImage;
         
         senderImageWidth = photoImage.size.width;
+        if (senderImageWidth + kMQInputBarHorizontalSpacing * 2 > self.frame.size.height) {
+            //防止开发者设置的图片太大
+            senderImageWidth = self.frame.size.height - kMQInputBarHorizontalSpacing * 2;
+        }
         textViewHeight = ceil(frame.size.height * 5 / 7);
         self.backgroundColor = [UIColor whiteColor];
         
         cameraBtn              = [[UIButton alloc] init];
         [cameraBtn setImage:photoSenderImage forState:UIControlStateNormal];
-        [cameraBtn setImage:photoSenderImage forState:UIControlStateHighlighted];
+        [cameraBtn setImage:photoSenderHighlightedImage forState:UIControlStateHighlighted];
         [cameraBtn addTarget:self action:@selector(cameraClick) forControlEvents:UIControlEventTouchUpInside];
         cameraBtn.frame      = enableSendImage ? CGRectMake(kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth) : CGRectMake(0, 0, 0, 0);
         
@@ -145,14 +164,14 @@ keyboardSenderImage:(UIImage *)keyboardImage
 {
     //横屏状态，隐藏toolbar的按钮
     toolbarDownBtn = [[UIButton alloc] init];
-    [toolbarDownBtn setImage:[MQAssetUtil hideToolbarNormalImage] forState:UIControlStateNormal];
-    [toolbarDownBtn setImage:[MQAssetUtil hideToolbarClickImage] forState:UIControlStateHighlighted];
+    [toolbarDownBtn setImage:resignKeyboardSenderImage forState:UIControlStateNormal];
+    [toolbarDownBtn setImage:resignKeyboardSenderHighlightedImage forState:UIControlStateHighlighted];
     [toolbarDownBtn addTarget:self action:@selector(toolbarDownClick) forControlEvents:UIControlEventTouchUpInside];
     toolbarDownBtn.hidden = YES;
     
     microphoneBtn = [[UIButton alloc] init];
     [microphoneBtn setImage:voiceSenderImage forState:UIControlStateNormal];
-    [microphoneBtn setImage:voiceSenderImage forState:UIControlStateHighlighted];
+    [microphoneBtn setImage:voiceSenderHighlightedImage forState:UIControlStateHighlighted];
     [microphoneBtn addTarget:self action:@selector(microphoneClick) forControlEvents:UIControlEventTouchUpInside];
     
     recordBtn                    = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -201,7 +220,7 @@ keyboardSenderImage:(UIImage *)keyboardImage
     if (recordBtn.hidden) {
         recordBtn.hidden = NO;
         [microphoneBtn setImage:keyboardSenderImage forState:UIControlStateNormal];
-        [microphoneBtn setImage:keyboardSenderImage forState:UIControlStateHighlighted];
+        [microphoneBtn setImage:keyboardSenderHighlightedImage forState:UIControlStateHighlighted];
         [self textViewResignFirstResponder];
         [UIView animateWithDuration:.25 animations:^{
             //还原
@@ -219,7 +238,7 @@ keyboardSenderImage:(UIImage *)keyboardImage
         }];
     }else{
         [microphoneBtn setImage:voiceSenderImage forState:UIControlStateNormal];
-        [microphoneBtn setImage:voiceSenderImage forState:UIControlStateHighlighted];
+        [microphoneBtn setImage:voiceSenderHighlightedImage forState:UIControlStateHighlighted];
         [self.textView becomeFirstResponder];
         self.textView.hidden = NO;
         [UIView animateWithDuration:.25 animations:^{
@@ -435,6 +454,9 @@ keyboardSenderImage:(UIImage *)keyboardImage
 
 -(void)moveToolbarDown:(float)animateDuration
 {
+    if (!isInputBarUp) {
+        return ;
+    }
     [UIView animateWithDuration:animateDuration
                      animations:^{
                          self.superview.frame  = originalSuperViewFrame;

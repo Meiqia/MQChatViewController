@@ -66,7 +66,7 @@
     
     //编码
     short *recordingData = (short*)data.bytes;
-    int pcmLen = data.length;
+    int pcmLen = (int)data.length;
     
     if (pcmLen<2){
         return YES;

@@ -69,7 +69,7 @@
 {
     NSInteger totalDotsFromSymbols = 0;
     for (NSNumber *number in self.symbols) {
-        FBFontSymbolType symbol = [number integerValue];
+        FBFontSymbolType symbol = (FBFontSymbolType)[number integerValue];
         totalDotsFromSymbols += [FBBitmapFont numberOfDotsWideForSymbol:symbol];
     }
     

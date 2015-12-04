@@ -14,12 +14,20 @@
 + (UIImage *)bubbleImageFromBundleWithName:(NSString *)name;
 + (NSString*)resourceWithName:(NSString*)fileName;
 
-+ (UIImage *)agentDefaultAvatarImage;
-+ (UIImage *)clientDefaultAvatarImage;
++ (UIImage *)incomingDefaultAvatarImage;
++ (UIImage *)outgoingDefaultAvatarImage;
 
 + (UIImage *)messageCameraInputImage;
++ (UIImage *)messageCameraInputHighlightedImage;
+
 + (UIImage *)messageTextInputImage;
++ (UIImage *)messageTextInputHighlightedImage;
+
 + (UIImage *)messageVoiceInputImage;
++ (UIImage *)messageVoiceInputHighlightedImage;
+
++ (UIImage *)messageResignKeyboardImage;
++ (UIImage *)messageResignKeyboardHighlightedImage;
 
 + (UIImage *)bubbleIncomingImage;
 + (UIImage *)bubbleOutgoingImage;
@@ -42,8 +50,5 @@
 + (UIImage *)recordBackImage;
 
 + (UIImage *)recordVolume:(NSInteger)volume;
-
-+ (UIImage *)hideToolbarNormalImage;
-+ (UIImage *)hideToolbarClickImage;
 
 @end

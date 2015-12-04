@@ -46,7 +46,7 @@
 
 "no_more_messages"      = "No more messages";
 
-"welcome_chat"          = "What could we help you?";
+"welcome_chat"          = "";
 
 "default_assistant"     = "Assistant";
 
@@ -64,7 +64,7 @@
 
 "make_call_to"          = "Call ";
 
-"make_message_to"       = "Send a message to ";
+"send_message_to"       = "Send a message to ";
 
 "open_url_by_safari"    = "Open this url by Safari";
 

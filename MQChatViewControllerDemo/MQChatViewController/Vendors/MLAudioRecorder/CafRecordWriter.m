@@ -33,7 +33,7 @@
 
 - (BOOL)writeIntoFileWithData:(NSData*)data withRecorder:(MLAudioRecorder*)recoder inAQ:(AudioQueueRef)						inAQ inStartTime:(const AudioTimeStamp *)inStartTime inNumPackets:(UInt32)inNumPackets inPacketDesc:(const AudioStreamPacketDescription*)inPacketDesc
 {
-    OSStatus err = AudioFileWritePackets(mRecordFile, FALSE, data.length,
+    OSStatus err = AudioFileWritePackets(mRecordFile, FALSE, (UInt32)data.length,
                                          inPacketDesc, recordPacketCount, &inNumPackets, data.bytes);
     if (err!=noErr) {
         return NO;

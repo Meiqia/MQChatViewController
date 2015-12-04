@@ -143,7 +143,7 @@ void inputBufferHandler(void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRe
             memcpy(&_recordFormat, &format,sizeof(_recordFormat));
         });
     }else{
-        [self setupAudioFormat:kAudioFormatLinearPCM SampleRate:self.sampleRate];
+        [self setupAudioFormat:kAudioFormatLinearPCM SampleRate:(int)self.sampleRate];
     }
     _recordFormat.mSampleRate = self.sampleRate;
     

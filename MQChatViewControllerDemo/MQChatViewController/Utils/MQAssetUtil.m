@@ -21,29 +21,54 @@
     return [NSString stringWithFormat:@"MQChatViewAsset.bundle/%@",fileName];
 }
 
-+ (UIImage *)agentDefaultAvatarImage
++ (UIImage *)incomingDefaultAvatarImage
 {
     return [MQAssetUtil bubbleImageFromBundleWithName:@"MQIcon"];
 }
 
-+ (UIImage *)clientDefaultAvatarImage
++ (UIImage *)outgoingDefaultAvatarImage
 {
     return [MQAssetUtil bubbleImageFromBundleWithName:@"MQIcon"];
 }
 
 + (UIImage *)messageCameraInputImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageCameraInputImage"];
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageCameraInputImageNormalStyleOne"];
+}
+
++ (UIImage *)messageCameraInputHighlightedImage
+{
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageCameraInputHighlightedImageStyleOne"];
 }
 
 + (UIImage *)messageTextInputImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageTextInputImage"];
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageTextInputImageNormalStyleOne"];
+}
+
++ (UIImage *)messageTextInputHighlightedImage
+{
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageTextInputHighlightedImageStyleOne"];
 }
 
 + (UIImage *)messageVoiceInputImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageVoiceInputImage"];
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageVoiceInputImageNormalStyleOne"];
+}
+
++ (UIImage *)messageVoiceInputHighlightedImage
+{
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageVoiceInputHighlightedImageStyleOne"];
+}
+
++ (UIImage *)messageResignKeyboardImage
+{
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageKeyboardDownImageNormalStyleOne"];
+}
+
++ (UIImage *)messageResignKeyboardHighlightedImage
+{
+    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageKeyboardDownHighlightedImageStyleOne"];
 }
 
 + (UIImage *)bubbleIncomingImage
@@ -150,16 +175,6 @@
             break;
     }
     return [MQAssetUtil bubbleImageFromBundleWithName:imageName];
-}
-
-+ (UIImage *)hideToolbarNormalImage
-{
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQToolbarDown_click"];
-}
-
-+ (UIImage *)hideToolbarClickImage
-{
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQToolbarDown_normal"];
 }
 
 @end

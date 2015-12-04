@@ -35,15 +35,13 @@
     enableSendVoice:(BOOL)enableVoice
     enableSendImage:(BOOL)enableImage
    photoSenderImage:(UIImage *)photoImage
+photoHighlightedImage:(UIImage *)photoHighlightedImage
    voiceSenderImage:(UIImage *)voiceImage
-keyboardSenderImage:(UIImage *)keyboardImage;
-
--(void)textViewResignFirstResponder;
-
--(void)moveToolbarUp:(float)height animate:(NSTimeInterval)duration;
--(void)moveToolbarDown:(float)animateDuration;
-
--(void)reRecordBtn;
+voiceHighlightedImage:(UIImage *)voiceHighlightedImage
+keyboardSenderImage:(UIImage *)keyboardImage
+keyboardHighlightedImage:(UIImage *)keyboardHighlightedImage
+resignKeyboardImage:(UIImage *)resignKeyboardImage
+resignKeyboardHighlightedImage:(UIImage *)resignKeyboardHighlightedImage;
 
 /** 更新frame */
 - (void)updateFrame:(CGRect)frame;
