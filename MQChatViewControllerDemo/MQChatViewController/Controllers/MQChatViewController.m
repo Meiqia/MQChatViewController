@@ -106,8 +106,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 - (void)didSelectNavigationRightButton {
-#warning 开发者可在这里增加点击导航栏右按钮的事件
-    NSLog(@"点击了导航栏右键");
+    NSLog(@"click right BarItemButton!");
 }
 
 #pragma 初始化viewModel
