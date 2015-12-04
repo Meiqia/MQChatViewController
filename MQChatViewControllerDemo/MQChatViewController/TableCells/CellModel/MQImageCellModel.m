@@ -11,6 +11,8 @@
 #import "MQImageMessageCell.h"
 #import "MQChatViewConfig.h"
 #import "MQImageUtil.h"
+#import "UIImageView+WebCache.h"
+
 @interface MQImageCellModel()
 
 /**
@@ -111,17 +113,19 @@
             self.avatarImage = message.userAvatarImage;
         } else if (message.userAvatarPath.length > 0) {
             self.avatarPath = message.userAvatarPath;
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-#warning 这里开发者可以使用自己的图片缓存策略，如SDWebImage
-                NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:message.userAvatarPath]];
-                self.avatarImage = [UIImage imageWithData:imageData];
+            
+            __block UIImageView *tempImageView = [UIImageView new];
+            [tempImageView sd_setImageWithURL:[NSURL URLWithString:message.userAvatarPath] placeholderImage:nil options:SDWebImageProgressiveDownload completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                
+                tempImageView = nil;
+                self.avatarImage = image.copy;
                 if (self.delegate) {
                     if ([self.delegate respondsToSelector:@selector(didUpdateCellDataWithMessageId:)]) {
                         //通知ViewController去刷新tableView
                         [self.delegate didUpdateCellDataWithMessageId:self.messageId];
                     }
                 }
-            });
+            }];
         } else {
             self.avatarImage = [MQChatViewConfig sharedConfig].incomingDefaultAvatarImage;
             if (message.fromType == MQChatMessageOutgoing) {
@@ -134,30 +138,25 @@
         if (!message.image) {
             if (message.imagePath.length > 0) {
                 [self setModelsWithContentImage:[MQChatViewConfig sharedConfig].incomingBubbleImage message:message cellWidth:cellWidth];
-                //新建线程读取远程图片
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-                    NSError *error;
-#warning 这里开发者可以使用自己的图片缓存策略，如SDWebImage
-                    NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:message.imagePath] options:NSDataReadingMappedIfSafe error:&error];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if (error) {
-                            NSLog(@"load image error = %@", error);
+                
+                __block UIImageView *tempimageView = [[UIImageView alloc] init];
+                [tempimageView sd_setImageWithURL:[NSURL URLWithString:message.imagePath] placeholderImage:nil options:SDWebImageProgressiveDownload completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                    
+                    tempimageView = nil;
+                    if (image) {
+                        self.image = image;
+                        [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
+                    } else {
+                        self.image = [MQChatViewConfig sharedConfig].imageLoadErrorImage;
+                        [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
+                    }
+                    
+                    if (self.delegate) {
+                        if ([self.delegate respondsToSelector:@selector(didUpdateCellDataWithMessageId:)]) {
+                            [self.delegate didUpdateCellDataWithMessageId:self.messageId];
                         }
-                        if (imageData) {
-                            UIImage *image = [UIImage imageWithData:imageData];
-                            self.image = image;
-                            [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
-                        } else {
-                            self.image = [MQChatViewConfig sharedConfig].imageLoadErrorImage;
-                            [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
-                        }
-                        if (self.delegate) {
-                            if ([self.delegate respondsToSelector:@selector(didUpdateCellDataWithMessageId:)]) {
-                                [self.delegate didUpdateCellDataWithMessageId:self.messageId];
-                            }
-                        }
-                    });
-                });
+                    }
+                }];
             } else {
                 self.image = [MQChatViewConfig sharedConfig].imageLoadErrorImage;
                 [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
