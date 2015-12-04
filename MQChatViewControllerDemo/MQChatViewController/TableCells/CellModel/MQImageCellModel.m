@@ -174,7 +174,8 @@
 {
     //限定图片的最大直径
     CGFloat maxBubbleDiameter = ceil(cellWidth / 2);  //限定图片的最大直径
-    CGSize contentImageSize = contentImage.size;
+    CGSize contentImageSize = contentImage ? contentImage.size : CGSizeMake(20, 20);
+    
     //先限定图片宽度来计算高度
     CGFloat bubbleWidth = contentImageSize.width < maxBubbleDiameter ? contentImageSize.width : maxBubbleDiameter;
     CGFloat bubbleHeight = ceil(contentImageSize.height/contentImageSize.width*bubbleWidth);
