@@ -14,6 +14,7 @@
 #import "MQImageUtil.h"
 #import "MQAssetUtil.h"
 #import "VoiceConverter.h"
+#import "UIImageView+WebCache.h"
 
 /**
  * 语音播放图片与聊天气泡的间距
@@ -146,17 +147,19 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
             self.avatarImage = message.userAvatarImage;
         } else if (message.userAvatarPath.length > 0) {
             self.avatarPath = message.userAvatarPath;
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-#warning 这里开发者可以使用自己的图片缓存策略，如SDWebImage
-                NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:message.userAvatarPath]];
-                self.avatarImage = [UIImage imageWithData:imageData];
+            
+            __block UIImageView *tempImageView = [UIImageView new];
+            [tempImageView sd_setImageWithURL:[NSURL URLWithString:message.userAvatarPath] placeholderImage:nil options:SDWebImageProgressiveDownload completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                
+                tempImageView = nil;
+                self.avatarImage = image.copy;
                 if (self.delegate) {
                     if ([self.delegate respondsToSelector:@selector(didUpdateCellDataWithMessageId:)]) {
                         //通知ViewController去刷新tableView
                         [self.delegate didUpdateCellDataWithMessageId:self.messageId];
                     }
                 }
-            });
+            }];
         } else {
             self.avatarImage = [MQChatViewConfig sharedConfig].incomingDefaultAvatarImage;
             if (message.fromType == MQChatMessageOutgoing) {
@@ -172,9 +175,9 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
                 //新建线程读取远程图片
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                     NSError *error;
-#warning 这里开发者可以使用自己的文件缓存策略
+                    //这里开发者可以使用自己的文件缓存策略
                     NSData *voiceData = [NSData dataWithContentsOfURL:[NSURL URLWithString:message.voicePath] options:NSDataReadingMappedIfSafe error:&error];
-#warning 美洽服务端传给SDK的语音格式是AMR格式，所以这里将AMR转成了WAV，开发者可根据自己的语音格式进行转换
+                    //美洽服务端传给SDK的语音格式是AMR格式，所以这里将AMR转成了WAV，开发者可根据自己的语音格式进行转换
                     if (message.fromType == MQChatMessageIncoming) {
                         NSString *amrPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
                         amrPath = [amrPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.amr", (int)[NSDate date].timeIntervalSince1970]];
