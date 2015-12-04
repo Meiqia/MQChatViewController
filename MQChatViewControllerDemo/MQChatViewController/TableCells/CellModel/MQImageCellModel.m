@@ -117,8 +117,7 @@
             __block UIImageView *tempImageView = [UIImageView new];
             [tempImageView sd_setImageWithURL:[NSURL URLWithString:message.userAvatarPath] placeholderImage:nil options:SDWebImageProgressiveDownload completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                 
-                tempImageView = nil;
-                self.avatarImage = image.copy;
+                self.avatarImage = tempImageView.image.copy;
                 if (self.delegate) {
                     if ([self.delegate respondsToSelector:@selector(didUpdateCellDataWithMessageId:)]) {
                         //通知ViewController去刷新tableView
@@ -139,12 +138,11 @@
             if (message.imagePath.length > 0) {
                 [self setModelsWithContentImage:[MQChatViewConfig sharedConfig].incomingBubbleImage message:message cellWidth:cellWidth];
                 
-                __block UIImageView *tempimageView = [[UIImageView alloc] init];
-                [tempimageView sd_setImageWithURL:[NSURL URLWithString:message.imagePath] placeholderImage:nil options:SDWebImageProgressiveDownload completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                __block UIImageView *tempImageView = [[UIImageView alloc] init];
+                [tempImageView sd_setImageWithURL:[NSURL URLWithString:message.imagePath] placeholderImage:nil options:SDWebImageProgressiveDownload completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                     
-                    tempimageView = nil;
                     if (image) {
-                        self.image = image;
+                        self.image = tempImageView.image.copy;
                         [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
                     } else {
                         self.image = [MQChatViewConfig sharedConfig].imageLoadErrorImage;

@@ -536,7 +536,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         return;
     }
     [self addMessagesToTableViewWithMessages:messages isInsertAtFirstIndex:false];
-    [self playReceivedMessageSound];
+    //eventMessage不响铃声
+    if (messages.count > 1 || ![[messages firstObject] isKindOfClass:[MQEventMessage class]]) {
+        [self playReceivedMessageSound];
+    }
     if (self.delegate) {
         if ([self.delegate respondsToSelector:@selector(didReceiveMessage)]) {
             [self.delegate didReceiveMessage];
