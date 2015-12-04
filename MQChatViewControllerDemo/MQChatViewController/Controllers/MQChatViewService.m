@@ -54,6 +54,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [self setClientOnline];
         isThereNoAgent = false;
         addedNoAgentTip = false;
+        //监听
 #endif
     }
     return self;
@@ -530,27 +531,20 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     }
 }
 
-- (void)didReceiveTextMessage:(MQTextMessage *)message {
-    MQTextCellModel *cellModel = [[MQTextCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
-    [self addCellModelAfterReceivedWithCellModel:cellModel];
-}
-
-- (void)didReceiveImageMessage:(MQImageMessage *)message {
-    MQImageCellModel *cellModel = [[MQImageCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
-    [self addCellModelAfterReceivedWithCellModel:cellModel];
-}
-
-- (void)didReceiveVoiceMessage:(MQVoiceMessage *)message {
-    MQVoiceCellModel *cellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:message cellWidth:self.chatViewWidth delegate:self];
-    [self addCellModelAfterReceivedWithCellModel:cellModel];
-}
-
-- (void)didReceiveEventMessage:(MQEventMessage *)eventMessage {
-    if (![MQChatViewConfig sharedConfig].enableEventDispaly) {
+- (void)didReceiveNewMessages:(NSArray *)messages {
+    if (messages.count == 0) {
         return;
     }
-    MQEventCellModel *cellModel = [[MQEventCellModel alloc] initCellModelWithMessage:eventMessage cellWidth:self.chatViewWidth];
-    [self addCellModelAfterReceivedWithCellModel:cellModel];
+    [self addMessagesToTableViewWithMessages:messages isInsertAtFirstIndex:false];
+    //eventMessage不响铃声
+    if (messages.count > 1 || ![[messages firstObject] isKindOfClass:[MQEventMessage class]]) {
+        [self playReceivedMessageSound];
+    }
+    if (self.delegate) {
+        if ([self.delegate respondsToSelector:@selector(didReceiveMessage)]) {
+            [self.delegate didReceiveMessage];
+        }
+    }
 }
 
 - (void)didReceiveTipsContent:(NSString *)tipsContent {

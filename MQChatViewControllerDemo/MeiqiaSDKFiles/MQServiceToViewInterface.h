@@ -30,25 +30,11 @@
 - (void)didReceiveHistoryMessages:(NSArray *)messages;
 
 /**
- *  收到了一条MQTextMessage类型的即时消息
- *
- *  @param message MQTextMessage类型
+ * 获取到了新消息
+ * @param messages 消息数组，元素为MQBaseMessage类型
+ * @warning 该数组是按时间从旧到新排序
  */
-- (void)didReceiveTextMessage:(MQTextMessage *)message;
-
-/**
- *  收到了一条MQImageMessage类型的即时消息
- *
- *  @param message MQImageMessage类型
- */
-- (void)didReceiveImageMessage:(MQImageMessage *)message;
-
-/**
- *  收到了一条MQVoiceMessage类型的即时消息
- *
- *  @param message MQVoiceMessage类型
- */
-- (void)didReceiveVoiceMessage:(MQVoiceMessage *)message;
+- (void)didReceiveNewMessages:(NSArray *)messages;
 
 /**
  *  收到了一条辅助信息（目前只有“客服不在线”、“被转接的消息”）
@@ -56,13 +42,6 @@
  *  @param tipsContent 辅助信息
  */
 - (void)didReceiveTipsContent:(NSString *)tipsContent;
-
-/**
- *  收到了一条事件消息
- *
- *  @param eventMessage 事件消息
- */
-- (void)didReceiveEventMessage:(MQEventMessage *)eventMessage;
 
 /**
  * 发送文字消息结果
