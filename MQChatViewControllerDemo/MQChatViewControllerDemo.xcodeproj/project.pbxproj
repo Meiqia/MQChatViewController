@@ -79,7 +79,7 @@
 		CCF5DB711C049A0E0092FDD6 /* MQChatFileUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF5DB611C049A0E0092FDD6 /* MQChatFileUtil.m */; };
 		CCF5DB721C049A0E0092FDD6 /* MQChatRegexUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF5DB631C049A0E0092FDD6 /* MQChatRegexUtil.m */; };
 		CCF5DB731C049A0E0092FDD6 /* MQDateFormatterUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF5DB651C049A0E0092FDD6 /* MQDateFormatterUtil.m */; };
-		CCF5DB741C049A0E0092FDD6 /* MQDeviceFrameUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF5DB671C049A0E0092FDD6 /* MQDeviceFrameUtil.m */; };
+		CCF5DB741C049A0E0092FDD6 /* MQChatDeviceUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF5DB671C049A0E0092FDD6 /* MQChatDeviceUtil.m */; };
 		CCF5DB751C049A0E0092FDD6 /* MQImageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF5DB691C049A0E0092FDD6 /* MQImageUtil.m */; };
 		CCF5DB761C049A0E0092FDD6 /* MQStringSizeUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF5DB6B1C049A0E0092FDD6 /* MQStringSizeUtil.m */; };
 		CCF8B7301C0C161600CE9E4C /* MQChatTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CCF8B72F1C0C161600CE9E4C /* MQChatTableView.m */; };
@@ -263,8 +263,8 @@
 		CCF5DB631C049A0E0092FDD6 /* MQChatRegexUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQChatRegexUtil.m; sourceTree = "<group>"; };
 		CCF5DB641C049A0E0092FDD6 /* MQDateFormatterUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQDateFormatterUtil.h; sourceTree = "<group>"; };
 		CCF5DB651C049A0E0092FDD6 /* MQDateFormatterUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQDateFormatterUtil.m; sourceTree = "<group>"; };
-		CCF5DB661C049A0E0092FDD6 /* MQDeviceFrameUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQDeviceFrameUtil.h; sourceTree = "<group>"; };
-		CCF5DB671C049A0E0092FDD6 /* MQDeviceFrameUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQDeviceFrameUtil.m; sourceTree = "<group>"; };
+		CCF5DB661C049A0E0092FDD6 /* MQChatDeviceUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQChatDeviceUtil.h; sourceTree = "<group>"; };
+		CCF5DB671C049A0E0092FDD6 /* MQChatDeviceUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQChatDeviceUtil.m; sourceTree = "<group>"; };
 		CCF5DB681C049A0E0092FDD6 /* MQImageUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQImageUtil.h; sourceTree = "<group>"; };
 		CCF5DB691C049A0E0092FDD6 /* MQImageUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQImageUtil.m; sourceTree = "<group>"; };
 		CCF5DB6A1C049A0E0092FDD6 /* MQStringSizeUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQStringSizeUtil.h; sourceTree = "<group>"; };
@@ -745,8 +745,8 @@
 				CCF5DB631C049A0E0092FDD6 /* MQChatRegexUtil.m */,
 				CCF5DB641C049A0E0092FDD6 /* MQDateFormatterUtil.h */,
 				CCF5DB651C049A0E0092FDD6 /* MQDateFormatterUtil.m */,
-				CCF5DB661C049A0E0092FDD6 /* MQDeviceFrameUtil.h */,
-				CCF5DB671C049A0E0092FDD6 /* MQDeviceFrameUtil.m */,
+				CCF5DB661C049A0E0092FDD6 /* MQChatDeviceUtil.h */,
+				CCF5DB671C049A0E0092FDD6 /* MQChatDeviceUtil.m */,
 				CCF5DB681C049A0E0092FDD6 /* MQImageUtil.h */,
 				CCF5DB691C049A0E0092FDD6 /* MQImageUtil.m */,
 				CCF5DB6A1C049A0E0092FDD6 /* MQStringSizeUtil.h */,
@@ -1003,7 +1003,7 @@
 				CCF8B7571C0C165500CE9E4C /* MQMessageDateCell.m in Sources */,
 				CCF8B7581C0C165500CE9E4C /* MQTextMessageCell.m in Sources */,
 				CCF5DB501C0499D70092FDD6 /* MQTextMessage.m in Sources */,
-				CCF5DB741C049A0E0092FDD6 /* MQDeviceFrameUtil.m in Sources */,
+				CCF5DB741C049A0E0092FDD6 /* MQChatDeviceUtil.m in Sources */,
 				CCF8B74F1C0C165500CE9E4C /* MQImageCellModel.m in Sources */,
 				CCAD3D2C1BE7BD2C00B87A23 /* wav.mm in Sources */,
 				0B1CCF541C117D2600559F85 /* SDWebImageDownloaderOperation.m in Sources */,

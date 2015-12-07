@@ -72,5 +72,6 @@
 
 "load_history_message_error"    = "抱歉，没有正确获取到历史消息-_-";
 
+"microphone_denied"     = "请在系统设置中允许该App访问麦克风";
 
 

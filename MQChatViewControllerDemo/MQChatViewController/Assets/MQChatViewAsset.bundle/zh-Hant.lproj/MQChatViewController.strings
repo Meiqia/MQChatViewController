@@ -71,3 +71,5 @@
 "make_email_to"         = "向該email發送郵件";
 
 "load_history_message_error"    = "抱歉，沒有正確獲取到歷史消息-_-";
+
+"microphone_denied"     = "請在系統設置中允許該App訪問麥克風";
