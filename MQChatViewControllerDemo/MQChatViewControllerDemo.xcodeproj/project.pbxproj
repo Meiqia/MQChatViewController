@@ -759,18 +759,18 @@
 			isa = PBXGroup;
 			children = (
 				CCF8B7321C0C165500CE9E4C /* MQCellModelProtocol.h */,
-				CCF8B7331C0C165500CE9E4C /* MQEventCellModel.h */,
-				CCF8B7341C0C165500CE9E4C /* MQEventCellModel.m */,
-				CCF8B7351C0C165500CE9E4C /* MQImageCellModel.h */,
-				CCF8B7361C0C165500CE9E4C /* MQImageCellModel.m */,
-				CCF8B7371C0C165500CE9E4C /* MQMessageDateCellModel.h */,
-				CCF8B7381C0C165500CE9E4C /* MQMessageDateCellModel.m */,
 				CCF8B7391C0C165500CE9E4C /* MQTextCellModel.h */,
 				CCF8B73A1C0C165500CE9E4C /* MQTextCellModel.m */,
-				CCF8B73B1C0C165500CE9E4C /* MQTipsCellModel.h */,
-				CCF8B73C1C0C165500CE9E4C /* MQTipsCellModel.m */,
+				CCF8B7351C0C165500CE9E4C /* MQImageCellModel.h */,
+				CCF8B7361C0C165500CE9E4C /* MQImageCellModel.m */,
 				CCF8B73D1C0C165500CE9E4C /* MQVoiceCellModel.h */,
 				CCF8B73E1C0C165500CE9E4C /* MQVoiceCellModel.m */,
+				CCF8B7331C0C165500CE9E4C /* MQEventCellModel.h */,
+				CCF8B7341C0C165500CE9E4C /* MQEventCellModel.m */,
+				CCF8B7371C0C165500CE9E4C /* MQMessageDateCellModel.h */,
+				CCF8B7381C0C165500CE9E4C /* MQMessageDateCellModel.m */,
+				CCF8B73B1C0C165500CE9E4C /* MQTipsCellModel.h */,
+				CCF8B73C1C0C165500CE9E4C /* MQTipsCellModel.m */,
 			);
 			path = CellModel;
 			sourceTree = "<group>";
