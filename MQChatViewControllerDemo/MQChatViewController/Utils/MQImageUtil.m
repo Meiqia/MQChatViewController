@@ -9,7 +9,6 @@
 #import "MQImageUtil.h"
 #import <Accelerate/Accelerate.h>
 #import "MQBundleUtil.h"
-#import <AVFoundation/AVFoundation.h>
 
 @implementation MQImageUtil
 
@@ -173,40 +172,7 @@
     view.layer.mask = imageViewMask.layer;
 }
 
-+ (NSString *)isDeviceSupportImageSourceType:(UIImagePickerControllerSourceType)sourceType {
-    if (TARGET_IPHONE_SIMULATOR && (int)sourceType == UIImagePickerControllerSourceTypeCamera) {
-        return @"simulator_not_support_camera";
-    }
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
-        //iOS7以上系统
-        AVAuthorizationStatus status =[AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
-        if ((int)sourceType == UIImagePickerControllerSourceTypeCamera && (status == AVAuthorizationStatusDenied || status == AVAuthorizationStatusRestricted)) {
-            if ((int)sourceType == UIImagePickerControllerSourceTypeCamera){
-                return @"not_access_camera";
-            } else if ((int)sourceType == UIImagePickerControllerSourceTypePhotoLibrary) {
-                return @"not_access_photos";
-            } else {
-                return nil;
-            }
-        } else {
-            return @"ok";
-        }
-    } else {
-        AVCaptureDevice *inputDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-        AVCaptureDeviceInput *captureInput = [AVCaptureDeviceInput deviceInputWithDevice:inputDevice error:nil];
-        if (!captureInput) {
-            if ((int)sourceType == UIImagePickerControllerSourceTypeCamera){
-                return @"not_access_camera";
-            } else if ((int)sourceType == UIImagePickerControllerSourceTypePhotoLibrary) {
-                return @"not_access_photos";
-            } else {
-                return nil;
-            }
-        } else {
-            return @"ok";
-        }
-    }
-}
+
 
 
 @end

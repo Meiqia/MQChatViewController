@@ -1,5 +1,5 @@
 //
-//  MQDeviceFrameUtil.h
+//  MQChatDeviceUtil.h
 //  MeiQiaSDK
 //
 //  Created by ijinmao on 15/10/28.
@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface MQDeviceFrameUtil : NSObject
+@interface MQChatDeviceUtil : NSObject
 /**
  * 获取设备屏幕的frame（包括导航栏）；
  */
@@ -44,5 +44,19 @@
  */
 +(CGRect)getDeviceScreenRectWithoutTabBar:(UIViewController*)viewController;
 
+/**
+ *  判断该设备是否支持打开系统的media工具，如相册或相机
+ *
+ *  @param sourceType UIImagePickerControllerSourceType
+ *
+ *  @return 如果支持则返回@"ok" 如果不支持返回一个localizedString 如果返回nil则表示不支持该sourceType
+ */
++ (NSString *)isDeviceSupportImageSourceType:(UIImagePickerControllerSourceType)sourceType;
+
+/**
+ *  设备是否支持麦克风
+ *
+ */
++ (void)isDeviceSupportMicrophoneWithPermission:(void (^)(BOOL permission))permission;
 
 @end

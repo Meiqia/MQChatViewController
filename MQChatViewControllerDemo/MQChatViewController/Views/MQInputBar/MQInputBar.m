@@ -260,7 +260,7 @@ resignKeyboardHighlightedImage:(UIImage *)resignKeyboardHighlightedImage
 }
 
 - (void)recordBtnLongPressed:(UILongPressGestureRecognizer*) longPressedRecognizer{
-    
+        
     if(longPressedRecognizer.state == UIGestureRecognizerStateBegan) {
         if(self.delegate){
             if ([self.delegate respondsToSelector:@selector(beginRecord:)]) {

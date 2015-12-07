@@ -425,7 +425,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 #pragma 开发者可将自定义的message添加到此方法中
 //将消息数组中的消息转换成cellModel，并添加到cellModels中去
-- (void)addMessagesToTableViewWithMessages:(NSArray *)messages isInsertAtFirstIndex:(BOOL)isInsertAtFirstIndex{
+- (void)saveToCellModelsWithMessages:(NSArray *)messages isInsertAtFirstIndex:(BOOL)isInsertAtFirstIndex{
     NSMutableArray *historyMessages = [[NSMutableArray alloc] initWithArray:messages];
     if (isInsertAtFirstIndex) {
         //如果是历史消息，则将历史消息插入到cellModels的首部
@@ -474,7 +474,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             }
             [weakSelf updateChatTitleWithAgentName:agentName];
             if (receivedMessages) {
-                [weakSelf addMessagesToTableViewWithMessages:receivedMessages isInsertAtFirstIndex:false];
+                [weakSelf saveToCellModelsWithMessages:receivedMessages isInsertAtFirstIndex:false];
             }
         } receiveMessageDelegate:self];
         return;
@@ -487,7 +487,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         }
         [weakSelf updateChatTitleWithAgentName:agentName];
         if (receivedMessages) {
-            [weakSelf addMessagesToTableViewWithMessages:receivedMessages isInsertAtFirstIndex:false];
+            [weakSelf saveToCellModelsWithMessages:receivedMessages isInsertAtFirstIndex:false];
             if (weakSelf.delegate) {
                 if ([weakSelf.delegate respondsToSelector:@selector(scrollTableViewToBottom)]) {
                     [weakSelf.delegate scrollTableViewToBottom];
@@ -521,7 +521,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 - (void)didReceiveHistoryMessages:(NSArray *)messages {
     NSInteger messageNumber = 0;
     if (messages.count > 0) {
-        [self addMessagesToTableViewWithMessages:messages isInsertAtFirstIndex:true];
+        [self saveToCellModelsWithMessages:messages isInsertAtFirstIndex:true];
         messageNumber = messages.count;
     }
     if (self.delegate) {
@@ -535,11 +535,15 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     if (messages.count == 0) {
         return;
     }
-    [self addMessagesToTableViewWithMessages:messages isInsertAtFirstIndex:false];
+    //转换message to cellModel，并缓存
+    [self saveToCellModelsWithMessages:messages isInsertAtFirstIndex:false];
     //eventMessage不响铃声
     if (messages.count > 1 || ![[messages firstObject] isKindOfClass:[MQEventMessage class]]) {
         [self playReceivedMessageSound];
     }
+    //更新界面title
+    [self updateChatTitleWithAgentName:[MQServiceToViewInterface getCurrentAgentName]];
+    //通知界面收到了消息
     if (self.delegate) {
         if ([self.delegate respondsToSelector:@selector(didReceiveMessage)]) {
             [self.delegate didReceiveMessage];

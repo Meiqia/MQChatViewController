@@ -12,9 +12,9 @@
 
 "wait_agent"          = "Scheduling an agent for you...";
 
-"not_access_camera"   = "Please go to Settings — Privacy — Photos. Then select ON for Meiqia.";
+"not_access_camera"   = "Please go to Settings — Privacy — Photos. Then select ON for This App.";
 
-"not_access_photos"   = "Please go to Settings — Privacy — Camera. Then select ON for Meiqia.";
+"not_access_photos"   = "Please go to Settings — Privacy — Camera. Then select ON for This App.";
 
 "display_new_message" = "Received a new message";
 
@@ -71,3 +71,5 @@
 "make_email_to"         = "Send email";
 
 "load_history_message_error"    = "Sorry, failed to load history messages";
+
+"microphone_denied"     = "Please go to Settings. And open microphone permission for This App.";
