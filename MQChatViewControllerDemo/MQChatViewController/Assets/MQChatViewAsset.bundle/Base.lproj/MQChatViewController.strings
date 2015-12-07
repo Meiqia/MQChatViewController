@@ -70,6 +70,7 @@
 
 "make_email_to"         = "向该email发送邮件";
 
+"load_history_message_error"    = "抱歉，没有正确获取到历史消息-_-";
 
 
 

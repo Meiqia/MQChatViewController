@@ -482,7 +482,8 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
 #pragma MQServiceToViewInterfaceErrorDelegate 后端返回的数据的错误委托方法
 - (void)getLoadHistoryMessageError {
-    [MQToast showToast:[MQBundleUtil localizedStringForKey:@"recode_time_too_short"] duration:1.0 window:self.view];
+    [self.chatTableView finishLoadingTopRefreshViewWithMessagesNumber:0 isLoadOver:false];
+    [MQToast showToast:[MQBundleUtil localizedStringForKey:@"load_history_message_error"] duration:1.0 window:self.view];
 }
 
 /**

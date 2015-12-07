@@ -590,6 +590,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     }
     if (isThereNoAgent) {
         [self addSystemTips];
+        [self updateChatTitleWithAgentName:[MQBundleUtil localizedStringForKey:@"no_agent_title"]];
     }
     NSInteger index = [self getIndexOfCellWithMessageId:oldMessageId];
     if (index < 0) {
