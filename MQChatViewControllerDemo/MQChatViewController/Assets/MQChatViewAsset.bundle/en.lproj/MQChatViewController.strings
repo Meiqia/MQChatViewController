@@ -69,3 +69,5 @@
 "open_url_by_safari"    = "Open this url by Safari";
 
 "make_email_to"         = "Send email";
+
+"load_history_message_error"    = "Sorry, failed to load history messages";
