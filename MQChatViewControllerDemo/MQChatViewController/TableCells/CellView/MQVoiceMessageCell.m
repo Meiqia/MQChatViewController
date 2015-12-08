@@ -30,6 +30,7 @@
     NSData *voiceData;
     UIView *notPlayPointView;
     BOOL isPlaying;
+    BOOL isLoadVoiceSuccess;
 }
 
 - (void)dealloc {
@@ -39,6 +40,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         isPlaying = false;
+        isLoadVoiceSuccess = false;
         //初始化头像
         avatarImageView = [[UIImageView alloc] init];
         avatarImageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -86,7 +88,7 @@
 
 #pragma 点击语音的事件
 - (void)didTapVoiceBubbleGesture:(id)sender {
-    if (!voiceData) {
+    if (!voiceData || !isLoadVoiceSuccess) {
         return ;
     }
     notPlayPointView.hidden = true;
@@ -131,24 +133,34 @@
     bubbleImageView.image = cellModel.bubbleImage;
     bubbleImageView.frame = cellModel.bubbleImageFrame;
     
+    //是否成功获取到语音数据
+    isLoadVoiceSuccess = cellModel.isLoadVoiceSuccess;
+    
     //消息图片
     if (!voiceImageView.isAnimating) {
-        voiceImageView.image = [MQAssetUtil voiceAnimationGreen3];
-        UIImage *animationImage1 = [MQAssetUtil voiceAnimationGreen1];
-        UIImage *animationImage2 = [MQAssetUtil voiceAnimationGreen2];
-        UIImage *animationImage3 = [MQAssetUtil voiceAnimationGreen3];
-        if (cellModel.cellFromType == MQChatCellIncoming) {
-            animationImage1 = [MQAssetUtil voiceAnimationGray1];
-            animationImage2 = [MQAssetUtil voiceAnimationGray2];
-            animationImage3 = [MQAssetUtil voiceAnimationGray3];
-            voiceImageView.image = [MQAssetUtil voiceAnimationGray3];
+        if (cellModel.isLoadVoiceSuccess) {
+            voiceImageView.image = [MQAssetUtil voiceAnimationGreen3];
+            UIImage *animationImage1 = [MQAssetUtil voiceAnimationGreen1];
+            UIImage *animationImage2 = [MQAssetUtil voiceAnimationGreen2];
+            UIImage *animationImage3 = [MQAssetUtil voiceAnimationGreen3];
+            if (cellModel.cellFromType == MQChatCellIncoming) {
+                animationImage1 = [MQAssetUtil voiceAnimationGray1];
+                animationImage2 = [MQAssetUtil voiceAnimationGray2];
+                animationImage3 = [MQAssetUtil voiceAnimationGray3];
+                voiceImageView.image = [MQAssetUtil voiceAnimationGray3];
+            }
+            voiceImageView.animationImages = [NSArray arrayWithObjects:
+                                              animationImage1,
+                                              animationImage2,
+                                              animationImage3,nil];
+            voiceImageView.animationDuration = 1;
+            voiceImageView.animationRepeatCount = 0;
+        } else {
+            voiceImageView.image = [MQAssetUtil voiceAnimationGreenError];
+            if (cellModel.cellFromType == MQChatCellIncoming) {
+                voiceImageView.image = [MQAssetUtil voiceAnimationGrayError];
+            }
         }
-        voiceImageView.animationImages = [NSArray arrayWithObjects:
-                                          animationImage1,
-                                          animationImage2,
-                                          animationImage3,nil];
-        voiceImageView.animationDuration = 1;
-        voiceImageView.animationRepeatCount = 0;
     }
     
     //刷新语音时长label
@@ -170,7 +182,7 @@
         loadingIndicator.hidden = false;
         [loadingIndicator startAnimating];
     }
-
+    
     //刷新indicator
     sendingIndicator.hidden = true;
     [sendingIndicator stopAnimating];

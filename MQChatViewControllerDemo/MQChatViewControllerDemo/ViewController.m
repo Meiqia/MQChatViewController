@@ -26,6 +26,7 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
     // Do any additional setup after loading the view, typically from a nib.
     
     tableCellTextArray = @[
+                     @"Below are chat view styles",
                      @"push chatView",
                      @"present chatView",
                      @"chatViewStyle1",
@@ -59,28 +60,28 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:true];
     switch (indexPath.row) {
-        case 0:
+        case 1:
             [self pushChatView];
             break;
-        case 1:
+        case 2:
             [self presentChatView];
             break;
-        case 2:
+        case 3:
             [self chatViewStyle1];
             break;
-        case 3:
+        case 4:
             [self chatViewStyle2];
             break;
-        case 4:
+        case 5:
             [self chatViewStyle3];
             break;
-        case 5:
+        case 6:
             [self chatViewStyle4];
             break;
-        case 6:
+        case 7:
             [self chatViewStyle5];
             break;
-        case 7:
+        case 8:
             [self chatViewStyle6];
             break;
         default:
@@ -101,7 +102,13 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[tableCellTextArray objectAtIndex:indexPath.row]];
     if (!cell){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:[tableCellTextArray objectAtIndex:indexPath.row]];
+    }
+    if (indexPath.row == 0) {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.textLabel.textColor = [UIColor blueColor];
+    } else {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.textLabel.textColor = [UIColor darkTextColor];
     }
     cell.textLabel.text = [tableCellTextArray objectAtIndex:indexPath.row];
     return cell;
@@ -114,6 +121,7 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
 
 - (void)presentChatView {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    [chatViewManager enableMessageImageMask:false];
     [chatViewManager presentMQChatViewControllerInViewController:self];
 }
 
@@ -186,6 +194,7 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
     [chatViewManager setNavTitleText:@"美洽SDK"];
     [chatViewManager setNavigationBarTintColor:[UIColor redColor]];
     [chatViewManager setNavRightButton:rightButton];
+    [chatViewManager enableMessageImageMask:false];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 

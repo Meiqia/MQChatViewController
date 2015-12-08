@@ -17,6 +17,7 @@
 @implementation MQImageMessageCell {
     UIImageView *avatarImageView;
     UIImageView *bubbleImageView;
+    UIImageView *bubbleContentImageView;
     UIActivityIndicatorView *sendingIndicator;
     UIImageView *failureImageView;
     UIActivityIndicatorView *loadingIndicator;
@@ -33,6 +34,11 @@
         UILongPressGestureRecognizer *longPressBubbleGesture=[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressBubbleView:)];
         [bubbleImageView addGestureRecognizer:longPressBubbleGesture];
         [self.contentView addSubview:bubbleImageView];
+        //初始化contentImageView
+        bubbleContentImageView = [[UIImageView alloc] init];
+        bubbleContentImageView.layer.masksToBounds = true;
+        bubbleContentImageView.layer.cornerRadius = 6.0;
+        [bubbleImageView addSubview:bubbleContentImageView];
         //初始化indicator
         sendingIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         sendingIndicator.hidden = YES;
@@ -75,15 +81,16 @@
     //消息图片
     loadingIndicator.frame = cellModel.loadingIndicatorFrame;
     if (cellModel.image) {
-        if ([MQChatViewConfig sharedConfig].enableImageMessageMask) {
+        if ([MQChatViewConfig sharedConfig].enableMessageImageMask) {
             bubbleImageView.image = cellModel.image;
             [bubbleImageView setupImageViewer];
             [MQImageUtil makeMaskView:bubbleImageView withImage:cellModel.bubbleImage];
-        }else{
+        } else {
+            bubbleImageView.userInteractionEnabled = true;
             bubbleImageView.image = cellModel.bubbleImage;
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:cellModel.image];
-            imageView.frame = cellModel.imageViewFrame;
-            [bubbleImageView addSubview:imageView];
+            bubbleContentImageView.image = cellModel.image;
+            bubbleContentImageView.frame = cellModel.contentImageViewFrame;
+            [bubbleContentImageView setupImageViewer];
         }
         
         loadingIndicator.hidden = true;

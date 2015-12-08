@@ -76,23 +76,25 @@ Demo - 示例
 ---
 开发者可参考 Demo 中的用法，对聊天界面进行配置，来进行基本的自定义功能，例如下面的示例：
 
-**开发者可这样 push 出聊天界面**
+**开发者可这样 push 出聊天界面，效果如下：**
 ```objective-c
 	MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 ```
 ![screenshot1](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo1.gif)
 
+--------
 
-**开发者可这样 present 出聊天界面的模态视图**
+**开发者可这样 present 出聊天界面的模态视图，效果如下：**
 ```objective-c
 	MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager presentMQChatViewControllerInViewController:self];
 ```
 ![screenshot2](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo2.gif)
 
+--------
 
-**开发者可这样配置：底部按钮、修改气泡颜色、文字颜色、使头像设为圆形**
+**开发者可这样配置：底部按钮、修改气泡颜色、文字颜色、使头像设为圆形，效果如下：**
 ```objective-c
 	[chatViewManager setPhotoSenderImage:photoImage highlightedImage:photoHighlightedImage];
     [chatViewManager setVoiceSenderImage:voiceImage highlightedImage:voiceHighlightedImage];
@@ -107,8 +109,9 @@ Demo - 示例
 ```
 ![screenshot3](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo3.gif)
 
+--------
 
-**开发者可这样配置：是否支持发送语音、是否显示本机头像、修改气泡的样式**
+**开发者可这样配置：是否支持发送语音、是否显示本机头像、修改气泡的样式，效果如下：**
 ```objective-c
     [chatViewManager enableSendVoiceMessage:false];
     [chatViewManager enableClientAvatar:false];
@@ -119,8 +122,9 @@ Demo - 示例
 ```
 ![screenshot4](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo4.gif)
 
+--------
 
-**开发者可这样配置：增加可点击链接的正则表达式( Library 本身已支持多种格式链接，如未满足需求可增加)、增加欢迎语、是否开启消息声音、修改接受消息的铃声**
+**开发者可这样配置：增加可点击链接的正则表达式( Library 本身已支持多种格式链接，如未满足需求可增加)、增加欢迎语、是否开启消息声音、修改接受消息的铃声，效果如下：**
 ```objective-c
 	[chatViewManager setMessageLinkRegex:@"((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)|([a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)"];
     [chatViewManager enableChatWelcome:true];
@@ -131,18 +135,18 @@ Demo - 示例
 ```
 ![screenshot5](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo5.gif)
 
+--------
 
-
-**如果 tableView 没有在底部，开发者可这样打开消息的提示**
+**如果 tableView 没有在底部，开发者可这样打开消息的提示，效果如下：**
 ```objective-c
 	[chatViewManager enableShowNewMessageAlert:true];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 ```
 ![screenshot6](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo6.gif)
 
+--------
 
-
-**开发者可这样配置：是否支持下拉刷新、修改下拉刷新颜色、增加导航栏标题**
+**开发者可这样配置：是否支持下拉刷新、修改下拉刷新颜色、增加导航栏标题，效果如下：**
 ```objective-c
 	[chatViewManager enableTopPullRefresh:true];
     [chatViewManager setPullRefreshColor:[UIColor redColor]];
@@ -151,8 +155,9 @@ Demo - 示例
 ```
 ![screenshot7](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo7.gif)
 
+--------
 
-**开发者可这样修改导航栏颜色、导航栏左右键**
+**开发者可这样修改导航栏颜色、导航栏左右键、取消图片消息的mask效果，效果如下：**
 ```objective-c
 	[chatViewManager setNavTitleText:@"美洽SDK"];
     [chatViewManager setNavigationBarTintColor:[UIColor redColor]];
@@ -304,7 +309,6 @@ Localization - 国际化/本地化
 To-do-list - 待修复问题
 ---
 由于 SDK 发布催的很紧，以下问题还没有得到妥善解决，但影响不大，所以还没有修复，开发者打怪得分后可提 PR ^.^：
-* tableView 中有图片显示在屏幕上，转屏会很卡；(测试显示，iOS 6 和iOS 7 不会出现卡顿)
 * 目前只支持单张图片全屏浏览，还不支持多张图片浏览；
 * 下拉刷新的瞬间，tableView 会跳跃一下，给人造成一种"卡了一下"的感觉；
 * 启动上拉刷新(底部刷新)，只显示了 loading 的 indicator，没有显示出 loading 的 path 效果；

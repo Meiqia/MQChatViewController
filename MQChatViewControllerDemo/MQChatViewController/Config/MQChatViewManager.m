@@ -90,9 +90,12 @@
     if ([MQChatViewConfig sharedConfig].navTitleText) {
         viewController.navigationItem.title = [MQChatViewConfig sharedConfig].navTitleText;
         if ([MQChatViewConfig sharedConfig].navBarTintColor) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
             navigationController.navigationBar.titleTextAttributes = @{
                                                                        UITextAttributeTextColor : [MQChatViewConfig sharedConfig].navBarTintColor
                                                                        };
+#pragma clang diagnostic pop
         }
     }
 }
@@ -160,9 +163,9 @@
     chatViewConfig.outgoingBubbleColor = bubbleColor;
 }
 
-- (void)enableImageMessageMask:(BOOL)enable
+- (void)enableMessageImageMask:(BOOL)enable
 {
-    chatViewConfig.enableImageMessageMask = enable;
+    chatViewConfig.enableMessageImageMask = enable;
 }
 
 - (void)setEventTextColor:(UIColor *)textColor {

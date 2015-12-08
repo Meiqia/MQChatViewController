@@ -83,7 +83,7 @@
 /**
  * 从服务端获取更多消息
  *
- * @param msgDate 获取该日期之前的历史消息;
+ * @param msgDate 获取该日期之前的历史消息
  * @param messagesNum 获取消息的数量
  */
 + (void)getServerHistoryMessagesWithMsgDate:(NSDate *)msgDate

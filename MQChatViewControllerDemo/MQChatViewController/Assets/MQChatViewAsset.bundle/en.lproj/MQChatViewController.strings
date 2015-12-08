@@ -71,8 +71,5 @@
 "make_email_to"         = "Send email";
 
 "load_history_message_error"    = "Sorry, failed to load history messages";
-<<<<<<< HEAD
-=======
 
 "microphone_denied"     = "Please go to Settings. And open microphone permission for This App.";
->>>>>>> Meiqia/master
