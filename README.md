@@ -323,7 +323,7 @@ Vendors - 用到的第三方开源库
 第三方开源库 | 说明
 ----- | -----
 VoiceConvert | AMR 和 WAV 语音格式的互转；没找到出处，哪位童鞋找到来源后，请更新下文档~
-[MLAudioRecorder](https://github.com/molon/MLAudioRecorder) | 边录边转码，播放网络音频 Button (本地缓存)，实时语音。
+[MLAudioRecorder](https://github.com/molon/MLAudioRecorder) | 边录边转码，播放网络音频 Button (本地缓存)，实时语音。**注意**，由于该开源项目中的 [lame.framework](https://github.com/molon/MLAudioRecorder/tree/master/MLRecorder/MLAudioRecorder/mp3_en_de/lame.framework) 不支持 `bitCode` ，所以我们去掉了该项目中有关 MP3 的文件；
 [MHFacebookImageViewer](https://github.com/michaelhenry/MHFacebookImageViewer) | 图片查看器；**注意**，我们对该开源库进行了修改，以支持单击关闭Viewer等一些操作，该修改版本可见[MHFacebookImageViewer](https://github.com/ijinmao/MHFacebookImageViewer)；
 [FBDigitalFont](https://github.com/lyokato/FBDigitalFont) | 类 LED 显示效果，用于本项目中的语音倒计时显示；
 [GrowingTextView](https://github.com/HansPinckaers/GrowingTextView) | 随文字改变高度的的 textView，用于本项目中的聊天输入框；

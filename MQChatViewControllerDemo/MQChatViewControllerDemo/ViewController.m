@@ -175,7 +175,6 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager enableShowNewMessageAlert:true];
     [chatViewManager pushMQChatViewControllerInViewController:self];
-
 }
 
 - (void)chatViewStyle5 {
