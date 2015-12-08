@@ -77,6 +77,7 @@ Demo - 示例
 开发者可参考 Demo 中的用法，对聊天界面进行配置，来进行基本的自定义功能，例如下面的示例：
 
 ![screenshot1](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo1.gif)
+
 **开发者可这样 push 出聊天界面，效果如上图**
 ```objective-c
 	MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
@@ -84,6 +85,7 @@ Demo - 示例
 ```
 
 ![screenshot2](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo2.gif)
+
 **开发者可这样 present 出聊天界面的模态视图，效果如上图**
 ```objective-c
 	MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
@@ -91,6 +93,7 @@ Demo - 示例
 ```
 
 ![screenshot3](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo3.gif)
+
 **开发者可这样配置：底部按钮、修改气泡颜色、文字颜色、使头像设为圆形，效果如上图**
 ```objective-c
 	[chatViewManager setPhotoSenderImage:photoImage highlightedImage:photoHighlightedImage];
@@ -106,6 +109,7 @@ Demo - 示例
 ```
 
 ![screenshot4](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo4.gif)
+
 **开发者可这样配置：是否支持发送语音、是否显示本机头像、修改气泡的样式，效果如上图**
 ```objective-c
     [chatViewManager enableSendVoiceMessage:false];
@@ -117,6 +121,7 @@ Demo - 示例
 ```
 
 ![screenshot5](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo5.gif)
+
 **开发者可这样配置：增加可点击链接的正则表达式( Library 本身已支持多种格式链接，如未满足需求可增加)、增加欢迎语、是否开启消息声音、修改接受消息的铃声，效果如上图**
 ```objective-c
 	[chatViewManager setMessageLinkRegex:@"((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)|([a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)"];
@@ -128,6 +133,7 @@ Demo - 示例
 ```
 
 ![screenshot6](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo6.gif)
+
 **如果 tableView 没有在底部，开发者可这样打开消息的提示，效果如上图**
 ```objective-c
 	[chatViewManager enableShowNewMessageAlert:true];
@@ -135,6 +141,7 @@ Demo - 示例
 ```
 
 ![screenshot7](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo7.gif)
+
 **开发者可这样配置：是否支持下拉刷新、修改下拉刷新颜色、增加导航栏标题，效果如上图**
 ```objective-c
 	[chatViewManager enableTopPullRefresh:true];
@@ -144,6 +151,7 @@ Demo - 示例
 ```
 
 ![screenshot8](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo8.gif)
+
 **开发者可这样修改导航栏颜色、导航栏左右键、取消图片消息的mask效果，效果如上图**
 ```objective-c
 	[chatViewManager setNavTitleText:@"美洽SDK"];
