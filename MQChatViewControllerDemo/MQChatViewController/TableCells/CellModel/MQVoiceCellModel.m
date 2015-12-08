@@ -151,8 +151,7 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
             __block UIImageView *tempImageView = [UIImageView new];
             [tempImageView sd_setImageWithURL:[NSURL URLWithString:message.userAvatarPath] placeholderImage:nil options:SDWebImageProgressiveDownload completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                 
-                tempImageView = nil;
-                self.avatarImage = image.copy;
+                self.avatarImage = tempImageView.image.copy;
                 if (self.delegate) {
                     if ([self.delegate respondsToSelector:@selector(didUpdateCellDataWithMessageId:)]) {
                         //通知ViewController去刷新tableView

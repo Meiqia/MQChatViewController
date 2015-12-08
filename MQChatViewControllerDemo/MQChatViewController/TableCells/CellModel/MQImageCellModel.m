@@ -117,8 +117,7 @@
             __block UIImageView *tempImageView = [UIImageView new];
             [tempImageView sd_setImageWithURL:[NSURL URLWithString:message.userAvatarPath] placeholderImage:nil options:SDWebImageProgressiveDownload completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                 
-                tempImageView = nil;
-                self.avatarImage = image.copy;
+                self.avatarImage = tempImageView.image.copy;
                 if (self.delegate) {
                     if ([self.delegate respondsToSelector:@selector(didUpdateCellDataWithMessageId:)]) {
                         //通知ViewController去刷新tableView
@@ -139,12 +138,11 @@
             if (message.imagePath.length > 0) {
                 [self setModelsWithContentImage:[MQChatViewConfig sharedConfig].incomingBubbleImage message:message cellWidth:cellWidth];
                 
-                __block UIImageView *tempimageView = [[UIImageView alloc] init];
-                [tempimageView sd_setImageWithURL:[NSURL URLWithString:message.imagePath] placeholderImage:nil options:SDWebImageProgressiveDownload completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                __block UIImageView *tempImageView = [[UIImageView alloc] init];
+                [tempImageView sd_setImageWithURL:[NSURL URLWithString:message.imagePath] placeholderImage:nil options:SDWebImageProgressiveDownload completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                     
-                    tempimageView = nil;
                     if (image) {
-                        self.image = image;
+                        self.image = tempImageView.image.copy;
                         [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
                     } else {
                         self.image = [MQChatViewConfig sharedConfig].imageLoadErrorImage;
@@ -176,14 +174,15 @@
 {
     //限定图片的最大直径
     CGFloat maxBubbleDiameter = ceil(cellWidth / 2);  //限定图片的最大直径
-    CGSize contentImageSize = contentImage.size;
+    CGSize contentImageSize = contentImage ? contentImage.size : CGSizeMake(20, 20);
+    
     //先限定图片宽度来计算高度
-    CGFloat bubbleWidth = contentImageSize.width < maxBubbleDiameter ? contentImageSize.width : maxBubbleDiameter;
-    CGFloat bubbleHeight = ceil(contentImageSize.height/contentImageSize.width*bubbleWidth);
+    CGFloat imageWidth = contentImageSize.width < maxBubbleDiameter ? contentImageSize.width : maxBubbleDiameter;
+    CGFloat imageHeight = ceil(contentImageSize.height / contentImageSize.width * imageWidth);
     //判断如果气泡高度计算结果超过图片的最大直径，则限制高度
-    if (bubbleHeight > maxBubbleDiameter) {
-        bubbleHeight = maxBubbleDiameter;
-        bubbleWidth = ceil(contentImageSize.width / contentImageSize.height * bubbleHeight);
+    if (imageHeight > maxBubbleDiameter) {
+        imageHeight = maxBubbleDiameter;
+        imageWidth = ceil(contentImageSize.width / contentImageSize.height * imageHeight);
     }
     
     //根据消息的来源，进行处理
@@ -191,6 +190,7 @@
     if ([MQChatViewConfig sharedConfig].incomingBubbleColor) {
         bubbleImage = [MQImageUtil convertImageColorWithImage:bubbleImage toColor:[MQChatViewConfig sharedConfig].incomingBubbleColor];
     }
+    
     if (message.fromType == MQChatMessageOutgoing) {
         //发送出去的消息
         self.cellFromType = MQChatCellOutgoing;
@@ -204,8 +204,14 @@
         } else {
             self.avatarFrame = CGRectMake(0, 0, 0, 0);
         }
+        
+        self.imageViewFrame = CGRectMake(kMQCellBubbleToImageHorizontalSmallerSpacing, kMQCellBubbleToImageVerticalSpacing, imageWidth, imageHeight);
         //气泡的frame
-        self.bubbleImageFrame = CGRectMake(cellWidth-self.avatarFrame.size.width-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarToBubbleSpacing-bubbleWidth, kMQCellAvatarToVerticalEdgeSpacing, bubbleWidth, bubbleHeight);
+        self.bubbleImageFrame = CGRectMake(
+                                           cellWidth - self.avatarFrame.size.width - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarToBubbleSpacing - imageWidth - kMQCellBubbleToImageHorizontalSmallerSpacing,
+                                           kMQCellAvatarToVerticalEdgeSpacing,
+                                           imageWidth + kMQCellBubbleToImageHorizontalSmallerSpacing * 2,
+                                           imageHeight + kMQCellBubbleToImageVerticalSpacing * 2);
     } else {
         //收到的消息
         self.cellFromType = MQChatCellIncoming;
@@ -217,7 +223,7 @@
             self.avatarFrame = CGRectMake(0, 0, 0, 0);
         }
         //气泡的frame
-        self.bubbleImageFrame = CGRectMake(self.avatarFrame.origin.x+self.avatarFrame.size.width+kMQCellAvatarToBubbleSpacing, self.avatarFrame.origin.y, bubbleWidth, bubbleHeight);
+        self.bubbleImageFrame = CGRectMake(self.avatarFrame.origin.x+self.avatarFrame.size.width+kMQCellAvatarToBubbleSpacing, self.avatarFrame.origin.y, imageWidth, imageHeight);
     }
     
     //loading image的indicator

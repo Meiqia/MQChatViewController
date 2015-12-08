@@ -66,7 +66,7 @@
     avatarImageView.frame = cellModel.avatarFrame;
     if ([MQChatViewConfig sharedConfig].enableRoundAvatar) {
         avatarImageView.layer.masksToBounds = YES;
-        avatarImageView.layer.cornerRadius = cellModel.avatarFrame.size.width/2;
+        avatarImageView.layer.cornerRadius = cellModel.avatarFrame.size.width / 2;
     }
     
     //刷新气泡
@@ -75,9 +75,17 @@
     //消息图片
     loadingIndicator.frame = cellModel.loadingIndicatorFrame;
     if (cellModel.image) {
-        bubbleImageView.image = cellModel.image;
-        [bubbleImageView setupImageViewer];
-        [MQImageUtil makeMaskView:bubbleImageView withImage:cellModel.bubbleImage];
+        if ([MQChatViewConfig sharedConfig].enableImageMessageMask) {
+            bubbleImageView.image = cellModel.image;
+            [bubbleImageView setupImageViewer];
+            [MQImageUtil makeMaskView:bubbleImageView withImage:cellModel.bubbleImage];
+        }else{
+            bubbleImageView.image = cellModel.bubbleImage;
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:cellModel.image];
+            imageView.frame = cellModel.imageViewFrame;
+            [bubbleImageView addSubview:imageView];
+        }
+        
         loadingIndicator.hidden = true;
         [loadingIndicator stopAnimating];
     } else {
