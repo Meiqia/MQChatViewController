@@ -186,6 +186,13 @@
 - (void)setOutgoingBubbleColor:(UIColor *)bubbleColor;
 
 /**
+ * 开启图片消息的遮罩效果。遮罩效果更加美观，但是更消耗资源，所以可能不适用没有锁定转屏的app
+ * 默认关闭
+ * @param enable YES:开启 NO:关闭
+ */
+- (void)enableImageMessageMask:(BOOL)enable;
+
+/**
  * 设置导航栏上的元素颜色；
  * @param tintColor 导航栏上的元素颜色
  */

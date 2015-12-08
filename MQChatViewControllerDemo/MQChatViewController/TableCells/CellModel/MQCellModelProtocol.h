@@ -30,7 +30,7 @@ static CGFloat const kMQCellAvatarToBubbleSpacing = 8.0;
  */
 static CGFloat const kMQCellBubbleToTextHorizontalLargerSpacing = 16.0;
 /**
- * 聊天气泡和其中的文字较大一边的水平间距
+ * 聊天气泡和其中的文字较小一边的水平间距
  */
 static CGFloat const kMQCellBubbleToTextHorizontalSmallerSpacing = 10.0;
 /**
