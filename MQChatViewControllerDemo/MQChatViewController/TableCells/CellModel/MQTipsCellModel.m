@@ -134,7 +134,16 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
 }
 
 - (void)updateCellFrameWithCellWidth:(CGFloat)cellWidth {
-    //不需要更新cell
+    //tip frame
+    CGFloat tipsWidth = cellWidth - kMQMessageTipsCellHorizontalSpacing * 2;
+    self.tipLabelFrame = CGRectMake(kMQMessageTipsCellHorizontalSpacing, kMQMessageTipsCellVerticalSpacing, tipsWidth, self.tipLabelFrame.size.height);
+    
+    //上线条的frame
+    CGFloat lineWidth = cellWidth;
+    self.topLineFrame = CGRectMake(cellWidth/2-lineWidth/2, kMQMessageTipsLabelLineVerticalMargin, lineWidth, kMQMessageTipsLineHeight);
+    
+    //下线条的frame
+    self.bottomLineFrame = CGRectMake(self.topLineFrame.origin.x, self.cellHeight - kMQMessageTipsLabelLineVerticalMargin - kMQMessageTipsLineHeight, lineWidth, kMQMessageTipsLineHeight);
 }
 
 

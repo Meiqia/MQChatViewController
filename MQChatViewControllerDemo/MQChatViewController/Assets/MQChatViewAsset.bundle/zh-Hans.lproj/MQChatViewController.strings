@@ -70,4 +70,10 @@
 
 "make_email_to"         = "向该email发送邮件";
 
+<<<<<<< HEAD
 "load_history_message_error"    = "抱歉，没有正确获取到历史消息-_-";
+=======
+"load_history_message_error"    = "抱歉，没有正确获取到历史消息-_-";
+
+"microphone_denied"     = "请在系统设置中允许该App访问麦克风";
+>>>>>>> Meiqia/master

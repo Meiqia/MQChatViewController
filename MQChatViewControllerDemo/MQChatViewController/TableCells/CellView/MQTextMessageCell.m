@@ -32,7 +32,7 @@ static const NSInteger kMQTextCellSelectedEmailActionSheetTag = 2002;
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         //初始化头像
         avatarImageView = [[UIImageView alloc] init];
-        avatarImageView.contentMode = UIViewContentModeScaleAspectFill;
+        avatarImageView.contentMode = UIViewContentModeScaleAspectFit;
         [self.contentView addSubview:avatarImageView];
         //初始化气泡
         bubbleImageView = [[UIImageView alloc] init];

@@ -11,7 +11,7 @@
 #import "MQChatViewTableDataSource.h"
 #import "MQChatViewService.h"
 #import "MQCellModelProtocol.h"
-#import "MQDeviceFrameUtil.h"
+#import "MQChatDeviceUtil.h"
 #import "MQInputBar.h"
 #import "MQToast.h"
 #import "MQRecordView.h"
@@ -297,7 +297,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 -(void)sendImageWithSourceType:(UIImagePickerControllerSourceType *)sourceType {
-    NSString *mediaPermission = [MQImageUtil isDeviceSupportImageSourceType:(int)sourceType];
+    NSString *mediaPermission = [MQChatDeviceUtil isDeviceSupportImageSourceType:(int)sourceType];
     if (!mediaPermission) {
         return;
     }
@@ -336,6 +336,18 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     //停止播放的通知
     [[NSNotificationCenter defaultCenter] postNotificationName:MQAudioPlayerDidInterruptNotification object:nil];
     
+    //判断是否开启了语音权限
+    [MQChatDeviceUtil isDeviceSupportMicrophoneWithPermission:^(BOOL permission) {
+        if (permission) {
+            [self initRecordView];
+        } else {
+            [MQToast showToast:[MQBundleUtil localizedStringForKey:@"microphone_denied"] duration:2 window:self.view];
+        }
+    }];
+    
+}
+
+- (void)initRecordView {
     //如果开发者不自定义录音界面，则将播放界面显示出来
     if (!recordView) {
         recordView = [[MQRecordView alloc] initWithFrame:CGRectMake(0,
