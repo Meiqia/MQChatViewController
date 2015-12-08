@@ -85,7 +85,6 @@ Demo - 示例
 
 <br />
 --------
-<br />
 
 **开发者可这样 present 出聊天界面的模态视图，效果如下：**
 ```objective-c
@@ -113,7 +112,6 @@ Demo - 示例
 ```
 ![screenshot3](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo3.gif)
 
-<br />
 --------
 <br />
 
