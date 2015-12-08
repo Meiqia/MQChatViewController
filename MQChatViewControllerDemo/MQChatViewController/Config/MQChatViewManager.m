@@ -163,9 +163,9 @@
     chatViewConfig.outgoingBubbleColor = bubbleColor;
 }
 
-- (void)enableImageMessageMask:(BOOL)enable
+- (void)enableMessageImageMask:(BOOL)enable
 {
-    chatViewConfig.enableImageMessageMask = enable;
+    chatViewConfig.enableMessageImageMask = enable;
 }
 
 - (void)setEventTextColor:(UIColor *)textColor {

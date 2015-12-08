@@ -112,12 +112,14 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 - (void)removeDelegate {
     chatViewService.delegate = nil;
-    chatViewService.errorDelegate = nil;
     tableDataSource.chatCellDelegate = nil;
     self.chatTableView.chatTableViewDelegate = nil;
     self.chatTableView.delegate = nil;
     chatInputBar.delegate = nil;
     recordView.recordViewDelegate = nil;
+#ifdef INCLUDE_MEIQIA_SDK
+    chatViewService.errorDelegate = nil;
+#endif
 }
 
 #pragma 初始化viewModel
@@ -348,14 +350,17 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [[NSNotificationCenter defaultCenter] postNotificationName:MQAudioPlayerDidInterruptNotification object:nil];
     
     //判断是否开启了语音权限
-    [MQChatDeviceUtil isDeviceSupportMicrophoneWithPermission:^(BOOL permission) {
-        if (permission) {
-            [self initRecordView];
-        } else {
-            [MQToast showToast:[MQBundleUtil localizedStringForKey:@"microphone_denied"] duration:2 window:self.view];
-        }
-    }];
-    
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
+        [MQChatDeviceUtil isDeviceSupportMicrophoneWithPermission:^(BOOL permission) {
+            if (permission) {
+                [self initRecordView];
+            } else {
+                [MQToast showToast:[MQBundleUtil localizedStringForKey:@"microphone_denied"] duration:2 window:self.view];
+            }
+        }];
+    } else {
+        [self initRecordView];
+    }
 }
 
 - (void)initRecordView {

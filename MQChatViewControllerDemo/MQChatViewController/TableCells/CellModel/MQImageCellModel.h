@@ -13,7 +13,7 @@
 /**
  * 聊天气泡和其中的图片较大一边的水平间距
  */
-static CGFloat const kMQCellBubbleToImageHorizontalLargerSpacing = 16.0;
+static CGFloat const kMQCellBubbleToImageHorizontalLargerSpacing = 14.0;
 /**
  * 聊天气泡和其中的图片较小一边的水平间距
  */
@@ -45,19 +45,14 @@ static CGFloat const kMQCellBubbleToImageVerticalSpacing = 8.0;
 @property (nonatomic, readonly, assign) CGFloat cellHeight;
 
 /**
- * @brief 图片path
- */
-//@property (nonatomic, readonly, copy) NSString *imagePath;
-
-/**
  * @brief 图片image(当imagePath不存在时使用)
  */
 @property (nonatomic, readonly, strong) UIImage *image;
 
 /**
- * imageView的frame
+ * bubble中的imageView的frame，该frame是在关闭bubble mask情况下生效
  */
-@property (nonatomic, readwrite, assign) CGRect imageViewFrame;
+@property (nonatomic, readonly, assign) CGRect contentImageViewFrame;
 
 /**
  * @brief 消息的时间

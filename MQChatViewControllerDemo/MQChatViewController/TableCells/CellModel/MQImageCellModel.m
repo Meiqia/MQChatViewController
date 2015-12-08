@@ -66,6 +66,11 @@
 @property (nonatomic, readwrite, assign) CGRect bubbleImageFrame;
 
 /**
+ * bubble中的imageView的frame，该frame是在关闭bubble mask情况下生效
+ */
+@property (nonatomic, readwrite, assign) CGRect contentImageViewFrame;
+
+/**
  * @brief 发送者的头像frame
  */
 @property (nonatomic, readwrite, assign) CGRect avatarFrame;
@@ -205,13 +210,17 @@
             self.avatarFrame = CGRectMake(0, 0, 0, 0);
         }
         
-        self.imageViewFrame = CGRectMake(kMQCellBubbleToImageHorizontalSmallerSpacing, kMQCellBubbleToImageVerticalSpacing, imageWidth, imageHeight);
+        //content内容
+        self.contentImageViewFrame = CGRectMake(kMQCellBubbleToImageHorizontalSmallerSpacing, kMQCellBubbleToImageVerticalSpacing, imageWidth, imageHeight);
         //气泡的frame
         self.bubbleImageFrame = CGRectMake(
-                                           cellWidth - self.avatarFrame.size.width - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarToBubbleSpacing - imageWidth - kMQCellBubbleToImageHorizontalSmallerSpacing,
+                                           cellWidth - self.avatarFrame.size.width - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarToBubbleSpacing - imageWidth - kMQCellBubbleToImageHorizontalSmallerSpacing - kMQCellBubbleToImageHorizontalLargerSpacing,
                                            kMQCellAvatarToVerticalEdgeSpacing,
-                                           imageWidth + kMQCellBubbleToImageHorizontalSmallerSpacing * 2,
+                                           imageWidth + kMQCellBubbleToImageHorizontalSmallerSpacing + kMQCellBubbleToImageHorizontalLargerSpacing,
                                            imageHeight + kMQCellBubbleToImageVerticalSpacing * 2);
+        if ([MQChatViewConfig sharedConfig].enableMessageImageMask) {
+            self.bubbleImageFrame = CGRectMake(cellWidth-self.avatarFrame.size.width-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarToBubbleSpacing-imageWidth, kMQCellAvatarToVerticalEdgeSpacing, imageWidth, imageHeight);
+        }
     } else {
         //收到的消息
         self.cellFromType = MQChatCellIncoming;
@@ -222,8 +231,16 @@
         } else {
             self.avatarFrame = CGRectMake(0, 0, 0, 0);
         }
+        self.contentImageViewFrame = CGRectMake(kMQCellBubbleToImageHorizontalLargerSpacing, kMQCellBubbleToImageVerticalSpacing, imageWidth, imageHeight);
         //气泡的frame
-        self.bubbleImageFrame = CGRectMake(self.avatarFrame.origin.x+self.avatarFrame.size.width+kMQCellAvatarToBubbleSpacing, self.avatarFrame.origin.y, imageWidth, imageHeight);
+        self.bubbleImageFrame = CGRectMake(
+                                           self.avatarFrame.origin.x+self.avatarFrame.size.width+kMQCellAvatarToBubbleSpacing,
+                                           self.avatarFrame.origin.y,
+                                           imageWidth + kMQCellBubbleToImageHorizontalSmallerSpacing + kMQCellBubbleToImageHorizontalLargerSpacing,
+                                           imageHeight + kMQCellBubbleToImageVerticalSpacing * 2);
+        if ([MQChatViewConfig sharedConfig].enableMessageImageMask) {
+            self.bubbleImageFrame = CGRectMake(self.avatarFrame.origin.x+self.avatarFrame.size.width+kMQCellAvatarToBubbleSpacing, self.avatarFrame.origin.y, imageWidth, imageHeight);
+        }
     }
     
     //loading image的indicator
