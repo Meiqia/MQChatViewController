@@ -535,15 +535,22 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     if (messages.count == 0) {
         return;
     }
+<<<<<<< HEAD
+    [self addMessagesToTableViewWithMessages:messages isInsertAtFirstIndex:false];
+=======
     //转换message to cellModel，并缓存
     [self saveToCellModelsWithMessages:messages isInsertAtFirstIndex:false];
+>>>>>>> Meiqia/master
     //eventMessage不响铃声
     if (messages.count > 1 || ![[messages firstObject] isKindOfClass:[MQEventMessage class]]) {
         [self playReceivedMessageSound];
     }
+<<<<<<< HEAD
+=======
     //更新界面title
     [self updateChatTitleWithAgentName:[MQServiceToViewInterface getCurrentAgentName]];
     //通知界面收到了消息
+>>>>>>> Meiqia/master
     if (self.delegate) {
         if ([self.delegate respondsToSelector:@selector(didReceiveMessage)]) {
             [self.delegate didReceiveMessage];

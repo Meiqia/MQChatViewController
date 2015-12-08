@@ -11,6 +11,19 @@
 #import "MQImageMessage.h"
 
 /**
+ * 聊天气泡和其中的图片较大一边的水平间距
+ */
+static CGFloat const kMQCellBubbleToImageHorizontalLargerSpacing = 16.0;
+/**
+ * 聊天气泡和其中的图片较小一边的水平间距
+ */
+static CGFloat const kMQCellBubbleToImageHorizontalSmallerSpacing = 8.0;
+/**
+ * 聊天气泡和其中的图片垂直间距
+ */
+static CGFloat const kMQCellBubbleToImageVerticalSpacing = 8.0;
+
+/**
  * MQImageCellModel定义了图片消息的基本类型数据，包括产生cell的内部所有view的显示数据，cell内部元素的frame等
  * @warning MQImageCellModel必须满足MQCellModelProtocol协议
  */
@@ -40,6 +53,11 @@
  * @brief 图片image(当imagePath不存在时使用)
  */
 @property (nonatomic, readonly, strong) UIImage *image;
+
+/**
+ * imageView的frame
+ */
+@property (nonatomic, readwrite, assign) CGRect imageViewFrame;
 
 /**
  * @brief 消息的时间

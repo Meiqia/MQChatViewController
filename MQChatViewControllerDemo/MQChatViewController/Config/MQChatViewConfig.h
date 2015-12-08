@@ -44,6 +44,7 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 @property (nonatomic, assign) BOOL enableSendImageMessage;
 @property (nonatomic, assign) BOOL enableIncomingAvatar;
 @property (nonatomic, assign) BOOL enableOutgoingAvatar;
+@property (nonatomic, assign) BOOL enableImageMessageMask;
 @property (nonatomic, assign) BOOL enableMessageSound;
 @property (nonatomic, assign) BOOL enableTopPullRefresh;
 @property (nonatomic, assign) BOOL enableBottomPullRefresh;
