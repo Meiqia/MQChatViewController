@@ -76,6 +76,8 @@ Demo - 示例
 ---
 开发者可参考 Demo 中的用法，对聊天界面进行配置，来进行基本的自定义功能，例如下面的示例：
 
+<br />
+
 ![screenshot1](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo1.gif)
 
 ```objective-c
@@ -84,6 +86,7 @@ Demo - 示例
 ```
 **开发者可这样 push 出聊天界面，效果如上**
 
+<br />
 
 ![screenshot2](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo2.gif)
 
@@ -93,6 +96,7 @@ Demo - 示例
 ```
 **开发者可这样 present 出聊天界面的模态视图，效果如上**
 
+<br />
 
 ![screenshot3](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo3.gif)
 
@@ -110,6 +114,7 @@ Demo - 示例
 ```
 **开发者可这样配置：底部按钮、修改气泡颜色、文字颜色、使头像设为圆形，效果如上**
 
+<br />
 
 ![screenshot4](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo4.gif)
 
@@ -123,6 +128,7 @@ Demo - 示例
 ```
 **开发者可这样配置：是否支持发送语音、是否显示本机头像、修改气泡的样式，效果如上**
 
+<br />
 
 ![screenshot5](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo5.gif)
 
@@ -136,6 +142,7 @@ Demo - 示例
 ```
 **开发者可这样配置：增加可点击链接的正则表达式( Library 本身已支持多种格式链接，如未满足需求可增加)、增加欢迎语、是否开启消息声音、修改接受消息的铃声，效果如上**
 
+<br />
 
 ![screenshot6](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo6.gif)
 
@@ -145,6 +152,7 @@ Demo - 示例
 ```
 **如果 tableView 没有在底部，开发者可这样打开消息的提示，效果如上**
 
+<br />
 
 ![screenshot7](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo7.gif)
 
@@ -156,6 +164,7 @@ Demo - 示例
 ```
 **开发者可这样配置：是否支持下拉刷新、修改下拉刷新颜色、增加导航栏标题，效果如上**
 
+<br />
 
 ![screenshot8](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo8.gif)
 
