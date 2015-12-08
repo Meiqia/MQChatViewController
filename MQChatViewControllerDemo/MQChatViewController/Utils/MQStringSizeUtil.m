@@ -23,9 +23,12 @@
         
         totalHeight = ceil(title_size.height);
     } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         title_size = [text sizeWithFont:font
                       constrainedToSize:constraint
                           lineBreakMode:NSLineBreakByWordWrapping];
+#pragma clang diagnostic pop
         totalHeight = title_size.height ;
     }
     
@@ -45,9 +48,12 @@
         
         width = ceil(title_size.width);
     } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         title_size = [text sizeWithFont:font
                       constrainedToSize:constraint
                           lineBreakMode:NSLineBreakByWordWrapping];
+#pragma clang diagnostic pop
         width = title_size.width ;
     }
     

@@ -23,7 +23,10 @@ static const float kMQToastVerticalSpacing = 6.0;
     titleLabel.text            = message;
     
     CGSize maxSizeTitle      = CGSizeMake(windowSize.width * kMQToastMaxWidth, windowSize.height);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
     CGSize expectedSizeTitle = [message sizeWithFont:titleLabel.font constrainedToSize:maxSizeTitle lineBreakMode:titleLabel.lineBreakMode];
+#pragma clang diagnostic pop
     titleLabel.frame         = CGRectMake(kMQToastHorizontalSpacing, kMQToastVerticalSpacing, expectedSizeTitle.width + 4, expectedSizeTitle.height);
     
     UIView* view             = [[UIView alloc] init];

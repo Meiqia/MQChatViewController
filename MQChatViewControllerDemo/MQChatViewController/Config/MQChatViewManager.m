@@ -90,9 +90,12 @@
     if ([MQChatViewConfig sharedConfig].navTitleText) {
         viewController.navigationItem.title = [MQChatViewConfig sharedConfig].navTitleText;
         if ([MQChatViewConfig sharedConfig].navBarTintColor) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
             navigationController.navigationBar.titleTextAttributes = @{
                                                                        UITextAttributeTextColor : [MQChatViewConfig sharedConfig].navBarTintColor
                                                                        };
+#pragma clang diagnostic pop
         }
     }
 }

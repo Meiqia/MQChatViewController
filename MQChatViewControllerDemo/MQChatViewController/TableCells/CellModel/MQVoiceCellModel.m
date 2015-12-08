@@ -176,27 +176,7 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
                     NSError *error;
                     //这里开发者可以使用自己的文件缓存策略
                     NSData *voiceData = [NSData dataWithContentsOfURL:[NSURL URLWithString:message.voicePath] options:NSDataReadingMappedIfSafe error:&error];
-                    //美洽服务端传给SDK的语音格式是AMR格式，所以这里将AMR转成了WAV，开发者可根据自己的语音格式进行转换
-                    if (message.fromType == MQChatMessageIncoming) {
-                        NSString *amrPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-                        amrPath = [amrPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.amr", (int)[NSDate date].timeIntervalSince1970]];
-                        NSFileManager *fileManager = [NSFileManager defaultManager];
-                        [fileManager createFileAtPath:amrPath contents:voiceData attributes:nil];
-                        if (![fileManager fileExistsAtPath:amrPath]) {
-                            NSAssert(NO, @"写进Amr文件失败");
-                        }
-                        NSString *wavPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-                        wavPath = [wavPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%d.wav", (int)[NSDate date].timeIntervalSince1970]];
-                        if ([VoiceConverter amrToWav:amrPath wavSavePath:wavPath] == 0) {
-                            NSLog(@"AMR转换WAV失败");
-                        }
-                        if (![fileManager fileExistsAtPath:wavPath]) {
-                            NSAssert(NO, @"将写进文件失败");
-                        }
-                        voiceData = [NSData dataWithContentsOfFile:wavPath];
-                        [[NSFileManager defaultManager] removeItemAtPath:amrPath error:nil];
-                        [[NSFileManager defaultManager] removeItemAtPath:wavPath error:nil];
-                    }
+                    //美洽服务端传给SDK的语音格式是MP3，iPhone可以直接播放；开发者可根据自己的服务端情况，将语音转换成iPhone能播放的格式
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if (error) {
                             NSLog(@"load voice error = %@", error);
@@ -239,20 +219,20 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
         voiceImage = isLoadVoiceSuccess ? [MQAssetUtil voiceAnimationGray3] : [MQAssetUtil voiceAnimationGrayError];
     }
     CGSize voiceImageSize = voiceImage.size;
-
+    
     //气泡高度
     CGFloat bubbleHeight = kMQCellAvatarDiameter;
     
     //根据语音时长来确定气泡宽度
     CGFloat maxBubbleWidth = cellWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToBubbleSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
     CGFloat bubbleWidth = maxBubbleWidth;
-//    if (self.voiceDuration < [MQChatViewConfig sharedConfig].maxVoiceDuration * 2) {
-        CGFloat upWidth = floor(cellWidth / 4);   //根据语音时间来递增的基准
-        CGFloat voiceWidthScale = self.voiceDuration / [MQChatViewConfig sharedConfig].maxVoiceDuration;
-        bubbleWidth = floor(upWidth*voiceWidthScale) + floor(cellWidth/4);
-//    } else {
-//        NSAssert(NO, @"语音超过最大时长！");
-//    }
+    //    if (self.voiceDuration < [MQChatViewConfig sharedConfig].maxVoiceDuration * 2) {
+    CGFloat upWidth = floor(cellWidth / 4);   //根据语音时间来递增的基准
+    CGFloat voiceWidthScale = self.voiceDuration / [MQChatViewConfig sharedConfig].maxVoiceDuration;
+    bubbleWidth = floor(upWidth*voiceWidthScale) + floor(cellWidth/4);
+    //    } else {
+    //        NSAssert(NO, @"语音超过最大时长！");
+    //    }
     
     //语音时长label的宽高
     CGFloat durationTextHeight = [MQStringSizeUtil getHeightForText:[NSString stringWithFormat:@"%d\"", (int)self.voiceDuration] withFont:[UIFont systemFontOfSize:kMQCellVoiceDurationLabelFontSize] andWidth:cellWidth];
