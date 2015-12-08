@@ -117,6 +117,11 @@
 @property (nonatomic, readonly, assign) CGRect notPlayViewFrame;
 
 /**
+ * @brief 语音是否加载成功
+ */
+@property (nonatomic, readonly, assign) BOOL isLoadVoiceSuccess;
+
+/**
  *  根据MQMessage内容来生成cell model
  */
 - (MQVoiceCellModel *)initCellModelWithMessage:(MQVoiceMessage *)message

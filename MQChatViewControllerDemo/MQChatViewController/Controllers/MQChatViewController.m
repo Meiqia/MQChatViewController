@@ -39,6 +39,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 - (void)dealloc {
     NSLog(@"清除chatViewController");
+    [self removeDelegate];
     [chatViewConfig setConfigToDefault];
 }
 
@@ -107,6 +108,16 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 - (void)didSelectNavigationRightButton {
     NSLog(@"click right BarItemButton!");
+}
+
+- (void)removeDelegate {
+    chatViewService.delegate = nil;
+    chatViewService.errorDelegate = nil;
+    tableDataSource.chatCellDelegate = nil;
+    self.chatTableView.chatTableViewDelegate = nil;
+    self.chatTableView.delegate = nil;
+    chatInputBar.delegate = nil;
+    recordView.recordViewDelegate = nil;
 }
 
 #pragma 初始化viewModel
@@ -252,9 +263,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 - (void)didUpdateCellModelWithIndexPath:(NSIndexPath *)indexPath {
-//        [self.chatTableView reloadData];
-//    [self.chatTableView beginUpdates];
-//    [self.chatTableView endUpdates];
+    //        [self.chatTableView reloadData];
+    //    [self.chatTableView beginUpdates];
+    //    [self.chatTableView endUpdates];
     [self.chatTableView updateTableViewAtIndexPath:indexPath];
 }
 

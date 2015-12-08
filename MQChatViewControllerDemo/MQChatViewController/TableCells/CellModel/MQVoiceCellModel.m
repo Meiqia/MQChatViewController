@@ -121,6 +121,12 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
  */
 @property (nonatomic, readwrite, assign) MQChatCellFromType cellFromType;
 
+/**
+ * @brief 语音是否加载成功
+ */
+@property (nonatomic, readwrite, assign) BOOL isLoadVoiceSuccess;
+
+
 @end
 
 @implementation MQVoiceCellModel {
@@ -143,6 +149,7 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
         self.avatarPath = @"";
         self.cellHeight = 44.0;
         self.isPlayed = message.isPlayed;
+        self.isLoadVoiceSuccess = true;
         if (message.userAvatarImage) {
             self.avatarImage = message.userAvatarImage;
         } else if (message.userAvatarPath.length > 0) {
@@ -210,6 +217,10 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
                    cellWidth:(CGFloat)cellWidth
           isLoadVoiceSuccess:(BOOL)isLoadVoiceSuccess
 {
+    self.isLoadVoiceSuccess = isLoadVoiceSuccess;
+    if (!isLoadVoiceSuccess) {
+        self.voiceData = [[NSData alloc] init];
+    }
     self.voiceDuration = ceilf((CGFloat)voiceTimeInterval);
     //语音图片size
     UIImage *voiceImage;
