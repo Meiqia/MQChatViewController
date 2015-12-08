@@ -144,7 +144,7 @@ Demo - 示例
 ```
 
 ![screenshot8](https://github.com/ijinmao/MQChatViewController/blob/master/DemoGif/MQChatViewDemo8.gif)
-**开发者可这样修改导航栏颜色、导航栏左右键，效果如上图**
+**开发者可这样修改导航栏颜色、导航栏左右键、取消图片消息的mask效果，效果如上图**
 ```objective-c
 	[chatViewManager setNavTitleText:@"美洽SDK"];
     [chatViewManager setNavigationBarTintColor:[UIColor redColor]];
