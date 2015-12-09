@@ -35,14 +35,14 @@
 - (void)disappearMQChatViewController;
 
 /**
- *  设置是否开启自定义聊天界面的坐标
+ *  设置是否开启自定义聊天界面的坐标，默认不自定义
  *
  *  @param enable YES 自定义 NO 不自定义
  */
 - (void)enableCustomChatViewFrame:(BOOL)enable;
 
 /**
- * 设置客服聊天界面的坐标
+ * 设置客服聊天界面的坐标，默认聊天界面全屏显示
  * @param viewFrame 客服聊天界面的坐标
  */
 - (void)setChatViewFrame:(CGRect)viewFrame;
@@ -85,45 +85,45 @@
 - (void)setIncomingMessageSoundFileName:(NSString *)soundFileName;
 
 /**
- * 是否支持发送语音消息；
+ * 是否支持发送语音消息；默认支持
  * @param enable YES:支持发送语音消息 NO:不支持发送语音消息
  */
 - (void)enableSendVoiceMessage:(BOOL)enable;
 
 /**
- * 是否支持发送图片消息；
+ * 是否支持发送图片消息；默认支持
  * @param enable YES:支持发送图片消息 NO:不支持发送图片消息
  */
 - (void)enableSendImageMessage:(BOOL)enable;
 
 /**
- *  客服聊天界面打开时，收到新消息，是否显示收到新消息提示
+ *  客服聊天界面打开时，收到新消息，是否显示收到新消息提示；默认支持
  *
  * @param enable YES:支持 NO:不支持
  */
 - (void)enableShowNewMessageAlert:(BOOL)enable;
 
 /**
- * 是否支持对方头像的显示；
+ * 是否支持对方头像的显示；默认支持
  * @param enable YES:支持 NO:不支持
  */
 - (void)enableIncomingAvatar:(BOOL)enable;
 
 /**
- *  是否支持当前用户头像的显示
+ *  是否支持当前用户头像的显示；默认不支持
  *
  * @param enable YES:支持 NO:不支持
  */
 - (void)enableOutgoingAvatar:(BOOL)enable;
 
 /**
- * 是否开启接受/发送消息的声音；
+ * 是否开启接受/发送消息的声音；默认开启
  * @param enable YES:开启声音 NO:关闭声音
  */
 - (void)enableMessageSound:(BOOL)enable;
 
 /**
- *  是否开启下拉刷新（顶部刷新）
+ *  是否开启下拉刷新（顶部刷新）；默认开启
  *
  * @warning 如果开发者要禁用下拉刷新，则需要将enableTopPullRefresh和enableTopAutoRefresh都置为false
  * @param enable YES:支持 NO:不支持
@@ -131,14 +131,14 @@
 - (void)enableTopPullRefresh:(BOOL)enable;
 
 /**
- *  是否开启上拉刷新（底部刷新）
+ *  是否开启上拉刷新（底部刷新）；默认关闭
  *
  * @param enable YES:支持 NO:不支持
  */
 - (void)enableBottomPullRefresh:(BOOL)enable;
 
 /**
- *  是否开启顶部自动刷新历史消息
+ *  是否开启顶部自动刷新历史消息；默认开启
  *
  * @warning 如果开发者要禁用下拉刷新，则需要将enableTopPullRefresh和enableTopAutoRefresh都置为false
  * @param enable YES:支持 NO:不支持
@@ -146,14 +146,14 @@
 - (void)enableTopAutoRefresh:(BOOL)enable;
 
 /**
- *  是否开启圆形头像
+ *  是否开启圆形头像；默认不支持
  *
  * @param enable YES:支持 NO:不支持
  */
 - (void)enableRoundAvatar:(BOOL)enable;
 
 /**
- *  是否支持欢迎语
+ *  是否支持欢迎语；默认不支持
  *
  * @param enable YES:支持 NO:不支持
  */
@@ -226,7 +226,7 @@
 - (void)setNavTitleText:(NSString *)titleText;
 
 /**
- *  设置下拉/上拉刷新的颜色
+ *  设置下拉/上拉刷新的颜色；默认绿色
  *
  *  @param pullRefreshColor 颜色
  */
@@ -294,7 +294,7 @@
 - (void)setBubbleImageStretchInsets:(UIEdgeInsets)stretchInsets;
 
 /**
- *  设置录音的最大时长
+ *  设置录音的最大时长；默认60秒；
  *
  *  @param recordDuration 时长
  */
@@ -342,7 +342,7 @@
 - (void)setLoginMQClientId:(NSString *)MQClientId;
 
 /**
- * 是否显示事件状态流；事件的状态流有：初始化对话、对话被转接给其他客服、对话超时、客服主动结束了对话、客服正在输入；
+ * 是否显示事件状态流；事件的状态流有：初始化对话、对话被转接给其他客服、对话超时、客服主动结束了对话、客服正在输入；默认不支持；
  * @param enable YES:开启事件状态流 NO:关闭事件状态流
  */
 - (void)enableEventDispaly:(BOOL)enable;
