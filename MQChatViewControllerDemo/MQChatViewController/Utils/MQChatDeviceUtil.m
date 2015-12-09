@@ -87,8 +87,12 @@
     AVAudioSession *session = [AVAudioSession sharedInstance];
     if ([session respondsToSelector:@selector(requestRecordPermission:)]) {
         [session performSelector:@selector(requestRecordPermission:) withObject:^(BOOL granted) {
-            permission(granted);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                permission(granted);
+            });
         }];
+    } else {
+        permission(true);
     }
 }
 
