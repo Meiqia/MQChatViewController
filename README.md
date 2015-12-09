@@ -1,6 +1,5 @@
 MQChatViewController
 ===============
-**编辑中...**
 
 An easy to cutomized messages UI Library for iOS.
 
