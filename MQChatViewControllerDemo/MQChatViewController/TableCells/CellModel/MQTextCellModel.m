@@ -51,6 +51,11 @@
 @property (nonatomic, readwrite, copy) UIImage *avatarImage;
 
 /**
+ * @brief 用户名字，暂时没用
+ */
+@property (nonatomic, readwrite, copy) NSString *userName;
+
+/**
  * @brief 聊天气泡的image
  */
 @property (nonatomic, readwrite, copy) UIImage *bubbleImage;

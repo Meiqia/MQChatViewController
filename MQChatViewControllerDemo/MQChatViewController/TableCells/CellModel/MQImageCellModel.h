@@ -35,6 +35,11 @@ static CGFloat const kMQCellBubbleToImageVerticalSpacing = 8.0;
 @property (nonatomic, readonly, strong) NSString *messageId;
 
 /**
+ * @brief 用户名字，暂时没用
+ */
+@property (nonatomic, readonly, copy) NSString *userName;
+
+/**
  * @brief 该cellModel的委托对象
  */
 @property (nonatomic, weak) id<MQCellModelDelegate> delegate;

@@ -21,6 +21,11 @@
 @property (nonatomic, readwrite, strong) NSString *messageId;
 
 /**
+ * @brief 用户名字，暂时没用
+ */
+@property (nonatomic, readwrite, copy) NSString *userName;
+
+/**
  * @brief cell的宽度
  */
 @property (nonatomic, readwrite, assign) CGFloat cellWidth;
