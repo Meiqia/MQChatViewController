@@ -348,10 +348,16 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     
     //停止播放的通知
     [[NSNotificationCenter defaultCenter] postNotificationName:MQAudioPlayerDidInterruptNotification object:nil];
-    
+     
     //判断是否开启了语音权限
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
+        //首先记录点击语音的时间，如果第一次授权，则确定授权的时间会较长，这时不应该初始化record view
+        CGFloat tapVoiceTimeInMilliSeconds = [NSDate timeIntervalSinceReferenceDate] * 1000;
         [MQChatDeviceUtil isDeviceSupportMicrophoneWithPermission:^(BOOL permission) {
+            NSTimeInterval getPermissionTimeInMilliSeconds = [NSDate timeIntervalSinceReferenceDate] * 1000;
+            if (getPermissionTimeInMilliSeconds - tapVoiceTimeInMilliSeconds > 100) {
+                return ;
+            }
             if (permission) {
                 [self initRecordView];
             } else {

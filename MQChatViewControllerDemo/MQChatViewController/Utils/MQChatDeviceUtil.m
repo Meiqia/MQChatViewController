@@ -91,6 +91,8 @@
                 permission(granted);
             });
         }];
+    } else {
+        permission(true);
     }
 }
 

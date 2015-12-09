@@ -106,6 +106,9 @@
 }
 
 - (void)beginRecording {
+    if (self.recorder.isRecording) {
+        return ;
+    }
     [self.recorder startRecording];
     self.meterObserver.audioQueue = self.recorder->_audioQueue;
 }
