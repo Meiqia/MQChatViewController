@@ -22,6 +22,11 @@
 @property (nonatomic, readonly, strong) NSString *messageId;
 
 /**
+ * @brief 用户名字，暂时没用
+ */
+@property (nonatomic, readonly, copy) NSString *userName;
+
+/**
  * @brief 该cellModel的委托对象
  */
 @property (nonatomic, weak) id<MQCellModelDelegate> delegate;
@@ -110,6 +115,8 @@
  * @brief 消息文字中，email选中识别的字典 [email : range]
  */
 @property (nonatomic, readonly, strong) NSDictionary *emailNumberRangeDic;
+
+
 
 /**
  * @brief 消息的发送状态
