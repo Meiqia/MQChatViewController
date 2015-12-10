@@ -45,7 +45,7 @@
 		CC5115C31BE5B3C200184CF0 /* FBSquareFont.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5115BB1BE5B3C200184CF0 /* FBSquareFont.m */; };
 		CC5115C41BE5B3C200184CF0 /* FBSquareFontView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5115BD1BE5B3C200184CF0 /* FBSquareFontView.m */; };
 		CC5115C81BE5B47B00184CF0 /* MQRecordView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5115C71BE5B47B00184CF0 /* MQRecordView.m */; };
-		CC5115D01BE6545B00184CF0 /* MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5115CD1BE6545B00184CF0 /* MHFacebookImageViewer.m */; };
+		CC5115D01BE6545B00184CF0 /* MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5115CD1BE6545B00184CF0 /* MHFacebookImageViewer.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		CC5115D11BE6545B00184CF0 /* UIImageView+MHFacebookImageViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5115CF1BE6545B00184CF0 /* UIImageView+MHFacebookImageViewer.m */; };
 		CCAD3D141BE75F7500B87A23 /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCAD3D061BE75F7500B87A23 /* libopencore-amrnb.a */; };
 		CCAD3D151BE75F7500B87A23 /* libopencore-amrwb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCAD3D071BE75F7500B87A23 /* libopencore-amrwb.a */; };
@@ -1081,7 +1081,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1120,7 +1120,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1136,12 +1136,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/MQChatViewController/Vendors/MLAudioRecorder/mp3_en_de",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = MQChatViewControllerDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1161,12 +1158,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_BITCODE = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/MQChatViewController/Vendors/MLAudioRecorder/mp3_en_de",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = MQChatViewControllerDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
