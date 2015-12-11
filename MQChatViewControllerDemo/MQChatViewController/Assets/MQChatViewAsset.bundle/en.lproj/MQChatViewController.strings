@@ -20,9 +20,9 @@
 
 "network_jam"         = "Please check your internet connection and try again.";
 
-"simulator_not_support_camera"      = "The simulator cannot access camera";
+"simulator_not_support_camera"      = "Simulator cannot access camera";
 
-"simulator_not_support_microphone"  = "The simulator cannot access microphone";
+"simulator_not_support_microphone"  = "Simulator cannot access microphone";
 
 "recode_time_too_short" = "Message too short";
 

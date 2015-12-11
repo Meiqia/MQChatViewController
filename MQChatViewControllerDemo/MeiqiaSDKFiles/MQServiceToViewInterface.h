@@ -180,6 +180,12 @@
 + (NSString *)getCurrentAgentName;
 
 /**
+ *  当前是否有客服
+ *
+ */
++ (BOOL)isThereAgent;
+
+/**
  *  下载多媒体消息的多媒体内容
  *
  *  @param messageId     消息id
