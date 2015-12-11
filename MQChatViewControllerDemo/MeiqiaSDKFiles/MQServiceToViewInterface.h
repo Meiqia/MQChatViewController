@@ -6,7 +6,7 @@
 //  Copyright © 2015年 ijinmao. All rights reserved.
 //
 /**
- *  该类是美洽开源UI层和美洽数据逻辑层的接口
+ *  该文件的作用是：开源聊天界面调用美洽 SDK 接口的中间层，目的是剥离开源界面中的美洽业务逻辑。这样就能让该聊天界面用于非美洽项目中，开发者只需要实现 `MQServiceToViewInterface` 中的方法，即可将自己项目的业务逻辑和该聊天界面对接。
  */
 
 #import <Foundation/Foundation.h>
@@ -14,7 +14,6 @@
 #import "MQImageMessage.h"
 #import "MQVoiceMessage.h"
 #import "MQTextMessage.h"
-#import "MQAgent.h"
 #import "MQEventMessage.h"
 
 /**
@@ -83,7 +82,7 @@
 /**
  * 从服务端获取更多消息
  *
- * @param msgDate 获取该日期之前的历史消息
+ * @param msgDate 获取该日期之前的历史消息;
  * @param messagesNum 获取消息的数量
  */
 + (void)getServerHistoryMessagesWithMsgDate:(NSDate *)msgDate
@@ -179,5 +178,16 @@
  *  获取当前客服名字
  */
 + (NSString *)getCurrentAgentName;
+
+/**
+ *  下载多媒体消息的多媒体内容
+ *
+ *  @param messageId     消息id
+ *  @param progressBlock 下载进度
+ *  @param completion    完成回调
+ */
++ (void)downloadMediaWithUrlString:(NSString *)urlString
+                          progress:(void (^)(float progress))progressBlock
+                        completion:(void (^)(NSData *mediaData, NSError *error))completion;
 
 @end

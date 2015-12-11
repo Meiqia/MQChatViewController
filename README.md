@@ -188,6 +188,7 @@ Configuration - 配置
 如果你不想修改聊天界面的内部逻辑，`MQChatViewManager` 提供了很多接口，可以实现一些自定义设置。
 
 名词解释
+
 名词 | 说明
 --- | ---
 incoming | 表示聊天对方

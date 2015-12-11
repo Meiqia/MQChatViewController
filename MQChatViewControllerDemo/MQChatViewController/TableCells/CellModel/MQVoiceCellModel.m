@@ -15,6 +15,7 @@
 #import "MQAssetUtil.h"
 #import "VoiceConverter.h"
 #import "UIImageView+WebCache.h"
+#import "MQServiceToViewInterface.h"
 
 /**
  * 语音播放图片与聊天气泡的间距
@@ -159,7 +160,23 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
             self.avatarImage = message.userAvatarImage;
         } else if (message.userAvatarPath.length > 0) {
             self.avatarPath = message.userAvatarPath;
-            
+            //这里使用美洽接口下载多媒体消息的图片，开发者也可以替换成自己的图片缓存策略
+#ifdef INCLUDE_MEIQIA_SDK
+            [MQServiceToViewInterface downloadMediaWithUrlString:message.userAvatarPath progress:^(float progress) {
+            } completion:^(NSData *mediaData, NSError *error) {
+                if (mediaData && !error) {
+                    self.avatarImage = [UIImage imageWithData:mediaData];
+                } else {
+                    self.avatarImage = message.fromType == MQChatMessageIncoming ? [MQChatViewConfig sharedConfig].incomingDefaultAvatarImage : [MQChatViewConfig sharedConfig].outgoingDefaultAvatarImage;
+                }
+                if (self.delegate) {
+                    if ([self.delegate respondsToSelector:@selector(didUpdateCellDataWithMessageId:)]) {
+                        //通知ViewController去刷新tableView
+                        [self.delegate didUpdateCellDataWithMessageId:self.messageId];
+                    }
+                }
+            }];
+#else
             __block UIImageView *tempImageView = [UIImageView new];
             [tempImageView sd_setImageWithURL:[NSURL URLWithString:message.userAvatarPath] placeholderImage:nil options:SDWebImageProgressiveDownload completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                 
@@ -171,6 +188,7 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
                     }
                 }
             }];
+#endif
         } else {
             self.avatarImage = [MQChatViewConfig sharedConfig].incomingDefaultAvatarImage;
             if (message.fromType == MQChatMessageOutgoing) {
@@ -183,6 +201,24 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
         self.voiceData = message.voiceData;
         if (!self.voiceData) {
             if (message.voicePath.length > 0) {
+                //这里使用美洽接口下载多媒体消息的内容，开发者也可以替换成自己的文件缓存策略
+#ifdef INCLUDE_MEIQIA_SDK
+                [MQServiceToViewInterface downloadMediaWithUrlString:message.voicePath progress:^(float progress) {
+                } completion:^(NSData *mediaData, NSError *error) {
+                    if (mediaData && !error) {
+                        self.voiceData = mediaData;
+                        voiceTimeInterval = [MQChatFileUtil getAudioDurationWithData:mediaData];
+                        [self setModelsWithMessage:message cellWidth:cellWidth isLoadVoiceSuccess:true];
+                    } else {
+                        [self setModelsWithMessage:message cellWidth:cellWidth isLoadVoiceSuccess:false];
+                    }
+                    if (self.delegate) {
+                        if ([self.delegate respondsToSelector:@selector(didUpdateCellDataWithMessageId:)]) {
+                            [self.delegate didUpdateCellDataWithMessageId:self.messageId];
+                        }
+                    }
+                }];
+#else
                 //新建线程读取远程图片
                 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                     NSError *error;
@@ -207,6 +243,7 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
                         }
                     });
                 });
+#endif
             }
             [self setModelsWithMessage:message cellWidth:cellWidth isLoadVoiceSuccess:true];
         } else {
