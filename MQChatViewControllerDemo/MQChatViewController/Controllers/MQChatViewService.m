@@ -323,14 +323,14 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     MQImageCellModel *imageCellModel = [[MQImageCellModel alloc] initCellModelWithMessage:imageMessage cellWidth:self.chatViewWidth delegate:self];
     [self.cellModels addObject:imageCellModel];
     //tip message
-//    MQTipsCellModel *tipCellModel = [[MQTipsCellModel alloc] initCellModelWithTips:@"主人，您的客服离线啦~" cellWidth:self.chatViewWidth];
-//    [self.cellModels addObject:tipCellModel];
+    //    MQTipsCellModel *tipCellModel = [[MQTipsCellModel alloc] initCellModelWithTips:@"主人，您的客服离线啦~" cellWidth:self.chatViewWidth];
+    //    [self.cellModels addObject:tipCellModel];
     //voice message
     MQVoiceMessage *voiceMessage = [[MQVoiceMessage alloc] initWithVoicePath:@"http://7xiy8i.com1.z0.glb.clouddn.com/test.amr"];
     voiceMessage.fromType = MQChatMessageIncoming;
     MQVoiceCellModel *voiceCellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:voiceMessage cellWidth:self.chatViewWidth delegate:self];
     [self.cellModels addObject:voiceCellModel];
-
+    
     [self reloadChatTableView];
     [self playReceivedMessageSound];
 }
@@ -482,7 +482,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [serviceToViewInterface setClientOnlineWithClientId:[MQChatViewConfig sharedConfig].MQClientId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
         if (!completion) {
             //没有分配到客服
-//            isThereNoAgent = true;
+            //            isThereNoAgent = true;
             agentName = [MQBundleUtil localizedStringForKey: agentName && agentName.length>0 ? agentName : @"no_agent_title"];
         }
         [weakSelf updateChatTitleWithAgentName:agentName];
@@ -583,11 +583,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     //如果新的messageId和旧的messageId不同，且是发送成功状态，则表明肯定是分配成功的
     if (![newMessageId isEqualToString:oldMessageId] && sendStatus == MQChatMessageSendStatusSuccess) {
         NSString *agentName = [MQServiceToViewInterface getCurrentAgentName];
+        isThereNoAgent = ![MQServiceToViewInterface isThereAgent];
         if (agentName.length > 0) {
-            isThereNoAgent = false;
             [self updateChatTitleWithAgentName:agentName];
-        } else {
-            isThereNoAgent = true;
         }
     } else {
         isThereNoAgent = true;
