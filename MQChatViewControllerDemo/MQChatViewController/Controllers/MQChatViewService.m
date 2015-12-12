@@ -173,6 +173,11 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
  * @param resendData 重新发送的字典 [text/image/voice : data]
  */
 - (void)resendMessageAtIndex:(NSInteger)index resendData:(NSDictionary *)resendData {
+    //通知逻辑层删除该message数据
+#ifdef INCLUDE_MEIQIA_SDK
+    NSString *messageId = [[self.cellModels objectAtIndex:index] getCellMessageId];
+    [MQServiceToViewInterface removeMessageInDatabaseWithId:messageId];
+#endif
     [self.cellModels removeObjectAtIndex:index];
     //判断删除这个model的之前的model是否为date，如果是，则删除时间cellModel
     if (index < 0 || self.cellModels.count <= index-1) {
@@ -543,13 +548,16 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 #pragma MQServiceToViewInterfaceDelegate
 - (void)didReceiveHistoryMessages:(NSArray *)messages {
+    NSInteger cellNumber = 0;
+    NSInteger messageNumber = 0;
     if (messages.count > 0) {
-        NSInteger cellNumber = [self saveToCellModelsWithMessages:messages isInsertAtFirstIndex:true];
-        NSInteger messageNumber = messages.count;
-        if (self.delegate) {
-            if ([self.delegate respondsToSelector:@selector(didGetHistoryMessagesWithCellNumber:isLoadOver:)]) {
-                [self.delegate didGetHistoryMessagesWithCellNumber:cellNumber isLoadOver:messageNumber < kMQChatGetHistoryMessageNumber];
-            }
+        cellNumber = [self saveToCellModelsWithMessages:messages isInsertAtFirstIndex:true];
+        messageNumber = messages.count;
+    }
+    //如果没有获取更多的历史消息，则也需要通知界面取消刷新indicator
+    if (self.delegate) {
+        if ([self.delegate respondsToSelector:@selector(didGetHistoryMessagesWithCellNumber:isLoadOver:)]) {
+            [self.delegate didGetHistoryMessagesWithCellNumber:cellNumber isLoadOver:messageNumber < kMQChatGetHistoryMessageNumber];
         }
     }
 }

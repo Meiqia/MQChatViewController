@@ -206,6 +206,21 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
                 [MQServiceToViewInterface downloadMediaWithUrlString:message.voicePath progress:^(float progress) {
                 } completion:^(NSData *mediaData, NSError *error) {
                     if (mediaData && !error) {
+                        if ([[message.voicePath substringFromIndex:(message.voicePath.length - 3)] isEqualToString:@"amr"]) {
+                            NSString *tempPath = [NSString stringWithFormat:@"%@/tempAmr",[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)objectAtIndex:0]];
+                            BOOL createSuccess = [[NSFileManager defaultManager] createFileAtPath:tempPath contents:mediaData attributes:nil];
+                            if (!createSuccess) {
+                                NSLog(@"failed to create file");
+                            }
+                            NSString *wavPath = [NSString stringWithFormat:@"%@wav", tempPath];
+                            [VoiceConverter amrToWav:tempPath wavSavePath:wavPath];
+                            mediaData = [NSData dataWithContentsOfFile:wavPath];
+                            BOOL removeSuccess = [[NSFileManager defaultManager] removeItemAtPath:tempPath error:nil];
+                            if (!removeSuccess) {
+                                NSLog(@"failed to remove file");
+                            }
+                            [[NSFileManager defaultManager] removeItemAtPath:wavPath error:nil];
+                        }
                         self.voiceData = mediaData;
                         voiceTimeInterval = [MQChatFileUtil getAudioDurationWithData:mediaData];
                         [self setModelsWithMessage:message cellWidth:cellWidth isLoadVoiceSuccess:true];
