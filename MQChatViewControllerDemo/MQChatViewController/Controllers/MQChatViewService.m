@@ -207,8 +207,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
  *  在尾部增加cellModel之前，先判断两个时间间隔是否过大，如果过大，插入一个MessageDateCellModel
  *
  *  @param beAddedCellModel 准备被add的cellModel
+ *  @return 是否插入了时间cell
  */
-- (void)addMessageDateCellAtLastWithCurrentCellModel:(id<MQCellModelProtocol>)beAddedCellModel {
+- (BOOL)addMessageDateCellAtLastWithCurrentCellModel:(id<MQCellModelProtocol>)beAddedCellModel {
     id<MQCellModelProtocol> lastCellModel = [self searchOneBussinessCellModelWithIndex:self.cellModels.count-1 isSearchFromBottomToTop:true];
     NSDate *lastDate = lastCellModel ? [lastCellModel getCellDate] : [NSDate date];
     NSDate *beAddedDate = [beAddedCellModel getCellDate];
@@ -217,35 +218,38 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     //判断被add的cell比最后一个cell的时间间隔是否超过阈值
     BOOL isDateTimeIntervalLargerThanThreshold = beAddedDate.timeIntervalSince1970 - lastDate.timeIntervalSince1970 >= kMQChatMessageMaxTimeInterval;
     if (!isLastDateLargerThanNextDate && !isDateTimeIntervalLargerThanThreshold) {
-        return ;
+        return false;
     }
     MQMessageDateCellModel *cellModel = [[MQMessageDateCellModel alloc] initCellModelWithDate:beAddedDate cellWidth:self.chatViewWidth];
     [self.cellModels addObject:cellModel];
+    return true;
 }
 
 /**
  *  在首部增加cellModel之前，先判断两个时间间隔是否过大，如果过大，插入一个MessageDateCellModel
  *
  *  @param beInsertedCellModel 准备被insert的cellModel
+ *  @return 是否插入了时间cell
  */
-- (void)insertMessageDateCellAtFirstWithCellModel:(id<MQCellModelProtocol>)beInsertedCellModel {
+- (BOOL)insertMessageDateCellAtFirstWithCellModel:(id<MQCellModelProtocol>)beInsertedCellModel {
     NSDate *firstDate = [NSDate date];
     if (self.cellModels.count == 0) {
-        return;
+        return false;
     }
     id<MQCellModelProtocol> firstCellModel = [self.cellModels objectAtIndex:0];
     if (![firstCellModel isServiceRelatedCell]) {
-        return;
+        return false;
     }
     NSDate *beInsertedDate = [beInsertedCellModel getCellDate];
     firstDate = [firstCellModel getCellDate];
     //判断被insert的Cell的date和第一个cell的date的时间间隔是否超过阈值
     BOOL isDateTimeIntervalLargerThanThreshold = firstDate.timeIntervalSince1970 - beInsertedDate.timeIntervalSince1970 >= kMQChatMessageMaxTimeInterval;
     if (!isDateTimeIntervalLargerThanThreshold) {
-        return;
+        return false;
     }
     MQMessageDateCellModel *cellModel = [[MQMessageDateCellModel alloc] initCellModelWithDate:firstDate cellWidth:self.chatViewWidth];
     [self.cellModels insertObject:cellModel atIndex:0];
+    return true;
 }
 
 /**
@@ -424,8 +428,16 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 }
 
 #pragma 开发者可将自定义的message添加到此方法中
-//将消息数组中的消息转换成cellModel，并添加到cellModels中去
-- (void)saveToCellModelsWithMessages:(NSArray *)messages isInsertAtFirstIndex:(BOOL)isInsertAtFirstIndex{
+/**
+ *  将消息数组中的消息转换成cellModel，并添加到cellModels中去;
+ *
+ *  @param messages             消息实体array
+ *  @param isInsertAtFirstIndex 是否将messages插入到顶部
+ *
+ *  @return 返回转换为cell的个数
+ */
+- (NSInteger)saveToCellModelsWithMessages:(NSArray *)messages isInsertAtFirstIndex:(BOOL)isInsertAtFirstIndex{
+    NSInteger cellNumber = 0;
     NSMutableArray *historyMessages = [[NSMutableArray alloc] initWithArray:messages];
     if (isInsertAtFirstIndex) {
         //如果是历史消息，则将历史消息插入到cellModels的首部
@@ -447,15 +459,24 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         }
         if (cellModel) {
             if (isInsertAtFirstIndex) {
-                [self insertMessageDateCellAtFirstWithCellModel:cellModel];
+                BOOL isInsertDateCell = [self insertMessageDateCellAtFirstWithCellModel:cellModel];
+                if (isInsertDateCell) {
+                    cellNumber ++;
+                }
                 [self.cellModels insertObject:cellModel atIndex:0];
+                cellNumber ++;
             } else {
-                [self addMessageDateCellAtLastWithCurrentCellModel:cellModel];
+                BOOL isAddDateCell = [self addMessageDateCellAtLastWithCurrentCellModel:cellModel];
+                if (isAddDateCell) {
+                    cellNumber ++;
+                }
                 [self.cellModels addObject:cellModel];
+                cellNumber ++;
             }
         }
     }
     [self reloadChatTableView];
+    return cellNumber;
 }
 
 #ifdef INCLUDE_MEIQIA_SDK
@@ -522,14 +543,13 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 #pragma MQServiceToViewInterfaceDelegate
 - (void)didReceiveHistoryMessages:(NSArray *)messages {
-    NSInteger messageNumber = 0;
     if (messages.count > 0) {
-        [self saveToCellModelsWithMessages:messages isInsertAtFirstIndex:true];
-        messageNumber = messages.count;
-    }
-    if (self.delegate) {
-        if ([self.delegate respondsToSelector:@selector(didGetHistoryMessagesWithMessagesNumber:isLoadOver:)]) {
-            [self.delegate didGetHistoryMessagesWithMessagesNumber:messageNumber isLoadOver:messageNumber < kMQChatGetHistoryMessageNumber];
+        NSInteger cellNumber = [self saveToCellModelsWithMessages:messages isInsertAtFirstIndex:true];
+        NSInteger messageNumber = messages.count;
+        if (self.delegate) {
+            if ([self.delegate respondsToSelector:@selector(didGetHistoryMessagesWithCellNumber:isLoadOver:)]) {
+                [self.delegate didGetHistoryMessagesWithCellNumber:cellNumber isLoadOver:messageNumber < kMQChatGetHistoryMessageNumber];
+            }
         }
     }
 }
@@ -547,7 +567,11 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     //更新界面title
     [self updateChatTitleWithAgentName:[MQServiceToViewInterface getCurrentAgentName]];
     //通知界面收到了消息
-    if (self.delegate && [MQChatViewConfig sharedConfig].enableEventDispaly) {
+    BOOL isRefreshView = true;
+    if (![MQChatViewConfig sharedConfig].enableEventDispaly && [[messages firstObject] isKindOfClass:[MQEventMessage class]]) {
+        isRefreshView = false;
+    }
+    if (self.delegate && isRefreshView) {
         if ([self.delegate respondsToSelector:@selector(didReceiveMessage)]) {
             [self.delegate didReceiveMessage];
         }

@@ -158,7 +158,7 @@ static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
     }
 }
 
-- (void)finishLoadingTopRefreshViewWithMessagesNumber:(NSInteger)messagesNumber isLoadOver:(BOOL)isLoadOver {
+- (void)finishLoadingTopRefreshViewWithCellNumber:(NSInteger)cellNumber isLoadOver:(BOOL)isLoadOver {
     if (isLoadOver) {
         [self cancelTopAutoRefreshView];
     } else {
@@ -169,7 +169,7 @@ static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
         [self.topRefreshView finishLoading];
         //在开启自动顶部刷新，则隐藏topRefreshView
         didPullRefreshView = true;
-        if (enableTopAutoRefresh && messagesNumber > 0) {
+        if (enableTopAutoRefresh && cellNumber > 0) {
             self.topRefreshView.hidden = true;
         }
         if (isLoadOver) {
@@ -178,12 +178,12 @@ static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
             enableTopAutoRefresh = false;
         }
     }
-    if (messagesNumber > 1) {
-        [self scrollToLoadedMessageIndex:messagesNumber-1];
+    if (cellNumber > 1) {
+        [self scrollToCellIndex:cellNumber-1];
     }
 }
 
-- (void)scrollToLoadedMessageIndex:(NSInteger)index {
+- (void)scrollToCellIndex:(NSInteger)index {
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     [self scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
     CGPoint tableViewOffset = self.contentOffset;

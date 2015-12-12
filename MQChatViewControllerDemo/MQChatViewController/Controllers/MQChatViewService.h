@@ -18,8 +18,11 @@
 
 /**
  *  获取到了更多历史消息
+ *
+ *  @param cellNumber 需要显示的cell数量
+ *  @param isLoadOver 是否已经获取完了历史消息
  */
-- (void)didGetHistoryMessagesWithMessagesNumber:(NSInteger)messageNumber isLoadOver:(BOOL)isLoadOver;
+- (void)didGetHistoryMessagesWithCellNumber:(NSInteger)cellNumber isLoadOver:(BOOL)isLoadOver;
 
 /**
  *  已经更新了这条消息的数据，通知tableView刷新界面

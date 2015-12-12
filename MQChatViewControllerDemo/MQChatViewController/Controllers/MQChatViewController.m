@@ -193,7 +193,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)startLoadingTopMessagesInTableView:(UITableView *)tableView {
 #ifndef INCLUDE_MEIQIA_SDK
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.chatTableView finishLoadingTopRefreshViewWithMessagesNumber:1 isLoadOver:true];
+        [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:1 isLoadOver:true];
     });
 #else
     [chatViewService startGettingHistoryMessages];
@@ -259,8 +259,8 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 #pragma MQChatViewServiceDelegate
-- (void)didGetHistoryMessagesWithMessagesNumber:(NSInteger)messageNumber isLoadOver:(BOOL)isLoadOver{
-    [self.chatTableView finishLoadingTopRefreshViewWithMessagesNumber:messageNumber isLoadOver:isLoadOver];
+- (void)didGetHistoryMessagesWithCellNumber:(NSInteger)cellNumber isLoadOver:(BOOL)isLoadOver{
+    [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:cellNumber isLoadOver:isLoadOver];
     [self.chatTableView reloadData];
 }
 
@@ -514,7 +514,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
 #pragma MQServiceToViewInterfaceErrorDelegate 后端返回的数据的错误委托方法
 - (void)getLoadHistoryMessageError {
-    [self.chatTableView finishLoadingTopRefreshViewWithMessagesNumber:0 isLoadOver:false];
+    [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:0 isLoadOver:false];
     [MQToast showToast:[MQBundleUtil localizedStringForKey:@"load_history_message_error"] duration:1.0 window:self.view];
 }
 
