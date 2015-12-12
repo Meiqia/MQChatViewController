@@ -270,7 +270,7 @@ static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
 }
 
 - (BOOL)isTableViewScrolledToBottom {
-    if(self.contentOffset.y + self.frame.size.height + kMQChatScrollBottomDistanceThreshold < self.contentSize.height){
+    if(self.contentOffset.y + self.frame.size.height + kMQChatScrollBottomDistanceThreshold > self.contentSize.height){
         return true;
     } else {
         return false;

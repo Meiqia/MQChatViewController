@@ -282,19 +282,17 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
 - (void)didScheduleClientWithViewTitle:(NSString *)viewTitle {
     [self updateNavBarTitle:viewTitle];
-    //分配成功后，滚动到底部
-    [self chatTableViewScrollToBottomWithAnimated:false];
 }
 #endif
 
 - (void)didReceiveMessage {
     //判断是否显示新消息提示
     if ([self.chatTableView isTableViewScrolledToBottom]) {
+        [self chatTableViewScrollToBottomWithAnimated:true];
+    } else {
         if ([MQChatViewConfig sharedConfig].enableShowNewMessageAlert) {
             [MQToast showToast:[MQBundleUtil localizedStringForKey:@"display_new_message"] duration:1.5 window:self.view];
         }
-    } else {
-        [self chatTableViewScrollToBottomWithAnimated:true];
     }
 }
 
@@ -348,7 +346,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     
     //停止播放的通知
     [[NSNotificationCenter defaultCenter] postNotificationName:MQAudioPlayerDidInterruptNotification object:nil];
-     
+    
     //判断是否开启了语音权限
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
         //首先记录点击语音的时间，如果第一次授权，则确定授权的时间会较长，这时不应该初始化record view

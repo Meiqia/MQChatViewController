@@ -469,12 +469,16 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [serviceToViewInterface setClientOnlineWithCustomizedId:[MQChatViewConfig sharedConfig].customizedId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
             if (!completion) {
                 //没有分配到客服
-                //            isThereNoAgent = true;
                 agentName = [MQBundleUtil localizedStringForKey: agentName && agentName.length>0 ? agentName : @"no_agent_title"];
             }
             [weakSelf updateChatTitleWithAgentName:agentName];
             if (receivedMessages) {
                 [weakSelf saveToCellModelsWithMessages:receivedMessages isInsertAtFirstIndex:false];
+                if (weakSelf.delegate) {
+                    if ([weakSelf.delegate respondsToSelector:@selector(scrollTableViewToBottom)]) {
+                        [weakSelf.delegate scrollTableViewToBottom];
+                    }
+                }
             }
         } receiveMessageDelegate:self];
         return;
@@ -482,7 +486,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [serviceToViewInterface setClientOnlineWithClientId:[MQChatViewConfig sharedConfig].MQClientId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
         if (!completion) {
             //没有分配到客服
-            //            isThereNoAgent = true;
             agentName = [MQBundleUtil localizedStringForKey: agentName && agentName.length>0 ? agentName : @"no_agent_title"];
         }
         [weakSelf updateChatTitleWithAgentName:agentName];
@@ -544,7 +547,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     //更新界面title
     [self updateChatTitleWithAgentName:[MQServiceToViewInterface getCurrentAgentName]];
     //通知界面收到了消息
-    if (self.delegate) {
+    if (self.delegate && [MQChatViewConfig sharedConfig].enableEventDispaly) {
         if ([self.delegate respondsToSelector:@selector(didReceiveMessage)]) {
             [self.delegate didReceiveMessage];
         }
@@ -604,7 +607,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     if (newMessageDate) {
         [cellModel updateCellMessageDate:newMessageDate];
     }
-    [self updateCellWithIndex:index];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self updateCellWithIndex:index];
+    });
 }
 
 - (void)addTipCellModelWithTips:(NSString *)tips {
