@@ -33,7 +33,6 @@
     if (audioPlayer.duration) {
         return audioPlayer.duration;
     } else {
-        NSAssert(NO, @"获取音频长度失败");
         return 0;
     }
 }
