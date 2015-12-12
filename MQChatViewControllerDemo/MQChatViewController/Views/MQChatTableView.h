@@ -44,7 +44,7 @@
 /**
  *  结束上拉刷新
  */
-- (void)finishLoadingTopRefreshViewWithMessagesNumber:(NSInteger)messagesNumber isLoadOver:(BOOL)isLoadOver;
+- (void)finishLoadingTopRefreshViewWithCellNumber:(NSInteger)cellNumber isLoadOver:(BOOL)isLoadOver;
 
 /**
  *  结束下拉刷新

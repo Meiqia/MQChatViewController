@@ -193,7 +193,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)startLoadingTopMessagesInTableView:(UITableView *)tableView {
 #ifndef INCLUDE_MEIQIA_SDK
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.chatTableView finishLoadingTopRefreshViewWithMessagesNumber:1 isLoadOver:true];
+        [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:1 isLoadOver:true];
     });
 #else
     [chatViewService startGettingHistoryMessages];
@@ -259,8 +259,8 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 #pragma MQChatViewServiceDelegate
-- (void)didGetHistoryMessagesWithMessagesNumber:(NSInteger)messageNumber isLoadOver:(BOOL)isLoadOver{
-    [self.chatTableView finishLoadingTopRefreshViewWithMessagesNumber:messageNumber isLoadOver:isLoadOver];
+- (void)didGetHistoryMessagesWithCellNumber:(NSInteger)cellNumber isLoadOver:(BOOL)isLoadOver{
+    [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:cellNumber isLoadOver:isLoadOver];
     [self.chatTableView reloadData];
 }
 
@@ -282,19 +282,17 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
 - (void)didScheduleClientWithViewTitle:(NSString *)viewTitle {
     [self updateNavBarTitle:viewTitle];
-    //分配成功后，滚动到底部
-    [self chatTableViewScrollToBottomWithAnimated:false];
 }
 #endif
 
 - (void)didReceiveMessage {
     //判断是否显示新消息提示
     if ([self.chatTableView isTableViewScrolledToBottom]) {
+        [self chatTableViewScrollToBottomWithAnimated:true];
+    } else {
         if ([MQChatViewConfig sharedConfig].enableShowNewMessageAlert) {
             [MQToast showToast:[MQBundleUtil localizedStringForKey:@"display_new_message"] duration:1.5 window:self.view];
         }
-    } else {
-        [self chatTableViewScrollToBottomWithAnimated:true];
     }
 }
 
@@ -348,7 +346,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     
     //停止播放的通知
     [[NSNotificationCenter defaultCenter] postNotificationName:MQAudioPlayerDidInterruptNotification object:nil];
-     
+    
     //判断是否开启了语音权限
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
         //首先记录点击语音的时间，如果第一次授权，则确定授权的时间会较长，这时不应该初始化record view
@@ -516,7 +514,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
 #pragma MQServiceToViewInterfaceErrorDelegate 后端返回的数据的错误委托方法
 - (void)getLoadHistoryMessageError {
-    [self.chatTableView finishLoadingTopRefreshViewWithMessagesNumber:0 isLoadOver:false];
+    [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:0 isLoadOver:false];
     [MQToast showToast:[MQBundleUtil localizedStringForKey:@"load_history_message_error"] duration:1.0 window:self.view];
 }
 
