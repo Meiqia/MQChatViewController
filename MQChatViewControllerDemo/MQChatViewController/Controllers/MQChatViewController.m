@@ -80,7 +80,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     //更新view frame
     viewSize = self.view.frame.size;
     [self updateContentViewsFrame];
@@ -123,8 +122,8 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     recordView.recordViewDelegate = nil;
 #ifdef INCLUDE_MEIQIA_SDK
     chatViewService.errorDelegate = nil;
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:MQ_COMMUNICATION_FAILED_NOTIFICATION object:nil];
 #endif
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma 初始化viewModel

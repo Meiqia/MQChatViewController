@@ -154,7 +154,9 @@ static NSInteger const kMQMaxRecordVoiceDurationDeviation = 2;
 
 -(void)startRecording
 {
-    recordTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(recodTime) userInfo:nil repeats:YES];
+    if (!recordTimer) {
+        recordTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(recodTime) userInfo:nil repeats:YES];
+    }
     recordTime = 0;
     [audioRecorder beginRecording];
 }

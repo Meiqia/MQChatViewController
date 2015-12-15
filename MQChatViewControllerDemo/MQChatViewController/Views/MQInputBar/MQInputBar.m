@@ -12,8 +12,6 @@
 #import "MQBundleUtil.h"
 #import "MQBundleUtil.h"
 
-//#define ButtonWidth 33
-//#define ButtonX 6.5
 static CGFloat const kMQInputBarHorizontalSpacing = 8.0;
 
 @interface MQInputBar()
@@ -272,11 +270,15 @@ resignKeyboardHighlightedImage:(UIImage *)resignKeyboardHighlightedImage
             recordBtn.backgroundColor = [UIColor colorWithWhite:.92 alpha:1];
         }];
     }else if(longPressedRecognizer.state == UIGestureRecognizerStateEnded || longPressedRecognizer.state == UIGestureRecognizerStateCancelled) {
-        [self endRecordWithPoint:[longPressedRecognizer locationInView:[[UIApplication sharedApplication] keyWindow]]];
-        [recordBtn setTitle:[MQBundleUtil localizedStringForKey:@"record_speak"] forState:UIControlStateNormal];
-        [UIView animateWithDuration:.2 animations:^{
-            recordBtn.backgroundColor = [UIColor colorWithWhite:1 alpha:1];
-        }];
+        CGPoint point = [longPressedRecognizer locationInView:[[UIApplication sharedApplication] keyWindow]];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            //为了防止用户松开太快，松开的以后，才进入系统麦克风权限的回调，所以增加0.2秒延迟
+            [self endRecordWithPoint:point];
+            [recordBtn setTitle:[MQBundleUtil localizedStringForKey:@"record_speak"] forState:UIControlStateNormal];
+            [UIView animateWithDuration:.2 animations:^{
+                recordBtn.backgroundColor = [UIColor colorWithWhite:1 alpha:1];
+            }];
+        });
     }else if(longPressedRecognizer.state == UIGestureRecognizerStateChanged) {
         [self changeRecordStatusWithPoint:[longPressedRecognizer locationInView:[[UIApplication sharedApplication] keyWindow]]];
     }
