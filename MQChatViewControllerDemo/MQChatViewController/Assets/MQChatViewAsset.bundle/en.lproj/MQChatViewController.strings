@@ -73,3 +73,5 @@
 "load_history_message_error"    = "Sorry, failed to load history messages";
 
 "microphone_denied"     = "Please go to Settings. And open microphone permission for This App.";
+
+"meiqia_communication_failed" = "Sorry, cannot access communication server, please change your network and retry.";

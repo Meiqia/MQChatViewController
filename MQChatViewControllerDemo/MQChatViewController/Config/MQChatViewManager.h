@@ -315,7 +315,7 @@
  *
  *  @param agentId 客服id
  */
-- (void)setScheduledAgentToken:(NSString *)agentToken;
+- (void)setScheduledAgentId:(NSString *)agentId;
 
 /**
  *  设置分配给指定的客服组id
@@ -323,7 +323,7 @@
  *  @warning 如果设置了分配给客服id，以分配给客服id为优先
  *  @param groupId 客服组id
  */
-- (void)setScheduledGroupToken:(NSString *)groupToken;
+- (void)setScheduledGroupId:(NSString *)groupId;
 
 /**
  *  设置登录客服的开发者自定义id，设置该id后，聊天将会以该自定义id的顾客上线

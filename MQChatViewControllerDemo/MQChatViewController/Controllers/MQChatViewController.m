@@ -18,6 +18,7 @@
 #import "VoiceConverter.h"
 #import "MQBundleUtil.h"
 #import "MQImageUtil.h"
+#import "MQDefinition.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
@@ -35,6 +36,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     MQInputBar *chatInputBar;
     MQRecordView *recordView;
     CGSize viewSize;
+    BOOL isMQCommunicationFailed;  //判断是否通信没有连接上
 }
 
 - (void)dealloc {
@@ -66,6 +68,8 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     
 #ifdef INCLUDE_MEIQIA_SDK
     [self updateNavBarTitle:[MQBundleUtil localizedStringForKey:@"wait_agent"]];
+    isMQCommunicationFailed = false;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveMQCommunicationErrorNotification:) name:MQ_COMMUNICATION_FAILED_NOTIFICATION object:nil];
 #endif
 }
 
@@ -76,7 +80,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     //更新view frame
     viewSize = self.view.frame.size;
     [self updateContentViewsFrame];
@@ -120,6 +123,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
     chatViewService.errorDelegate = nil;
 #endif
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma 初始化viewModel
@@ -265,9 +269,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 - (void)didUpdateCellModelWithIndexPath:(NSIndexPath *)indexPath {
-    //        [self.chatTableView reloadData];
-    //    [self.chatTableView beginUpdates];
-    //    [self.chatTableView endUpdates];
     [self.chatTableView updateTableViewAtIndexPath:indexPath];
 }
 
@@ -525,6 +526,17 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
  */
 - (void)updateNavBarTitle:(NSString *)title {
     self.navigationItem.title = title;
+}
+
+/**
+ *  收到美洽通信连接失败的通知
+ */
+- (void)didReceiveMQCommunicationErrorNotification:(NSNotification *)notification {
+    if (isMQCommunicationFailed) {
+        return;
+    }
+    isMQCommunicationFailed = true;
+    [MQToast showToast:[MQBundleUtil localizedStringForKey:@"meiqia_communication_failed"] duration:1.0 window:self.view];
 }
 
 

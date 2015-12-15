@@ -158,8 +158,8 @@
  *  设置指定分配的客服或客服组
  *
  */
-+ (void)setScheduledAgentWithAgentToken:(NSString *)agentToken
-                        agentGroupToken:(NSString *)agentGroupToken;
++ (void)setScheduledAgentWithAgentId:(NSString *)agentId
+                        agentGroupId:(NSString *)agentGroupId;
 
 /**
  * 设置顾客离线

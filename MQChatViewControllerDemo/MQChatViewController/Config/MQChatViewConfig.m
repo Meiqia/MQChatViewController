@@ -44,8 +44,8 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
     
     self.chatWelcomeText        = [MQBundleUtil localizedStringForKey:@"welcome_chat"];
     self.agentName              = [MQBundleUtil localizedStringForKey:@"default_assistant"];
-    self.scheduledAgentToken    = @"";
-    self.scheduledGroupToken    = @"";
+    self.scheduledAgentId    = @"";
+    self.scheduledGroupId    = @"";
     self.MQClientId             = @"";
     self.customizedId           = @"";
     self.navTitleText           = @"";
