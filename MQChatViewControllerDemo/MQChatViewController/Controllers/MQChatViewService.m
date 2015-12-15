@@ -489,7 +489,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 - (void)setClientOnline {
     __weak typeof(self) weakSelf = self;
     serviceToViewInterface = [[MQServiceToViewInterface alloc] init];
-    [MQServiceToViewInterface setScheduledAgentWithAgentToken:[MQChatViewConfig sharedConfig].scheduledAgentToken agentGroupToken:[MQChatViewConfig sharedConfig].scheduledGroupToken];
+    [MQServiceToViewInterface setScheduledAgentWithAgentId:[MQChatViewConfig sharedConfig].scheduledAgentId agentGroupId:[MQChatViewConfig sharedConfig].scheduledGroupId];
     if ([MQChatViewConfig sharedConfig].MQClientId.length == 0 && [MQChatViewConfig sharedConfig].customizedId.length > 0) {
         [serviceToViewInterface setClientOnlineWithCustomizedId:[MQChatViewConfig sharedConfig].customizedId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
             if (!completion) {
