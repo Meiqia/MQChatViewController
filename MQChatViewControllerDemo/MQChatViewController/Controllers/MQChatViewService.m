@@ -54,7 +54,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         [self setClientOnline];
         isThereNoAgent = false;
         addedNoAgentTip = false;
-        //监听
 #endif
     }
     return self;

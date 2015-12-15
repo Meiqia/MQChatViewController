@@ -2,26 +2,43 @@
 //  MQDefinition.h
 //  MeiQiaSDK
 //
-//  Created by ijinmao on 15/10/27.
+//  Created by dingnan on 15/10/27.
 //  Copyright © 2015年 MeiQia Inc. All rights reserved.
 //
 #import <Foundation/Foundation.h>
 
 /**
- * 异常或错误。没有异常时返回-1
+ *  美洽客服系统当前有新消息，开发者可实现该协议方法，通过此方法显示小红点未读标识
  */
-typedef enum{
-    Exception_Error_Parameter = 0,      //参数错误
-    
-    Exception_AppKey_Invalid,           //appkey无效
-    Exception_Init_Failed,              //初始化中出现错误
-    Exception_NotInitialized,           //未初始化
-    
-    Exception_Client_IsOffline,           //顾客为离线状态，当前操作无法操作
-    
-    Exception_Connection_Error,         //网络请求错误
-    Exception_Agent_NotOnline,         //没有客服在线
-    
-    Exception_ServiceError,             //服务器出错
-    Exception_UnknownError              //未知错误
-}kMQExceptionStatus;
+#define MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION @"MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION"
+
+/**
+ *  收到该通知，即表示美洽的通信接口没有连接成功
+ */
+#define MQ_COMMUNICATION_FAILED_NOTIFICATION @"MQ_COMMUNICATION_FAILED_NOTIFICATION"
+
+/**
+ *  美洽的错误码
+ */
+static NSString * const MQRequesetErrorDomain = @"com.meiqia.error.resquest.error";
+
+/**
+ 美洽Error的code对应码
+ */
+typedef enum : NSInteger {
+    MQErrorCodeParameterUnKown              = -2000,    //未知错误
+    MQErrorCodeParameterError               = -2001,    //参数错误
+    MQErrorCodeCurrentClientNotFound        = -2003,    //当前没有顾客，请新建一个顾客后再上线
+    MQErrorCodeClientNotExisted             = -2004,    //美洽服务端没有找到对应的client
+    MQErrorCodeConversationNotFound         = -2005,    //美洽服务端没有找到该对话
+    MQErrorCodePlistConfigurationError      = -2006     //开发者App的info.plist没有增加NSExceptionDomains，请参考https://github.com/Meiqia/Meiqia-SDK-iOS-Demo#info.plist设置
+} MQErrorCode;
+
+/**
+ 顾客上线的结果枚举类型
+ */
+typedef enum : NSUInteger {
+    MQClientOnlineResultSuccess = 0,        //上线成功
+    MQClientOnlineResultParameterError,     //上线参数错误
+    MQClientOnlineResultNotScheduledAgent   //没有可接待的客服
+} MQClientOnlineResult;

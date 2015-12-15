@@ -73,3 +73,5 @@
 "load_history_message_error"    = "抱歉，沒有正確獲取到歷史消息-_-";
 
 "microphone_denied"     = "請在系統設置中允許該App訪問麥克風";
+
+"meiqia_communication_failed" = "抱歉，连接通信网络可能有问题，请更换网络试一下。";
