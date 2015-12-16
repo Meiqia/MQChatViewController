@@ -205,4 +205,13 @@
 + (void)removeMessageInDatabaseWithId:(NSString *)messageId;
 
 
+/**
+ *  获取当前顾客的顾客信息
+ *
+ *  @return 当前的顾客的信息
+ *
+ */
++ (NSDictionary *)getCurrentClientInfo;
+
+
 @end
