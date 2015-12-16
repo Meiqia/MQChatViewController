@@ -487,6 +487,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 
 #pragma 顾客上线的逻辑
 - (void)setClientOnline {
+    //上线
     __weak typeof(self) weakSelf = self;
     serviceToViewInterface = [[MQServiceToViewInterface alloc] init];
     [MQServiceToViewInterface setScheduledAgentWithAgentId:[MQChatViewConfig sharedConfig].scheduledAgentId agentGroupId:[MQChatViewConfig sharedConfig].scheduledGroupId];
@@ -496,6 +497,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                 //没有分配到客服
                 agentName = [MQBundleUtil localizedStringForKey: agentName && agentName.length>0 ? agentName : @"no_agent_title"];
             }
+            //获取顾客信息
+            [weakSelf getClientInfo];
+            //更新客服聊天界面标题
             [weakSelf updateChatTitleWithAgentName:agentName];
             if (receivedMessages) {
                 [weakSelf saveToCellModelsWithMessages:receivedMessages isInsertAtFirstIndex:false];
@@ -513,6 +517,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             //没有分配到客服
             agentName = [MQBundleUtil localizedStringForKey: agentName && agentName.length>0 ? agentName : @"no_agent_title"];
         }
+        //获取顾客信息
+        [weakSelf getClientInfo];
+        //更新客服聊天界面标题
         [weakSelf updateChatTitleWithAgentName:agentName];
         if (receivedMessages) {
             [weakSelf saveToCellModelsWithMessages:receivedMessages isInsertAtFirstIndex:false];
@@ -523,6 +530,15 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             }
         }
     } receiveMessageDelegate:self];
+}
+
+//获取顾客信息
+- (void)getClientInfo {
+    NSDictionary *clientInfo = [MQServiceToViewInterface getCurrentClientInfo];
+    [MQServiceToViewInterface downloadMediaWithUrlString:[clientInfo objectForKey:@"avatar"] progress:^(float progress) {
+    } completion:^(NSData *mediaData, NSError *error) {
+        [MQChatViewConfig sharedConfig].outgoingDefaultAvatarImage = [UIImage imageWithData:mediaData];
+    }];
 }
 
 - (void)updateChatTitleWithAgentName:(NSString *)agentName {
