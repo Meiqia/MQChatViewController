@@ -213,5 +213,13 @@
  */
 + (NSDictionary *)getCurrentClientInfo;
 
+/**
+ *  上传顾客的头像
+ *
+ *  @param avatarImage 头像image
+ *  @param completion  上传的回调
+ */
++ (void)uploadClientAvatar:(UIImage *)avatarImage
+                completion:(void (^)(BOOL success, NSError *error))completion;
 
 @end

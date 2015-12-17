@@ -8,6 +8,7 @@
 
 #import "MQChatViewManager.h"
 #import "MQImageUtil.h"
+#import "MQServiceToViewInterface.h"
 
 @implementation MQChatViewManager {
     MQChatViewController *chatViewController;
@@ -206,6 +207,10 @@
 
 - (void)setoutgoingDefaultAvatarImage:(UIImage *)image {
     chatViewConfig.outgoingDefaultAvatarImage = image;
+#ifdef INCLUDE_MEIQIA_SDK
+    [MQServiceToViewInterface uploadClientAvatar:image completion:^(BOOL success, NSError *error) {
+    }];
+#endif
 }
 
 - (void)setPhotoSenderImage:(UIImage *)image
