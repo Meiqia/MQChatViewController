@@ -10,9 +10,12 @@
 
 @implementation MQEventMessage
 
-- (instancetype)initWithEventContent:(NSString *)eventContent {
+- (instancetype)initWithEventContent:(NSString *)eventContent
+                           eventType:(MQChatEventType)eventType
+{
     if (self = [super init]) {
-        self.content = eventContent;
+        self.content    = eventContent;
+        self.eventType  = eventType;
     }
     return self;
 }

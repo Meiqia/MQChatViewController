@@ -297,6 +297,10 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     }
 }
 
+- (void)showToastViewWithContent:(NSString *)content {
+    [MQToast showToast:content duration:1.0 window:self.view];
+}
+
 #pragma MQInputBarDelegate
 -(BOOL)sendTextMessage:(NSString*)text {
     if (self.isInitializing) {
