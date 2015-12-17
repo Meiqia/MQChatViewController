@@ -459,7 +459,17 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         } else if ([message isKindOfClass:[MQVoiceMessage class]]) {
             cellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:(MQVoiceMessage *)message cellWidth:self.chatViewWidth delegate:self];
         } else if ([MQChatViewConfig sharedConfig].enableEventDispaly && [message isKindOfClass:[MQEventMessage class]]) {
-            cellModel = [[MQEventCellModel alloc] initCellModelWithMessage:(MQEventMessage *)message cellWidth:self.chatViewWidth];
+            //判断该event是否是用户正在输入
+            MQEventMessage *eventMessage = (MQEventMessage *)message;
+            if (eventMessage.eventType == MQChatEventTypeAgentInputting) {
+                if (self.delegate) {
+                    if ([self.delegate respondsToSelector:@selector(showToastViewWithContent:)]) {
+                        [self.delegate showToastViewWithContent:@"客服正在输入..."];
+                    }
+                }
+            } else {
+                cellModel = [[MQEventCellModel alloc] initCellModelWithMessage:eventMessage cellWidth:self.chatViewWidth];
+            }
         }
         if (cellModel) {
             if (isInsertAtFirstIndex) {

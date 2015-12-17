@@ -44,6 +44,13 @@
  */
 - (void)didReceiveMessage;
 
+/**
+ *  通知viewController显示toast
+ *
+ *  @param content 显示的文字
+ */
+- (void)showToastViewWithContent:(NSString *)content;
+
 #ifdef INCLUDE_MEIQIA_SDK
 /**
  *  通知viewController已经为顾客分配了一个客服，更新title
