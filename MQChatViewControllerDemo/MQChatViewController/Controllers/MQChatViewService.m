@@ -603,6 +603,13 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     BOOL isRefreshView = true;
     if (![MQChatViewConfig sharedConfig].enableEventDispaly && [[messages firstObject] isKindOfClass:[MQEventMessage class]]) {
         isRefreshView = false;
+    } else {
+        if (messages.count == 1 && [[messages firstObject] isKindOfClass:[MQEventMessage class]]) {
+            MQEventMessage *eventMessage = [messages firstObject];
+            if (eventMessage.eventType == MQChatEventTypeAgentInputting) {
+                isRefreshView = false;
+            }
+        }
     }
     if (self.delegate && isRefreshView) {
         if ([self.delegate respondsToSelector:@selector(didReceiveMessage)]) {
