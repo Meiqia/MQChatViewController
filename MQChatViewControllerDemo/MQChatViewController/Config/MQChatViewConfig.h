@@ -81,8 +81,8 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 
 @property (nonatomic, assign) UIEdgeInsets bubbleImageStretchInsets;
 
-@property (nonatomic, weak  ) UIButton *navBarLeftButton;
-@property (nonatomic, weak  ) UIButton *navBarRightButton;
+@property (nonatomic, strong) UIButton *navBarLeftButton;
+@property (nonatomic, strong) UIButton *navBarRightButton;
 
 @property (nonatomic, assign) NSTimeInterval maxVoiceDuration;
 
