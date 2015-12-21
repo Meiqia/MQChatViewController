@@ -42,7 +42,8 @@
 - (void)enableCustomChatViewFrame:(BOOL)enable;
 
 /**
- * 设置客服聊天界面的坐标，默认聊天界面全屏显示
+ * 设置客服聊天界面的坐标。
+ * @warning 默认聊天界面从(0,0)开始，全屏显示。默认支持系统的 navigationController。如果开发者自定义导航栏，可调用此接口调整起始坐标。
  * @param viewFrame 客服聊天界面的坐标
  */
 - (void)setChatViewFrame:(CGRect)viewFrame;
