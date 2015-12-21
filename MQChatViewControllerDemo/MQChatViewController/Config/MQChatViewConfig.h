@@ -25,6 +25,7 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 
 @property (nonatomic, assign) BOOL isCustomizedChatViewFrame;
 @property (nonatomic, assign) CGRect chatViewFrame;
+@property (nonatomic, assign) CGPoint chatViewControllerPoint;
 @property (nonatomic, strong) NSMutableArray *numberRegexs;
 @property (nonatomic, strong) NSMutableArray *linkRegexs;
 @property (nonatomic, strong) NSMutableArray *emailRegexs;

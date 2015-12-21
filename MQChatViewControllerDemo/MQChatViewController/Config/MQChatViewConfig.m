@@ -37,6 +37,7 @@ NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInter
 - (void)setConfigToDefault {
     self.isCustomizedChatViewFrame  = false;
     self.chatViewFrame              = [MQChatDeviceUtil getDeviceScreenRect];
+    self.chatViewControllerPoint    = CGPointMake(0, 0);
 
     self.numberRegexs = [[NSMutableArray alloc] initWithArray:@[@"^(\\d{3,4}-?)\\d{7,8}$", @"^1[3|4|5|7|8]\\d{9}", @"[0-9]\\d{4,10}"]];
     self.linkRegexs   = [[NSMutableArray alloc] initWithArray:@[@"((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)|([a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)"]];

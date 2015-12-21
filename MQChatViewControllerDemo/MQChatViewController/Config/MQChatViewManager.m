@@ -116,6 +116,10 @@
     chatViewConfig.chatViewFrame = viewFrame;
 }
 
+- (void)setViewControllerPoint:(CGPoint)viewPoint {
+    chatViewConfig.chatViewControllerPoint = viewPoint;
+}
+
 - (void)setMessageNumberRegex:(NSString *)numberRegex {
     [chatViewConfig.numberRegexs addObject:numberRegex];
 }
