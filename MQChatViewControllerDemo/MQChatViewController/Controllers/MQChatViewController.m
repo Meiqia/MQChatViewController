@@ -483,7 +483,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 //更新viewConroller中所有的view的frame
 - (void)updateContentViewsFrame {
     //更新view
-    self.view.frame = CGRectMake(0, 0, viewSize.width, viewSize.height);
+    self.view.frame = CGRectMake([MQChatViewConfig sharedConfig].chatViewControllerPoint.x, [MQChatViewConfig sharedConfig].chatViewControllerPoint.y, viewSize.width, viewSize.height);
     //更新tableView的frame
     [self setChatTableViewFrame];
     //更新cellModel的frame

@@ -43,10 +43,18 @@
 
 /**
  * 设置客服聊天界面的坐标。
- * @warning 默认聊天界面从(0,0)开始，全屏显示。默认支持系统的 navigationController。如果开发者自定义导航栏，可调用此接口调整起始坐标。
- * @param viewFrame 客服聊天界面的坐标
+ * @warning 默认聊天界面全屏显示。
+ * @param viewFrame 客服聊天tableView的界面的坐标
  */
 - (void)setChatViewFrame:(CGRect)viewFrame;
+
+/**
+ *  设置客服聊天 viewController 的起始坐标点
+ *
+ *  @param viewPoint 其实坐标点
+ *  @warning 默认聊天界面从(0,0)开始，全屏显示。默认支持系统的 navigationController。如果开发者自定义导航栏，可调用此接口调整起始坐标。
+ */
+- (void)setViewControllerPoint:(CGPoint)viewPoint;
 
 /**
  * 增加消息中可选中的数字的正则表达式，用于匹配消息，满足条件段落可以被用户点击。
