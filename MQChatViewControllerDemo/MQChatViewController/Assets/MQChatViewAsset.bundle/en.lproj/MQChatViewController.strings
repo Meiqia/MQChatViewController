@@ -52,7 +52,7 @@
 
 "no_agent_title"        = "Online Customer Service";
 
-"no_agent_tips"         = "Sorry, there are no agents.\nYou can still send your problems to us. We will contact you as soon as possible.";
+"no_agent_tips"         = "Sorry, there are no agents.\nPlease send your contact information to us. We will contact you as soon as possible.";
 
 "retry_send_message"    = "Resend message?";
 
