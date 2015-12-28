@@ -14,6 +14,7 @@
 
 NSString * const MQChatViewKeyboardResignFirstResponderNotification = @"MQChatViewKeyboardResignFirstResponderNotification";
 NSString * const MQAudioPlayerDidInterruptNotification = @"MQAudioPlayerDidInterruptNotification";
+NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
 
 
 @implementation MQChatViewConfig

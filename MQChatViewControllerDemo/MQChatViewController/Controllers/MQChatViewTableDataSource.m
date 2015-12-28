@@ -14,7 +14,6 @@
 
 @property (nonatomic, weak) MQChatViewService *chatViewService;
 
-
 @end
 
 @implementation MQChatViewTableDataSource {

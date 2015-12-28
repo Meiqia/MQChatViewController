@@ -136,11 +136,18 @@
  */
 - (void)didTapMessageCellAtIndex:(NSInteger)index;
 
+/**
+ *  刷新所有的本机用户的头像
+ */
+- (void)refreshOutgoingAvatarWithImage:(UIImage *)avatarImage;
+
+
 #ifndef INCLUDE_MEIQIA_SDK
 /**
  * 使用MQChatViewControllerDemo的时候，调试用的方法，用于收取和上一个message一样的消息
  */
 - (void)loadLastMessage;
+
 #endif
 
 @end

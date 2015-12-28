@@ -427,5 +427,11 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
     }
 }
 
+- (void)updateOutgoingAvatarImage:(UIImage *)avatarImage {
+    if (self.cellFromType == MQChatCellOutgoing) {
+        self.avatarImage = avatarImage;
+    }
+}
+
 
 @end

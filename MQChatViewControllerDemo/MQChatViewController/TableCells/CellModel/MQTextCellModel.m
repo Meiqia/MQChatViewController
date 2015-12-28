@@ -356,5 +356,11 @@
     }
 }
 
+- (void)updateOutgoingAvatarImage:(UIImage *)avatarImage {
+    if (self.cellFromType == MQChatCellOutgoing) {
+        self.avatarImage = avatarImage;
+    }
+}
+
 
 @end
