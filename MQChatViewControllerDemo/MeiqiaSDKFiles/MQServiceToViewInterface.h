@@ -202,7 +202,8 @@
  *
  *  @param messageId 消息id
  */
-+ (void)removeMessageInDatabaseWithId:(NSString *)messageId;
++ (void)removeMessageInDatabaseWithId:(NSString *)messageId
+                           completion:(void (^)(BOOL success, NSError *error))completion;
 
 
 /**

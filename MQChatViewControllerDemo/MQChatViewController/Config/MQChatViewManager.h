@@ -362,7 +362,6 @@
  */
 - (void)setEventTextColor:(UIColor *)textColor;
 
-
 #endif
 
 

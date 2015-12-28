@@ -175,7 +175,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     //通知逻辑层删除该message数据
 #ifdef INCLUDE_MEIQIA_SDK
     NSString *messageId = [[self.cellModels objectAtIndex:index] getCellMessageId];
-    [MQServiceToViewInterface removeMessageInDatabaseWithId:messageId];
+    [MQServiceToViewInterface removeMessageInDatabaseWithId:messageId completion:nil];
 #endif
     [self.cellModels removeObjectAtIndex:index];
     //判断删除这个model的之前的model是否为date，如果是，则删除时间cellModel
