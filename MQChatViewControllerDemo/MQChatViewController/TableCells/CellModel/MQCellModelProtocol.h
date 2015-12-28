@@ -169,6 +169,13 @@ typedef NS_ENUM(NSUInteger, MQChatCellFromType) {
  */
 - (void)updateCellMessageDate:(NSDate *)messageDate;
 
+/**
+ *  更新本机头像
+ *
+ *  @param avatarImage 头像 image
+ */
+- (void)updateOutgoingAvatarImage:(UIImage *)avatarImage;
+
 @end
 
 /**

@@ -10,12 +10,14 @@
 #import <UIKit/UIKit.h>
 
 //是否引入美洽SDK
-//#define INCLUDE_MEIQIA_SDK
+#define INCLUDE_MEIQIA_SDK
 
 /** 关闭键盘的通知 */
 extern NSString * const MQChatViewKeyboardResignFirstResponderNotification;
 /** 中断audio player的通知 */
 extern NSString * const MQAudioPlayerDidInterruptNotification;
+/** 刷新TableView的通知 */
+extern NSString * const MQChatTableViewShouldRefresh;
 
 /**
  * @brief MQChatViewConfig为客服聊天界面的前置配置，由MQChatViewManager生成，在MQChatViewController内部逻辑消费

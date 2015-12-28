@@ -682,6 +682,19 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self reloadChatTableView];
 }
 
+/**
+ *  刷新所有的本机用户的头像
+ */
+- (void)refreshOutgoingAvatarWithImage:(UIImage *)avatarImage {
+    for (NSInteger index=0; index<self.cellModels.count; index++) {
+        id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index];
+        if ([cellModel respondsToSelector:@selector(updateOutgoingAvatarImage:)]) {
+            [cellModel updateOutgoingAvatarImage:avatarImage];
+        }
+    }
+    [self reloadChatTableView];
+}
+
 #endif
 
 @end

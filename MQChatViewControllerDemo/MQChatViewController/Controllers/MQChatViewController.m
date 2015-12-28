@@ -41,7 +41,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 - (void)dealloc {
     NSLog(@"清除chatViewController");
-    [self removeDelegate];
+    [self removeDelegateAndObserver];
     [chatViewConfig setConfigToDefault];
 }
 
@@ -69,7 +69,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
     [self updateNavBarTitle:[MQBundleUtil localizedStringForKey:@"wait_agent"]];
     isMQCommunicationFailed = false;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveMQCommunicationErrorNotification:) name:MQ_COMMUNICATION_FAILED_NOTIFICATION object:nil];
+    [self addObserver];
 #endif
 }
 
@@ -113,7 +113,14 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     NSLog(@"click right BarItemButton!");
 }
 
-- (void)removeDelegate {
+- (void)addObserver {
+#ifdef INCLUDE_MEIQIA_SDK
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveMQCommunicationErrorNotification:) name:MQ_COMMUNICATION_FAILED_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveRefreshOutgoingAvatarNotification:) name:MQChatTableViewShouldRefresh object:nil];
+#endif
+}
+
+- (void)removeDelegateAndObserver {
     chatViewService.delegate = nil;
     tableDataSource.chatCellDelegate = nil;
     self.chatTableView.chatTableViewDelegate = nil;
@@ -541,6 +548,13 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     }
     isMQCommunicationFailed = true;
     [MQToast showToast:[MQBundleUtil localizedStringForKey:@"meiqia_communication_failed"] duration:1.0 window:self.view];
+}
+
+
+- (void)didReceiveRefreshOutgoingAvatarNotification:(NSNotification *)notification {
+    if ([notification.object isKindOfClass:[UIImage class]]) {
+        [chatViewService refreshOutgoingAvatarWithImage:notification.object];
+    }
 }
 
 
