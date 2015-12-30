@@ -25,6 +25,7 @@ extern NSString * const MQChatTableViewShouldRefresh;
  */
 @interface MQChatViewConfig : NSObject
 
+@property (nonatomic, assign) BOOL hidesBottomBarWhenPushed;
 @property (nonatomic, assign) BOOL isCustomizedChatViewFrame;
 @property (nonatomic, assign) CGRect chatViewFrame;
 @property (nonatomic, assign) CGPoint chatViewControllerPoint;

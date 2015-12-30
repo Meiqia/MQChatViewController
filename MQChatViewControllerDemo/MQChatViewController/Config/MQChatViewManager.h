@@ -35,6 +35,13 @@
 - (void)disappearMQChatViewController;
 
 /**
+ *  push视图时，隐藏底部TabBar
+ *
+ *  @param hide 默认为YES
+ */
+- (void)hidesBottomBarWhenPushed:(BOOL)hide;
+
+/**
  *  设置是否开启自定义聊天界面的坐标，默认不自定义
  *
  *  @param enable YES 自定义 NO 不自定义

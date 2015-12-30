@@ -36,6 +36,7 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
 }
 
 - (void)setConfigToDefault {
+    self.hidesBottomBarWhenPushed   = true;
     self.isCustomizedChatViewFrame  = false;
     self.chatViewFrame              = [MQChatDeviceUtil getDeviceScreenRect];
     self.chatViewControllerPoint    = CGPointMake(0, 0);
