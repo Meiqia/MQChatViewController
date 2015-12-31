@@ -434,9 +434,10 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
         return;
     }
     UIImage *image          = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-    [picker dismissViewControllerAnimated:YES completion:nil];
-    [chatViewService sendImageMessageWithImage:image];
-    [self chatTableViewScrollToBottomWithAnimated:true];
+    [picker dismissViewControllerAnimated:YES completion:^{
+        [chatViewService sendImageMessageWithImage:image];
+        [self chatTableViewScrollToBottomWithAnimated:true];
+    }];
 }
 
 -(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
