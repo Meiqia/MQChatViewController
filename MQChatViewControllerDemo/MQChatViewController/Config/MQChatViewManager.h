@@ -202,8 +202,8 @@
 - (void)setOutgoingBubbleColor:(UIColor *)bubbleColor;
 
 /**
- * 开启图片消息的遮罩效果。遮罩效果更加美观，但是更消耗资源，存在图片的聊天界面下，转屏会出现卡顿，所以可能不适用没有锁定转屏的app
- * 默认关闭
+ * 开启图片消息的无边框遮罩效果。无边框遮罩效果更加美观，但是更消耗资源，存在图片的聊天界面下，转屏会出现卡顿，所以可能不适用没有锁定转屏的app
+ * 默认开启
  * @param enable YES:开启 NO:关闭
  */
 - (void)enableMessageImageMask:(BOOL)enable;
