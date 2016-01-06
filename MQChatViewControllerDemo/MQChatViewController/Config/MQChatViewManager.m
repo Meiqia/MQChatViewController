@@ -318,6 +318,10 @@
     chatViewConfig.scheduledGroupId = groupId;
 }
 
+- (void)setScheduleLogicWithRule:(MQChatScheduleRules)scheduleRule {
+    [MQServiceToViewInterface setScheduleLogicWithRule:scheduleRule];
+}
+
 - (void)setLoginCustomizedId:(NSString *)customizedId {
     chatViewConfig.customizedId = customizedId;
 }
