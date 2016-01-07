@@ -511,8 +511,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     if (!self.navigationController.navigationBar.translucent) {
         //如果导航栏不透明，则view的起始位置应该是导航栏下方
         delta = self.navigationController.navigationBar.frame.size.height + 20;
-        NSLog(@"navHeight = %f", self.navigationController.navigationBar.frame.size.height);
-        NSLog(@"statusHeight = %f", [[UIApplication sharedApplication] statusBarFrame].size.height);
     }
     self.view.frame = CGRectMake([MQChatViewConfig sharedConfig].chatViewControllerPoint.x, [MQChatViewConfig sharedConfig].chatViewControllerPoint.y + delta, viewSize.width, viewSize.height);
     //更新tableView的frame
