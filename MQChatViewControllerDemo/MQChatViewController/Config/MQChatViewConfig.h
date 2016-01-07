@@ -20,6 +20,15 @@ extern NSString * const MQAudioPlayerDidInterruptNotification;
 extern NSString * const MQChatTableViewShouldRefresh;
 
 /**
+ 指定分配客服，该客服不在线后转接的逻辑
+ */
+typedef enum : NSUInteger {
+    MQChatScheduleRulesNone         = 1,            //不转接给任何人
+    MQChatScheduleRulesGroup        = 2,            //转接给组内的人
+    MQChatScheduleRulesEnterprise   = 3             //转接给企业其他随机一个人
+} MQChatScheduleRules;
+
+/**
  * @brief MQChatViewConfig为客服聊天界面的前置配置，由MQChatViewManager生成，在MQChatViewController内部逻辑消费
  *
  */

@@ -36,6 +36,8 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
                      @"chatViewStyle5",
                      @"chatViewStyle6"
                      ];
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
     [self initTableView];
 }

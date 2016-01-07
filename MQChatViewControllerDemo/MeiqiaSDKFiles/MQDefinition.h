@@ -13,7 +13,7 @@
 #define MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION @"MQ_RECEIVED_NEW_MESSAGES_NOTIFICATION"
 
 /**
- *  收到该通知，即表示美洽的通信接口没有连接成功
+ *  收到该通知，即表示美洽的通信接口出错，通信连接断开
  */
 #define MQ_COMMUNICATION_FAILED_NOTIFICATION @"MQ_COMMUNICATION_FAILED_NOTIFICATION"
 
@@ -26,7 +26,7 @@ static NSString * const MQRequesetErrorDomain = @"com.meiqia.error.resquest.erro
  美洽Error的code对应码
  */
 typedef enum : NSInteger {
-    MQErrorCodeParameterUnKown              = -2000,    //未知错误
+    MQErrorCodeParameterUnKnown             = -2000,    //未知错误
     MQErrorCodeParameterError               = -2001,    //参数错误
     MQErrorCodeCurrentClientNotFound        = -2003,    //当前没有顾客，请新建一个顾客后再上线
     MQErrorCodeClientNotExisted             = -2004,    //美洽服务端没有找到对应的client
@@ -42,3 +42,12 @@ typedef enum : NSUInteger {
     MQClientOnlineResultParameterError,     //上线参数错误
     MQClientOnlineResultNotScheduledAgent   //没有可接待的客服
 } MQClientOnlineResult;
+
+/**
+ 指定分配客服，该客服不在线后转接的逻辑
+ */
+typedef enum : NSUInteger {
+    MQScheduleRulesNone         = 1,            //不转接给任何人
+    MQScheduleRulesGroup        = 2,            //转接给组内的人
+    MQScheduleRulesEnterprise   = 3             //转接给企业其他随机一个人
+} MQScheduleRules;

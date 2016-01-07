@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "MQChatViewController.h"
 #import "MQChatViewConfig.h"
+#import "MQDefinition.h"
 
 /**
  * @brief 客服聊天界面的配置类
@@ -340,6 +341,14 @@
  *  @param groupId 客服组id
  */
 - (void)setScheduledGroupId:(NSString *)groupId;
+
+/**
+ *  指定分配客服/客服组，该客服/客服组不在线，如何转接的接口
+ *
+ *  @param scheduleRule 转接规则
+ *  @warning 默认转接给企业随机一个客服
+ */
+- (void)setScheduleLogicWithRule:(MQChatScheduleRules)scheduleRule;
 
 /**
  *  设置登录客服的开发者自定义id，设置该id后，聊天将会以该自定义id的顾客上线

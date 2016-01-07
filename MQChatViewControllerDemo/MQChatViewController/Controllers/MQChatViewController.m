@@ -37,11 +37,13 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     MQRecordView *recordView;
     CGSize viewSize;
     BOOL isMQCommunicationFailed;  //判断是否通信没有连接上
+    BOOL perviousNavTranslusent;   //当前navigationBar.translucent的状态
 }
 
 - (void)dealloc {
     NSLog(@"清除chatViewController");
     [self removeDelegateAndObserver];
+    self.navigationController.navigationBar.translucent = perviousNavTranslusent;
     [chatViewConfig setConfigToDefault];
 }
 
@@ -56,6 +58,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    self.automaticallyAdjustsScrollViewInsets = true;
+    perviousNavTranslusent = self.navigationController.navigationBar.translucent;
+    self.navigationController.navigationBar.translucent = true;
     self.view.backgroundColor = [UIColor whiteColor];
     viewSize = [UIScreen mainScreen].bounds.size;
     [self setNavBar];
@@ -442,6 +447,14 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 -(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
     [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma UINavigationControllerDelegate
+- (void)navigationController:(UINavigationController *)navigationController
+      willShowViewController:(UIViewController *)viewController
+                    animated:(BOOL)animated
+{
+    [[UIApplication sharedApplication] setStatusBarStyle:[UIApplication sharedApplication].statusBarStyle];
 }
 
 #pragma MQChatCellDelegate
