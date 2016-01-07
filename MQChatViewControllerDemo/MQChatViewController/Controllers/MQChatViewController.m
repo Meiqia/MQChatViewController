@@ -37,14 +37,12 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     MQRecordView *recordView;
     CGSize viewSize;
     BOOL isMQCommunicationFailed;  //判断是否通信没有连接上
-    BOOL perviousNavTranslusent;   //当前navigationBar.translucent的状态
     UIStatusBarStyle currentStatusBarStyle;//当前statusBar样式
 }
 
 - (void)dealloc {
     NSLog(@"清除chatViewController");
     [self removeDelegateAndObserver];
-    self.navigationController.navigationBar.translucent = perviousNavTranslusent;
     [chatViewConfig setConfigToDefault];
 }
 
@@ -59,8 +57,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.automaticallyAdjustsScrollViewInsets = true;
-    perviousNavTranslusent = self.navigationController.navigationBar.translucent;
-    self.navigationController.navigationBar.translucent = true;
     currentStatusBarStyle = [UIApplication sharedApplication].statusBarStyle;
     self.navigationController.delegate  = self;
     self.view.backgroundColor = [UIColor whiteColor];
@@ -487,6 +483,10 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 {
     NSLog(@"willAnimateRotationToInterfaceOrientation");
     viewSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height);
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
     [self updateContentViewsFrame];
 }
 
@@ -499,16 +499,22 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
          
      } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
      {
-         
+         [self updateContentViewsFrame];
      }];
     viewSize = size;
-    [self updateContentViewsFrame];
 }
 
 //更新viewConroller中所有的view的frame
 - (void)updateContentViewsFrame {
     //更新view
-    self.view.frame = CGRectMake([MQChatViewConfig sharedConfig].chatViewControllerPoint.x, [MQChatViewConfig sharedConfig].chatViewControllerPoint.y, viewSize.width, viewSize.height);
+    CGFloat delta = 0;
+    if (!self.navigationController.navigationBar.translucent) {
+        //如果导航栏不透明，则view的起始位置应该是导航栏下方
+        delta = self.navigationController.navigationBar.frame.size.height + 20;
+        NSLog(@"navHeight = %f", self.navigationController.navigationBar.frame.size.height);
+        NSLog(@"statusHeight = %f", [[UIApplication sharedApplication] statusBarFrame].size.height);
+    }
+    self.view.frame = CGRectMake([MQChatViewConfig sharedConfig].chatViewControllerPoint.x, [MQChatViewConfig sharedConfig].chatViewControllerPoint.y + delta, viewSize.width, viewSize.height);
     //更新tableView的frame
     [self setChatTableViewFrame];
     //更新cellModel的frame

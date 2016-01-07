@@ -37,7 +37,7 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
                      @"chatViewStyle6"
                      ];
     
-//    self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.navigationBar.translucent = NO;
     self.navigationController.navigationBar.barTintColor = [UIColor blueColor];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
