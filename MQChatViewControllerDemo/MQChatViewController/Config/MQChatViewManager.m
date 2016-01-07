@@ -63,7 +63,7 @@
         navigationController.navigationBar.tintColor = [MQChatViewConfig sharedConfig].navBarTintColor;
     }
     if ([MQChatViewConfig sharedConfig].navBarColor) {
-        navigationController.navigationBar.backgroundColor = [MQChatViewConfig sharedConfig].navBarColor;
+        navigationController.navigationBar.barTintColor = [MQChatViewConfig sharedConfig].navBarColor;
     }
     
     //导航栏左键
@@ -99,6 +99,11 @@
                                                                        };
 #pragma clang diagnostic pop
         }
+    }
+    
+    //statusBarStyle
+    if ([MQChatViewConfig sharedConfig].statusBarStyle) {
+        [[UIApplication sharedApplication] setStatusBarStyle:[MQChatViewConfig sharedConfig].statusBarStyle];
     }
 }
 
@@ -305,6 +310,10 @@
 
 - (void)setMaxRecordDuration:(NSTimeInterval)recordDuration {
     chatViewConfig.maxVoiceDuration = recordDuration;
+}
+
+- (void)setStatusBarStyle:(UIStatusBarStyle)style {
+    chatViewConfig.statusBarStyle = style;
 }
 
 #ifdef INCLUDE_MEIQIA_SDK

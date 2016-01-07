@@ -99,6 +99,9 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, assign) NSTimeInterval maxVoiceDuration;
 
+@property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
+
+
 + (instancetype)sharedConfig;
 
 /** 将配置设置为默认值 */

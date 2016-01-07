@@ -454,7 +454,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
       willShowViewController:(UIViewController *)viewController
                     animated:(BOOL)animated
 {
-    [[UIApplication sharedApplication] setStatusBarStyle:[UIApplication sharedApplication].statusBarStyle];
+    [[UIApplication sharedApplication] setStatusBarStyle:[MQChatViewConfig sharedConfig].statusBarStyle];
 }
 
 #pragma MQChatCellDelegate
