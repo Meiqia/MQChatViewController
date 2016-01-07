@@ -449,6 +449,14 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma UINavigationControllerDelegate
+- (void)navigationController:(UINavigationController *)navigationController
+      willShowViewController:(UIViewController *)viewController
+                    animated:(BOOL)animated
+{
+    [[UIApplication sharedApplication] setStatusBarStyle:[UIApplication sharedApplication].statusBarStyle];
+}
+
 #pragma MQChatCellDelegate
 - (void)showToastViewInCell:(UITableViewCell *)cell toastText:(NSString *)toastText {
     [MQToast showToast:toastText duration:1.0 window:self.view];
