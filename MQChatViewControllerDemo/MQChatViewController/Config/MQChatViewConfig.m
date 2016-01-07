@@ -101,7 +101,6 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
     self.incomingMsgSoundFileName       = @"MQNewMessageRing.mp3";
     
     self.maxVoiceDuration               = 60;
-    self.statusBarStyle                 = NULL;
 }
 
 @end

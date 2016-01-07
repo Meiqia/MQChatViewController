@@ -37,10 +37,10 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
                      @"chatViewStyle6"
                      ];
     
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    self.navigationController.navigationBar.translucent = NO;
+//    self.navigationController.navigationBar.translucent = NO;
     self.navigationController.navigationBar.barTintColor = [UIColor blueColor];
-
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
     [self initTableView];
 }
 
@@ -120,8 +120,6 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
 
 - (void)pushChatView {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-    [chatViewManager setStatusBarStyle:UIStatusBarStyleLightContent];
-    [chatViewManager setNavigationBarColor:[UIColor blueColor]];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 

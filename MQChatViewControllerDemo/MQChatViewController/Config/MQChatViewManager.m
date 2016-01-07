@@ -100,11 +100,6 @@
 #pragma clang diagnostic pop
         }
     }
-    
-    //statusBarStyle
-    if ([MQChatViewConfig sharedConfig].statusBarStyle) {
-        [[UIApplication sharedApplication] setStatusBarStyle:[MQChatViewConfig sharedConfig].statusBarStyle];
-    }
 }
 
 - (void)disappearMQChatViewController {
@@ -310,10 +305,6 @@
 
 - (void)setMaxRecordDuration:(NSTimeInterval)recordDuration {
     chatViewConfig.maxVoiceDuration = recordDuration;
-}
-
-- (void)setStatusBarStyle:(UIStatusBarStyle)style {
-    chatViewConfig.statusBarStyle = style;
 }
 
 #ifdef INCLUDE_MEIQIA_SDK
