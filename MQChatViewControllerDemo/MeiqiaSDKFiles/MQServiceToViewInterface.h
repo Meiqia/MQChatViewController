@@ -16,6 +16,7 @@
 #import "MQTextMessage.h"
 #import "MQEventMessage.h"
 #import "MQChatViewConfig.h"
+#import "MQDefinition.h"
 
 /**
  *  该协议是UI层获取数据的委托方法
@@ -160,7 +161,8 @@
  *
  */
 + (void)setScheduledAgentWithAgentId:(NSString *)agentId
-                        agentGroupId:(NSString *)agentGroupId;
+                        agentGroupId:(NSString *)agentGroupId
+                        scheduleRule:(MQChatScheduleRules)scheduleRule;
 
 /**
  * 设置顾客离线
@@ -223,14 +225,6 @@
  */
 + (void)uploadClientAvatar:(UIImage *)avatarImage
                 completion:(void (^)(BOOL success, NSError *error))completion;
-
-/**
- *  指定分配客服/客服组，该客服/客服组不在线，如何转接的接口
- *
- *  @param chatScheduleRule 转接规则
- *  @warning 默认转接给企业随机一个客服
- */
-+ (void)setScheduleLogicWithRule:(MQChatScheduleRules)chatScheduleRule;
 
 
 @end

@@ -23,9 +23,9 @@ extern NSString * const MQChatTableViewShouldRefresh;
  指定分配客服，该客服不在线后转接的逻辑
  */
 typedef enum : NSUInteger {
-    MQChatScheduleRulesSelf         = 1,            //只分配给自己
-    MQChatScheduleRulesGroup        = 2,            //转接给组内的人
-    MQChatScheduleRulesEnterprise   = 3             //转接给企业其他随机一个人
+    MQChatScheduleRulesRedirectNone         = 1,            //不转接给任何人
+    MQChatScheduleRulesRedirectGroup        = 2,            //转接给组内的人
+    MQChatScheduleRulesRedirectEnterprise   = 3             //转接给企业其他随机一个人
 } MQChatScheduleRules;
 
 /**
@@ -98,6 +98,8 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) UIButton *navBarRightButton;
 
 @property (nonatomic, assign) NSTimeInterval maxVoiceDuration;
+
+@property (nonatomic, assign) MQChatScheduleRules scheduleRule;
 
 + (instancetype)sharedConfig;
 

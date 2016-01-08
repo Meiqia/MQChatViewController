@@ -313,13 +313,12 @@
     chatViewConfig.scheduledAgentId = agentId;
 }
 
-
 - (void)setScheduledGroupId:(NSString *)groupId {
     chatViewConfig.scheduledGroupId = groupId;
 }
 
 - (void)setScheduleLogicWithRule:(MQChatScheduleRules)scheduleRule {
-    [MQServiceToViewInterface setScheduleLogicWithRule:scheduleRule];
+    chatViewConfig.scheduleRule = scheduleRule;
 }
 
 - (void)setLoginCustomizedId:(NSString *)customizedId {
