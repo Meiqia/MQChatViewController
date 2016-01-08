@@ -100,11 +100,6 @@
 #pragma clang diagnostic pop
         }
     }
-    
-    //statusBarStyle
-    if ([MQChatViewConfig sharedConfig].statusBarStyle) {
-        [[UIApplication sharedApplication] setStatusBarStyle:[MQChatViewConfig sharedConfig].statusBarStyle];
-    }
 }
 
 - (void)disappearMQChatViewController {
@@ -312,23 +307,18 @@
     chatViewConfig.maxVoiceDuration = recordDuration;
 }
 
-- (void)setStatusBarStyle:(UIStatusBarStyle)style {
-    chatViewConfig.statusBarStyle = style;
-}
-
 #ifdef INCLUDE_MEIQIA_SDK
 
 - (void)setScheduledAgentId:(NSString *)agentId {
     chatViewConfig.scheduledAgentId = agentId;
 }
 
-
 - (void)setScheduledGroupId:(NSString *)groupId {
     chatViewConfig.scheduledGroupId = groupId;
 }
 
 - (void)setScheduleLogicWithRule:(MQChatScheduleRules)scheduleRule {
-    [MQServiceToViewInterface setScheduleLogicWithRule:scheduleRule];
+    chatViewConfig.scheduleRule = scheduleRule;
 }
 
 - (void)setLoginCustomizedId:(NSString *)customizedId {

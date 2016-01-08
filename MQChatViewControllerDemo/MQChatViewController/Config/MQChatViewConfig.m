@@ -47,8 +47,8 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
     
     self.chatWelcomeText        = [MQBundleUtil localizedStringForKey:@"welcome_chat"];
     self.agentName              = [MQBundleUtil localizedStringForKey:@"default_assistant"];
-    self.scheduledAgentId    = @"";
-    self.scheduledGroupId    = @"";
+    self.scheduledAgentId       = nil;
+    self.scheduledGroupId       = nil;
     self.MQClientId             = @"";
     self.customizedId           = @"";
     self.navTitleText           = @"";
@@ -101,7 +101,8 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
     self.incomingMsgSoundFileName       = @"MQNewMessageRing.mp3";
     
     self.maxVoiceDuration               = 60;
-    self.statusBarStyle                 = NULL;
+    
+    self.scheduleRule                   = nil;
 }
 
 @end
