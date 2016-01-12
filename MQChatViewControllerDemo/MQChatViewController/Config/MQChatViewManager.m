@@ -127,14 +127,23 @@
 }
 
 - (void)setMessageNumberRegex:(NSString *)numberRegex {
+    if (!numberRegex) {
+        return;
+    }
     [chatViewConfig.numberRegexs addObject:numberRegex];
 }
 
 - (void)setMessageLinkRegex:(NSString *)linkRegex {
+    if (!linkRegex) {
+        return;
+    }
     [chatViewConfig.linkRegexs addObject:linkRegex];
 }
 
 - (void)setMessageEmailRegex:(NSString *)emailRegex {
+    if (!emailRegex) {
+        return;
+    }
     [chatViewConfig.emailRegexs addObject:emailRegex];
 }
 
@@ -159,18 +168,30 @@
 }
 
 - (void)setIncomingMessageTextColor:(UIColor *)textColor {
+    if (!textColor) {
+        return;
+    }
     chatViewConfig.incomingMsgTextColor = [textColor copy];
 }
 
 - (void)setIncomingBubbleColor:(UIColor *)bubbleColor {
+    if (!bubbleColor) {
+        return;
+    }
     chatViewConfig.incomingBubbleColor = bubbleColor;
 }
 
 - (void)setOutgoingMessageTextColor:(UIColor *)textColor {
+    if (!textColor) {
+        return;
+    }
     chatViewConfig.outgoingMsgTextColor = [textColor copy];
 }
 
 - (void)setOutgoingBubbleColor:(UIColor *)bubbleColor {
+    if (!bubbleColor) {
+        return;
+    }
     chatViewConfig.outgoingBubbleColor = bubbleColor;
 }
 
@@ -180,26 +201,44 @@
 }
 
 - (void)setEventTextColor:(UIColor *)textColor {
+    if (!textColor) {
+        return;
+    }
     chatViewConfig.eventTextColor = [textColor copy];
 }
 
 - (void)setNavigationBarTintColor:(UIColor *)tintColor {
+    if (!tintColor) {
+        return;
+    }
     chatViewConfig.navBarTintColor = [tintColor copy];
 }
 
 - (void)setNavigationBarColor:(UIColor *)barColor {
+    if (!barColor) {
+        return;
+    }
     chatViewConfig.navBarColor = [barColor copy];
 }
 
 - (void)setPullRefreshColor:(UIColor *)pullRefreshColor {
+    if (!pullRefreshColor) {
+        return;
+    }
     chatViewConfig.pullRefreshColor = pullRefreshColor;
 }
 
 - (void)setChatWelcomeText:(NSString *)welcomText {
+    if (!welcomText) {
+        return;
+    }
     chatViewConfig.chatWelcomeText = [welcomText copy];
 }
 
 - (void)setAgentName:(NSString *)agentName {
+    if (!agentName) {
+        return;
+    }
     chatViewConfig.agentName = [agentName copy];
 }
 
@@ -212,10 +251,16 @@
 }
 
 - (void)setincomingDefaultAvatarImage:(UIImage *)image {
+    if (!image) {
+        return;
+    }
     chatViewConfig.incomingDefaultAvatarImage = image;
 }
 
 - (void)setoutgoingDefaultAvatarImage:(UIImage *)image {
+    if (!image) {
+        return;
+    }
     chatViewConfig.outgoingDefaultAvatarImage = image;
 #ifdef INCLUDE_MEIQIA_SDK
     [MQServiceToViewInterface uploadClientAvatar:image completion:^(BOOL success, NSError *error) {
@@ -226,36 +271,58 @@
 - (void)setPhotoSenderImage:(UIImage *)image
            highlightedImage:(UIImage *)highlightedImage
 {
-    chatViewConfig.photoSenderImage = image;
-    chatViewConfig.photoSenderHighlightedImage = highlightedImage;
+    if (image) {
+        chatViewConfig.photoSenderImage = image;
+    }
+    if (highlightedImage) {
+        chatViewConfig.photoSenderHighlightedImage = highlightedImage;
+    }
 }
 
 - (void)setVoiceSenderImage:(UIImage *)image
            highlightedImage:(UIImage *)highlightedImage
 {
-    chatViewConfig.voiceSenderImage = image;
-    chatViewConfig.voiceSenderHighlightedImage = highlightedImage;
+    if (image) {
+        chatViewConfig.voiceSenderImage = image;
+    }
+    if (highlightedImage) {
+        chatViewConfig.voiceSenderHighlightedImage = highlightedImage;
+    }
 }
 
 - (void)setTextSenderImage:(UIImage *)image
           highlightedImage:(UIImage *)highlightedImage
 {
-    chatViewConfig.keyboardSenderImage = image;
-    chatViewConfig.keyboardSenderHighlightedImage = highlightedImage;
+    if (image) {
+        chatViewConfig.keyboardSenderImage = image;
+    }
+    if (highlightedImage) {
+        chatViewConfig.keyboardSenderHighlightedImage = highlightedImage;
+    }
 }
 
 - (void)setResignKeyboardImage:(UIImage *)image
               highlightedImage:(UIImage *)highlightedImage
 {
-    chatViewConfig.resignKeyboardImage = image;
-    chatViewConfig.resignKeyboardHighlightedImage = highlightedImage;
+    if (image) {
+        chatViewConfig.resignKeyboardImage = image;
+    }
+    if (highlightedImage) {
+        chatViewConfig.resignKeyboardHighlightedImage = highlightedImage;
+    }
 }
 
 - (void)setIncomingBubbleImage:(UIImage *)bubbleImage {
+    if (!bubbleImage) {
+        return;
+    }
     chatViewConfig.incomingBubbleImage = bubbleImage;
 }
 
 - (void)setOutgoingBubbleImage:(UIImage *)bubbleImage {
+    if (!bubbleImage) {
+        return;
+    }
     chatViewConfig.outgoingBubbleImage = bubbleImage;
 }
 
@@ -264,14 +331,23 @@
 }
 
 - (void)setNavRightButton:(UIButton *)rightButton {
+    if (!rightButton) {
+        return;
+    }
     chatViewConfig.navBarRightButton = rightButton;
 }
 
 - (void)setNavLeftButton:(UIButton *)leftButton {
+    if (!leftButton) {
+        return;
+    }
     chatViewConfig.navBarLeftButton = leftButton;
 }
 
 - (void)setNavTitleText:(NSString *)titleText {
+    if (!titleText) {
+        return;
+    }
     chatViewConfig.navTitleText = titleText;
 }
 
@@ -300,6 +376,9 @@
 }
 
 - (void)setIncomingMessageSoundFileName:(NSString *)soundFileName {
+    if (!soundFileName) {
+        return;
+    }
     chatViewConfig.incomingMsgSoundFileName = soundFileName;
 }
 
@@ -310,10 +389,16 @@
 #ifdef INCLUDE_MEIQIA_SDK
 
 - (void)setScheduledAgentId:(NSString *)agentId {
+    if (!agentId) {
+        return;
+    }
     chatViewConfig.scheduledAgentId = agentId;
 }
 
 - (void)setScheduledGroupId:(NSString *)groupId {
+    if (!groupId) {
+        return;
+    }
     chatViewConfig.scheduledGroupId = groupId;
 }
 
@@ -322,10 +407,16 @@
 }
 
 - (void)setLoginCustomizedId:(NSString *)customizedId {
+    if (!customizedId) {
+        return;
+    }
     chatViewConfig.customizedId = customizedId;
 }
 
 - (void)setLoginMQClientId:(NSString *)MQClientId {
+    if (!MQClientId) {
+        return;
+    }
     chatViewConfig.MQClientId = MQClientId;
 }
 
