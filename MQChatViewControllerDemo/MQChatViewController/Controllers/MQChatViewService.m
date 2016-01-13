@@ -545,6 +545,9 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 //获取顾客信息
 - (void)getClientInfo {
     NSDictionary *clientInfo = [MQServiceToViewInterface getCurrentClientInfo];
+    if (![clientInfo objectForKey:@"avatar"]) {
+        return ;
+    }
     [MQServiceToViewInterface downloadMediaWithUrlString:[clientInfo objectForKey:@"avatar"] progress:^(float progress) {
     } completion:^(NSData *mediaData, NSError *error) {
         [MQChatViewConfig sharedConfig].outgoingDefaultAvatarImage = [UIImage imageWithData:mediaData];
