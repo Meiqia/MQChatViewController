@@ -256,7 +256,7 @@
 - (void)setincomingDefaultAvatarImage:(UIImage *)image;
 
 /**
- * 设置顾客的缺省头像图片；
+ * 设置顾客的头像图片；
  * @param image 头像image
  */
 - (void)setoutgoingDefaultAvatarImage:(UIImage *)image;
