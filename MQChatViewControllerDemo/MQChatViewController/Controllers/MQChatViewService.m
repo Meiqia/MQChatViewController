@@ -614,11 +614,14 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             }
         }
     }
-    if (self.delegate && isRefreshView) {
-        if ([self.delegate respondsToSelector:@selector(didReceiveMessage)]) {
-            [self.delegate didReceiveMessage];
+    //等待 0.1 秒，等待 tableView 更新后再滑动到底部，优化体验
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (self.delegate && isRefreshView) {
+            if ([self.delegate respondsToSelector:@selector(didReceiveMessage)]) {
+                [self.delegate didReceiveMessage];
+            }
         }
-    }
+    });
 }
 
 - (void)didReceiveTipsContent:(NSString *)tipsContent {
