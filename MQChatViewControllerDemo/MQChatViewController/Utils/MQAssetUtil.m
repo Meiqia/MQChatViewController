@@ -177,4 +177,22 @@
     return [MQAssetUtil bubbleImageFromBundleWithName:imageName];
 }
 
++ (UIImage *)getEvaluationImageWithLevel:(NSInteger)level {
+    NSString *imageName = @"MQEvaluationPositiveImage";
+    switch (level) {
+        case 0:
+            imageName = @"MQEvaluationNegativeImage";
+            break;
+        case 1:
+            imageName = @"MQEvaluationModerateImage";
+            break;
+        case 2:
+            imageName = @"MQEvaluationPositiveImage";
+            break;
+        default:
+            break;
+    }
+    return [MQAssetUtil bubbleImageFromBundleWithName:imageName];
+}
+
 @end

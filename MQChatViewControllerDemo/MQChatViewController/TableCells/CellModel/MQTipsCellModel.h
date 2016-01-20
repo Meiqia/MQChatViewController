@@ -30,12 +30,12 @@ extern CGFloat const kMQMessageTipsFontSize;
 /**
  * @brief 提示文字的额外属性
  */
-@property (nonatomic, readonly, copy) NSDictionary<NSString *, id> *tipExtraAttributes;
+@property (nonatomic, copy) NSDictionary<NSString *, id> *tipExtraAttributes;
 
 /**
  * @brief 提示文字的额外属性的range
  */
-@property (nonatomic, readonly, assign) NSRange tipExtraAttributesRange;
+@property (nonatomic, assign) NSRange tipExtraAttributesRange;
 
 /**
  * @brief 提示的时间
@@ -57,10 +57,16 @@ extern CGFloat const kMQMessageTipsFontSize;
  */
 @property (nonatomic, readonly, assign) CGRect bottomLineFrame;
 
+/**
+ *  是否显示上下两个线条
+ */
+@property (nonatomic, readonly, assign) BOOL enableLinesDisplay;
 
 /**
  *  根据tips内容来生成cell model
  */
-- (MQTipsCellModel *)initCellModelWithTips:(NSString *)tips cellWidth:(CGFloat)cellWidth;
+- (MQTipsCellModel *)initCellModelWithTips:(NSString *)tips
+                                 cellWidth:(CGFloat)cellWidth
+                        enableLinesDisplay:(BOOL)enableLinesDisplay;
 
 @end
