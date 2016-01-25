@@ -78,10 +78,10 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
         self.enableLinesDisplay = enableLinesDisplay;
         
         //tip frame
-        CGFloat tipsWidth = cellWidth - kMQMessageTipsCellHorizontalSpacing * 2;
-        CGFloat tipsHeight = [MQStringSizeUtil getHeightForText:tips withFont:[UIFont systemFontOfSize:kMQMessageTipsFontSize] andWidth:tipsWidth];
         CGFloat tipCellHoriSpacing = enableLinesDisplay ? kMQMessageTipsCellHorizontalSpacing : 8.0;
         CGFloat tipCellVerSpacing = enableLinesDisplay ? kMQMessageTipsCellVerticalSpacing : 8.0;
+        CGFloat tipsWidth = cellWidth - tipCellHoriSpacing * 2;
+        CGFloat tipsHeight = [MQStringSizeUtil getHeightForText:tips withFont:[UIFont systemFontOfSize:kMQMessageTipsFontSize] andWidth:tipsWidth];
         CGRect tipLabelFrame = CGRectMake(tipCellHoriSpacing, tipCellVerSpacing, tipsWidth, tipsHeight);
         self.tipLabelFrame = tipLabelFrame;
         

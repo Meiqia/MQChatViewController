@@ -98,7 +98,9 @@ static CGFloat const kMQEvaluationHorizontalSpacing = 16.0;
 
 - (void)showEvaluationAlertView {
     if (evaluationAlertView) {
-        [evaluationAlertView show];
+        if (![evaluationAlertView didShowAlertView]) {
+            [evaluationAlertView show];
+        }
     }
 }
 

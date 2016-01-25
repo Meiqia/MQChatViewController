@@ -303,6 +303,11 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [self chatTableViewScrollToBottomWithAnimated:false];
 }
 
+- (void)showEvaluationAlertView {
+    [chatInputBar.textView resignFirstResponder];
+    [evaluationView showEvaluationAlertView];
+}
+
 #ifdef INCLUDE_MEIQIA_SDK
 - (void)didScheduleClientWithViewTitle:(NSString *)viewTitle {
     [self updateNavBarTitle:viewTitle];

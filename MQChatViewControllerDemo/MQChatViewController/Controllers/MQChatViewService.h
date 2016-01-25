@@ -51,6 +51,11 @@
  */
 - (void)showToastViewWithContent:(NSString *)content;
 
+/**
+ *  通知 viewController 显示评价的 AlertView
+ */
+- (void)showEvaluationAlertView;
+
 #ifdef INCLUDE_MEIQIA_SDK
 /**
  *  通知viewController已经为顾客分配了一个客服，更新title
@@ -58,6 +63,7 @@
  *  @param viewTitle 客服名字
  */
 - (void)didScheduleClientWithViewTitle:(NSString *)viewTitle;
+
 #endif
 
 @end

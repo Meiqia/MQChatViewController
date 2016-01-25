@@ -459,21 +459,30 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             cellModel = [[MQImageCellModel alloc] initCellModelWithMessage:(MQImageMessage *)message cellWidth:self.chatViewWidth delegate:self];
         } else if ([message isKindOfClass:[MQVoiceMessage class]]) {
             cellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:(MQVoiceMessage *)message cellWidth:self.chatViewWidth delegate:self];
-        } else if ([MQChatViewConfig sharedConfig].enableEventDispaly && [message isKindOfClass:[MQEventMessage class]]) {
-            //判断该event是否是用户正在输入
+        } else if ([message isKindOfClass:[MQEventMessage class]]) {
             MQEventMessage *eventMessage = (MQEventMessage *)message;
-            if (eventMessage.eventType == MQChatEventTypeAgentInputting) {
-                if (self.delegate) {
-                    if ([self.delegate respondsToSelector:@selector(showToastViewWithContent:)]) {
-                        [self.delegate showToastViewWithContent:@"客服正在输入..."];
+            if (eventMessage.eventType == MQChatEventTypeInviteEvaluation) {
+                if (isInsertAtFirstIndex) {
+                    //如果评价消息是历史消息，则显示评价结果在 tableView 中
+                    
+                } else {
+                    //如果收到新评价消息，则显示评价 alertView
+                    if (self.delegate) {
+                        if ([self.delegate respondsToSelector:@selector(showEvaluationAlertView)]) {
+                            [self.delegate showEvaluationAlertView];
+                        }
                     }
                 }
-            } else {
-                if (eventMessage.eventType == MQChatEventTypeInviteEvaluation) {
-                    //收到邀请评价的消息
-                    
+            } else if ([MQChatViewConfig sharedConfig].enableEventDispaly) {
+                if (eventMessage.eventType == MQChatEventTypeAgentInputting) {
+                    if (self.delegate) {
+                        if ([self.delegate respondsToSelector:@selector(showToastViewWithContent:)]) {
+                            [self.delegate showToastViewWithContent:@"客服正在输入..."];
+                        }
+                    }
+                } else {
+                    cellModel = [[MQEventCellModel alloc] initCellModelWithMessage:eventMessage cellWidth:self.chatViewWidth];
                 }
-                cellModel = [[MQEventCellModel alloc] initCellModelWithMessage:eventMessage cellWidth:self.chatViewWidth];
             }
         }
         if (cellModel) {
@@ -521,12 +530,20 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         default:
             break;
     }
+    [self showEvaluationCellWithText:levelText color:levelColor];
+#ifdef INCLUDE_MEIQIA_SDK
+    [MQServiceToViewInterface setEvaluationLevel:level comment:comment];
+#endif
+}
+
+//显示用户评价的 cell
+- (void)showEvaluationCellWithText:(NSString *)levelText color:(UIColor *)levelColor{
     NSRange attribuitedRange = NSMakeRange(5, levelText.length);
     levelText = [NSString stringWithFormat:@"你给出了 %@", levelText];
     NSDictionary<NSString *, id> *tipExtraAttributes = @{
-                                NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:13],
-                                NSForegroundColorAttributeName : levelColor
-                                };
+                                                         NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:13],
+                                                         NSForegroundColorAttributeName : levelColor
+                                                         };
     MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initCellModelWithTips:levelText cellWidth:self.chatViewWidth enableLinesDisplay:false];
     cellModel.tipExtraAttributesRange = attribuitedRange;
     cellModel.tipExtraAttributes = tipExtraAttributes;
@@ -537,9 +554,6 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
             [self.delegate scrollTableViewToBottom];
         }
     }
-#ifdef INCLUDE_MEIQIA_SDK
-    [MQServiceToViewInterface setEvaluationLevel:level comment:comment];
-#endif
 }
 
 - (void)addTipCellModelWithTips:(NSString *)tips enableLinesDisplay:(BOOL)enableLinesDisplay {
@@ -625,7 +639,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     isThereNoAgent = false;
     if (!addedNoAgentTip) {
         addedNoAgentTip = true;
-        [self addTipCellModelWithTips:[MQBundleUtil localizedStringForKey:@"no_agent_tips"]];
+        [self addTipCellModelWithTips:[MQBundleUtil localizedStringForKey:@"no_agent_tips"] enableLinesDisplay:true];
     }
 }
 

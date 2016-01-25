@@ -325,11 +325,11 @@ Vendors - 用到的第三方开源库
 [SDWebImage](https://github.com/rs/SDWebImage) | 知名的异步图片下载和图片缓存库；
 VoiceConvert | AMR 和 WAV 语音格式的互转；没找到出处，哪位童鞋找到来源后，请更新下文档~
 [MLAudioRecorder](https://github.com/molon/MLAudioRecorder) | 边录边转码，播放网络音频 Button (本地缓存)，实时语音。**注意**，由于该开源项目中的 [lame.framework](https://github.com/molon/MLAudioRecorder/tree/master/MLRecorder/MLAudioRecorder/mp3_en_de/lame.framework) 不支持 `bitCode` ，所以我们去掉了该项目中有关 MP3 的文件；
-[MHFacebookImageViewer](https://github.com/michaelhenry/MHFacebookImageViewer) | 图片查看器；**注意**，我们对该开源库进行了修改，以支持单击关闭Viewer等一些操作，该修改版本可见[MHFacebookImageViewer](https://github.com/ijinmao/MHFacebookImageViewer)；
+[MHFacebookImageViewer](https://github.com/michaelhenry/MHFacebookImageViewer) | 图片查看器；**注意**，我们对该开源库进行了修改，以支持单击关闭Viewer等一些操作，该修改版本可见 [MHFacebookImageViewer](https://github.com/ijinmao/MHFacebookImageViewer)；
 [FBDigitalFont](https://github.com/lyokato/FBDigitalFont) | 类 LED 显示效果，用于本项目中的语音倒计时显示；
 [GrowingTextView](https://github.com/HansPinckaers/GrowingTextView) | 随文字改变高度的的 textView，用于本项目中的聊天输入框；
 [TTTAttributedLabel](https://github.com/TTTAttributedLabel/TTTAttributedLabel) | 支持多种效果的 Lable，用于本项目中的聊天气泡的文字 Label；
-[CustomIOSAlertView](https://github.com/wimagguc/ios-custom-alertview) | 自定义的 AlertView，用于显示本项目的评价弹出框；
+[CustomIOSAlertView](https://github.com/wimagguc/ios-custom-alertview) | 自定义的 AlertView，用于显示本项目的评价弹出框；**注意**，我们队该开源项目进行了修改，增加了按钮之间的分隔线条和判断当前是否已经有 AlertView 在显示，该修改版本可以见 [CustomIOSAlertView](https://github.com/ijinmao/ios-custom-alertview)；
 
 Hope to Help Each Other - 互助
 ---
