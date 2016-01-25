@@ -50,6 +50,13 @@
     tipsLabel.frame = cellModel.tipLabelFrame;
     
     //刷新上下两条线
+    if (cellModel.enableLinesDisplay) {
+        [self.contentView.layer addSublayer:topLineLayer];
+        [self.contentView.layer addSublayer:bottomLineLayer];
+    } else {
+        [topLineLayer removeFromSuperlayer];
+        [bottomLineLayer removeFromSuperlayer];
+    }
     topLineLayer.frame = cellModel.topLineFrame;
     bottomLineLayer.frame = cellModel.bottomLineFrame;
 }

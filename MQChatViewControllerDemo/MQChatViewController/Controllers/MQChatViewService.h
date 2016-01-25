@@ -51,6 +51,11 @@
  */
 - (void)showToastViewWithContent:(NSString *)content;
 
+/**
+ *  通知 viewController 显示评价的 AlertView
+ */
+- (void)showEvaluationAlertView;
+
 #ifdef INCLUDE_MEIQIA_SDK
 /**
  *  通知viewController已经为顾客分配了一个客服，更新title
@@ -58,6 +63,7 @@
  *  @param viewTitle 客服名字
  */
 - (void)didScheduleClientWithViewTitle:(NSString *)viewTitle;
+
 #endif
 
 @end
@@ -141,12 +147,18 @@
  */
 - (void)refreshOutgoingAvatarWithImage:(UIImage *)avatarImage;
 
+/**
+ *  发送用户评价
+ */
+- (void)sendEvaluationLevel:(NSInteger)level comment:(NSString *)comment;
+
 
 #ifndef INCLUDE_MEIQIA_SDK
 /**
  * 使用MQChatViewControllerDemo的时候，调试用的方法，用于收取和上一个message一样的消息
  */
 - (void)loadLastMessage;
+
 
 #endif
 

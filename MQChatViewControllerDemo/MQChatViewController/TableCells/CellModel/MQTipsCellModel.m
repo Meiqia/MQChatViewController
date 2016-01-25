@@ -36,16 +36,6 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
 @property (nonatomic, readwrite, copy) NSString *tipText;
 
 /**
- * @brief 提示文字的额外属性
- */
-@property (nonatomic, readwrite, copy) NSDictionary<NSString *, id> *tipExtraAttributes;
-
-/**
- * @brief 提示文字的额外属性的range
- */
-@property (nonatomic, readwrite, assign) NSRange tipExtraAttributesRange;
-
-/**
  * @brief 提示label的frame
  */
 @property (nonatomic, readwrite, assign) CGRect tipLabelFrame;
@@ -54,6 +44,11 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
  * @brief 上线条的frame
  */
 @property (nonatomic, readwrite, assign) CGRect topLineFrame;
+
+/**
+ *  是否显示上下两个线条
+ */
+@property (nonatomic, readwrite, assign) BOOL enableLinesDisplay;
 
 /**
  * @brief 下线条的frame
@@ -73,17 +68,24 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
 /**
  *  根据tips内容来生成cell model
  */
-- (MQTipsCellModel *)initCellModelWithTips:(NSString *)tips cellWidth:(CGFloat)cellWidth {
+- (MQTipsCellModel *)initCellModelWithTips:(NSString *)tips
+                                 cellWidth:(CGFloat)cellWidth
+                        enableLinesDisplay:(BOOL)enableLinesDisplay
+{
     if (self = [super init]) {
         self.date = [NSDate date];
         self.tipText = tips;
+        self.enableLinesDisplay = enableLinesDisplay;
         
         //tip frame
-        CGFloat tipsWidth = cellWidth - kMQMessageTipsCellHorizontalSpacing * 2;
+        CGFloat tipCellHoriSpacing = enableLinesDisplay ? kMQMessageTipsCellHorizontalSpacing : 8.0;
+        CGFloat tipCellVerSpacing = enableLinesDisplay ? kMQMessageTipsCellVerticalSpacing : 8.0;
+        CGFloat tipsWidth = cellWidth - tipCellHoriSpacing * 2;
         CGFloat tipsHeight = [MQStringSizeUtil getHeightForText:tips withFont:[UIFont systemFontOfSize:kMQMessageTipsFontSize] andWidth:tipsWidth];
-        self.tipLabelFrame = CGRectMake(kMQMessageTipsCellHorizontalSpacing, kMQMessageTipsCellVerticalSpacing, tipsWidth, tipsHeight);
+        CGRect tipLabelFrame = CGRectMake(tipCellHoriSpacing, tipCellVerSpacing, tipsWidth, tipsHeight);
+        self.tipLabelFrame = tipLabelFrame;
         
-        self.cellHeight = kMQMessageTipsCellVerticalSpacing * 2 + tipsHeight;
+        self.cellHeight = tipCellVerSpacing * 2 + tipsHeight;
         
         //上线条的frame
         CGFloat lineWidth = cellWidth;
@@ -93,16 +95,18 @@ CGFloat const kMQMessageTipsFontSize = 13.0;
         self.bottomLineFrame = CGRectMake(self.topLineFrame.origin.x, self.cellHeight - kMQMessageTipsLabelLineVerticalMargin - kMQMessageTipsLineHeight, lineWidth, kMQMessageTipsLineHeight);
         
         //tip的文字额外属性
-        if ([[tips substringToIndex:3] isEqualToString:@"接下来"]) {
-            NSRange firstRange = [tips rangeOfString:@" "];
-            NSString *subTips = [tips substringFromIndex:firstRange.location+1];
-            NSRange lastRange = [subTips rangeOfString:@" "];
-            NSRange agentNameRange = NSMakeRange(firstRange.location+1, lastRange.location);
-            self.tipExtraAttributesRange = agentNameRange;
-            self.tipExtraAttributes = @{
-                                        NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:13],
-                                        NSForegroundColorAttributeName : [MQChatViewConfig sharedConfig].redirectAgentNameColor
-                                        };
+        if (tips.length > 4) {
+            if ([[tips substringToIndex:3] isEqualToString:@"接下来"]) {
+                NSRange firstRange = [tips rangeOfString:@" "];
+                NSString *subTips = [tips substringFromIndex:firstRange.location+1];
+                NSRange lastRange = [subTips rangeOfString:@" "];
+                NSRange agentNameRange = NSMakeRange(firstRange.location+1, lastRange.location);
+                self.tipExtraAttributesRange = agentNameRange;
+                self.tipExtraAttributes = @{
+                                            NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Bold" size:13],
+                                            NSForegroundColorAttributeName : [MQChatViewConfig sharedConfig].redirectAgentNameColor
+                                            };
+            }
         }
     }
     return self;

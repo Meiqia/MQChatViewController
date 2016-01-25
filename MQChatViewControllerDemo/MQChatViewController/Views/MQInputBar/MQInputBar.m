@@ -13,6 +13,7 @@
 #import "MQBundleUtil.h"
 
 static CGFloat const kMQInputBarHorizontalSpacing = 8.0;
+static CGFloat const kMQInputBarVerticalSpacing = 8.0;
 
 @interface MQInputBar()
 
@@ -229,8 +230,8 @@ resignKeyboardHighlightedImage:(UIImage *)resignKeyboardHighlightedImage
             self.textView.alpha     = 0;
             recordBtn.alpha         = 1;
             
-            //居中
-            [self functionBtnCenter];
+            //按钮靠下
+            [self reFramefunctionBtnAfterTextViewChange];
         } completion:^(BOOL finished) {
             self.textView.hidden = YES;
         }];
@@ -528,14 +529,14 @@ resignKeyboardHighlightedImage:(UIImage *)resignKeyboardHighlightedImage
     self.chatTableView.frame = CGRectMake(self.chatTableView.frame.origin.x, tableViewOriginY, self.chatTableView.frame.size.width, self.chatTableView.frame.size.height);
     self.frame     = CGRectMake(0, self.frame.origin.y + diff, self.frame.size.width, self.frame.size.height - diff);
     
-    //居中
-    [self functionBtnCenter];
+    //按钮靠下
+    [self reFramefunctionBtnAfterTextViewChange];
 }
 
--(void)functionBtnCenter
+-(void)reFramefunctionBtnAfterTextViewChange
 {
-    cameraBtn.frame      = enableSendImage ? CGRectMake(kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth) : CGRectMake(0, 0, 0, 0);
-    microphoneBtn.frame = enableSendVoice ? CGRectMake(self.frame.size.width - senderImageWidth - kMQInputBarHorizontalSpacing, (self.frame.size.height - senderImageWidth)/2, senderImageWidth, senderImageWidth) : CGRectMake(0, 0, 0, 0);
+    cameraBtn.frame      = enableSendImage ? CGRectMake(kMQInputBarHorizontalSpacing, self.frame.size.height-senderImageWidth-kMQInputBarVerticalSpacing, senderImageWidth, senderImageWidth) : CGRectMake(0, 0, 0, 0);
+    microphoneBtn.frame = enableSendVoice ? CGRectMake(self.frame.size.width - senderImageWidth - kMQInputBarHorizontalSpacing, self.frame.size.height-senderImageWidth-kMQInputBarVerticalSpacing, senderImageWidth, senderImageWidth) : CGRectMake(0, 0, 0, 0);
 }
 
 -(void)drawRect:(CGRect)rect

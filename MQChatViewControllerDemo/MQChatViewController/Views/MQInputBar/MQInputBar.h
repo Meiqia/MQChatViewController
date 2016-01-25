@@ -26,8 +26,8 @@
 
 @interface MQInputBar : UIView
 
-@property(nonatomic,weak) id<MQInputBarDelegate> delegate;
-@property(nonatomic,strong) HPGrowingTextView* textView;
+@property(nonatomic, weak) id<MQInputBarDelegate> delegate;
+@property(nonatomic, strong) HPGrowingTextView* textView;
 
 - (id)initWithFrame:(CGRect)frame
           superView:(UIView *)inputBarSuperView

@@ -51,4 +51,6 @@
 
 + (UIImage *)recordVolume:(NSInteger)volume;
 
++ (UIImage *)getEvaluationImageWithLevel:(NSInteger)level;
+
 @end

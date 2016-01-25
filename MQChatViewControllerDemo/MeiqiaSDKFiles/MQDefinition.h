@@ -18,6 +18,11 @@
 #define MQ_COMMUNICATION_FAILED_NOTIFICATION @"MQ_COMMUNICATION_FAILED_NOTIFICATION"
 
 /**
+ *  收到该通知，即表示顾客成功上线美洽系统
+ */
+#define MQ_CLIENT_ONLINE_SUCCESS_NOTIFICATION @"MQ_CLIENT_ONLINE_SUCCESS_NOTIFICATION"
+
+/**
  *  美洽的错误码
  */
 static NSString * const MQRequesetErrorDomain = @"com.meiqia.error.resquest.error";
@@ -47,7 +52,16 @@ typedef enum : NSUInteger {
  指定分配客服，该客服不在线后转接的逻辑
  */
 typedef enum : NSUInteger {
-    MQScheduleRulesNone         = 1,            //不转接给任何人
-    MQScheduleRulesGroup        = 2,            //转接给组内的人
-    MQScheduleRulesEnterprise   = 3             //转接给企业其他随机一个人
+    MQScheduleRulesRedirectNone         = 1,            //不转接给任何人
+    MQScheduleRulesRedirectGroup        = 2,            //转接给组内的人
+    MQScheduleRulesRedirectEnterprise   = 3             //转接给企业其他随机一个人
 } MQScheduleRules;
+
+/**
+ 顾客对客服的某次对话的评价
+ */
+typedef enum : NSUInteger {
+    MQConversationEvaluationNegative    = 0,            //差评
+    MQConversationEvaluationModerate    = 1,            //中评
+    MQConversationEvaluationPositive    = 2             //好评
+} MQConversationEvaluation;
