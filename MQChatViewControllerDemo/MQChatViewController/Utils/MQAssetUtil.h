@@ -11,7 +11,8 @@
 
 @interface MQAssetUtil : NSBundle
 
-+ (UIImage *)bubbleImageFromBundleWithName:(NSString *)name;
++ (UIImage *)imageFromBundleWithName:(NSString *)name;
+
 + (NSString*)resourceWithName:(NSString*)fileName;
 
 + (UIImage *)incomingDefaultAvatarImage;
@@ -52,5 +53,7 @@
 + (UIImage *)recordVolume:(NSInteger)volume;
 
 + (UIImage *)getEvaluationImageWithLevel:(NSInteger)level;
+
++ (UIImage *)getNavigationMoreImage;
 
 @end

@@ -11,7 +11,7 @@
 
 @implementation MQAssetUtil
 
-+ (UIImage *)bubbleImageFromBundleWithName:(NSString *)name
++ (UIImage *)imageFromBundleWithName:(NSString *)name
 {
     return [UIImage imageNamed:[MQAssetUtil resourceWithName:name]];
 }
@@ -23,120 +23,120 @@
 
 + (UIImage *)incomingDefaultAvatarImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQIcon"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQIcon"];
 }
 
 + (UIImage *)outgoingDefaultAvatarImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQIcon"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQIcon"];
 }
 
 + (UIImage *)messageCameraInputImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageCameraInputImageNormalStyleOne"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQMessageCameraInputImageNormalStyleOne"];
 }
 
 + (UIImage *)messageCameraInputHighlightedImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageCameraInputHighlightedImageStyleOne"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQMessageCameraInputHighlightedImageStyleOne"];
 }
 
 + (UIImage *)messageTextInputImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageTextInputImageNormalStyleOne"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQMessageTextInputImageNormalStyleOne"];
 }
 
 + (UIImage *)messageTextInputHighlightedImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageTextInputHighlightedImageStyleOne"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQMessageTextInputHighlightedImageStyleOne"];
 }
 
 + (UIImage *)messageVoiceInputImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageVoiceInputImageNormalStyleOne"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQMessageVoiceInputImageNormalStyleOne"];
 }
 
 + (UIImage *)messageVoiceInputHighlightedImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageVoiceInputHighlightedImageStyleOne"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQMessageVoiceInputHighlightedImageStyleOne"];
 }
 
 + (UIImage *)messageResignKeyboardImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageKeyboardDownImageNormalStyleOne"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQMessageKeyboardDownImageNormalStyleOne"];
 }
 
 + (UIImage *)messageResignKeyboardHighlightedImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageKeyboardDownHighlightedImageStyleOne"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQMessageKeyboardDownHighlightedImageStyleOne"];
 }
 
 + (UIImage *)bubbleIncomingImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQBubbleIncoming"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQBubbleIncoming"];
 }
 
 + (UIImage *)bubbleOutgoingImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQBubbleOutgoing"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQBubbleOutgoing"];
 }
 
 + (UIImage *)returnCancelImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQNavReturnCancelImage"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQNavReturnCancelImage"];
 }
 
 +(UIImage *)imageLoadErrorImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQImageLoadErrorImage"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQImageLoadErrorImage"];
 }
 
 +(UIImage *)messageWarningImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageWarning"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQMessageWarning"];
 }
 
 + (UIImage *)voiceAnimationGray1
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQBubble_voice_animation_gray1"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQBubble_voice_animation_gray1"];
 }
 
 + (UIImage *)voiceAnimationGray2
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQBubble_voice_animation_gray2"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQBubble_voice_animation_gray2"];
 }
 
 + (UIImage *)voiceAnimationGray3
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQBubble_voice_animation_gray3"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQBubble_voice_animation_gray3"];
 }
 
 + (UIImage *)voiceAnimationGrayError {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQBubble_incoming_voice_error"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQBubble_incoming_voice_error"];
 }
 
 + (UIImage *)voiceAnimationGreen1
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQBubble_voice_animation_green1"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQBubble_voice_animation_green1"];
 }
 
 + (UIImage *)voiceAnimationGreen2
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQBubble_voice_animation_green2"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQBubble_voice_animation_green2"];
 }
 
 + (UIImage *)voiceAnimationGreen3
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQBubble_voice_animation_green3"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQBubble_voice_animation_green3"];
 }
 
 + (UIImage *)voiceAnimationGreenError {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQBubble_outgoing_voice_error"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQBubble_outgoing_voice_error"];
 }
 
 + (UIImage *)recordBackImage
 {
-    return [MQAssetUtil bubbleImageFromBundleWithName:@"MQRecord_back"];
+    return [MQAssetUtil imageFromBundleWithName:@"MQRecord_back"];
 }
 
 + (UIImage *)recordVolume:(NSInteger)volume
@@ -174,7 +174,7 @@
             imageName = @"MQRecord0";
             break;
     }
-    return [MQAssetUtil bubbleImageFromBundleWithName:imageName];
+    return [MQAssetUtil imageFromBundleWithName:imageName];
 }
 
 + (UIImage *)getEvaluationImageWithLevel:(NSInteger)level {
@@ -192,7 +192,11 @@
         default:
             break;
     }
-    return [MQAssetUtil bubbleImageFromBundleWithName:imageName];
+    return [MQAssetUtil imageFromBundleWithName:imageName];
+}
+
++ (UIImage *)getNavigationMoreImage {
+    return [MQAssetUtil imageFromBundleWithName:@"MQMessageNavMoreImage"];
 }
 
 @end

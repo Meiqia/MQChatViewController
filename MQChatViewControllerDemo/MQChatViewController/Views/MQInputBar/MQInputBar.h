@@ -13,7 +13,7 @@
 @protocol MQInputBarDelegate <NSObject>
 @optional
 -(BOOL)sendTextMessage:(NSString*)text;
--(void)sendImageWithSourceType:(UIImagePickerControllerSourceType *)sourceType;
+-(void)sendImageWithSourceType:(UIImagePickerControllerSourceType)sourceType;
 -(void)inputting:(NSString*)content;
 
 -(void)beginRecord:(CGPoint)point;

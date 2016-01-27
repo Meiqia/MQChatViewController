@@ -466,10 +466,12 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                     //如果评价消息是历史消息，则显示评价结果在 tableView 中
                     
                 } else {
-                    //如果收到新评价消息，则显示评价 alertView
+                    //如果收到新评价消息，且当前不是正在录音状态，则显示评价 alertView
                     if (self.delegate) {
-                        if ([self.delegate respondsToSelector:@selector(showEvaluationAlertView)]) {
-                            [self.delegate showEvaluationAlertView];
+                        if ([self.delegate respondsToSelector:@selector(showEvaluationAlertView)] && [self.delegate respondsToSelector:@selector(isChatRecording)]) {
+                            if (![self.delegate isChatRecording]) {
+                                [self.delegate showEvaluationAlertView];
+                            }
                         }
                     }
                 }
@@ -567,7 +569,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
 #pragma 顾客上线的逻辑
 - (void)setClientOnline {
     //上线
-    __weak typeof(self) weakSelf = self;
+    __weak __typeof(self) weakSelf = self;
     serviceToViewInterface = [[MQServiceToViewInterface alloc] init];
     [MQServiceToViewInterface setScheduledAgentWithAgentId:[MQChatViewConfig sharedConfig].scheduledAgentId agentGroupId:[MQChatViewConfig sharedConfig].scheduledGroupId scheduleRule:[MQChatViewConfig sharedConfig].scheduleRule];
     if ([MQChatViewConfig sharedConfig].MQClientId.length == 0 && [MQChatViewConfig sharedConfig].customizedId.length > 0) {

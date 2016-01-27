@@ -44,6 +44,8 @@
 
 - (void)cancelRecording;
 
+- (BOOL)isRecording;
+
 - (instancetype)initWithMaxRecordDuration:(NSTimeInterval)duration;
 
 @end

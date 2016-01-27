@@ -75,3 +75,5 @@
 "microphone_denied"     = "请在系统设置中允许该App访问麦克风";
 
 "meiqia_communication_failed" = "抱歉，连接通信网络可能有问题，请更换网络试一下。";
+
+"meiqia_evaluation_sheet"     = "评价";
