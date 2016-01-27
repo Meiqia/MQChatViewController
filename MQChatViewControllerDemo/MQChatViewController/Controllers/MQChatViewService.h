@@ -56,6 +56,11 @@
  */
 - (void)showEvaluationAlertView;
 
+/**
+ *  判断当前是否正在录音
+ */
+- (BOOL)isChatRecording;
+
 #ifdef INCLUDE_MEIQIA_SDK
 /**
  *  通知viewController已经为顾客分配了一个客服，更新title

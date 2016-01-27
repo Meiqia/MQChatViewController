@@ -121,6 +121,10 @@
     }
 }
 
+- (BOOL)isRecording {
+    return self.recorder.isRecording;
+}
+
 - (void)finishRecording {
     if (self.recorder.isRecording) {
         //取消录音

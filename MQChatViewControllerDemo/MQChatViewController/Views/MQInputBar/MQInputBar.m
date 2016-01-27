@@ -357,7 +357,7 @@ resignKeyboardHighlightedImage:(UIImage *)resignKeyboardHighlightedImage
         case 1: {
             if (self.delegate) {
                 if ([self.delegate respondsToSelector:@selector(sendImageWithSourceType:)]) {
-                    [self.delegate sendImageWithSourceType:(NSInteger*)UIImagePickerControllerSourceTypeCamera];
+                    [self.delegate sendImageWithSourceType:UIImagePickerControllerSourceTypeCamera];
                 }
             }
             break;

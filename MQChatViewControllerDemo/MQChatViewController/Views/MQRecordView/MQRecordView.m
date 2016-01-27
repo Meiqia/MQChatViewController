@@ -290,4 +290,8 @@ static NSInteger const kMQMaxRecordVoiceDurationDeviation = 2;
 
 }
 
+- (BOOL)isRecording {
+    return [audioRecorder isRecording];
+}
+
 @end

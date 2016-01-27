@@ -20,6 +20,8 @@
 #import "MQImageUtil.h"
 #import "MQDefinition.h"
 #import "MQEvaluationView.h"
+#import "MQAssetUtil.h"
+#import "MQStringSizeUtil.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
@@ -246,6 +248,18 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     loadMessageBtn.backgroundColor = [UIColor clearColor];
     [loadMessageBtn addTarget:self action:@selector(tapLoadMessageBtn:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:loadMessageBtn];
+#else
+    UIButton *rightNavButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    NSString *btnText = [MQBundleUtil localizedStringForKey:@"meiqia_evaluation_sheet"];
+    UIFont *btnTextFont = [UIFont systemFontOfSize:14.0];
+    CGFloat btnTextHeight = [MQStringSizeUtil getHeightForText:btnText withFont:btnTextFont andWidth:200];
+    CGFloat btnTextWidth = [MQStringSizeUtil getWidthForText:btnText withFont:btnTextFont andHeight:btnTextHeight];
+    rightNavButton.frame = CGRectMake(0, 0, btnTextWidth, btnTextHeight);
+    rightNavButton.titleLabel.font = btnTextFont;
+    [rightNavButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+    [rightNavButton setTitle:btnText forState:UIControlStateNormal];
+    [rightNavButton addTarget:self action:@selector(tapNavigationRightBtn:) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:rightNavButton];
 #endif
 }
 
@@ -255,6 +269,10 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [self chatTableViewScrollToBottomWithAnimated:true];
     //显示评价
     [evaluationView showEvaluationAlertView];
+}
+#else
+- (void)tapNavigationRightBtn:(id)sender {
+    [self showEvaluationAlertView];
 }
 #endif
 
@@ -308,6 +326,10 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [evaluationView showEvaluationAlertView];
 }
 
+- (BOOL)isChatRecording {
+    return [recordView isRecording];
+}
+
 #ifdef INCLUDE_MEIQIA_SDK
 - (void)didScheduleClientWithViewTitle:(NSString *)viewTitle {
     [self updateNavBarTitle:viewTitle];
@@ -340,7 +362,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     return YES;
 }
 
--(void)sendImageWithSourceType:(UIImagePickerControllerSourceType *)sourceType {
+-(void)sendImageWithSourceType:(UIImagePickerControllerSourceType)sourceType {
     NSString *mediaPermission = [MQChatDeviceUtil isDeviceSupportImageSourceType:(int)sourceType];
     if (!mediaPermission) {
         return;

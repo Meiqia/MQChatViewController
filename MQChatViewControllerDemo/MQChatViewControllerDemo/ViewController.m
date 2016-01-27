@@ -131,14 +131,14 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
 
 - (void)chatViewStyle1 {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-    UIImage *photoImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageCameraInputImageNormalStyleTwo"];
-    UIImage *photoHighlightedImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageCameraInputHighlightedImageStyleTwo"];
-    UIImage *voiceImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageVoiceInputImageNormalStyleTwo"];
-    UIImage *voiceHighlightedImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageVoiceInputHighlightedImageStyleTwo"];
-    UIImage *keyboardImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageTextInputImageNormalStyleTwo"];
-    UIImage *keyboardHighlightedImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageTextInputHighlightedImageStyleTwo"];
-    UIImage *resightKeyboardImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageKeyboardDownImageNormalStyleTwo"];
-    UIImage *resightKeyboardHighlightedImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQMessageKeyboardDownHighlightedImageStyleTwo"];
+    UIImage *photoImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageCameraInputImageNormalStyleTwo"];
+    UIImage *photoHighlightedImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageCameraInputHighlightedImageStyleTwo"];
+    UIImage *voiceImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageVoiceInputImageNormalStyleTwo"];
+    UIImage *voiceHighlightedImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageVoiceInputHighlightedImageStyleTwo"];
+    UIImage *keyboardImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageTextInputImageNormalStyleTwo"];
+    UIImage *keyboardHighlightedImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageTextInputHighlightedImageStyleTwo"];
+    UIImage *resightKeyboardImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageKeyboardDownImageNormalStyleTwo"];
+    UIImage *resightKeyboardHighlightedImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageKeyboardDownHighlightedImageStyleTwo"];
     [chatViewManager setPhotoSenderImage:photoImage highlightedImage:photoHighlightedImage];
     [chatViewManager setVoiceSenderImage:voiceImage highlightedImage:voiceHighlightedImage];
     [chatViewManager setTextSenderImage:keyboardImage highlightedImage:keyboardHighlightedImage];
@@ -153,8 +153,8 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
 
 - (void)chatViewStyle2 {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
-    UIImage *incomingBubbleImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQBubbleIncomingStyleTwo"];
-    UIImage *outgoingBubbleImage = [MQAssetUtil bubbleImageFromBundleWithName:@"MQBubbleOutgoingStyleTwo"];
+    UIImage *incomingBubbleImage = [MQAssetUtil imageFromBundleWithName:@"MQBubbleIncomingStyleTwo"];
+    UIImage *outgoingBubbleImage = [MQAssetUtil imageFromBundleWithName:@"MQBubbleOutgoingStyleTwo"];
     CGPoint stretchPoint = CGPointMake(incomingBubbleImage.size.width / 2.0f - 4.0, incomingBubbleImage.size.height / 2.0f);
     [chatViewManager enableSendVoiceMessage:false];
     [chatViewManager enableOutgoingAvatar:false];
