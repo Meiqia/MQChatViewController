@@ -462,10 +462,7 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
         } else if ([message isKindOfClass:[MQEventMessage class]]) {
             MQEventMessage *eventMessage = (MQEventMessage *)message;
             if (eventMessage.eventType == MQChatEventTypeInviteEvaluation) {
-                if (isInsertAtFirstIndex) {
-                    //如果评价消息是历史消息，则显示评价结果在 tableView 中
-                    
-                } else {
+                if (!isInsertAtFirstIndex) {
                     //如果收到新评价消息，且当前不是正在录音状态，则显示评价 alertView
                     if (self.delegate) {
                         if ([self.delegate respondsToSelector:@selector(showEvaluationAlertView)] && [self.delegate respondsToSelector:@selector(isChatRecording)]) {
@@ -475,6 +472,8 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
                         }
                     }
                 }
+            } else if (eventMessage.eventType == MQChatEventTypeClientEvaluation) {
+
             } else if ([MQChatViewConfig sharedConfig].enableEventDispaly) {
                 if (eventMessage.eventType == MQChatEventTypeAgentInputting) {
                     if (self.delegate) {
