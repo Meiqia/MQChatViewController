@@ -17,6 +17,13 @@
 @protocol MQChatViewServiceDelegate <NSObject>
 
 /**
+ *  是否隐藏RightBarButtonItem
+ *
+ *  @param enabled 是否隐藏
+ */
+- (void)hideRightBarButtonItem:(BOOL)isHide;
+
+/**
  *  获取到了更多历史消息
  *
  *  @param cellNumber 需要显示的cell数量
