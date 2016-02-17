@@ -62,7 +62,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     // Do any additional setup after loading the view.
     self.automaticallyAdjustsScrollViewInsets = true;
     currentStatusBarStyle = [UIApplication sharedApplication].statusBarStyle;
-    self.navigationController.delegate  = self;
     self.view.backgroundColor = [UIColor whiteColor];
     viewSize = [UIScreen mainScreen].bounds.size;
     [self setNavBar];
@@ -135,7 +134,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     self.chatTableView.delegate = nil;
     chatInputBar.delegate = nil;
     recordView.recordViewDelegate = nil;
-    self.navigationController.delegate = nil;
 #ifdef INCLUDE_MEIQIA_SDK
     chatViewService.errorDelegate = nil;
 #endif
@@ -252,15 +250,17 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #else
     UIButton *rightNavButton = [UIButton buttonWithType:UIButtonTypeCustom];
     NSString *btnText = [MQBundleUtil localizedStringForKey:@"meiqia_evaluation_sheet"];
-    UIFont *btnTextFont = [UIFont systemFontOfSize:14.0];
+    UIFont *btnTextFont = [UIFont systemFontOfSize:[UIFont buttonFontSize]];
     CGFloat btnTextHeight = [MQStringSizeUtil getHeightForText:btnText withFont:btnTextFont andWidth:200];
     CGFloat btnTextWidth = [MQStringSizeUtil getWidthForText:btnText withFont:btnTextFont andHeight:btnTextHeight];
     rightNavButton.frame = CGRectMake(0, 0, btnTextWidth, btnTextHeight);
     rightNavButton.titleLabel.font = btnTextFont;
-    [rightNavButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+    [rightNavButton setTitleColor:[UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
+    [rightNavButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateDisabled];
     [rightNavButton setTitle:btnText forState:UIControlStateNormal];
     [rightNavButton addTarget:self action:@selector(tapNavigationRightBtn:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:rightNavButton];
+    self.navigationItem.rightBarButtonItem.customView.hidden = YES;
 #endif
 }
 
@@ -305,6 +305,11 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 #pragma MQChatViewServiceDelegate
+- (void)hideRightBarButtonItem:(BOOL)enabled
+{
+    self.navigationItem.rightBarButtonItem.customView.hidden = enabled;
+}
+
 - (void)didGetHistoryMessagesWithCellNumber:(NSInteger)cellNumber isLoadOver:(BOOL)isLoadOver{
     [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:cellNumber isLoadOver:isLoadOver];
     [self.chatTableView reloadData];
@@ -372,6 +377,8 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
         [MQToast showToast:[MQBundleUtil localizedStringForKey:mediaPermission] duration:2 window:self.view];
         return;
     }
+    
+    self.navigationController.delegate = self;
     //兼容ipad打不开相册问题，使用队列延迟
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
@@ -477,7 +484,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     if (![type isEqualToString:@"public.image"]) {
         return;
     }
-    UIImage *image          = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+    UIImage *image          =  [MQImageUtil fixrotation:[info objectForKey:UIImagePickerControllerOriginalImage]];
     [picker dismissViewControllerAnimated:YES completion:^{
         [chatViewService sendImageMessageWithImage:image];
         [self chatTableViewScrollToBottomWithAnimated:true];
@@ -497,6 +504,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     if ([navigationController isKindOfClass:[UIImagePickerController class]]) {
         [UIApplication sharedApplication].statusBarStyle = currentStatusBarStyle;
     }
+    self.navigationController.delegate = nil;
 }
 
 #pragma MQChatCellDelegate

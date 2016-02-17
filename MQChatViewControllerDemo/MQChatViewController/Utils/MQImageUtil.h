@@ -32,5 +32,8 @@
  */
 + (void)makeMaskView:(UIView *)view withImage:(UIImage *)image;
 
-
+/**
+ *  将图片旋转至正常角度
+ */
++ (UIImage *)fixrotation:(UIImage *)image;
 @end
