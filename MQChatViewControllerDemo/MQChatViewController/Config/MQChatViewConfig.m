@@ -51,7 +51,9 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
     self.scheduledGroupId       = nil;
     self.MQClientId             = @"";
     self.customizedId           = @"";
-    self.navTitleText           = @"";
+    self.navTitleText           = nil;
+    self.navBarLeftButton       = nil;
+    self.navBarRightButton      = nil;
     
     self.enableSyncServerMessage = true;
     self.enableEventDispaly      = false;

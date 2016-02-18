@@ -21,6 +21,8 @@ const static CGFloat kCustomIOS7MotionEffectExtent                = 10.0;
 
 CGFloat buttonHeight = 0;
 CGFloat buttonSpacerHeight = 0;
+BOOL didKeyboardDisplay = false;
+CGSize currentKeyboardSize;
 
 @synthesize parentView, containerView, dialogView, onButtonTouchUpInside;
 @synthesize delegate;
@@ -46,6 +48,7 @@ CGFloat buttonSpacerHeight = 0;
         delegate = self;
         useMotionEffects = false;
         buttonTitles = @[@"Close"];
+        currentKeyboardSize = CGSizeMake(0, 0);
         
         [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
         
@@ -391,7 +394,9 @@ CGFloat buttonSpacerHeight = 0;
     [UIView animateWithDuration:0.2f delay:0.0 options:UIViewAnimationOptionTransitionNone
                      animations:^{
                          CGSize dialogSize = [self countDialogSize];
-                         CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+                         //                         CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+                         CGSize keyboardSize = currentKeyboardSize;
+                         
                          self.frame = CGRectMake(0, 0, screenWidth, screenHeight);
                          dialogView.frame = CGRectMake((screenWidth - dialogSize.width) / 2, (screenHeight - keyboardSize.height - dialogSize.height) / 2, dialogSize.width, dialogSize.height);
                      }
@@ -419,6 +424,7 @@ CGFloat buttonSpacerHeight = 0;
 // Handle keyboard show/hide changes
 - (void)keyboardWillShow: (NSNotification *)notification
 {
+    didKeyboardDisplay = true;
     CGSize screenSize = [self countScreenSize];
     CGSize dialogSize = [self countDialogSize];
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
@@ -430,6 +436,8 @@ CGFloat buttonSpacerHeight = 0;
         keyboardSize.width = tmp;
     }
     
+    currentKeyboardSize = keyboardSize;
+    
     [UIView animateWithDuration:0.2f delay:0.0 options:UIViewAnimationOptionTransitionNone
                      animations:^{
                          dialogView.frame = CGRectMake((screenSize.width - dialogSize.width) / 2, (screenSize.height - keyboardSize.height - dialogSize.height) / 2, dialogSize.width, dialogSize.height);
@@ -440,8 +448,11 @@ CGFloat buttonSpacerHeight = 0;
 
 - (void)keyboardWillHide: (NSNotification *)notification
 {
+    didKeyboardDisplay = false;
     CGSize screenSize = [self countScreenSize];
     CGSize dialogSize = [self countDialogSize];
+    
+    currentKeyboardSize = CGSizeMake(0, 0);
     
     [UIView animateWithDuration:0.2f delay:0.0 options:UIViewAnimationOptionTransitionNone
                      animations:^{

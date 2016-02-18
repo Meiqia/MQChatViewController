@@ -14,7 +14,7 @@
 static CGFloat const kMQEvaluationVerticalSpacing = 16.0;
 static CGFloat const kMQEvaluationHorizontalSpacing = 16.0;
 
-@interface MQEvaluationView()<UITableViewDelegate, UITableViewDataSource, CustomIOSAlertViewDelegate>
+@interface MQEvaluationView()<UITableViewDelegate, UITableViewDataSource, CustomIOSAlertViewDelegate, UITextFieldDelegate>
 
 @end
 
@@ -78,6 +78,7 @@ static CGFloat const kMQEvaluationHorizontalSpacing = 16.0;
     //评价的输入文字框
     commentTextField = [[UITextField alloc] initWithFrame:CGRectMake(kMQEvaluationHorizontalSpacing, tableBottomLine.frame.origin.y+tableBottomLine.frame.size.height+kMQEvaluationVerticalSpacing, tableView.frame.size.width - kMQEvaluationHorizontalSpacing, 34)];
     commentTextField.placeholder = @"填写评价内容（选填）";
+    commentTextField.delegate = self;
     commentTextField.returnKeyType = UIReturnKeyDone;
     commentTextField.font = [UIFont systemFontOfSize:15.0];
     commentTextField.textColor = [UIColor darkTextColor];
@@ -134,6 +135,12 @@ static CGFloat const kMQEvaluationHorizontalSpacing = 16.0;
     }
     commentTextField.text = nil;
     [alertView close];
+}
+
+#pragma UITextFieldDelegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [commentTextField resignFirstResponder];
+    return false;
 }
 
 #pragma UITableViewDelegate
