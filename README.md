@@ -329,7 +329,7 @@ VoiceConvert | AMR 和 WAV 语音格式的互转；没找到出处，哪位童�
 [FBDigitalFont](https://github.com/lyokato/FBDigitalFont) | 类 LED 显示效果，用于本项目中的语音倒计时显示；
 [GrowingTextView](https://github.com/HansPinckaers/GrowingTextView) | 随文字改变高度的的 textView，用于本项目中的聊天输入框；
 [TTTAttributedLabel](https://github.com/TTTAttributedLabel/TTTAttributedLabel) | 支持多种效果的 Lable，用于本项目中的聊天气泡的文字 Label；
-[CustomIOSAlertView](https://github.com/wimagguc/ios-custom-alertview) | 自定义的 AlertView，用于显示本项目的评价弹出框；**注意**，我们队该开源项目进行了修改，增加了按钮之间的分隔线条和判断当前是否已经有 AlertView 在显示，该修改版本可以见 [CustomIOSAlertView](https://github.com/ijinmao/ios-custom-alertview)；
+[CustomIOSAlertView](https://github.com/wimagguc/ios-custom-alertview) | 自定义的 AlertView，用于显示本项目的评价弹出框；**注意**，我们队该开源项目进行了修改，增加了按钮之间的分隔线条、判断当前是否已经有 AlertView 在显示、以及键盘弹出时界面 frame 计算，该修改版本可以见 [CustomIOSAlertView](https://github.com/ijinmao/ios-custom-alertview)；
 
 Hope to Help Each Other - 互助
 ---
