@@ -16,8 +16,10 @@
 #import "MQImageUtil.h"
 #import "TTTAttributedLabel.h"
 #import "MQChatEmojize.h"
-#import "UIImageView+WebCache.h"
 #import "MQServiceToViewInterface.h"
+#ifndef INCLUDE_MEIQIA_SDK
+#import "UIImageView+WebCache.h"
+#endif
 
 @interface MQTextCellModel()
 

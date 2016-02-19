@@ -11,9 +11,10 @@
 #import "MQImageMessageCell.h"
 #import "MQChatViewConfig.h"
 #import "MQImageUtil.h"
-#import "UIImageView+WebCache.h"
 #import "MQServiceToViewInterface.h"
-
+#ifndef INCLUDE_MEIQIA_SDK
+#import "UIImageView+WebCache.h"
+#endif
 @interface MQImageCellModel()
 
 /**

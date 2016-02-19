@@ -14,8 +14,10 @@
 #import "MQImageUtil.h"
 #import "MQAssetUtil.h"
 #import "VoiceConverter.h"
-#import "UIImageView+WebCache.h"
 #import "MQServiceToViewInterface.h"
+#ifndef INCLUDE_MEIQIA_SDK
+#import "UIImageView+WebCache.h"
+#endif
 
 /**
  * 语音播放图片与聊天气泡的间距
