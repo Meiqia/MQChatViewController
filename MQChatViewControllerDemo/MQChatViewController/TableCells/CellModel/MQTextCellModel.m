@@ -14,7 +14,7 @@
 #import <UIKit/UIKit.h>
 #import "MQChatViewConfig.h"
 #import "MQImageUtil.h"
-#import "TTTAttributedLabel.h"
+#import "MEIQIA_TTTAttributedLabel.h"
 #import "MQChatEmojize.h"
 #import "MQServiceToViewInterface.h"
 #ifndef INCLUDE_MEIQIA_SDK

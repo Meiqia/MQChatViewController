@@ -7,7 +7,8 @@
 //
 
 #import "MQRecordView.h"
-#import "FBLCDFontView.h"
+#import "MEIQIA_FBLCDFontView.h"
+#import "MQNamespacedDependencies.h"
 #import "MQImageUtil.h"
 #import "MQChatFileUtil.h"
 #import "MQToast.h"

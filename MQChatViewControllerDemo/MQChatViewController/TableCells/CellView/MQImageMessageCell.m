@@ -11,7 +11,7 @@
 #import "MQChatFileUtil.h"
 #import "MQImageUtil.h"
 #import "MQChatViewConfig.h"
-#import "UIImageView+MHFacebookImageViewer.h"
+#import "UIImageView+MEIQIA_MHFacebookImageViewer.h"
 #import "MQBundleUtil.h"
 
 @implementation MQImageMessageCell {

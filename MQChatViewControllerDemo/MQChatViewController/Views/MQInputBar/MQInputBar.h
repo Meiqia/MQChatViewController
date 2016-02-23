@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "HPGrowingTextView.h"
+#import "MEIQIA_HPGrowingTextView.h"
+#import "MQNamespacedDependencies.h"
 #import "MQChatTableView.h"
 
 @protocol MQInputBarDelegate <NSObject>

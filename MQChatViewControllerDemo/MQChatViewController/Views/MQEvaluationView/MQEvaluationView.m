@@ -7,9 +7,10 @@
 //
 
 #import "MQEvaluationView.h"
-#import "CustomIOSAlertView.h"
+#import "MEIQIA_CustomIOSAlertView.h"
 #import "MQChatDeviceUtil.h"
 #import "MQEvaluationCell.h"
+#import "MQNamespacedDependencies.h"
 
 static CGFloat const kMQEvaluationVerticalSpacing = 16.0;
 static CGFloat const kMQEvaluationHorizontalSpacing = 16.0;
