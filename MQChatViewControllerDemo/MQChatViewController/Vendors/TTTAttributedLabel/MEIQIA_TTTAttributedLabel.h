@@ -22,6 +22,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreText/CoreText.h>
+#import "MQNamespacedDependencies.h"
 
 //! Project version number for TTTAttributedLabel.
 FOUNDATION_EXPORT double TTTAttributedLabelVersionNumber;

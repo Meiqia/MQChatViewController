@@ -21,7 +21,6 @@
 // THE SOFTWARE.
 
 #import "MEIQIA_TTTAttributedLabel.h"
-#import "MQNamespacedDependencies.h"
 #import <QuartzCore/QuartzCore.h>
 #import <Availability.h>
 #import <objc/runtime.h>
