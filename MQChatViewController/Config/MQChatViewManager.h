@@ -378,6 +378,12 @@
  */
 - (void)setEventTextColor:(UIColor *)textColor;
 
+/**
+ * 是否显示导航栏右键'评价'按钮，默认显示；
+ * @param hide YES:隐藏'评价'按钮 NO:显示'评价'按钮
+ */
+- (void) setHideEvaluationButton:(BOOL)hide;
+
 #endif
 
 
