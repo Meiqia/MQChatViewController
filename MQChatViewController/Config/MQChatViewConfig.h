@@ -66,6 +66,8 @@ typedef enum : NSUInteger {
 @property (nonatomic, assign) BOOL enableTopAutoRefresh;
 @property (nonatomic, assign) BOOL enableShowNewMessageAlert;
 @property (nonatomic, assign) BOOL isPushChatView;
+// 是否显示'评价'
+@property (nonatomic, assign) BOOL enableEvaluationButton;
 
 @property (nonatomic, copy) UIColor *incomingMsgTextColor;
 @property (nonatomic, copy) UIColor *incomingBubbleColor;
