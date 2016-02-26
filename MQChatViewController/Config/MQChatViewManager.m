@@ -420,6 +420,10 @@
     chatViewConfig.MQClientId = MQClientId;
 }
 
+- (void) setHideEvaluationButton:(BOOL)hide {
+    chatViewConfig.hideEvaluationButton = hide;
+}
+
 #endif
 
 @end
