@@ -90,30 +90,6 @@
 #define MLAudioRecorder __NS_SYMBOL(MLAudioRecorder)
 #endif
 
-#ifndef SDImageCache
-#define SDImageCache __NS_SYMBOL(SDImageCache)
-#endif
-
-#ifndef SDWebImageCombinedOperation
-#define SDWebImageCombinedOperation __NS_SYMBOL(SDWebImageCombinedOperation)
-#endif
-
-#ifndef SDWebImageDownloader
-#define SDWebImageDownloader __NS_SYMBOL(SDWebImageDownloader)
-#endif
-
-#ifndef SDWebImageDownloaderOperation
-#define SDWebImageDownloaderOperation __NS_SYMBOL(SDWebImageDownloaderOperation)
-#endif
-
-#ifndef SDWebImageManager
-#define SDWebImageManager __NS_SYMBOL(SDWebImageManager)
-#endif
-
-#ifndef SDWebImagePrefetcher
-#define SDWebImagePrefetcher __NS_SYMBOL(SDWebImagePrefetcher)
-#endif
-
 #ifndef TTTAccessibilityElement
 #define TTTAccessibilityElement __NS_SYMBOL(TTTAccessibilityElement)
 #endif
@@ -126,13 +102,12 @@
 #define TTTAttributedLabelLink __NS_SYMBOL(TTTAttributedLabelLink)
 #endif
 
-//funtions
+//functions
 #ifndef inputBufferHandler
 #define inputBufferHandler __NS_SYMBOL(inputBufferHandler)
 #endif
 
 //externs
-
 #ifndef buttonHeight
 #define buttonHeight __NS_SYMBOL(buttonHeight)
 #endif

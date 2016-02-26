@@ -141,7 +141,7 @@ CGSize currentKeyboardSize;
 }
 
 // Button has been touched
-- (IBAction)customIOS7dialogButtonTouchUpInside:(id)sender
+- (IBAction)customIOS7dialogButtonTouchUpInside:(UIButton *)sender
 {
     if (delegate != NULL) {
         [delegate customIOS7dialogButtonTouchUpInside:self clickedButtonAtIndex:[sender tag]];

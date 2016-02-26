@@ -25,6 +25,8 @@
 
 #import "MEIQIA_MHFacebookImageViewer.h"
 //#import "UIImageView+AFNetworking.h"
+#import "MQToast.h"
+#import "MQBundleUtil.h"
 #import <objc/runtime.h>
 static const CGFloat kMinBlackMaskAlpha = 0.3f;
 static const CGFloat kMaxImageScale = 2.5f;
@@ -48,6 +50,7 @@ static const CGFloat kMinImageScale = 1.0f;
 @property(nonatomic,weak) UIImage * defaultImage;
 @property(nonatomic,assign) NSInteger initialIndex;
 @property(nonatomic,strong) UIPanGestureRecognizer* panGesture;
+@property(nonatomic,strong) UIButton * saveButton;
 
 @property (nonatomic,weak) MHFacebookImageViewerOpeningBlock openingBlock;
 @property (nonatomic,weak) MHFacebookImageViewerClosingBlock closingBlock;
@@ -75,6 +78,7 @@ static const CGFloat kMinImageScale = 1.0f;
 @synthesize defaultImage = _defaultImage;
 @synthesize initialIndex = _initialIndex;
 @synthesize panGesture = _panGesture;
+@synthesize saveButton = _saveButton;
 
 - (void) loadAllRequiredViews{
     self.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -83,6 +87,9 @@ static const CGFloat kMinImageScale = 1.0f;
     __scrollView.delegate = self;
     __scrollView.backgroundColor = [UIColor clearColor];
     [self addSubview:__scrollView];
+    [_saveButton addTarget:self
+                    action:@selector(savePicture:)
+          forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void) setImageURL:(NSURL *)imageURL defaultImage:(UIImage*)defaultImage imageIndex:(NSInteger)imageIndex {
@@ -192,7 +199,7 @@ static const CGFloat kMinImageScale = 1.0f;
 
     __imageView.frame = frame;
 
-    CGFloat yDiff = abs((y + __imageView.frame.size.height/2) - windowSize.height/2);
+    CGFloat yDiff = fabs((y + __imageView.frame.size.height/2) - windowSize.height/2);
     _blackMask.alpha = MAX(1 - yDiff/(windowSize.height/0.5),kMinBlackMaskAlpha);
 
     if ((panGesture.state == UIGestureRecognizerStateEnded || panGesture.state == UIGestureRecognizerStateCancelled) && __scrollView.zoomScale == 1.0f) {
@@ -219,6 +226,24 @@ static const CGFloat kMinImageScale = 1.0f;
     }];
 }
 
+#pragma mark - save function
+- (void)savePicture:(id)sender {
+    UIImageWriteToSavedPhotosAlbum(__imageView.image, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
+}
+
+//保存到相册的回调
+- (void)image:(UIImage *)image
+didFinishSavingWithError:(NSError *)error
+  contextInfo:(void *)contextInfo
+{
+    if(error != NULL){
+        NSLog(@"保存图片失败");
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"save_photo_error"] duration:1.0 window:_viewController.view];
+    }else{
+        NSLog(@"保存图片成功");
+        [MQToast showToast:[MQBundleUtil localizedStringForKey:@"save_photo_success"] duration:1.0 window:_viewController.view];
+    }
+}
 
 #pragma mark - Dismiss
 - (void)dismissViewController
@@ -387,6 +412,7 @@ static const CGFloat kMinImageScale = 1.0f;
     BOOL _isAnimating;
 
     UIStatusBarStyle _statusBarStyle;
+    UIButton * _saveButton;
 }
 
 @end
@@ -428,6 +454,7 @@ static const CGFloat kMinImageScale = 1.0f;
         imageViewerCell.senderView = _senderView;
         imageViewerCell.initialIndex = _initialIndex;
         imageViewerCell.statusBarStyle = _statusBarStyle;
+        imageViewerCell.saveButton = _saveButton;
         [imageViewerCell loadAllRequiredViews];
         imageViewerCell.backgroundColor = [UIColor clearColor];
     }
@@ -488,8 +515,30 @@ static const CGFloat kMinImageScale = 1.0f;
     _blackMask.backgroundColor = [UIColor blackColor];
     _blackMask.alpha = 0.0f;
     _blackMask.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    [
-     self.view insertSubview:_blackMask atIndex:0];
+    [self.view insertSubview:_blackMask atIndex:0];
+    
+    //save button + 毛玻璃效果
+    CGFloat btnWidth = 50.f;
+    CGFloat btnHeight = 30.0f;
+    UIView *buttonBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(14.0f, windowBounds.size.height - 40.0f, btnWidth, btnHeight)];
+    buttonBackgroundView.backgroundColor = [[UIColor alloc] initWithWhite:0 alpha:0.6];
+    buttonBackgroundView.layer.masksToBounds = true;
+    buttonBackgroundView.layer.cornerRadius = 4.0;
+    buttonBackgroundView.layer.borderColor = [[UIColor alloc] initWithWhite:1 alpha:0.4].CGColor;
+    buttonBackgroundView.layer.borderWidth = 0.5;
+    UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    UIVisualEffectView *effectview = [[UIVisualEffectView alloc] initWithEffect:blur];
+    effectview.frame = CGRectMake(0, 0, buttonBackgroundView.frame.size.width, buttonBackgroundView.frame.size.height);
+    [buttonBackgroundView addSubview:effectview];
+    
+    _saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_saveButton setImageEdgeInsets:UIEdgeInsetsMake(-10, -10, -10, -10)];  // make click area bigger
+    [_saveButton setTitle:@"保存" forState:UIControlStateNormal];
+    [_saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    _saveButton.titleLabel.font = [UIFont systemFontOfSize:12.0];
+    _saveButton.frame = CGRectMake(0, 0, btnWidth, btnHeight);
+    [buttonBackgroundView addSubview:_saveButton];
+    [self.view addSubview:buttonBackgroundView];
 }
 
 #pragma mark - Show

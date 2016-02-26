@@ -772,6 +772,10 @@ static NSInteger const kMQChatGetHistoryMessageNumber = 20;
     [self reloadChatTableView];
 }
 
+- (void)dismissingChatViewController {
+    [MQServiceToViewInterface setClientOffline];
+}
+
 #endif
 
 @end

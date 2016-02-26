@@ -15,7 +15,6 @@
 #import "MQInputBar.h"
 #import "MQToast.h"
 #import "MQRecordView.h"
-#import "VoiceConverter.h"
 #import "MQBundleUtil.h"
 #import "MQImageUtil.h"
 #import "MQDefinition.h"
@@ -48,6 +47,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     NSLog(@"清除chatViewController");
     [self removeDelegateAndObserver];
     [chatViewConfig setConfigToDefault];
+#ifdef INCLUDE_MEIQIA_SDK
+    [self closeMeiqiaChatView];
+#endif
 }
 
 - (instancetype)initWithChatViewManager:(MQChatViewConfig *)config {
@@ -632,6 +634,12 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)didReceiveRefreshOutgoingAvatarNotification:(NSNotification *)notification {
     if ([notification.object isKindOfClass:[UIImage class]]) {
         [chatViewService refreshOutgoingAvatarWithImage:notification.object];
+    }
+}
+
+- (void)closeMeiqiaChatView {
+    if ([self.navigationItem.title isEqualToString:[MQBundleUtil localizedStringForKey:@"no_agent_title"]]) {
+        [chatViewService dismissingChatViewController];
     }
 }
 
