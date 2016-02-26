@@ -242,10 +242,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
         return;
     }
     
-    if (![MQChatViewConfig sharedConfig].enableEvaluationButton) {
-        return;
-    }
-    
     UIButton *loadMessageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     loadMessageBtn.frame = CGRectMake(0, 0, 62, 22);
     [loadMessageBtn setTitle:@"收取消息" forState:UIControlStateNormal];
@@ -255,6 +251,10 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [loadMessageBtn addTarget:self action:@selector(tapLoadMessageBtn:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:loadMessageBtn];
 #else
+    if ([MQChatViewConfig sharedConfig].hideEvaluationButton) {
+        return;
+    }
+    
     UIButton *rightNavButton = [UIButton buttonWithType:UIButtonTypeCustom];
     NSString *btnText = [MQBundleUtil localizedStringForKey:@"meiqia_evaluation_sheet"];
     UIFont *btnTextFont = [UIFont systemFontOfSize:14.0];
