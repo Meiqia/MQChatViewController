@@ -241,6 +241,11 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     if ([MQChatViewConfig sharedConfig].navBarRightButton) {
         return;
     }
+    
+    if (![MQChatViewConfig sharedConfig].enableEvaluationButton) {
+        return;
+    }
+    
     UIButton *loadMessageBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     loadMessageBtn.frame = CGRectMake(0, 0, 62, 22);
     [loadMessageBtn setTitle:@"收取消息" forState:UIControlStateNormal];
