@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MQNamespacedDependencies.h"
+
 @protocol MQCellModelProtocol;
 
 /**

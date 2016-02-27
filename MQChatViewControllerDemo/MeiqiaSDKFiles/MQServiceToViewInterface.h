@@ -224,7 +224,7 @@
  *  @param completion  上传的回调
  */
 + (void)uploadClientAvatar:(UIImage *)avatarImage
-                completion:(void (^)(BOOL success, NSError *error))completion;
+                completion:(void (^)(NSString *avatarUrl, NSError *error))completion;
 
 /**
  *  对当前的对话做出评价

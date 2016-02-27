@@ -263,7 +263,7 @@
     }
     chatViewConfig.outgoingDefaultAvatarImage = image;
 #ifdef INCLUDE_MEIQIA_SDK
-    [MQServiceToViewInterface uploadClientAvatar:image completion:^(BOOL success, NSError *error) {
+    [MQServiceToViewInterface uploadClientAvatar:image completion:^(NSString *avatarUrl, NSError *error) {
     }];
 #endif
 }

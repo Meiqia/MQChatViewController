@@ -14,10 +14,12 @@
 #import <UIKit/UIKit.h>
 #import "MQChatViewConfig.h"
 #import "MQImageUtil.h"
-#import "TTTAttributedLabel.h"
+#import "MEIQIA_TTTAttributedLabel.h"
 #import "MQChatEmojize.h"
-#import "UIImageView+WebCache.h"
 #import "MQServiceToViewInterface.h"
+#ifndef INCLUDE_MEIQIA_SDK
+#import "UIImageView+WebCache.h"
+#endif
 
 @interface MQTextCellModel()
 
@@ -202,7 +204,7 @@
         }
         //文字宽度
         CGFloat messageTextWidth = [MQStringSizeUtil getWidthForAttributedText:self.cellText textHeight:messageTextHeight];
-#warning 注：这里textLabel的宽度之所以要增加，是因为TTTAttributedLabel的bug，在文字有"."的情况下，有可能显示不出来，开发者可以帮忙定位TTTAttributedLabel的这个bug^.^
+//#warning 注：这里textLabel的宽度之所以要增加，是因为TTTAttributedLabel的bug，在文字有"."的情况下，有可能显示不出来，开发者可以帮忙定位TTTAttributedLabel的这个bug^.^
         NSRange periodRange = [message.content rangeOfString:@"."];
         if (periodRange.location != NSNotFound) {
             messageTextWidth += 8;
