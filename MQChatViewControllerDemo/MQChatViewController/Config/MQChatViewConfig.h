@@ -101,6 +101,8 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, assign) MQChatScheduleRules scheduleRule;
 
+@property (nonatomic, copy) NSDictionary *clientInfo;
+
 + (instancetype)sharedConfig;
 
 /** 将配置设置为默认值 */
