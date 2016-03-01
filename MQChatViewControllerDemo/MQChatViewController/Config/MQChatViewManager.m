@@ -420,6 +420,14 @@
     chatViewConfig.MQClientId = MQClientId;
 }
 
+- (void)setClientInfo:(NSDictionary *)clientInfo
+{
+    if (!clientInfo) {
+        return;
+    }
+    chatViewConfig.clientInfo = clientInfo;
+}
+
 #endif
 
 @end

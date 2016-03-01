@@ -367,6 +367,12 @@
 - (void)setLoginMQClientId:(NSString *)MQClientId;
 
 /**
+ * 设置客户信息；
+ * @param clientInfo 客户信息
+ */
+- (void)setClientInfo:(NSDictionary *)clientInfo;
+
+/**
  * 是否显示事件状态流；事件的状态流有：初始化对话、对话被转接给其他客服、对话超时、客服主动结束了对话、客服正在输入；默认不支持；
  * @param enable YES:开启事件状态流 NO:关闭事件状态流
  */
