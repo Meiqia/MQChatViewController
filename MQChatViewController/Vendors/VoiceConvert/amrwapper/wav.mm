@@ -17,28 +17,28 @@
  */
 
 #import <UIKit/UIkit.h>
-#include "MEIQIA_wav.h"
+#include "wav.h"
 
-void MEIQIA_WavWriter::writeString(const char *str) {
+void WavWriter::writeString(const char *str) {
 	fputc(str[0], wav);
 	fputc(str[1], wav);
 	fputc(str[2], wav);
 	fputc(str[3], wav);
 }
 
-void MEIQIA_WavWriter::writeInt32(int value) {
+void WavWriter::writeInt32(int value) {
 	fputc((value >>  0) & 0xff, wav);
 	fputc((value >>  8) & 0xff, wav);
 	fputc((value >> 16) & 0xff, wav);
 	fputc((value >> 24) & 0xff, wav);
 }
 
-void MEIQIA_WavWriter::writeInt16(int value) {
+void WavWriter::writeInt16(int value) {
 	fputc((value >> 0) & 0xff, wav);
 	fputc((value >> 8) & 0xff, wav);
 }
 
-void MEIQIA_WavWriter::writeHeader(int length) {
+void WavWriter::writeHeader(int length) {
     writeString("RIFF");
     writeInt32(4 + 8 + 20 + 8 + length);  //将16改为20
     writeString("WAVE");
@@ -61,7 +61,7 @@ void MEIQIA_WavWriter::writeHeader(int length) {
     writeInt32(length);
 }
 
-MEIQIA_WavWriter::MEIQIA_WavWriter(const char *filename, int sampleRate, int bitsPerSample, int channels)
+WavWriter::WavWriter(const char *filename, int sampleRate, int bitsPerSample, int channels) 
 {
 	
 	NSArray *paths               = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -80,7 +80,7 @@ MEIQIA_WavWriter::MEIQIA_WavWriter(const char *filename, int sampleRate, int bit
 	writeHeader(dataLength);
 }
 
-MEIQIA_WavWriter::~MEIQIA_WavWriter() {
+WavWriter::~WavWriter() {
 	if (wav == NULL)
 		return;
 	fseek(wav, 0, SEEK_SET);
@@ -88,7 +88,7 @@ MEIQIA_WavWriter::~MEIQIA_WavWriter() {
 	fclose(wav);
 }
 
-void MEIQIA_WavWriter::MEIQIA_writeData(const unsigned char* data, int length) {
+void WavWriter::writeData(const unsigned char* data, int length) {
 	if (wav == NULL)
 		return;
 	fwrite(data, length, 1, wav);

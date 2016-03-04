@@ -21,12 +21,12 @@
 
 #include <stdio.h>
 
-class MEIQIA_WavWriter {
+class WavWriter {
 public:
-	MEIQIA_WavWriter(const char *filename, int sampleRate, int bitsPerSample, int channels);
-	~MEIQIA_WavWriter();
+	WavWriter(const char *filename, int sampleRate, int bitsPerSample, int channels);
+	~WavWriter();
 
-	void MEIQIA_writeData(const unsigned char* data, int length);
+	void writeData(const unsigned char* data, int length);
 
 private:
 	void writeString(const char *str);

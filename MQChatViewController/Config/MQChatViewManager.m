@@ -145,10 +145,6 @@
     [chatViewConfig.emailRegexs addObject:emailRegex];
 }
 
-- (void)enableSyncServerMessage:(BOOL)enable {
-    chatViewConfig.enableSyncServerMessage = enable;
-}
-
 - (void)enableEventDispaly:(BOOL)enable {
     chatViewConfig.enableEventDispaly = enable;
 }
@@ -373,6 +369,10 @@
     chatViewConfig.enableChatWelcome = enable;
 }
 
+- (void)enableVoiceRecordBlurView:(BOOL)enable {
+    chatViewConfig.enableVoiceRecordBlurView = enable;
+}
+
 - (void)setIncomingMessageSoundFileName:(NSString *)soundFileName {
     if (!soundFileName) {
         return;
@@ -380,11 +380,21 @@
     chatViewConfig.incomingMsgSoundFileName = soundFileName;
 }
 
+- (void)setOutgoingMessageSoundFileName:(NSString *)soundFileName {
+    if (!soundFileName) {
+        return;
+    }
+    chatViewConfig.outgoingMsgSoundFileName = soundFileName;
+}
+
 - (void)setMaxRecordDuration:(NSTimeInterval)recordDuration {
     chatViewConfig.maxVoiceDuration = recordDuration;
 }
 
 #ifdef INCLUDE_MEIQIA_SDK
+- (void)enableSyncServerMessage:(BOOL)enable {
+    chatViewConfig.enableSyncServerMessage = enable;
+}
 
 - (void)setScheduledAgentId:(NSString *)agentId {
     if (!agentId) {
@@ -418,8 +428,15 @@
     chatViewConfig.MQClientId = MQClientId;
 }
 
-- (void) setHideEvaluationButton:(BOOL)hide {
-    chatViewConfig.hideEvaluationButton = hide;
+- (void) enableEvaluationButton:(BOOL)enable {
+    chatViewConfig.enableEvaluationButton = enable;
+}
+
+- (void)setClientInfo:(NSDictionary *)clientInfo {
+    if (!clientInfo) {
+        return;
+    }
+    chatViewConfig.clientInfo = clientInfo;
 }
 
 #endif

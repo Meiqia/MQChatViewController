@@ -247,7 +247,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [loadMessageBtn addTarget:self action:@selector(tapNavigationRightBtn:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:loadMessageBtn];
 #else
-    if ([MQChatViewConfig sharedConfig].hideEvaluationButton) {
+    if ([MQChatViewConfig sharedConfig].enableEvaluationButton) {
         return;
     }
     UIButton *rightNavButton = [UIButton buttonWithType:UIButtonTypeCustom];

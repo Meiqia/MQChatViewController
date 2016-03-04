@@ -49,13 +49,11 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
     self.agentName              = [MQBundleUtil localizedStringForKey:@"default_assistant"];
     self.scheduledAgentId       = nil;
     self.scheduledGroupId       = nil;
-    self.MQClientId             = @"";
     self.customizedId           = @"";
     self.navTitleText           = nil;
     self.navBarLeftButton       = nil;
     self.navBarRightButton      = nil;
     
-    self.enableSyncServerMessage = true;
     self.enableEventDispaly      = false;
     self.enableSendVoiceMessage  = true;
     self.enableSendImageMessage  = true;
@@ -65,13 +63,14 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
     self.enableOutgoingAvatar    = true;
     self.enableTopPullRefresh    = false;
     self.enableBottomPullRefresh = false;
+    self.enableVoiceRecordBlurView = false;
     
     self.enableRoundAvatar         = false;
     self.enableChatWelcome         = false;
     self.enableTopAutoRefresh      = true;
     self.isPushChatView            = true;
     self.enableShowNewMessageAlert = true;
-    self.hideEvaluationButton      = false;
+    self.enableEvaluationButton    = true;
     
     self.incomingMsgTextColor   = [UIColor darkTextColor];
     self.outgoingMsgTextColor   = [UIColor darkTextColor];
@@ -102,10 +101,20 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
     self.bubbleImageStretchInsets       = UIEdgeInsetsMake(stretchPoint.y, stretchPoint.x, self.incomingBubbleImage.size.height-stretchPoint.y+0.5, stretchPoint.x);
     
     self.incomingMsgSoundFileName       = @"MQNewMessageRing.mp3";
+    self.outgoingMsgSoundFileName       = @"MQSendMessageRing.mp3";
     
     self.maxVoiceDuration               = 60;
     
+    
+#pragma 以下配置是美洽SDK用户所用到的配置
+#ifdef INCLUDE_MEIQIA_SDK
+    self.enableSyncServerMessage = true;
+    self.MQClientId             = @"";
+
     self.scheduleRule                   = nil;
+    self.clientInfo                     = nil;
+
+#endif
 }
 
 @end

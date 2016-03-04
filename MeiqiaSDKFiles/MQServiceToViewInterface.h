@@ -235,5 +235,14 @@
 + (void)setEvaluationLevel:(NSInteger)level
                    comment:(NSString *)comment;
 
+/**
+ *  上传顾客信息
+ *
+ *  @param clientInfo 顾客信息
+ */
++ (void)setClientInfoWithDictionary:(NSDictionary *)clientInfo
+                         completion:(void (^)(BOOL success, NSError *error))completion;
+
+
 
 @end

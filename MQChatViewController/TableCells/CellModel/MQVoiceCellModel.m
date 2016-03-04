@@ -13,7 +13,7 @@
 #import "MQStringSizeUtil.h"
 #import "MQImageUtil.h"
 #import "MQAssetUtil.h"
-#import "MEIQIA_VoiceConverter.h"
+#import "VoiceConverter.h"
 #import "MQServiceToViewInterface.h"
 #ifndef INCLUDE_MEIQIA_SDK
 #import "UIImageView+WebCache.h"
@@ -215,7 +215,7 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
                                 NSLog(@"failed to create file");
                             }
                             NSString *wavPath = [NSString stringWithFormat:@"%@wav", tempPath];
-                            [MEIQIA_VoiceConverter amrToWav:tempPath wavSavePath:wavPath];
+                            [VoiceConverter amrToWav:tempPath wavSavePath:wavPath];
                             mediaData = [NSData dataWithContentsOfFile:wavPath];
                             BOOL removeSuccess = [[NSFileManager defaultManager] removeItemAtPath:tempPath error:nil];
                             if (!removeSuccess) {

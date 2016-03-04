@@ -45,13 +45,12 @@ typedef enum : NSUInteger {
 @property (nonatomic, copy  ) NSString *chatWelcomeText;
 @property (nonatomic, copy  ) NSString *agentName;
 @property (nonatomic, copy  ) NSString *incomingMsgSoundFileName;
+@property (nonatomic, copy  ) NSString *outgoingMsgSoundFileName;
 @property (nonatomic, copy  ) NSString *scheduledAgentId;
 @property (nonatomic, copy  ) NSString *scheduledGroupId;
-@property (nonatomic, copy  ) NSString *MQClientId;
 @property (nonatomic, copy  ) NSString *customizedId;
 @property (nonatomic, copy  ) NSString *navTitleText;
 
-@property (nonatomic, assign) BOOL enableSyncServerMessage;
 @property (nonatomic, assign) BOOL enableEventDispaly;
 @property (nonatomic, assign) BOOL enableSendVoiceMessage;
 @property (nonatomic, assign) BOOL enableSendImageMessage;
@@ -66,7 +65,8 @@ typedef enum : NSUInteger {
 @property (nonatomic, assign) BOOL enableTopAutoRefresh;
 @property (nonatomic, assign) BOOL enableShowNewMessageAlert;
 @property (nonatomic, assign) BOOL isPushChatView;
-@property (nonatomic, assign) BOOL hideEvaluationButton;
+@property (nonatomic, assign) BOOL enableEvaluationButton;
+@property (nonatomic, assign) BOOL enableVoiceRecordBlurView;
 
 @property (nonatomic, copy) UIColor *incomingMsgTextColor;
 @property (nonatomic, copy) UIColor *incomingBubbleColor;
@@ -100,7 +100,17 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, assign) NSTimeInterval maxVoiceDuration;
 
+
+#pragma 以下配置是美洽SDK用户所用到的配置
+#ifdef INCLUDE_MEIQIA_SDK
+@property (nonatomic, assign) BOOL enableSyncServerMessage;
+@property (nonatomic, copy  ) NSString *MQClientId;
+
+
+@property (nonatomic, strong) NSDictionary *clientInfo;
 @property (nonatomic, assign) MQChatScheduleRules scheduleRule;
+
+#endif
 
 + (instancetype)sharedConfig;
 

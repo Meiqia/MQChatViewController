@@ -50,6 +50,12 @@
 - (void)enableCustomChatViewFrame:(BOOL)enable;
 
 /**
+ * 是否显示导航栏右键'评价'按钮，默认显示；
+ * @param enable YES:显示'评价'按钮 NO:隐藏'评价'按钮
+ */
+- (void)enableEvaluationButton:(BOOL)enable;
+
+/**
  * 设置客服聊天界面的坐标。
  * @warning 默认聊天界面全屏显示。
  * @param viewFrame 客服聊天tableView的界面的坐标
@@ -97,9 +103,17 @@
 
 /**
  * 设置收到消息的声音；
- * @param soundFileName 声音文件
+ * @param soundFileName 声音文件；如果要自定义声音，请将声音文件放在 MQChatViewAsset.bundle 中
+ * @warning 若文件名设置为空，则代表不播放声音
  */
 - (void)setIncomingMessageSoundFileName:(NSString *)soundFileName;
+
+/**
+ * 设置发送的声音；
+ * @param soundFileName 声音文件；如果要自定义声音，请将声音文件放在 MQChatViewAsset.bundle 中
+ * @warning 若文件名设置为空，则代表不播放声音
+ */
+- (void)setOutgoingMessageSoundFileName:(NSString *)soundFileName;
 
 /**
  * 是否支持发送语音消息；默认支持
@@ -175,6 +189,13 @@
  * @param enable YES:支持 NO:不支持
  */
 - (void)enableChatWelcome:(BOOL)enable;
+
+/**
+ *  是否显示录音时的背景模糊效果；默认不显示
+ *
+ *  @param enable YES:显示 NO:不显示
+ */
+- (void)enableVoiceRecordBlurView:(BOOL)enable;
 
 /**
  * 设置发送过来的message的文字颜色；
@@ -379,10 +400,11 @@
 - (void)setEventTextColor:(UIColor *)textColor;
 
 /**
- * 是否显示导航栏右键'评价'按钮，默认显示；
- * @param hide YES:隐藏'评价'按钮 NO:显示'评价'按钮
+ *  设置顾客的自定义信息
+ *
+ *  @param clientInfo 顾客的自定义信息
  */
-- (void) setHideEvaluationButton:(BOOL)hide;
+- (void)setClientInfo:(NSDictionary *)clientInfo;
 
 #endif
 

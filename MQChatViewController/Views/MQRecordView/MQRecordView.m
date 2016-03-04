@@ -15,6 +15,7 @@
 #import "MQChatAudioRecorder.h"
 #import "MQAssetUtil.h"
 #import "MQBundleUtil.h"
+#import "MQChatViewConfig.h"
 
 static CGFloat const kMQRecordViewDiameter = 150.0;
 static CGFloat const kMQVolumeViewTopMargin = 16.0;
@@ -61,7 +62,9 @@ static NSInteger const kMQMaxRecordVoiceDurationDeviation = 2;
         tipLabel.font = [UIFont boldSystemFontOfSize:14];
         tipLabel.textAlignment = NSTextAlignmentCenter;
         
-        [self addSubview:blurView];
+        if ([MQChatViewConfig sharedConfig].enableVoiceRecordBlurView) {
+            [self addSubview:blurView];
+        }
         [self addSubview:recordView];
         [recordView addSubview:volumeView];
         [recordView addSubview:tipLabel];
@@ -110,6 +113,9 @@ static NSInteger const kMQMaxRecordVoiceDurationDeviation = 2;
 
 - (void)reDisplayRecordView {
     self.hidden = NO;
+    if (![MQChatViewConfig sharedConfig].enableVoiceRecordBlurView) {
+        return;
+    }
     if ([recordView.superview isEqual:self]) {
         [recordView removeFromSuperview];
     }
