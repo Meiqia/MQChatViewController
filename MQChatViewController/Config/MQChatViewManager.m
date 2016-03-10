@@ -61,6 +61,12 @@
 {
     if ([MQChatViewConfig sharedConfig].navBarTintColor) {
         navigationController.navigationBar.tintColor = [MQChatViewConfig sharedConfig].navBarTintColor;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        navigationController.navigationBar.titleTextAttributes = @{
+                                                                   UITextAttributeTextColor : [MQChatViewConfig sharedConfig].navBarTintColor
+                                                                   };
+#pragma clang diagnostic pop
     }
     if ([MQChatViewConfig sharedConfig].navBarColor) {
         navigationController.navigationBar.barTintColor = [MQChatViewConfig sharedConfig].navBarColor;
@@ -91,14 +97,6 @@
     //导航栏标题
     if ([MQChatViewConfig sharedConfig].navTitleText) {
         viewController.navigationItem.title = [MQChatViewConfig sharedConfig].navTitleText;
-        if ([MQChatViewConfig sharedConfig].navBarTintColor) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            navigationController.navigationBar.titleTextAttributes = @{
-                                                                       UITextAttributeTextColor : [MQChatViewConfig sharedConfig].navBarTintColor
-                                                                       };
-#pragma clang diagnostic pop
-        }
     }
 }
 
@@ -145,10 +143,6 @@
         return;
     }
     [chatViewConfig.emailRegexs addObject:emailRegex];
-}
-
-- (void)enableSyncServerMessage:(BOOL)enable {
-    chatViewConfig.enableSyncServerMessage = enable;
 }
 
 - (void)enableEventDispaly:(BOOL)enable {
@@ -263,7 +257,7 @@
     }
     chatViewConfig.outgoingDefaultAvatarImage = image;
 #ifdef INCLUDE_MEIQIA_SDK
-    [MQServiceToViewInterface uploadClientAvatar:image completion:^(BOOL success, NSError *error) {
+    [MQServiceToViewInterface uploadClientAvatar:image completion:^(NSString *avatarUrl, NSError *error) {
     }];
 #endif
 }
@@ -375,6 +369,10 @@
     chatViewConfig.enableChatWelcome = enable;
 }
 
+- (void)enableVoiceRecordBlurView:(BOOL)enable {
+    chatViewConfig.enableVoiceRecordBlurView = enable;
+}
+
 - (void)setIncomingMessageSoundFileName:(NSString *)soundFileName {
     if (!soundFileName) {
         return;
@@ -382,11 +380,21 @@
     chatViewConfig.incomingMsgSoundFileName = soundFileName;
 }
 
+- (void)setOutgoingMessageSoundFileName:(NSString *)soundFileName {
+    if (!soundFileName) {
+        return;
+    }
+    chatViewConfig.outgoingMsgSoundFileName = soundFileName;
+}
+
 - (void)setMaxRecordDuration:(NSTimeInterval)recordDuration {
     chatViewConfig.maxVoiceDuration = recordDuration;
 }
 
 #ifdef INCLUDE_MEIQIA_SDK
+- (void)enableSyncServerMessage:(BOOL)enable {
+    chatViewConfig.enableSyncServerMessage = enable;
+}
 
 - (void)setScheduledAgentId:(NSString *)agentId {
     if (!agentId) {
@@ -420,8 +428,15 @@
     chatViewConfig.MQClientId = MQClientId;
 }
 
-- (void) setHideEvaluationButton:(BOOL)hide {
-    chatViewConfig.hideEvaluationButton = hide;
+- (void) enableEvaluationButton:(BOOL)enable {
+    chatViewConfig.enableEvaluationButton = enable;
+}
+
+- (void)setClientInfo:(NSDictionary *)clientInfo {
+    if (!clientInfo) {
+        return;
+    }
+    chatViewConfig.clientInfo = clientInfo;
 }
 
 #endif
