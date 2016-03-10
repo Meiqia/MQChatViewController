@@ -74,7 +74,7 @@
  *
  *  @param viewTitle 客服名字
  */
-- (void)didScheduleClientWithViewTitle:(NSString *)viewTitle;
+- (void)didScheduleClientWithViewTitle:(NSString *)viewTitle agentStatus:(MQChatAgentStatus)agentStatus;
 
 #endif
 
@@ -168,6 +168,16 @@
  * dismiss View Controller
  */
 - (void)dismissingChatViewController;
+
+/**
+ *  获取之前的输入文字
+ */
+- (NSString *)getPreviousInputtingText;
+
+/**
+ *  设置当前输入的文字
+ */
+- (void)setCurrentInputtingText:(NSString *)inputtingText;
 
 
 #ifndef INCLUDE_MEIQIA_SDK

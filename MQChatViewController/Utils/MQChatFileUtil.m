@@ -38,8 +38,10 @@
 }
 
 + (void)playSoundWithSoundFile:(NSString *)fileName {
-    NSString *path = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], fileName];
-    NSURL *filePath = [NSURL fileURLWithPath:path isDirectory:false];
+//    NSString *path = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] resourcePath], fileName];
+//    NSURL *filePath = [NSURL fileURLWithPath:path isDirectory:false];
+
+    NSURL *filePath = [NSURL fileURLWithPath:fileName isDirectory:false];
     SystemSoundID soundID;
     OSStatus error = AudioServicesCreateSystemSoundID((__bridge CFURLRef)filePath, &soundID);
     if (error) {

@@ -29,6 +29,15 @@ typedef enum : NSUInteger {
 } MQChatScheduleRules;
 
 /**
+ 客服的状态
+ */
+typedef enum : NSUInteger {
+    MQChatAgentStatusOnDuty         = 1,            //客服在线
+    MQChatAgentStatusOffDuty        = 2,            //客服隐身
+    MQChatAgentStatusOffLine        = 3             //客服离线
+} MQChatAgentStatus;
+
+/**
  * @brief MQChatViewConfig为客服聊天界面的前置配置，由MQChatViewManager生成，在MQChatViewController内部逻辑消费
  *
  */

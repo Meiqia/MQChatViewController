@@ -8,6 +8,7 @@
 
 #import "MQAssetUtil.h"
 #import "MQBundleUtil.h"
+#import "MQChatViewController.h"
 
 @implementation MQAssetUtil
 
@@ -18,7 +19,12 @@
 
 + (NSString*)resourceWithName:(NSString*)fileName
 {
-    return [NSString stringWithFormat:@"MQChatViewAsset.bundle/%@",fileName];
+//        return [NSString stringWithFormat:@"MQChatViewAsset.bundle/%@",fileName];
+    //查看 bundle 是否存在
+    NSBundle *meiQiaBundle = [NSBundle bundleForClass:[MQChatViewController class]];
+    NSString * fileRootPath = [[meiQiaBundle bundlePath] stringByAppendingString:@"/MQChatViewAsset.bundle"];
+    NSString * filePath = [fileRootPath stringByAppendingString:[NSString stringWithFormat:@"/%@", fileName]];
+    return filePath;
 }
 
 + (UIImage *)incomingDefaultAvatarImage
@@ -197,6 +203,18 @@
 
 + (UIImage *)getNavigationMoreImage {
     return [MQAssetUtil imageFromBundleWithName:@"MQMessageNavMoreImage"];
+}
+
++ (UIImage *)agentOnDutyImage {
+    return [MQAssetUtil imageFromBundleWithName:@"MQAgentStatusOnDuty"];
+}
+
++ (UIImage *)agentOffDutyImage {
+    return [MQAssetUtil imageFromBundleWithName:@"MQAgentStatusOffDuty"];
+}
+
++ (UIImage *)agentOfflineImage {
+    return [MQAssetUtil imageFromBundleWithName:@"MQAgentStatusOffline"];
 }
 
 @end

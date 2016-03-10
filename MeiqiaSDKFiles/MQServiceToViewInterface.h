@@ -183,6 +183,13 @@
 + (NSString *)getCurrentAgentName;
 
 /**
+ *  获取当前客服状态
+ *
+ *  @return onDuty - 在线  offDuty - 隐身  offLine - 离线
+ */
++ (MQChatAgentStatus)getCurrentAgentStatus;
+
+/**
  *  当前是否有客服
  *
  */
@@ -243,6 +250,18 @@
 + (void)setClientInfoWithDictionary:(NSDictionary *)clientInfo
                          completion:(void (^)(BOOL success, NSError *error))completion;
 
+/**
+ *  缓存当前的输入文字
+ *
+ *  @param inputtingText 输入文字
+ */
++ (void)setCurrentInputtingText:(NSString *)inputtingText;
 
+/**
+ *  获取缓存的输入文字
+ *
+ *  @return 输入文字
+ */
++ (NSString *)getPreviousInputtingText;
 
 @end

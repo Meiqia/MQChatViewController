@@ -56,4 +56,8 @@
 
 + (UIImage *)getNavigationMoreImage;
 
++ (UIImage *)agentOnDutyImage;
++ (UIImage *)agentOffDutyImage;
++ (UIImage *)agentOfflineImage;
+
 @end
