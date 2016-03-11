@@ -391,6 +391,11 @@
     chatViewConfig.maxVoiceDuration = recordDuration;
 }
 
+- (void)setStatusBarStyle:(UIStatusBarStyle)statusBarStyle {
+    chatViewConfig.statusBarStyle = statusBarStyle;
+    chatViewConfig.didSetStatusBarStyle = true;
+}
+
 #ifdef INCLUDE_MEIQIA_SDK
 - (void)enableSyncServerMessage:(BOOL)enable {
     chatViewConfig.enableSyncServerMessage = enable;

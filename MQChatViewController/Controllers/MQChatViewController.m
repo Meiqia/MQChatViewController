@@ -98,6 +98,8 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     }
     //恢复原来的导航栏透明模式
     self.navigationController.navigationBar.translucent = previousStatusBarTranslucent;
+    //恢复原来的导航栏时间条
+    [UIApplication sharedApplication].statusBarStyle = previousStatusBarStyle;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -248,6 +250,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 #pragma 编辑导航栏 - Demo用到的收取消息按钮
 - (void)setNavBar {
+    if ([MQChatViewConfig sharedConfig].didSetStatusBarStyle) {
+        [UIApplication sharedApplication].statusBarStyle = [MQChatViewConfig sharedConfig].statusBarStyle;
+    }
     if ([MQChatViewConfig sharedConfig].navBarRightButton) {
         return;
     }
@@ -271,7 +276,11 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     CGFloat btnTextWidth = [MQStringSizeUtil getWidthForText:btnText withFont:btnTextFont andHeight:btnTextHeight];
     rightNavButton.frame = CGRectMake(0, 0, btnTextWidth, btnTextHeight);
     rightNavButton.titleLabel.font = btnTextFont;
-    [rightNavButton setTitleColor:[UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
+    UIColor *btnColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
+    if ([MQChatViewConfig sharedConfig].navBarTintColor) {
+        btnColor = [MQChatViewConfig sharedConfig].navBarTintColor;
+    }
+    [rightNavButton setTitleColor:btnColor forState:UIControlStateNormal];
     [rightNavButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateDisabled];
     [rightNavButton setTitle:btnText forState:UIControlStateNormal];
     [rightNavButton addTarget:self action:@selector(tapNavigationRightBtn:) forControlEvents:UIControlEventTouchUpInside];
@@ -291,6 +300,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #endif
 }
 
+- (void)didSelectNavigationRightButton {
+    NSLog(@"点击了自定义导航栏右键，开发者可在这里增加功能。");
+}
 
 #pragma UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
