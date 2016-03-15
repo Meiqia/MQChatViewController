@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface UIViewController(OrientationFix)
+@interface UIViewController(MQOrientationFix)
 
 @end

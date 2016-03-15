@@ -8,7 +8,7 @@
 
 #import "UIViewController+OrientationFix.h"
 
-@implementation UIViewController(OrientationFix)
+@implementation UIViewController(MQOrientationFix)
 
 - (BOOL)shouldAutorotate {
     return [self supportsLandscape] && [self supportsPortait];
