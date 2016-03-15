@@ -105,6 +105,8 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
     
     self.maxVoiceDuration               = 60;
     
+    self.statusBarStyle                 = UIStatusBarStyleDefault;
+    self.didSetStatusBarStyle           = false;
     
 #pragma 以下配置是美洽SDK用户所用到的配置
 #ifdef INCLUDE_MEIQIA_SDK

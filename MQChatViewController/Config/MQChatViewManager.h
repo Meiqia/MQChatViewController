@@ -338,6 +338,11 @@
  */
 - (void)setMaxRecordDuration:(NSTimeInterval)recordDuration;
 
+/**
+ *  设置导航栏时间条的颜色
+ */
+- (void)setStatusBarStyle:(UIStatusBarStyle)statusBarStyle;
+
 #pragma 以下配置是美洽SDK用户所用到的配置
 #ifdef INCLUDE_MEIQIA_SDK
 /**

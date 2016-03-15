@@ -179,6 +179,7 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager enableShowNewMessageAlert:true];
     [chatViewManager setNavigationBarTintColor:[UIColor redColor]];
+    [chatViewManager setStatusBarStyle:UIStatusBarStyleDefault];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
@@ -187,6 +188,7 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
     [chatViewManager enableTopPullRefresh:true];
     [chatViewManager setPullRefreshColor:[UIColor redColor]];
     [chatViewManager setNavTitleText:@"美洽SDK"];
+    [chatViewManager setStatusBarStyle:UIStatusBarStyleLightContent];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
