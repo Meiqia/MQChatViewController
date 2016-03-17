@@ -1,9 +1,9 @@
 //
 //  UIViewController_MQOrientation.m
-//  GrubbyWorm
+//  MeiQiaSDK
 //
 //  Created by ian luo on 16/3/14.
-//  Copyright © 2016年 GAME-CHINA.ORG. All rights reserved.
+//  Copyright © 2016年 MeiQia Inc. All rights reserved.
 //
 
 #import "UIViewController+MQOrientationFix.h"
