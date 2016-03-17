@@ -1,14 +1,26 @@
 //
-//  UIViewController_Orientation.m
+//  UIViewController_MQOrientation.m
 //  GrubbyWorm
 //
 //  Created by ian luo on 16/3/14.
 //  Copyright © 2016年 GAME-CHINA.ORG. All rights reserved.
 //
 
-#import "UIViewController+OrientationFix.h"
+#import "UIViewController+MQOrientationFix.h"
 
 @implementation UIViewController(MQOrientationFix)
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    if ([self supportsPortait]) {
+        return UIInterfaceOrientationIsPortrait(toInterfaceOrientation);
+    }
+    
+    if ([self supportsLandscape]) {
+        return UIInterfaceOrientationIsLandscape(toInterfaceOrientation);
+    }
+    
+    return YES;
+}
 
 - (BOOL)shouldAutorotate {
     return [self supportsLandscape] && [self supportsPortait];

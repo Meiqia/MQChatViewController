@@ -1,5 +1,5 @@
 //
-//  UIViewController_Orientation.h
+//  UIViewController_MQOrientation.h
 //  GrubbyWorm
 //
 //  Created by ian luo on 16/3/14.
