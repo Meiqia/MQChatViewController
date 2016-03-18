@@ -41,7 +41,7 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
     self.navigationController.navigationBar.barTintColor = [UIColor blueColor];
     [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    
+    self.title = @"美洽 SDK";
     [self initTableView];
 }
 
