@@ -39,8 +39,9 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
     
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.navigationBar.barTintColor = [UIColor blueColor];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    
+    self.title = @"美洽 SDK";
     [self initTableView];
 }
 
@@ -49,8 +50,14 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    configTableView.frame = (CGRect) { CGPointZero, CGSizeMake(self.view.bounds.size.width, self.view.bounds.size.height)};
+}
+
 - (void)initTableView {
-    configTableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
+    configTableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     configTableView.delegate = self;
     configTableView.dataSource = self;
     [self.view addSubview:configTableView];
@@ -199,6 +206,7 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
     rightButton.frame = CGRectMake(10, 10, 20, 20);
     [chatViewManager setNavTitleText:@"美洽SDK"];
     [chatViewManager setNavigationBarTintColor:[UIColor redColor]];
+    [chatViewManager setNavTitleColor:[UIColor yellowColor]];
     [chatViewManager setNavRightButton:rightButton];
     [chatViewManager enableMessageImageMask:false];
     [chatViewManager pushMQChatViewControllerInViewController:self];

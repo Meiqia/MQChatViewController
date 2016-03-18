@@ -231,6 +231,12 @@
 - (void)enableMessageImageMask:(BOOL)enable;
 
 /**
+ * 设置导航栏标题文字的元素颜色；
+ * @param titleColor 导航栏标题文字颜色
+ */
+- (void)setNavTitleColor:(UIColor *)titleColor;
+
+/**
  * 设置导航栏上的元素颜色；
  * @param tintColor 导航栏上的元素颜色
  */

@@ -99,6 +99,7 @@
 		CC8691291C81D24500BFA68D /* MQToast.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8690D31C81D24400BFA68D /* MQToast.m */; };
 		CC86912A1C81D24500BFA68D /* MQAgent.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8690D61C81D24400BFA68D /* MQAgent.m */; };
 		CC86912B1C81D24500BFA68D /* MQServiceToViewInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8690D91C81D24400BFA68D /* MQServiceToViewInterface.m */; };
+		E49C7BC31C97AA77003027E8 /* UIViewController+MQOrientationFix.m in Sources */ = {isa = PBXBuildFile; fileRef = E49C7BC21C97AA77003027E8 /* UIViewController+MQOrientationFix.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -309,6 +310,8 @@
 		CC8690D71C81D24400BFA68D /* MQDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQDefinition.h; sourceTree = "<group>"; };
 		CC8690D81C81D24400BFA68D /* MQServiceToViewInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQServiceToViewInterface.h; sourceTree = "<group>"; };
 		CC8690D91C81D24400BFA68D /* MQServiceToViewInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQServiceToViewInterface.m; sourceTree = "<group>"; };
+		E49C7BC11C97AA77003027E8 /* UIViewController+MQOrientationFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+MQOrientationFix.h"; sourceTree = "<group>"; };
+		E49C7BC21C97AA77003027E8 /* UIViewController+MQOrientationFix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+MQOrientationFix.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -426,6 +429,7 @@
 		CC8690111C81D24400BFA68D /* MQChatViewController */ = {
 			isa = PBXGroup;
 			children = (
+				E49C7BC01C97AA31003027E8 /* Categories */,
 				CC8690121C81D24400BFA68D /* Assets */,
 				CC8690141C81D24400BFA68D /* Config */,
 				CC8690191C81D24400BFA68D /* Controllers */,
@@ -824,6 +828,15 @@
 			path = ../MeiqiaSDKFiles;
 			sourceTree = "<group>";
 		};
+		E49C7BC01C97AA31003027E8 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				E49C7BC11C97AA77003027E8 /* UIViewController+MQOrientationFix.h */,
+				E49C7BC21C97AA77003027E8 /* UIViewController+MQOrientationFix.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1004,6 +1017,7 @@
 				CC8691171C81D24500BFA68D /* SDWebImageManager.m in Sources */,
 				CC8691251C81D24500BFA68D /* MQEvaluationView.m in Sources */,
 				CC8690E21C81D24400BFA68D /* MQImageMessage.m in Sources */,
+				E49C7BC31C97AA77003027E8 /* UIViewController+MQOrientationFix.m in Sources */,
 				CC8690FB1C81D24500BFA68D /* MQDateFormatterUtil.m in Sources */,
 				CC8691261C81D24500BFA68D /* MQInputBar.m in Sources */,
 				CC8691181C81D24500BFA68D /* SDWebImagePrefetcher.m in Sources */,

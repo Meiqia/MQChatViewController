@@ -37,6 +37,14 @@ typedef enum : NSUInteger {
     MQChatAgentStatusOffLine        = 3             //客服离线
 } MQChatAgentStatus;
 
+/*
+ 显示聊天窗口的动画
+ */
+typedef NS_ENUM(NSUInteger, TransiteAnimation) {
+    TransiteAnimationDefault = 0,
+    TransiteAnimationPush
+};
+
 /**
  * @brief MQChatViewConfig为客服聊天界面的前置配置，由MQChatViewManager生成，在MQChatViewController内部逻辑消费
  *
@@ -50,6 +58,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) NSMutableArray *numberRegexs;
 @property (nonatomic, strong) NSMutableArray *linkRegexs;
 @property (nonatomic, strong) NSMutableArray *emailRegexs;
+@property (nonatomic, assign) TransiteAnimation presentingAnimation;
 
 @property (nonatomic, copy  ) NSString *chatWelcomeText;
 @property (nonatomic, copy  ) NSString *agentName;
@@ -83,6 +92,7 @@ typedef enum : NSUInteger {
 @property (nonatomic, copy) UIColor *outgoingBubbleColor;
 @property (nonatomic, copy) UIColor *eventTextColor;
 @property (nonatomic, copy) UIColor *redirectAgentNameColor;
+@property (nonatomic, copy) UIColor *navTitleColor;
 @property (nonatomic, copy) UIColor *navBarTintColor;
 @property (nonatomic, copy) UIColor *navBarColor;
 @property (nonatomic, copy) UIColor *pullRefreshColor;

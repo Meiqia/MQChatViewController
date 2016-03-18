@@ -29,14 +29,8 @@
     if (!chatViewController) {
         chatViewController = [[MQChatViewController alloc] initWithChatViewManager:chatViewConfig];
     }
-    if (viewController.navigationController) {
-        chatViewConfig.isPushChatView = true;
-        [self updateNavAttributesWithViewController:chatViewController navigationController:viewController.navigationController isPresentModalView:false];
-        chatViewController.hidesBottomBarWhenPushed = chatViewConfig.hidesBottomBarWhenPushed;
-        [viewController.navigationController pushViewController:chatViewController animated:true];
-    } else {
-        [self presentMQChatViewControllerInViewController:viewController];
-    }
+
+    [self presentOnViewController:viewController transiteAnimation:TransiteAnimationPush];
     return chatViewController;
 }
 
@@ -48,41 +42,74 @@
     if (!chatViewController) {
         chatViewController = [[MQChatViewController alloc] initWithChatViewManager:chatViewConfig];
     }
-    UINavigationController *chatNavigationController = [[UINavigationController alloc] initWithRootViewController:chatViewController];
-    [self updateNavAttributesWithViewController:chatViewController navigationController:chatNavigationController isPresentModalView:true];
-    [viewController presentViewController:chatNavigationController animated:true completion:nil];
+
+    [self presentOnViewController:viewController transiteAnimation:TransiteAnimationDefault];
     return chatViewController;
+}
+
+- (void)presentOnViewController:(UIViewController *)rootViewController transiteAnimation:(TransiteAnimation)animation {
+    chatViewConfig.presentingAnimation = animation;
+    
+    UIViewController *viewController = [[UINavigationController alloc] initWithRootViewController:chatViewController];
+    [self updateNavAttributesWithViewController:chatViewController navigationController:(UINavigationController *)viewController defaultNavigationController:rootViewController.navigationController isPresentModalView:true];
+
+    if (animation != TransiteAnimationDefault) {
+        [[UIApplication sharedApplication].keyWindow.layer addAnimation:[self createPresentingTransiteAnimation:animation] forKey:nil];
+        [rootViewController presentViewController:viewController animated:NO completion:nil];
+    } else {
+        [rootViewController presentViewController:viewController animated:YES completion:nil];
+    }
+}
+
+- (CATransition *)createPresentingTransiteAnimation:(TransiteAnimation)animation {
+    CATransition *transition = [CATransition animation];
+    transition.duration = 0.5;
+    [transition setFillMode:kCAFillModeBoth];
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    
+    switch (animation) {
+        case TransiteAnimationPush:
+            transition.type = kCATransitionMoveIn;
+            transition.subtype = kCATransitionFromRight;
+            break;
+        case TransiteAnimationDefault:
+        default:
+            break;
+    }
+    return transition;
 }
 
 //修改导航栏属性
 - (void)updateNavAttributesWithViewController:(MQChatViewController *)viewController
                          navigationController:(UINavigationController *)navigationController
-                           isPresentModalView:(BOOL)isPresentModalView
-{
+                  defaultNavigationController:(UINavigationController *)defaultNavigationController
+                           isPresentModalView:(BOOL)isPresentModalView {
     if ([MQChatViewConfig sharedConfig].navBarTintColor) {
         navigationController.navigationBar.tintColor = [MQChatViewConfig sharedConfig].navBarTintColor;
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        navigationController.navigationBar.titleTextAttributes = @{
-                                                                   UITextAttributeTextColor : [MQChatViewConfig sharedConfig].navBarTintColor
-                                                                   };
-#pragma clang diagnostic pop
-    }
-    if ([MQChatViewConfig sharedConfig].navBarColor) {
-        navigationController.navigationBar.barTintColor = [MQChatViewConfig sharedConfig].navBarColor;
+    } else if (defaultNavigationController && defaultNavigationController.navigationBar.tintColor) {
+        navigationController.navigationBar.tintColor = defaultNavigationController.navigationBar.tintColor;
     }
     
-    //导航栏左键
-    UIBarButtonItem *leftItem;
-    if ([MQChatViewConfig sharedConfig].navBarLeftButton) {
-        leftItem = [[UIBarButtonItem alloc] initWithCustomView:[MQChatViewConfig sharedConfig].navBarLeftButton];
-        [[MQChatViewConfig sharedConfig].navBarLeftButton addTarget:viewController action:@selector(dismissChatViewController) forControlEvents:UIControlEventTouchUpInside];
-    } else {
-        if (![MQChatViewConfig sharedConfig].isPushChatView) {
-            leftItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:viewController action:@selector(dismissChatViewController)];
-        }
+    if ([MQChatViewConfig sharedConfig].navTitleColor) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
+        navigationController.navigationBar.titleTextAttributes = @{
+                                                                   UITextAttributeTextColor : [MQChatViewConfig sharedConfig].navTitleColor
+                                                                   };
+#pragma clang diagnostic pop
+    } else if (defaultNavigationController) {
+        navigationController.navigationBar.titleTextAttributes = defaultNavigationController.navigationBar.titleTextAttributes;
     }
-    viewController.navigationItem.leftBarButtonItem = leftItem;
+    
+    if ([MQChatViewConfig sharedConfig].navBarColor) {
+        navigationController.navigationBar.barTintColor = [MQChatViewConfig sharedConfig].navBarColor;
+    } else if (defaultNavigationController && defaultNavigationController.navigationBar.barTintColor) {
+        navigationController.navigationBar.barTintColor = defaultNavigationController.navigationBar.barTintColor;
+    }
+
+    //导航栏左键
+    viewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:viewController action:@selector(dismissChatViewController)];
     
     //导航栏右键
     if ([MQChatViewConfig sharedConfig].navBarRightButton) {
@@ -213,6 +240,13 @@
         return;
     }
     chatViewConfig.navBarColor = [barColor copy];
+}
+
+- (void)setNavTitleColor:(UIColor *)titleColor {
+    if (!titleColor) {
+        return;
+    }
+    chatViewConfig.navTitleColor = titleColor;
 }
 
 - (void)setPullRefreshColor:(UIColor *)pullRefreshColor {
@@ -433,7 +467,7 @@
     chatViewConfig.MQClientId = MQClientId;
 }
 
-- (void) enableEvaluationButton:(BOOL)enable {
+- (void)enableEvaluationButton:(BOOL)enable {
     chatViewConfig.enableEvaluationButton = enable;
 }
 
