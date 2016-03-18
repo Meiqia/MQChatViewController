@@ -206,6 +206,7 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
     rightButton.frame = CGRectMake(10, 10, 20, 20);
     [chatViewManager setNavTitleText:@"美洽SDK"];
     [chatViewManager setNavigationBarTintColor:[UIColor redColor]];
+    [chatViewManager setNavTitleColor:[UIColor yellowColor]];
     [chatViewManager setNavRightButton:rightButton];
     [chatViewManager enableMessageImageMask:false];
     [chatViewManager pushMQChatViewControllerInViewController:self];

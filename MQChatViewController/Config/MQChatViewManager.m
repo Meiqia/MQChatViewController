@@ -86,24 +86,21 @@
                            isPresentModalView:(BOOL)isPresentModalView {
     if ([MQChatViewConfig sharedConfig].navBarTintColor) {
         navigationController.navigationBar.tintColor = [MQChatViewConfig sharedConfig].navBarTintColor;
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-        navigationController.navigationBar.titleTextAttributes = @{
-                                                                   UITextAttributeTextColor : [MQChatViewConfig sharedConfig].navBarTintColor
-                                                                   };
     } else if (defaultNavigationController && defaultNavigationController.navigationBar.tintColor) {
         navigationController.navigationBar.tintColor = defaultNavigationController.navigationBar.tintColor;
-        navigationController.navigationBar.titleTextAttributes = defaultNavigationController.navigationBar.titleTextAttributes;
     }
     
     if ([MQChatViewConfig sharedConfig].navTitleColor) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
         navigationController.navigationBar.titleTextAttributes = @{
                                                                    UITextAttributeTextColor : [MQChatViewConfig sharedConfig].navTitleColor
                                                                    };
+#pragma clang diagnostic pop
     } else if (defaultNavigationController) {
         navigationController.navigationBar.titleTextAttributes = defaultNavigationController.navigationBar.titleTextAttributes;
     }
-#pragma clang diagnostic pop
     
     if ([MQChatViewConfig sharedConfig].navBarColor) {
         navigationController.navigationBar.barTintColor = [MQChatViewConfig sharedConfig].navBarColor;
@@ -243,6 +240,13 @@
         return;
     }
     chatViewConfig.navBarColor = [barColor copy];
+}
+
+- (void)setNavTitleColor:(UIColor *)titleColor {
+    if (!titleColor) {
+        return;
+    }
+    chatViewConfig.navTitleColor = titleColor;
 }
 
 - (void)setPullRefreshColor:(UIColor *)pullRefreshColor {
