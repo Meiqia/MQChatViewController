@@ -9,6 +9,7 @@
 #import "MQChatViewManager.h"
 #import "MQImageUtil.h"
 #import "MQServiceToViewInterface.h"
+#import "MQTransitioningAnimation.h"
 
 @implementation MQChatViewManager {
     MQChatViewController *chatViewController;
@@ -30,7 +31,7 @@
         chatViewController = [[MQChatViewController alloc] initWithChatViewManager:chatViewConfig];
     }
 
-    [self presentOnViewController:viewController transiteAnimation:TransiteAnimationPush];
+    [self presentOnViewController:viewController transiteAnimation:TransiteAnimationTypePush];
     return chatViewController;
 }
 
@@ -43,40 +44,29 @@
         chatViewController = [[MQChatViewController alloc] initWithChatViewManager:chatViewConfig];
     }
 
-    [self presentOnViewController:viewController transiteAnimation:TransiteAnimationDefault];
+    [self presentOnViewController:viewController transiteAnimation:TransiteAnimationTypeDefault];
     return chatViewController;
 }
 
-- (void)presentOnViewController:(UIViewController *)rootViewController transiteAnimation:(TransiteAnimation)animation {
+- (void)presentOnViewController:(UIViewController *)rootViewController transiteAnimation:(TransiteAnimationType)animation {
     chatViewConfig.presentingAnimation = animation;
     
     UIViewController *viewController = [[UINavigationController alloc] initWithRootViewController:chatViewController];
     [self updateNavAttributesWithViewController:chatViewController navigationController:(UINavigationController *)viewController defaultNavigationController:rootViewController.navigationController isPresentModalView:true];
-
-    if (animation != TransiteAnimationDefault) {
-        [[UIApplication sharedApplication].keyWindow.layer addAnimation:[self createPresentingTransiteAnimation:animation] forKey:nil];
-        [rootViewController presentViewController:viewController animated:NO completion:nil];
+    
+    if (animation != TransiteAnimationTypeDefault) {
+        
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
+            [viewController setTransitioningDelegate:[MQTransitioningAnimation sharedInstance].transitioningDelegateImpl];
+            [viewController setModalPresentationStyle:UIModalPresentationCustom];
+            [rootViewController presentViewController:viewController animated:YES completion:nil];
+        } else {
+            [rootViewController.view.window.layer addAnimation:[[MQTransitioningAnimation sharedInstance] createPresentingTransiteAnimation:[MQChatViewConfig sharedConfig].presentingAnimation] forKey:nil];
+            [rootViewController presentViewController:viewController animated:NO completion:nil];
+        }
     } else {
         [rootViewController presentViewController:viewController animated:YES completion:nil];
     }
-}
-
-- (CATransition *)createPresentingTransiteAnimation:(TransiteAnimation)animation {
-    CATransition *transition = [CATransition animation];
-    transition.duration = 0.5;
-    [transition setFillMode:kCAFillModeBoth];
-    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    
-    switch (animation) {
-        case TransiteAnimationPush:
-            transition.type = kCATransitionMoveIn;
-            transition.subtype = kCATransitionFromRight;
-            break;
-        case TransiteAnimationDefault:
-        default:
-            break;
-    }
-    return transition;
 }
 
 //修改导航栏属性

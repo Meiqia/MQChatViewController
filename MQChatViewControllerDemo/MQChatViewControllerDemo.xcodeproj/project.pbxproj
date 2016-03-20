@@ -100,6 +100,9 @@
 		CC86912A1C81D24500BFA68D /* MQAgent.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8690D61C81D24400BFA68D /* MQAgent.m */; };
 		CC86912B1C81D24500BFA68D /* MQServiceToViewInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8690D91C81D24400BFA68D /* MQServiceToViewInterface.m */; };
 		E49C7BC31C97AA77003027E8 /* UIViewController+MQOrientationFix.m in Sources */ = {isa = PBXBuildFile; fileRef = E49C7BC21C97AA77003027E8 /* UIViewController+MQOrientationFix.m */; };
+		E4A533DB1C9EEDCE0053BC88 /* MQAnimatorPush.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A533D61C9EEDCE0053BC88 /* MQAnimatorPush.m */; };
+		E4A533DC1C9EEDCE0053BC88 /* MQShareTransitioningDelegateImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A533D81C9EEDCE0053BC88 /* MQShareTransitioningDelegateImpl.m */; };
+		E4A533DD1C9EEDCE0053BC88 /* MQTransitioningAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A533DA1C9EEDCE0053BC88 /* MQTransitioningAnimation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -312,6 +315,12 @@
 		CC8690D91C81D24400BFA68D /* MQServiceToViewInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQServiceToViewInterface.m; sourceTree = "<group>"; };
 		E49C7BC11C97AA77003027E8 /* UIViewController+MQOrientationFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+MQOrientationFix.h"; sourceTree = "<group>"; };
 		E49C7BC21C97AA77003027E8 /* UIViewController+MQOrientationFix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+MQOrientationFix.m"; sourceTree = "<group>"; };
+		E4A533D51C9EEDCE0053BC88 /* MQAnimatorPush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQAnimatorPush.h; sourceTree = "<group>"; };
+		E4A533D61C9EEDCE0053BC88 /* MQAnimatorPush.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQAnimatorPush.m; sourceTree = "<group>"; };
+		E4A533D71C9EEDCE0053BC88 /* MQShareTransitioningDelegateImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQShareTransitioningDelegateImpl.h; sourceTree = "<group>"; };
+		E4A533D81C9EEDCE0053BC88 /* MQShareTransitioningDelegateImpl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQShareTransitioningDelegateImpl.m; sourceTree = "<group>"; };
+		E4A533D91C9EEDCE0053BC88 /* MQTransitioningAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQTransitioningAnimation.h; sourceTree = "<group>"; };
+		E4A533DA1C9EEDCE0053BC88 /* MQTransitioningAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQTransitioningAnimation.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -429,6 +438,7 @@
 		CC8690111C81D24400BFA68D /* MQChatViewController */ = {
 			isa = PBXGroup;
 			children = (
+				E4A533D41C9EEDCE0053BC88 /* Animation */,
 				E49C7BC01C97AA31003027E8 /* Categories */,
 				CC8690121C81D24400BFA68D /* Assets */,
 				CC8690141C81D24400BFA68D /* Config */,
@@ -837,6 +847,19 @@
 			path = Categories;
 			sourceTree = "<group>";
 		};
+		E4A533D41C9EEDCE0053BC88 /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				E4A533D51C9EEDCE0053BC88 /* MQAnimatorPush.h */,
+				E4A533D61C9EEDCE0053BC88 /* MQAnimatorPush.m */,
+				E4A533D71C9EEDCE0053BC88 /* MQShareTransitioningDelegateImpl.h */,
+				E4A533D81C9EEDCE0053BC88 /* MQShareTransitioningDelegateImpl.m */,
+				E4A533D91C9EEDCE0053BC88 /* MQTransitioningAnimation.h */,
+				E4A533DA1C9EEDCE0053BC88 /* MQTransitioningAnimation.m */,
+			);
+			path = Animation;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -969,6 +992,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4A533DB1C9EEDCE0053BC88 /* MQAnimatorPush.m in Sources */,
 				CC86910C1C81D24500BFA68D /* MEIQIA_AmrRecordWriter.m in Sources */,
 				CC8690F41C81D24500BFA68D /* MQBundleUtil.m in Sources */,
 				CC8690FF1C81D24500BFA68D /* MEIQIA_FBBitmapFont.m in Sources */,
@@ -996,6 +1020,7 @@
 				CC8691021C81D24500BFA68D /* MEIQIA_FBLCDFont.m in Sources */,
 				CC686F861C86E27F000A1E63 /* amrFileCodec.mm in Sources */,
 				CC8690DD1C81D24400BFA68D /* MQChatViewController.m in Sources */,
+				E4A533DD1C9EEDCE0053BC88 /* MQTransitioningAnimation.m in Sources */,
 				CC686F881C86E27F000A1E63 /* VoiceConverter.mm in Sources */,
 				CC8691111C81D24500BFA68D /* NSData+ImageContentType.m in Sources */,
 				CC8690F01C81D24400BFA68D /* MQTextMessageCell.m in Sources */,
@@ -1054,6 +1079,7 @@
 				CC8691061C81D24500BFA68D /* MEIQIA_HPGrowingTextView.m in Sources */,
 				CC45FCF21BE36B1900DE0BFB /* AppDelegate.m in Sources */,
 				CC45FCEF1BE36B1900DE0BFB /* main.m in Sources */,
+				E4A533DC1C9EEDCE0053BC88 /* MQShareTransitioningDelegateImpl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

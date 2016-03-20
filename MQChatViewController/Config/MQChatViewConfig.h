@@ -40,9 +40,9 @@ typedef enum : NSUInteger {
 /*
  显示聊天窗口的动画
  */
-typedef NS_ENUM(NSUInteger, TransiteAnimation) {
-    TransiteAnimationDefault = 0,
-    TransiteAnimationPush
+typedef NS_ENUM(NSUInteger, TransiteAnimationType) {
+    TransiteAnimationTypeDefault = 0,
+    TransiteAnimationTypePush
 };
 
 /**
@@ -58,7 +58,7 @@ typedef NS_ENUM(NSUInteger, TransiteAnimation) {
 @property (nonatomic, strong) NSMutableArray *numberRegexs;
 @property (nonatomic, strong) NSMutableArray *linkRegexs;
 @property (nonatomic, strong) NSMutableArray *emailRegexs;
-@property (nonatomic, assign) TransiteAnimation presentingAnimation;
+@property (nonatomic, assign) TransiteAnimationType presentingAnimation;
 
 @property (nonatomic, copy  ) NSString *chatWelcomeText;
 @property (nonatomic, copy  ) NSString *agentName;
