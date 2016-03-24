@@ -21,6 +21,7 @@
 #import "MQEvaluationView.h"
 #import "MQAssetUtil.h"
 #import "MQStringSizeUtil.h"
+#import "MQTransitioningAnimation.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
@@ -126,32 +127,17 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 - (void)dismissChatViewController {
-    if ([MQChatViewConfig sharedConfig].presentingAnimation != TransiteAnimationDefault) {
-        [[UIApplication sharedApplication].keyWindow.layer addAnimation:[self createDismissingTransiteAnimation:[MQChatViewConfig sharedConfig].presentingAnimation] forKey:nil];
-        [self dismissViewControllerAnimated:NO completion:nil];
+    if ([MQChatViewConfig sharedConfig].presentingAnimation != TransiteAnimationTypeDefault) {
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        } else {
+            [self.view.window.layer addAnimation:[[MQTransitioningAnimation sharedInstance] createDismissingTransiteAnimation:[MQChatViewConfig sharedConfig].presentingAnimation] forKey:nil];
+            [self dismissViewControllerAnimated:NO completion:nil];
+        }
     } else {
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
-
-- (CATransition *)createDismissingTransiteAnimation:(TransiteAnimation)animation {
-    CATransition *transition = [CATransition animation];
-    transition.duration = 0.5;
-    [transition setFillMode:kCAFillModeBoth];
-    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    
-    switch (animation) {
-        case TransiteAnimationPush:
-            transition.type = kCATransitionMoveIn;
-            transition.subtype = kCATransitionFromLeft;
-            break;
-        case TransiteAnimationDefault:
-        default:
-            break;
-    }
-    return transition;
-}
-
 
 - (void)addObserver {
 #ifdef INCLUDE_MEIQIA_SDK
