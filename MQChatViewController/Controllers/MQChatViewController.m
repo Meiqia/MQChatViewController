@@ -17,11 +17,13 @@
 #import "MQRecordView.h"
 #import "MQBundleUtil.h"
 #import "MQImageUtil.h"
-#import "MQDefinition.h"
+#import <MeiQiaSDK/MQDefinition.h>
 #import "MQEvaluationView.h"
 #import "MQAssetUtil.h"
 #import "MQStringSizeUtil.h"
 #import "MQTransitioningAnimation.h"
+#import "UIViewController+BackButtonHandler.h"
+#import <MeiQiaSDK/MQManager.h>
 
 static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
@@ -43,7 +45,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     BOOL isMQCommunicationFailed;  //判断是否通信没有连接上
     UIStatusBarStyle previousStatusBarStyle;//当前statusBar样式
     BOOL previousStatusBarHidden;   //调出聊天视图界面前是否隐藏 statusBar
-    BOOL previousStatusBarTranslucent; //调出聊天视图前的导航栏是否是半透明
+//    BOOL previousStatusBarTranslucent; //调出聊天视图前的导航栏是否是半透明
 }
 
 - (void)dealloc {
@@ -69,10 +71,10 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     self.automaticallyAdjustsScrollViewInsets = true;
     previousStatusBarStyle = [UIApplication sharedApplication].statusBarStyle;
     previousStatusBarHidden = [UIApplication sharedApplication].statusBarHidden;
-    previousStatusBarTranslucent = self.navigationController.navigationBar.translucent;
+//    previousStatusBarTranslucent = self.navigationController.navigationBar.translucent;
     [[UIApplication sharedApplication] setStatusBarHidden:false];
     self.navigationController.navigationBar.translucent = true;
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [MQChatViewConfig sharedConfig].chatViewStyle.backgroundColor ?: [UIColor colorWithWhite:0.95 alpha:1];
     viewSize = [UIScreen mainScreen].bounds.size;
     [self setNavBar];
     [self initChatTableView];
@@ -93,14 +95,16 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [[NSNotificationCenter defaultCenter] postNotificationName:MQAudioPlayerDidInterruptNotification object:nil];
-    //当横屏时，恢复原来的 statusBar 是否 hidden
+//    //当横屏时，恢复原来的 statusBar 是否 hidden
     if (viewSize.height < viewSize.width) {
         [[UIApplication sharedApplication] setStatusBarHidden:previousStatusBarHidden];
     }
-    //恢复原来的导航栏透明模式
-    self.navigationController.navigationBar.translucent = previousStatusBarTranslucent;
-    //恢复原来的导航栏时间条
+//    //恢复原来的导航栏透明模式
+//    self.navigationController.navigationBar.translucent = previousStatusBarTranslucent;
+//    //恢复原来的导航栏时间条
     [UIApplication sharedApplication].statusBarStyle = previousStatusBarStyle;
+    
+    [MQServiceToViewInterface updateReadMessageToken];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -126,17 +130,22 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     // Dispose of any resources that can be recreated.
 }
 
-- (void)dismissChatViewController {
-    if ([MQChatViewConfig sharedConfig].presentingAnimation != TransiteAnimationTypeDefault) {
+- (BOOL)navigationShouldPopOnBackButton {
+    if ([MQChatViewConfig sharedConfig].presentingAnimation == TransiteAnimationTypePush) {
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
             [self dismissViewControllerAnimated:YES completion:nil];
         } else {
             [self.view.window.layer addAnimation:[[MQTransitioningAnimation sharedInstance] createDismissingTransiteAnimation:[MQChatViewConfig sharedConfig].presentingAnimation] forKey:nil];
             [self dismissViewControllerAnimated:NO completion:nil];
         }
+        return NO;
     } else {
-        [self dismissViewControllerAnimated:YES completion:nil];
+        return YES;
     }
+}
+
+- (void)dismissChatViewController {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)addObserver {
@@ -578,13 +587,13 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)updateContentViewsFrame {
     //更新view
     CGFloat delta = 0;
-//    if (!self.navigationController.navigationBar.translucent) {
-//        //如果导航栏不透明，则view的起始位置应该是导航栏下方
-//        delta = self.navigationController.navigationBar.frame.size.height;
-//        if (![UIApplication sharedApplication].statusBarHidden) {
-//            delta += 20;
-//        }
-//    }
+    //    if (!self.navigationController.navigationBar.translucent) {
+    //        //如果导航栏不透明，则view的起始位置应该是导航栏下方
+    //        delta = self.navigationController.navigationBar.frame.size.height;
+    //        if (![UIApplication sharedApplication].statusBarHidden) {
+    //            delta += 20;
+    //        }
+    //    }
     self.view.frame = CGRectMake([MQChatViewConfig sharedConfig].chatViewControllerPoint.x, [MQChatViewConfig sharedConfig].chatViewControllerPoint.y + delta, viewSize.width, viewSize.height);
     //更新tableView的frame
     [self setChatTableViewFrame];
@@ -605,12 +614,12 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 - (void)setChatTableViewFrame {
     //更新tableView的frame
-    if (!chatViewConfig.isCustomizedChatViewFrame) {
+//    if (!chatViewConfig.isCustomizedChatViewFrame) {
         chatViewConfig.chatViewFrame = CGRectMake(0, 0, viewSize.width, viewSize.height - kMQChatViewInputBarHeight);
-        [self.chatTableView updateFrame:chatViewConfig.chatViewFrame];;
-    } else {
-        //开发者如果自定义了TableView的frame，在这里重新处理横屏后的tableView的frame
-    }
+        [self.chatTableView updateFrame:chatViewConfig.chatViewFrame];
+//    } else {
+//        //开发者如果自定义了TableView的frame，在这里重新处理横屏后的tableView的frame
+//    }
 }
 
 #ifdef INCLUDE_MEIQIA_SDK
@@ -643,7 +652,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     UILabel *titleLabel = [UILabel new];
     titleLabel.text = agentName;
     titleLabel.font = [UIFont systemFontOfSize:16.0];
-    titleLabel.textColor = [MQChatViewConfig sharedConfig].navBarTintColor;
+    titleLabel.textColor = [MQChatViewConfig sharedConfig].navTitleColor;
     CGFloat titleHeight = [MQStringSizeUtil getHeightForText:agentName withFont:titleLabel.font andWidth:self.view.frame.size.width];
     CGFloat titleWidth = [MQStringSizeUtil getWidthForText:agentName withFont:titleLabel.font andHeight:titleHeight];
     UIImageView *statusImageView = [UIImageView new];

@@ -146,15 +146,19 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
     UIImage *keyboardHighlightedImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageTextInputHighlightedImageStyleTwo"];
     UIImage *resightKeyboardImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageKeyboardDownImageNormalStyleTwo"];
     UIImage *resightKeyboardHighlightedImage = [MQAssetUtil imageFromBundleWithName:@"MQMessageKeyboardDownHighlightedImageStyleTwo"];
-    [chatViewManager setPhotoSenderImage:photoImage highlightedImage:photoHighlightedImage];
-    [chatViewManager setVoiceSenderImage:voiceImage highlightedImage:voiceHighlightedImage];
-    [chatViewManager setTextSenderImage:keyboardImage highlightedImage:keyboardHighlightedImage];
-    [chatViewManager setResignKeyboardImage:resightKeyboardImage highlightedImage:resightKeyboardHighlightedImage];
-    [chatViewManager setIncomingBubbleColor:[UIColor redColor]];
-    [chatViewManager setIncomingMessageTextColor:[UIColor whiteColor]];
-    [chatViewManager setOutgoingBubbleColor:[UIColor yellowColor]];
-    [chatViewManager setOutgoingMessageTextColor:[UIColor darkTextColor]];
-    [chatViewManager enableRoundAvatar:true];
+    [chatViewManager.chatViewStyle setPhotoSenderImage:photoImage];
+    [chatViewManager.chatViewStyle setPhotoSenderHighlightedImage:photoHighlightedImage];
+    [chatViewManager.chatViewStyle setVoiceSenderImage:voiceImage];
+    [chatViewManager.chatViewStyle setVoiceSenderHighlightedImage:voiceHighlightedImage];
+    [chatViewManager.chatViewStyle setKeyboardSenderImage:keyboardImage];
+    [chatViewManager.chatViewStyle setKeyboardSenderHighlightedImage:keyboardHighlightedImage];
+    [chatViewManager.chatViewStyle setResignKeyboardImage:resightKeyboardImage];
+    [chatViewManager.chatViewStyle setResignKeyboardHighlightedImage:resightKeyboardHighlightedImage];
+    [chatViewManager.chatViewStyle setIncomingBubbleColor:[UIColor redColor]];
+    [chatViewManager.chatViewStyle setIncomingMsgTextColor:[UIColor whiteColor]];
+    [chatViewManager.chatViewStyle setOutgoingBubbleColor:[UIColor yellowColor]];
+    [chatViewManager.chatViewStyle setOutgoingMsgTextColor:[UIColor darkTextColor]];
+    [chatViewManager.chatViewStyle setEnableRoundAvatar:true];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
@@ -164,11 +168,11 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
     UIImage *outgoingBubbleImage = [MQAssetUtil imageFromBundleWithName:@"MQBubbleOutgoingStyleTwo"];
     CGPoint stretchPoint = CGPointMake(incomingBubbleImage.size.width / 2.0f - 4.0, incomingBubbleImage.size.height / 2.0f);
     [chatViewManager enableSendVoiceMessage:false];
-    [chatViewManager enableOutgoingAvatar:false];
-    [chatViewManager setIncomingBubbleImage:incomingBubbleImage];
-    [chatViewManager setOutgoingBubbleImage:outgoingBubbleImage];
-    [chatViewManager setIncomingBubbleColor:[UIColor yellowColor]];
-    [chatViewManager setBubbleImageStretchInsets:UIEdgeInsetsMake(stretchPoint.y, stretchPoint.x, incomingBubbleImage.size.height-stretchPoint.y+0.5, stretchPoint.x)];
+    [chatViewManager.chatViewStyle setEnableOutgoingAvatar:false];
+    [chatViewManager.chatViewStyle setIncomingBubbleImage:incomingBubbleImage];
+    [chatViewManager.chatViewStyle setOutgoingBubbleImage:outgoingBubbleImage];
+    [chatViewManager.chatViewStyle setIncomingBubbleColor:[UIColor yellowColor]];
+    [chatViewManager.chatViewStyle setBubbleImageStretchInsets:UIEdgeInsetsMake(stretchPoint.y, stretchPoint.x, incomingBubbleImage.size.height-stretchPoint.y+0.5, stretchPoint.x)];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
@@ -177,7 +181,7 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
     [chatViewManager setMessageLinkRegex:@"((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)|([a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)"];
     [chatViewManager enableChatWelcome:true];
     [chatViewManager setChatWelcomeText:@"你好，请问有什么可以帮助到您？"];
-    [chatViewManager setIncomingMessageSoundFileName:@"MQNewMessageRingStyleTwo.wav"];
+    [chatViewManager.chatViewStyle setIncomingMsgSoundFileName:@"MQNewMessageRingStyleTwo.wav"];
     [chatViewManager enableMessageSound:true];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
@@ -185,17 +189,17 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
 - (void)chatViewStyle4 {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager enableShowNewMessageAlert:true];
-    [chatViewManager setNavigationBarTintColor:[UIColor redColor]];
-    [chatViewManager setStatusBarStyle:UIStatusBarStyleDefault];
+    [chatViewManager.chatViewStyle setNavBarTintColor:[UIColor redColor]];
+    [chatViewManager.chatViewStyle setStatusBarStyle:UIStatusBarStyleDefault];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
 - (void)chatViewStyle5 {
     MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
     [chatViewManager enableTopPullRefresh:true];
-    [chatViewManager setPullRefreshColor:[UIColor redColor]];
+    [chatViewManager.chatViewStyle setPullRefreshColor:[UIColor redColor]];
     [chatViewManager setNavTitleText:@"美洽SDK"];
-    [chatViewManager setStatusBarStyle:UIStatusBarStyleLightContent];
+    [chatViewManager.chatViewStyle setStatusBarStyle:UIStatusBarStyleLightContent];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }
 
@@ -205,9 +209,9 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
     rightButton.backgroundColor = [UIColor redColor];
     rightButton.frame = CGRectMake(10, 10, 20, 20);
     [chatViewManager setNavTitleText:@"美洽SDK"];
-    [chatViewManager setNavigationBarTintColor:[UIColor redColor]];
-    [chatViewManager setNavTitleColor:[UIColor yellowColor]];
-    [chatViewManager setNavRightButton:rightButton];
+    [chatViewManager.chatViewStyle setNavBarTintColor:[UIColor redColor]];
+    [chatViewManager.chatViewStyle setNavTitleColor:[UIColor yellowColor]];
+    [chatViewManager.chatViewStyle setNavBarRightButton:rightButton];
     [chatViewManager enableMessageImageMask:false];
     [chatViewManager pushMQChatViewControllerInViewController:self];
 }

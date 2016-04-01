@@ -8,9 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "MQChatViewStyle.h"
 
 //是否引入美洽SDK
-//#define INCLUDE_MEIQIA_SDK
+#define INCLUDE_MEIQIA_SDK
 
 /** 关闭键盘的通知 */
 extern NSString * const MQChatViewKeyboardResignFirstResponderNotification;
@@ -51,8 +52,10 @@ typedef NS_ENUM(NSUInteger, TransiteAnimationType) {
  */
 @interface MQChatViewConfig : NSObject
 
+@property (nonatomic, strong) MQChatViewStyle *chatViewStyle;
+
 @property (nonatomic, assign) BOOL hidesBottomBarWhenPushed;
-@property (nonatomic, assign) BOOL isCustomizedChatViewFrame;
+//@property (nonatomic, assign) BOOL isCustomizedChatViewFrame;
 @property (nonatomic, assign) CGRect chatViewFrame;
 @property (nonatomic, assign) CGPoint chatViewControllerPoint;
 @property (nonatomic, strong) NSMutableArray *numberRegexs;
@@ -72,19 +75,50 @@ typedef NS_ENUM(NSUInteger, TransiteAnimationType) {
 @property (nonatomic, assign) BOOL enableEventDispaly;
 @property (nonatomic, assign) BOOL enableSendVoiceMessage;
 @property (nonatomic, assign) BOOL enableSendImageMessage;
-@property (nonatomic, assign) BOOL enableIncomingAvatar;
-@property (nonatomic, assign) BOOL enableOutgoingAvatar;
 @property (nonatomic, assign) BOOL enableMessageImageMask;
 @property (nonatomic, assign) BOOL enableMessageSound;
 @property (nonatomic, assign) BOOL enableTopPullRefresh;
 @property (nonatomic, assign) BOOL enableBottomPullRefresh;
-@property (nonatomic, assign) BOOL enableRoundAvatar;
 @property (nonatomic, assign) BOOL enableChatWelcome;
 @property (nonatomic, assign) BOOL enableTopAutoRefresh;
 @property (nonatomic, assign) BOOL enableShowNewMessageAlert;
 @property (nonatomic, assign) BOOL isPushChatView;
 @property (nonatomic, assign) BOOL enableEvaluationButton;
 @property (nonatomic, assign) BOOL enableVoiceRecordBlurView;
+
+@property (nonatomic, strong) UIImage *incomingDefaultAvatarImage;
+@property (nonatomic, strong) UIImage *outgoingDefaultAvatarImage;
+@property (nonatomic, assign) BOOL shouldUploadOutgoingAvartar;
+
+
+@property (nonatomic, assign) NSTimeInterval maxVoiceDuration;
+
+#pragma 以下配置是美洽SDK用户所用到的配置
+#ifdef INCLUDE_MEIQIA_SDK
+@property (nonatomic, assign) BOOL enableSyncServerMessage;
+@property (nonatomic, copy  ) NSString *MQClientId;
+
+
+@property (nonatomic, strong) NSDictionary *clientInfo;
+@property (nonatomic, assign) MQChatScheduleRules scheduleRule;
+
+
+#endif
+
++ (instancetype)sharedConfig;
+
+/** 将配置设置为默认值 */
+- (void)setConfigToDefault;
+
+@end
+
+
+///以下内容为向下兼容之前的版本
+@interface MQChatViewConfig(deprecated)
+
+@property (nonatomic, assign) BOOL enableRoundAvatar;
+@property (nonatomic, assign) BOOL enableIncomingAvatar;
+@property (nonatomic, assign) BOOL enableOutgoingAvatar;
 
 @property (nonatomic, copy) UIColor *incomingMsgTextColor;
 @property (nonatomic, copy) UIColor *incomingBubbleColor;
@@ -117,25 +151,9 @@ typedef NS_ENUM(NSUInteger, TransiteAnimationType) {
 @property (nonatomic, strong) UIButton *navBarLeftButton;
 @property (nonatomic, strong) UIButton *navBarRightButton;
 
-@property (nonatomic, assign) NSTimeInterval maxVoiceDuration;
-
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
 @property (nonatomic, assign) BOOL didSetStatusBarStyle;
 
-#pragma 以下配置是美洽SDK用户所用到的配置
-#ifdef INCLUDE_MEIQIA_SDK
-@property (nonatomic, assign) BOOL enableSyncServerMessage;
-@property (nonatomic, copy  ) NSString *MQClientId;
-
-
-@property (nonatomic, strong) NSDictionary *clientInfo;
-@property (nonatomic, assign) MQChatScheduleRules scheduleRule;
-
-#endif
-
-+ (instancetype)sharedConfig;
-
-/** 将配置设置为默认值 */
-- (void)setConfigToDefault;
 
 @end
+

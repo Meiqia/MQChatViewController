@@ -1,0 +1,79 @@
+"new_message"         = "請輸入...";
+
+"record_speak"        = "按住 說話";
+
+"record_end"          = "鬆開 結束";
+
+"cancel"              = "取消";
+
+"select_gallery"      = "從相冊選取";
+
+"select_camera"       = "相機";
+
+"wait_agent"          = "正在分配客服...";
+
+"not_access_camera"   = "請在系統設置中允許該App訪問相機";
+
+"not_access_photos"   = "請在系統設置中允許該App訪問相冊";
+
+"display_new_message" = "下方有新消息";
+
+"network_jam"         = "網絡不太通常，請檢查網絡";
+
+"simulator_not_support_camera" = "模擬器無法使用相機";
+
+"simulator_not_support_microphone" = "模擬器無法使用麥克風";
+
+"recode_time_too_short" = "錄音時間太短";
+
+"record_cancel_swipe"   = "上滑手指，取消發送";
+
+"record_cancel_realse"  = "松開手指，取消發送";
+
+"save_photo_error"      = "抱歉，保存失敗";
+
+"save_photo_success"    = "已保存圖片到本地相冊";
+
+"save_text_success"     = "已複制";
+
+"save_photo"            = "保存";
+
+"save_text"             = "複制";
+
+"record_error"          = "抱歉，錄音出現了點小問題-_-";
+
+"user_confirm"          = "知道了";
+
+"no_more_messages"      = "没有更多消息啦~";
+
+"welcome_chat"          = "";
+
+"default_assistant"     = "美洽小助手";
+
+"no_agent_title"        = "在線客服";
+
+"no_agent_tips"         = "抱歉，現在沒有客服人員在線\n妳可以留下妳的聯系方式，我們會盡快聯系妳~";
+
+"retry_send_message"    = "重新發送嗎？";
+
+"alert_view_cancel"     = "取消";
+
+"alert_view_confirm"    = "確定";
+
+"cannot_refresh"        = "刷新不了啦~";
+
+"make_call_to"          = "撥打至 ";
+
+"send_message_to"       = "短信至 ";
+
+"open_url_by_safari"    = "用Safari打開該鏈接";
+
+"make_email_to"         = "向該email發送郵件";
+
+"load_history_message_error"    = "抱歉，沒有正確獲取到歷史消息-_-";
+
+"microphone_denied"     = "請在系統設置中允許該App訪問麥克風";
+
+"meiqia_communication_failed" = "抱歉，连接通信网络可能有问题，请更换网络试一下。";
+
+"meiqia_evaluation_sheet"     = "評價";
