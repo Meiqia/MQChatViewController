@@ -36,11 +36,14 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
 }
 
 - (void)setConfigToDefault {
+    
+    self.chatViewStyle = [MQChatViewStyle defaultStyle];
+    
     self.hidesBottomBarWhenPushed   = true;
-    self.isCustomizedChatViewFrame  = false;
+//    self.isCustomizedChatViewFrame  = false;
     self.chatViewFrame              = [MQChatDeviceUtil getDeviceScreenRect];
     self.chatViewControllerPoint    = CGPointMake(0, 0);
-
+    
     self.numberRegexs = [[NSMutableArray alloc] initWithArray:@[@"^(\\d{3,4}-?)\\d{7,8}$", @"^1[3|4|5|7|8]\\d{9}", @"[0-9]\\d{4,10}"]];
     self.linkRegexs   = [[NSMutableArray alloc] initWithArray:@[@"((http[s]{0,1}|ftp)://[a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)|([a-zA-Z0-9\\.\\-]+\\.([a-zA-Z]{2,4})(:\\d+)?(/[a-zA-Z0-9\\.\\-~!@#$%^&*+?:_/=<>]*)?)"]];
     self.emailRegexs  = [[NSMutableArray alloc] initWithArray:@[@"[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}"]];
@@ -51,72 +54,87 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
     self.scheduledGroupId       = nil;
     self.customizedId           = @"";
     self.navTitleText           = nil;
-    self.navBarLeftButton       = nil;
-    self.navBarRightButton      = nil;
     
+    self.incomingDefaultAvatarImage     = [MQAssetUtil incomingDefaultAvatarImage];
+    _outgoingDefaultAvatarImage     = [MQAssetUtil outgoingDefaultAvatarImage]; //用户可以指定头像，如果指定了头像，在用户上线之后，将头像指定给上线后的用户
+
     self.enableEventDispaly      = false;
     self.enableSendVoiceMessage  = true;
     self.enableSendImageMessage  = true;
-    self.enableIncomingAvatar    = true;
     self.enableMessageImageMask  = true;
     self.enableMessageSound      = true;
-    self.enableOutgoingAvatar    = true;
     self.enableTopPullRefresh    = false;
     self.enableBottomPullRefresh = false;
     self.enableVoiceRecordBlurView = false;
     
-    self.enableRoundAvatar         = false;
     self.enableChatWelcome         = false;
     self.enableTopAutoRefresh      = true;
     self.isPushChatView            = true;
     self.enableShowNewMessageAlert = true;
     self.enableEvaluationButton    = true;
     
-    self.incomingMsgTextColor   = [UIColor darkTextColor];
-    self.outgoingMsgTextColor   = [UIColor darkTextColor];
-    self.eventTextColor         = [UIColor grayColor];
-    self.pullRefreshColor       = [UIColor colorWithRed:104.0/255.0 green:192.0/255.0 blue:160.0/255.0 alpha:1.0];
-    self.redirectAgentNameColor = [UIColor blueColor];
-    self.navBarColor            = nil;
-    self.navBarTintColor        = nil;
-    self.incomingBubbleColor    = nil;
-    self.outgoingBubbleColor    = nil;
-    
-    self.incomingDefaultAvatarImage     = [MQAssetUtil incomingDefaultAvatarImage];
-    self.outgoingDefaultAvatarImage     = [MQAssetUtil outgoingDefaultAvatarImage];
-    self.photoSenderImage               = [MQAssetUtil messageCameraInputImage];
-    self.photoSenderHighlightedImage    = [MQAssetUtil messageCameraInputHighlightedImage];
-    self.keyboardSenderImage            = [MQAssetUtil messageTextInputImage];
-    self.keyboardSenderHighlightedImage = [MQAssetUtil messageTextInputHighlightedImage];
-    self.voiceSenderImage               = [MQAssetUtil messageVoiceInputImage];
-    self.voiceSenderHighlightedImage    = [MQAssetUtil messageVoiceInputHighlightedImage];
-    self.resignKeyboardImage            = [MQAssetUtil messageResignKeyboardImage];
-    self.resignKeyboardHighlightedImage = [MQAssetUtil messageResignKeyboardHighlightedImage];
-    self.incomingBubbleImage            = [MQAssetUtil bubbleIncomingImage];
-    self.outgoingBubbleImage            = [MQAssetUtil bubbleOutgoingImage];
-    self.messageSendFailureImage        = [MQAssetUtil messageWarningImage];
-    self.imageLoadErrorImage            = [MQAssetUtil imageLoadErrorImage];
-    
-    CGPoint stretchPoint                = CGPointMake(self.incomingBubbleImage.size.width / 4.0f, self.incomingBubbleImage.size.height * 3.0f / 4.0f);
-    self.bubbleImageStretchInsets       = UIEdgeInsetsMake(stretchPoint.y, stretchPoint.x, self.incomingBubbleImage.size.height-stretchPoint.y+0.5, stretchPoint.x);
+    self.maxVoiceDuration               = 60;
     
     self.incomingMsgSoundFileName       = @"MQNewMessageRing.mp3";
     self.outgoingMsgSoundFileName       = @"MQSendMessageRing.mp3";
-    
-    self.maxVoiceDuration               = 60;
-    
-    self.statusBarStyle                 = UIStatusBarStyleDefault;
-    self.didSetStatusBarStyle           = false;
     
 #pragma 以下配置是美洽SDK用户所用到的配置
 #ifdef INCLUDE_MEIQIA_SDK
     self.enableSyncServerMessage = true;
     self.MQClientId             = @"";
-
-    self.scheduleRule                   = nil;
+    
+    self.scheduleRule                   = 0;
     self.clientInfo                     = nil;
-
+    
 #endif
+}
+
+- (void)setOutgoingDefaultAvatarImage:(UIImage *)outgoingDefaultAvatarImage {
+    _outgoingDefaultAvatarImage = outgoingDefaultAvatarImage;
+    self.shouldUploadOutgoingAvartar = YES;//如果用户修改了默认头像，标记用户上线之后去更新当前用户头像
+}
+
+
+@end
+
+#pragma mark -
+
+@implementation MQChatViewConfig(deprecated)
+@dynamic enableRoundAvatar;
+@dynamic enableIncomingAvatar;
+@dynamic enableOutgoingAvatar;
+@dynamic incomingMsgTextColor;
+@dynamic incomingBubbleColor;
+@dynamic outgoingMsgTextColor;
+@dynamic outgoingBubbleColor;
+@dynamic eventTextColor;
+@dynamic redirectAgentNameColor;
+@dynamic navTitleColor;
+@dynamic navBarTintColor;
+@dynamic navBarColor;
+@dynamic pullRefreshColor;
+@dynamic incomingDefaultAvatarImage;
+@dynamic outgoingDefaultAvatarImage;
+@dynamic messageSendFailureImage;
+@dynamic photoSenderImage;
+@dynamic photoSenderHighlightedImage;
+@dynamic voiceSenderImage;
+@dynamic voiceSenderHighlightedImage;
+@dynamic keyboardSenderImage;
+@dynamic keyboardSenderHighlightedImage;
+@dynamic resignKeyboardImage;
+@dynamic resignKeyboardHighlightedImage;
+@dynamic incomingBubbleImage;
+@dynamic outgoingBubbleImage;
+@dynamic imageLoadErrorImage;
+@dynamic bubbleImageStretchInsets;
+@dynamic navBarLeftButton;
+@dynamic navBarRightButton;
+@dynamic statusBarStyle;
+@dynamic didSetStatusBarStyle;
+
+- (id)forwardingTargetForSelector:(SEL)aSelector {
+    return self.chatViewStyle;
 }
 
 @end

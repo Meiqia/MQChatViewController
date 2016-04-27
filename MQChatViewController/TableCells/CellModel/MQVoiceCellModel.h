@@ -133,6 +133,7 @@
                                      cellWidth:(CGFloat)cellWidth
                                       delegate:(id<MQCellModelDelegate>)delegator;
 
+- (void)setVoiceHasPlayed;
 
 
 @end

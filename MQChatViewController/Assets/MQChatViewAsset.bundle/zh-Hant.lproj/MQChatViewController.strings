@@ -77,3 +77,14 @@
 "meiqia_communication_failed" = "抱歉，连接通信网络可能有问题，请更换网络试一下。";
 
 "meiqia_evaluation_sheet"     = "評價";
+
+"file_download_file_is_expired" = "文件已过期";
+"file_download_canceld" = "已取消下载";
+"file_download_failed" = "下载失败";
+"file_download_downloading" = "下载中...";
+"file_download_complete" = "下载完成";
+"file_download_ %@ ∙ %@overdue" = "%@ ∙ %@ 小时后过期";
+
+"message_tips_send_message_fail_listed_in_black_list" = "对方已经拒绝接收你的消息";
+
+"message_tips_online_failed_listed_in_black_list" = "抱歉，你已被加入黑名单";

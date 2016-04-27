@@ -157,6 +157,27 @@ CGFloat const kMQEvaluationCellFontSize = 14.0;
 }
 
 - (void)updateCellFrameWithCellWidth:(CGFloat)cellWidth {
+    //评价的 label frame
+    CGFloat levelTextWidth = [MQStringSizeUtil getWidthForText:self.levelText withFont:[UIFont systemFontOfSize:kMQEvaluationCellFontSize] andHeight:200];
+    CGFloat levelTextHeight = [MQStringSizeUtil getHeightForText:self.levelText withFont:[UIFont systemFontOfSize:kMQEvaluationCellFontSize] andWidth:levelTextWidth];
+    UIImage *evaluationImage = [MQAssetUtil getEvaluationImageWithLevel:0];
+    CGFloat evaluationLabelWidth = kMQEvaluationCellLabelHorizontalMargin * 2 + evaluationImage.size.width + levelTextWidth + kMQEvaluationCellLabelHorizontalSpacing;
+    CGFloat evaluationLabelHeight = kMQEvaluationCellLabelVerticalMargin * 2 + evaluationImage.size.height;
+    self.evaluationLabelFrame = CGRectMake(cellWidth/2 - evaluationLabelWidth/2, kMQEvaluationCellVerticalSpacing, evaluationLabelWidth, evaluationLabelHeight);
+    
+    self.evaluationImageFrame = CGRectMake(kMQEvaluationCellLabelHorizontalMargin, kMQEvaluationCellLabelVerticalMargin, evaluationImage.size.width, evaluationImage.size.height);
+    self.evaluationTextLabelFrame = CGRectMake(self.evaluationImageFrame.origin.x + self.evaluationImageFrame.size.width + kMQEvaluationCellLabelHorizontalSpacing, self.evaluationLabelFrame.size.height/2 - levelTextHeight/2, levelTextWidth, levelTextHeight);
+    
+    //评价的评论 label frame
+    CGFloat commentTextWidth = cellWidth - kMQEvaluationCommentHorizontalSpacing * 2;
+    CGFloat commentTextHeight = [MQStringSizeUtil getHeightForText:self.comment withFont:[UIFont systemFontOfSize:kMQEvaluationCellFontSize] andWidth:commentTextWidth];
+    self.commentLabelFrame = self.comment.length > 0 ? CGRectMake(kMQEvaluationCommentHorizontalSpacing, self.evaluationLabelFrame.origin.y + self.evaluationLabelFrame.size.height + kMQEvaluationCellVerticalSpacing, commentTextWidth, commentTextHeight) : CGRectMake(0, 0, 0, 0);
+    
+    if (self.commentLabelFrame.size.height > 0) {
+        self.cellHeight = self.commentLabelFrame.origin.y + self.commentLabelFrame.size.height + kMQEvaluationCellVerticalSpacing;
+    } else {
+        self.cellHeight = self.evaluationLabelFrame.origin.y + self.evaluationLabelFrame.size.height + kMQEvaluationCellVerticalSpacing;
+    }
 }
 
 

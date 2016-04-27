@@ -10,7 +10,6 @@
 #import "MQChatFileUtil.h"
 #import "MQAssetUtil.h"
 #import "MQBundleUtil.h"
-#import "MQBundleUtil.h"
 
 static CGFloat const kMQInputBarHorizontalSpacing = 8.0;
 static CGFloat const kMQInputBarVerticalSpacing = 8.0;

@@ -8,6 +8,13 @@
 
 #import "MQAnimatorPush.h"
 
+@interface MQAnimatorPush()
+
+@property (nonatomic, strong) UIViewController *toViewController;
+@property (nonatomic, strong) UIViewController *fromViewController;
+
+@end
+
 @implementation MQAnimatorPush
 
 - (NSTimeInterval)transitionDuration:(nullable id <UIViewControllerContextTransitioning>)transitionContext {
@@ -15,28 +22,42 @@
 }
 
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext {
-    UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
-    UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-    CGRect finalFrame = [transitionContext finalFrameForViewController:toViewController];
+    self.toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    self.fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     
-    CGSize screenSize = [UIScreen mainScreen].bounds.size;
-    if (self.isPresenting) {
-        toViewController.view.frame = CGRectMake(screenSize.width, 0, screenSize.width, screenSize.height);
-        [[transitionContext containerView] addSubview:toViewController.view];
-    } else {
-        fromViewController.view.frame = CGRectMake(0, 0, screenSize.width, screenSize.height);
+    
+    CGRect finalFrame = [transitionContext finalFrameForViewController:self.toViewController];
+    if (CGRectIsEmpty(finalFrame)) {
+        finalFrame = [[UIScreen mainScreen] bounds];
     }
     
-    [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        toViewController.view.frame = finalFrame;
+    CGSize screenSize = [UIScreen mainScreen].bounds.size;
+    
+    if (self.isPresenting) {
+        self.toViewController.view.frame = CGRectMake(screenSize.width, 0, screenSize.width, screenSize.height);
+        [[transitionContext containerView] addSubview:self.toViewController.view];
+    } else {
+        self.fromViewController.view.frame = CGRectMake(0, 0, screenSize.width, screenSize.height);
+    }
+    
+    [self.toViewController.navigationController beginAppearanceTransition:YES animated:YES];
+    
+    [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        self.toViewController.view.frame = finalFrame;
         if (self.isPresenting) {
-            fromViewController.view.frame = CGRectMake(-screenSize.width / 2, 0, screenSize.width, screenSize.height);
+            self.fromViewController.view.frame = CGRectMake(-screenSize.width / 2, 0, screenSize.width, screenSize.height);
         } else {
-            fromViewController.view.frame = CGRectMake(screenSize.width, 0, screenSize.width, screenSize.height);
+            self.fromViewController.view.frame = CGRectMake(screenSize.width, 0, screenSize.width, screenSize.height);
         }
     } completion:^(BOOL finished) {
-        [transitionContext completeTransition:YES];
+        [transitionContext completeTransition:finished];
     }];
+}
+
+- (void)animationEnded:(BOOL)transitionCompleted {
+    if (transitionCompleted) {
+        [self.fromViewController.navigationController endAppearanceTransition];
+    }
 }
 
 @end

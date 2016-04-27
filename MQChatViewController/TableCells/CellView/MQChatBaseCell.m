@@ -21,7 +21,7 @@
         self.incomingBubbleImage = [MQChatViewConfig sharedConfig].incomingBubbleImage;
         self.outgoingBubbleImage = [MQChatViewConfig sharedConfig].outgoingBubbleImage;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
+        self.backgroundColor = [UIColor clearColor];
     }
     return self;
 }

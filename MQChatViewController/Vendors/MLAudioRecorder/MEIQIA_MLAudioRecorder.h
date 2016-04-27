@@ -13,6 +13,7 @@
 #import <Foundation/Foundation.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import "MEIQIA_AMR_Debug.h"
+#import "MQChatAudioTypes.h"
 
 //录音停止事件的block回调，作用参考MLAudioRecorderDelegate的recordStopped和recordError:
 typedef void (^MLAudioRecorderReceiveStoppedBlock)();
@@ -90,7 +91,7 @@ typedef NS_OPTIONS(NSUInteger, MLAudioRecorderErrorCode) {
 /**
  *  是否正在录音
  */
-@property (atomic, assign,readonly) BOOL isRecording;
+@property (nonatomic, assign,readonly) BOOL isRecording;
 
 /**
  *  这俩是当前的采样率和缓冲区采集秒数，根据情况可以设置(对其设置必须在startRecording之前才有效)，随意设置可能有意外发生。
@@ -114,6 +115,10 @@ typedef NS_OPTIONS(NSUInteger, MLAudioRecorderErrorCode) {
  *  参考MLAudioRecorderDelegate
  */
 @property (nonatomic, assign) id<MLAudioRecorderDelegate> delegate;
+
+///如果应用中有其他地方正在播放声音，比如游戏，需要将此设置为 YES，防止其他声音在录音播放完之后无法继续播放
+@property (nonatomic, assign) BOOL keepSessionActive;
+@property (nonatomic, assign) MQRecordMode recordMode;
 
 - (void)startRecording;
 - (void)stopRecording;

@@ -10,15 +10,16 @@
 
 @interface MQTransitioningAnimation()
 
-@property (nonatomic, strong) MQShareTransitioningDelegateImpl *transitioningDelegateImpl;
+@property (nonatomic, strong) id<UIViewControllerTransitioningDelegate> transitioningDelegateImpl;
 
 @end
 
 
 @implementation MQTransitioningAnimation
 
+///使用 singleton 的原因是使用这个 transition 的对象并没有维护这个 transition 对象，如果被释放 transition 则会失效，为了减少自定义 transition 对使用者的侵入，只好使用 singleton 来保持该对象
 + (instancetype)sharedInstance {
-    static id instance = nil;
+    static MQTransitioningAnimation *instance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         instance = [MQTransitioningAnimation new];
@@ -35,36 +36,39 @@
     return self;
 }
 
-- (CATransition *)createPresentingTransiteAnimation:(TransiteAnimationType)animation {
++ (id <UIViewControllerTransitioningDelegate>)transitioningDelegateImpl {
+    return [[self sharedInstance] transitioningDelegateImpl];
+}
+
++ (CATransition *)createPresentingTransiteAnimation:(MQTransiteAnimationType)animation {
     CATransition *transition = [CATransition animation];
     transition.duration = 0.5;
     [transition setFillMode:kCAFillModeBoth];
     transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     
     switch (animation) {
-        case TransiteAnimationTypePush:
+        case MQTransiteAnimationTypePush:
             transition.type = kCATransitionMoveIn;
             transition.subtype = kCATransitionFromRight;
             break;
-        case TransiteAnimationTypeDefault:
+        case MQTransiteAnimationTypeDefault:
         default:
             break;
     }
     return transition;
 }
-
-- (CATransition *)createDismissingTransiteAnimation:(TransiteAnimationType)animation {
++ (CATransition *)createDismissingTransiteAnimation:(MQTransiteAnimationType)animation {
     CATransition *transition = [CATransition animation];
     transition.duration = 0.5;
     [transition setFillMode:kCAFillModeBoth];
     transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     
     switch (animation) {
-        case TransiteAnimationTypePush:
+        case MQTransiteAnimationTypePush:
             transition.type = kCATransitionMoveIn;
             transition.subtype = kCATransitionFromLeft;
             break;
-        case TransiteAnimationTypeDefault:
+        case MQTransiteAnimationTypeDefault:
         default:
             break;
     }

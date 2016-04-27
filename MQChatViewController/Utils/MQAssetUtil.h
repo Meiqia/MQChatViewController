@@ -13,6 +13,8 @@
 
 + (UIImage *)imageFromBundleWithName:(NSString *)name;
 
++ (UIImage *)templateImageFromBundleWithName:(NSString *)name;
+
 + (NSString*)resourceWithName:(NSString*)fileName;
 
 + (UIImage *)incomingDefaultAvatarImage;
@@ -59,5 +61,10 @@
 + (UIImage *)agentOnDutyImage;
 + (UIImage *)agentOffDutyImage;
 + (UIImage *)agentOfflineImage;
+
++ (UIImage *)fileIcon;
++ (UIImage *)fileCancel;
++ (UIImage *)fileDonwload;
++ (UIImage *)backArrow;
 
 @end

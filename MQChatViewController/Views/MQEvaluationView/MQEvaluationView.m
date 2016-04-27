@@ -11,6 +11,8 @@
 #import "MQChatDeviceUtil.h"
 #import "MQEvaluationCell.h"
 #import "MQNamespacedDependencies.h"
+#import "MQChatViewConfig.h"
+#import "UIColor+Hex.h"
 
 static CGFloat const kMQEvaluationVerticalSpacing = 16.0;
 static CGFloat const kMQEvaluationHorizontalSpacing = 16.0;
@@ -30,6 +32,10 @@ static CGFloat const kMQEvaluationHorizontalSpacing = 16.0;
     if (self) {
         [self initCustomAlertView];
         selectedLevelRow = 0;
+        
+        if ([UIColor getDarkerColorFromColor1:[MQChatViewConfig sharedConfig].navBarColor color2:[MQChatViewConfig sharedConfig].navBarTintColor] > 0) {
+            evaluationAlertView.tintColor = [UIColor getDarkerColorFromColor1:[MQChatViewConfig sharedConfig].navBarColor color2:[MQChatViewConfig sharedConfig].navBarTintColor];
+        }
     }
     return self;
 }

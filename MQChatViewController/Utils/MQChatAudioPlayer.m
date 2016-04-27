@@ -64,8 +64,9 @@
 
 -(void)setupPlaySound{
     UIApplication *app = [UIApplication sharedApplication];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:app];
-    [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopSound) name:UIApplicationDidEnterBackgroundNotification object:app];
+    [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback withOptions:(AVAudioSessionCategoryOptions)self.playMode error: nil];
+    [[AVAudioSession sharedInstance] setActive:YES error:nil];
     
     //接收关闭声音的通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioPlayerDidInterrupt:) name:MQAudioPlayerDidInterruptNotification object:nil];
@@ -82,13 +83,21 @@
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
     [self didFinishAudioPlay];
+    NSLog(@"audioPlayerDidFinishPlaying");
+}
+
+- (void)audioPlayerBeginInterruption:(AVAudioPlayer *)player {
+    NSLog(@"audioPlayerBeginInterruption");
+    [self.player pause];
+}
+
+- (void)audioPlayerEndInterruption:(AVAudioPlayer *)player {
+    NSLog(@"audioPlayerEndInterruption");
+    [self.player play];
 }
 
 - (void)stopSound
 {
-    if (_player && _player.isPlaying) {
-        [_player stop];
-    }
     [self didFinishAudioPlay];
 }
 
@@ -101,12 +110,20 @@
 
 - (void)applicationWillResignActive:(UIApplication *)application{
     [self didFinishAudioPlay];
+    NSLog(@"recording interrupted");
 }
 
 //音频播放结束
 - (void)didFinishAudioPlay {
+    if (_player && _player.isPlaying) {
+        [_player stop];
+    }
     [self removeAudioObserver];
     [self.delegate MQAudioPlayerDidFinishPlay];
+    
+    if (!self.keepSessionActive) {
+        [[AVAudioSession sharedInstance] setActive:NO withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:nil];
+    }
 }
 
 //处理监听触发事件
@@ -124,9 +141,8 @@
 
 //声音播放被打断的通知
 - (void)audioPlayerDidInterrupt:(NSNotification *)notification {
-    if (_player && _player.isPlaying) {
-        [_player stop];
-    }
+    [self didFinishAudioPlay];
+    NSLog(@"recording interrupted by other voice playment");
 }
 
 @end

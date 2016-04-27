@@ -9,6 +9,7 @@
 #import "MQBundleUtil.h"
 #import "MQChatViewController.h"
 #import "MQChatFileUtil.h"
+#import "MQCustomizedUIText.h"
 
 @implementation MQBundleUtil
 
@@ -23,7 +24,10 @@
 + (NSString *)localizedStringForKey:(NSString *)key
 {
     NSBundle *bundle = [MQBundleUtil assetBundle];
-    return [bundle localizedStringForKey:key value:nil table:@"MQChatViewController"];    
+    
+    NSString *string = [MQCustomizedUIText customiedTextForBundleKey:key] ?: [bundle localizedStringForKey:key value:nil table:@"MQChatViewController"];
+    
+    return string;
 }
 
 @end

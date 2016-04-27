@@ -25,5 +25,8 @@
 
 - (instancetype)initWithVoiceData:(NSData *)voiceDate;
 
++ (void)setVoiceHasPlayedToDBWithMessageId:(NSString *)messageId;
+
+- (void)handleAccessoryData:(NSDictionary *)accessoryData;
 
 @end

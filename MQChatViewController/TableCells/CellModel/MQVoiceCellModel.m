@@ -141,6 +141,11 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
     NSTimeInterval voiceTimeInterval;
 }
 
+- (void)setVoiceHasPlayed {
+    self.isPlayed = YES;
+    [MQVoiceMessage setVoiceHasPlayedToDBWithMessageId:self.messageId];
+}
+
 #pragma initialize
 /**
  *  根据MQMessage内容来生成cell model
@@ -411,7 +416,72 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
 
 - (void)updateCellFrameWithCellWidth:(CGFloat)cellWidth {
     self.cellWidth = cellWidth;
-    if (self.cellFromType == MQChatCellOutgoing) {
+//    if (self.cellFromType == MQChatCellOutgoing) {
+//        //头像的frame
+//        if ([MQChatViewConfig sharedConfig].enableOutgoingAvatar) {
+//            self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
+//        } else {
+//            self.avatarFrame = CGRectMake(0, 0, 0, 0);
+//        }
+//        
+//        
+//        //根据语音时长来确定气泡宽度
+//        CGFloat maxBubbleWidth = cellWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToBubbleSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
+//        CGFloat bubbleWidth = maxBubbleWidth;
+//        //    if (self.voiceDuration < [MQChatViewConfig sharedConfig].maxVoiceDuration * 2) {
+//        CGFloat upWidth = floor(cellWidth / 4);   //根据语音时间来递增的基准
+//        CGFloat voiceWidthScale = self.voiceDuration / [MQChatViewConfig sharedConfig].maxVoiceDuration;
+//        bubbleWidth = floor(upWidth*voiceWidthScale) + floor(cellWidth/4);
+//        
+//        //气泡的frame
+//        self.bubbleImageFrame = CGRectMake(cellWidth-self.avatarFrame.size.width-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarToBubbleSpacing-bubbleWidth, kMQCellAvatarToVerticalEdgeSpacing, self.bubbleImageFrame.size.width, self.bubbleImageFrame.size.height);
+//        //发送指示器的frame
+//        self.sendingIndicatorFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-self.sendingIndicatorFrame.size.width, self.sendingIndicatorFrame.origin.y, self.sendingIndicatorFrame.size.width, self.sendingIndicatorFrame.size.height);
+//        //发送出错图片的frame
+//        self.sendFailureFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-self.sendFailureFrame.size.width, self.sendFailureFrame.origin.y, self.sendFailureFrame.size.width, self.sendFailureFrame.size.height);
+//        //语音时长的frame
+//        self.durationLabelFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-self.durationLabelFrame.size.width, self.durationLabelFrame.origin.y, self.durationLabelFrame.size.width, self.durationLabelFrame.size.height);
+//    }
+    
+    //语音图片size
+    UIImage *voiceImage;
+    if (self.cellFromType == MQChatMessageOutgoing) {
+        voiceImage = self.isLoadVoiceSuccess ? [MQAssetUtil voiceAnimationGreen3] : [MQAssetUtil voiceAnimationGreenError];
+    } else {
+        voiceImage = self.isLoadVoiceSuccess ? [MQAssetUtil voiceAnimationGray3] : [MQAssetUtil voiceAnimationGrayError];
+    }
+    CGSize voiceImageSize = voiceImage.size;
+    
+    //气泡高度
+    CGFloat bubbleHeight = kMQCellAvatarDiameter;
+    
+    //根据语音时长来确定气泡宽度
+    CGFloat maxBubbleWidth = cellWidth - kMQCellAvatarToHorizontalEdgeSpacing - kMQCellAvatarDiameter - kMQCellAvatarToBubbleSpacing - kMQCellBubbleMaxWidthToEdgeSpacing;
+    CGFloat bubbleWidth = maxBubbleWidth;
+    //    if (self.voiceDuration < [MQChatViewConfig sharedConfig].maxVoiceDuration * 2) {
+    CGFloat upWidth = floor(cellWidth / 4);   //根据语音时间来递增的基准
+    CGFloat voiceWidthScale = self.voiceDuration / [MQChatViewConfig sharedConfig].maxVoiceDuration;
+    bubbleWidth = floor(upWidth*voiceWidthScale) + floor(cellWidth/4);
+    //    } else {
+    //        NSAssert(NO, @"语音超过最大时长！");
+    //    }
+    
+    //语音时长label的宽高
+    CGFloat durationTextHeight = [MQStringSizeUtil getHeightForText:[NSString stringWithFormat:@"%d\"", (int)self.voiceDuration] withFont:[UIFont systemFontOfSize:kMQCellVoiceDurationLabelFontSize] andWidth:cellWidth];
+    CGFloat durationTextWidth = [MQStringSizeUtil getWidthForText:[NSString stringWithFormat:@"%d\"", (int)self.voiceDuration] withFont:[UIFont systemFontOfSize:kMQCellVoiceDurationLabelFontSize] andHeight:durationTextHeight];
+    
+    //根据消息的来源，进行处理
+    UIImage *bubbleImage = [MQChatViewConfig sharedConfig].incomingBubbleImage;
+    if ([MQChatViewConfig sharedConfig].incomingBubbleColor) {
+        bubbleImage = [MQImageUtil convertImageColorWithImage:bubbleImage toColor:[MQChatViewConfig sharedConfig].incomingBubbleColor];
+    }
+    if (self.cellFromType == MQChatMessageOutgoing) {
+        //发送出去的消息
+        self.cellFromType = MQChatCellOutgoing;
+        bubbleImage = [MQChatViewConfig sharedConfig].outgoingBubbleImage;
+        if ([MQChatViewConfig sharedConfig].outgoingBubbleColor) {
+            bubbleImage = [MQImageUtil convertImageColorWithImage:bubbleImage toColor:[MQChatViewConfig sharedConfig].outgoingBubbleColor];
+        }
         //头像的frame
         if ([MQChatViewConfig sharedConfig].enableOutgoingAvatar) {
             self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
@@ -419,13 +489,28 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
             self.avatarFrame = CGRectMake(0, 0, 0, 0);
         }
         //气泡的frame
-        self.bubbleImageFrame = CGRectMake(cellWidth-self.avatarFrame.size.width-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarToBubbleSpacing-self.bubbleImageFrame.size.width, kMQCellAvatarToVerticalEdgeSpacing, self.bubbleImageFrame.size.width, self.bubbleImageFrame.size.height);
-        //发送指示器的frame
-        self.sendingIndicatorFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-self.sendingIndicatorFrame.size.width, self.sendingIndicatorFrame.origin.y, self.sendingIndicatorFrame.size.width, self.sendingIndicatorFrame.size.height);
-        //发送出错图片的frame
-        self.sendFailureFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-self.sendFailureFrame.size.width, self.sendFailureFrame.origin.y, self.sendFailureFrame.size.width, self.sendFailureFrame.size.height);
+        self.bubbleImageFrame = CGRectMake(cellWidth-self.avatarFrame.size.width-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarToBubbleSpacing-bubbleWidth, kMQCellAvatarToVerticalEdgeSpacing, bubbleWidth, bubbleHeight);
+        //语音图片的frame
+        self.voiceImageFrame = CGRectMake(self.bubbleImageFrame.size.width-kMQCellVoiceImageToBubbleSpacing-voiceImageSize.width, self.bubbleImageFrame.size.height/2-voiceImageSize.height/2, voiceImageSize.width, voiceImageSize.height);
         //语音时长的frame
-        self.durationLabelFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-self.durationLabelFrame.size.width, self.durationLabelFrame.origin.y, self.durationLabelFrame.size.width, self.durationLabelFrame.size.height);
+        self.durationLabelFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellVoiceDurationLabelToBubbleSpacing-durationTextWidth, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-durationTextHeight/2, durationTextWidth, durationTextHeight);
+    } else {
+        //收到的消息
+        self.cellFromType = MQChatCellIncoming;
+        //头像的frame
+        if ([MQChatViewConfig sharedConfig].enableIncomingAvatar) {
+            self.avatarFrame = CGRectMake(kMQCellAvatarToHorizontalEdgeSpacing, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
+        } else {
+            self.avatarFrame = CGRectMake(0, 0, 0, 0);
+        }
+        //气泡的frame
+        self.bubbleImageFrame = CGRectMake(self.avatarFrame.origin.x+self.avatarFrame.size.width+kMQCellAvatarToBubbleSpacing, self.avatarFrame.origin.y, bubbleWidth, bubbleHeight);
+        //语音图片的frame
+        self.voiceImageFrame = CGRectMake(kMQCellVoiceImageToBubbleSpacing, self.bubbleImageFrame.size.height/2-voiceImageSize.height/2, voiceImageSize.width, voiceImageSize.height);
+        //语音时长的frame
+        self.durationLabelFrame = CGRectMake(self.bubbleImageFrame.origin.x+self.bubbleImageFrame.size.width+kMQCellVoiceDurationLabelToBubbleSpacing, self.bubbleImageFrame.origin.y+self.bubbleImageFrame.size.height/2-durationTextHeight/2, durationTextWidth, durationTextHeight);
+        //未播放按钮的frame
+        self.notPlayViewFrame = CGRectMake(self.bubbleImageFrame.origin.x + self.bubbleImageFrame.size.width + kMQCellVoiceDurationLabelToBubbleSpacing, self.bubbleImageFrame.origin.y, kMQCellVoiceNotPlayPointViewDiameter, kMQCellVoiceNotPlayPointViewDiameter);
     }
 }
 

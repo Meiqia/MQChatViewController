@@ -17,6 +17,7 @@
 #import "MQEventMessage.h"
 #import "MQChatViewConfig.h"
 #import "MQDefinition.h"
+#import "MQFileDownloadMessage.h"
 
 /**
  *  该协议是UI层获取数据的委托方法
@@ -43,6 +44,8 @@
  *  @param tipsContent 辅助信息
  */
 - (void)didReceiveTipsContent:(NSString *)tipsContent;
+
+- (void)didReceiveTipsContent:(NSString *)tipsContent showLines:(BOOL)show;
 
 /**
  * 发送文字消息结果
@@ -263,5 +266,52 @@
  *  @return 输入文字
  */
 + (NSString *)getPreviousInputtingText;
+
+/**
+ * 获得服务端未读消息
+ 
+ * @return 输入文字
+ */
++ (void)getUnreadMessagesWithCompletion:(void (^)(NSArray *messages, NSError *error))completion;
+
+/**
+ * 获得本地未读消息
+ 
+ * @return 输入文字
+ */
++ (NSArray *)getLocalUnreadMessages;
+
+/**
+ * 判断是否被加入了黑名单
+ */
++ (BOOL)isBlacklisted;
+
+/**
+ * 清除已下载的文件
+ */
++ (void)clearReceivedFiles;
+
+/**
+ 修改或增加已保存的消息中的 accessory data 中的数据
+ 
+ @param accessoryData 字典中的数据必须是基本数据和字符串
+ */
++ (void)updateMessageWithId:(NSString *)messageId forAccessoryData:(NSDictionary *)accessoryData;
+
++ (void)updateMessageIds:(NSArray *)messageIds toReadStatus:(BOOL)isRead;
+
+/**
+ * 汇报文件被下载
+ */
++ (void)clientDownloadFileWithMessageId:(NSString *)messageId
+                          conversatioId:(NSString *)conversationId
+                          andCompletion:(void(^)(NSString *url, NSError *error))action;
+
+/**
+ *  取消下载
+ *
+ *  @param urlString     url
+ */
++ (void)cancelDownloadForUrl:(NSString *)urlString;
 
 @end

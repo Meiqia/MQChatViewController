@@ -12,7 +12,6 @@
 #import "MQNamespacedDependencies.h"
 #import "MEIQIA_MLAudioMeterObserver.h"
 #import <UIKit/UIKit.h>
-#import <AVFoundation/AVFoundation.h>
 #import "MQBundleUtil.h"
 
 @interface MQChatAudioRecorder() <MLAudioRecorderDelegate>
@@ -120,6 +119,22 @@
         isCancelRecording = true;
         [self.recorder stopRecording];
     }
+}
+
+- (void)setRecordMode:(MQRecordMode)recordMode {
+    self.recorder.recordMode = recordMode;
+}
+
+- (MQRecordMode)recordMode {
+    return self.recorder.recordMode;
+}
+
+- (void)setKeepSessionActive:(BOOL)keepSessionActive {
+    self.recorder.keepSessionActive = keepSessionActive;
+}
+
+- (BOOL)keepSessionActive {
+    return self.recorder.keepSessionActive;
 }
 
 - (BOOL)isRecording {

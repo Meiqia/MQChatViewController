@@ -165,7 +165,11 @@
         self.image = message.image;
         if (!message.image) {
             if (message.imagePath.length > 0) {
-                [self setModelsWithContentImage:[MQChatViewConfig sharedConfig].incomingBubbleImage message:message cellWidth:cellWidth];
+                
+                //默认cell高度为图片显示的最大高度
+                self.cellHeight = cellWidth / 2;
+                
+//                [self setModelsWithContentImage:[MQChatViewConfig sharedConfig].incomingBubbleImage cellFromType:message.fromType cellWidth:cellWidth];
                 
                 //这里使用美洽接口下载多媒体消息的图片，开发者也可以替换成自己的图片缓存策略
 #ifdef INCLUDE_MEIQIA_SDK
@@ -173,10 +177,10 @@
                 } completion:^(NSData *mediaData, NSError *error) {
                     if (mediaData && !error) {
                         self.image = [UIImage imageWithData:mediaData];
-                        [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
+                        [self setModelsWithContentImage:self.image cellFromType:message.fromType cellWidth:cellWidth];
                     } else {
                         self.image = [MQChatViewConfig sharedConfig].imageLoadErrorImage;
-                        [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
+                        [self setModelsWithContentImage:self.image cellFromType:message.fromType cellWidth:cellWidth];
                     }
                     if (self.delegate) {
                         if ([self.delegate respondsToSelector:@selector(didUpdateCellDataWithMessageId:)]) {
@@ -191,10 +195,10 @@
                     
                     if (image) {
                         self.image = tempImageView.image.copy;
-                        [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
+                        [self setModelsWithContentImage:self.image cellFromType:message.fromType cellWidth:cellWidth];
                     } else {
                         self.image = [MQChatViewConfig sharedConfig].imageLoadErrorImage;
-                        [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
+                        [self setModelsWithContentImage:self.image cellFromType:message.fromType cellWidth:cellWidth];
                     }
                     if (self.delegate) {
                         if ([self.delegate respondsToSelector:@selector(didUpdateCellDataWithMessageId:)]) {
@@ -205,10 +209,10 @@
 #endif
             } else {
                 self.image = [MQChatViewConfig sharedConfig].imageLoadErrorImage;
-                [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
+                [self setModelsWithContentImage:self.image cellFromType:message.fromType cellWidth:cellWidth];
             }
         } else {
-            [self setModelsWithContentImage:self.image message:message cellWidth:cellWidth];
+            [self setModelsWithContentImage:self.image cellFromType:message.fromType cellWidth:cellWidth];
         }
         
     }
@@ -217,7 +221,7 @@
 
 //根据气泡中的图片生成其他model
 - (void)setModelsWithContentImage:(UIImage *)contentImage
-                          message:(MQImageMessage *)message
+                          cellFromType:(MQChatMessageFromType)cellFromType
                         cellWidth:(CGFloat)cellWidth
 {
     //限定图片的最大直径
@@ -239,7 +243,7 @@
         bubbleImage = [MQImageUtil convertImageColorWithImage:bubbleImage toColor:[MQChatViewConfig sharedConfig].incomingBubbleColor];
     }
     
-    if (message.fromType == MQChatMessageOutgoing) {
+    if (cellFromType == MQChatMessageOutgoing) {
         //发送出去的消息
         self.cellFromType = MQChatCellOutgoing;
         bubbleImage = [MQChatViewConfig sharedConfig].outgoingBubbleImage;
@@ -346,20 +350,22 @@
 
 - (void)updateCellFrameWithCellWidth:(CGFloat)cellWidth {
     self.cellWidth = cellWidth;
-    if (self.cellFromType == MQChatCellOutgoing) {
-        //头像的frame
-        if ([MQChatViewConfig sharedConfig].enableOutgoingAvatar) {
-            self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
-        } else {
-            self.avatarFrame = CGRectMake(0, 0, 0, 0);
-        }
-        //气泡的frame
-        self.bubbleImageFrame = CGRectMake(cellWidth-self.avatarFrame.size.width-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarToBubbleSpacing-self.bubbleImageFrame.size.width, kMQCellAvatarToVerticalEdgeSpacing, self.bubbleImageFrame.size.width, self.bubbleImageFrame.size.height);
-        //发送指示器的frame
-        self.sendingIndicatorFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-self.sendingIndicatorFrame.size.width, self.sendingIndicatorFrame.origin.y, self.sendingIndicatorFrame.size.width, self.sendingIndicatorFrame.size.height);
-        //发送出错图片的frame
-        self.sendFailureFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-self.sendFailureFrame.size.width, self.sendFailureFrame.origin.y, self.sendFailureFrame.size.width, self.sendFailureFrame.size.height);
-    }
+//    if (self.cellFromType == MQChatCellOutgoing) {
+//        //头像的frame
+//        if ([MQChatViewConfig sharedConfig].enableOutgoingAvatar) {
+//            self.avatarFrame = CGRectMake(cellWidth-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarDiameter, kMQCellAvatarToVerticalEdgeSpacing, kMQCellAvatarDiameter, kMQCellAvatarDiameter);
+//        } else {
+//            self.avatarFrame = CGRectMake(0, 0, 0, 0);
+//        }
+//        //气泡的frame
+//        self.bubbleImageFrame = CGRectMake(cellWidth-self.avatarFrame.size.width-kMQCellAvatarToHorizontalEdgeSpacing-kMQCellAvatarToBubbleSpacing-self.bubbleImageFrame.size.width, kMQCellAvatarToVerticalEdgeSpacing, self.bubbleImageFrame.size.width, self.bubbleImageFrame.size.height);
+//        //发送指示器的frame
+//        self.sendingIndicatorFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-self.sendingIndicatorFrame.size.width, self.sendingIndicatorFrame.origin.y, self.sendingIndicatorFrame.size.width, self.sendingIndicatorFrame.size.height);
+//        //发送出错图片的frame
+//        self.sendFailureFrame = CGRectMake(self.bubbleImageFrame.origin.x-kMQCellBubbleToIndicatorSpacing-self.sendFailureFrame.size.width, self.sendFailureFrame.origin.y, self.sendFailureFrame.size.width, self.sendFailureFrame.size.height);
+//    }
+    
+    [self setModelsWithContentImage:self.image cellFromType:(MQChatMessageFromType)self.cellFromType cellWidth:cellWidth];
 }
 
 - (void)updateOutgoingAvatarImage:(UIImage *)avatarImage {

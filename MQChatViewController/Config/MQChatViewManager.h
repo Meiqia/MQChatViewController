@@ -10,6 +10,9 @@
 #import "MQChatViewController.h"
 #import "MQChatViewConfig.h"
 #import "MQDefinition.h"
+#import "MQCustomizedUIText.h"
+
+#define style_deprecated __attribute__((deprecated("修改 MQChatViewStyleType 中的对应属性代替")))
 
 /**
  * @brief 客服聊天界面的配置类
@@ -17,6 +20,35 @@
  * 开发者可以通过MQChatViewManager中提供的接口，来对客服聊天界面进行自定义配置；
  */
 @interface MQChatViewManager : NSObject
+
+///chatViewStyle 预设的聊天界面样式
+@property (nonatomic, strong) MQChatViewStyle *chatViewStyle;
+
+///如果应用中有其他地方正在播放声音，比如游戏，需要将此设置为 YES，防止其他声音在录音播放完之后无法继续播放
+@property (nonatomic, assign) BOOL keepAudioSessionActive;
+
+/**
+ typedef NS_ENUM(NSUInteger, MQRecordMode) {
+ MQRecordModePauseOther = 0, //暂停其他音频
+ MQRecordModeMixWithOther = AVAudioSessionCategoryOptionMixWithOthers, //和其他音频同时播放
+ MQRecordModeDuckOther = AVAudioSessionCategoryOptionDuckOthers //降低其他音频的声音
+ };
+*/
+@property (nonatomic, assign) MQRecordMode recordMode;
+
+/**
+ typedef NS_ENUM(NSUInteger, MQPlayMode) {
+ MQPlayModePauseOther = 0, //暂停其他音频
+ MQPlayModeMixWithOther = AVAudioSessionCategoryOptionMixWithOthers, //和其他音频同时播放
+ MQPlayModeDuckOther = AVAudioSessionCategoryOptionDuckOthers //降低其他音频的声音
+ };
+*/
+@property (nonatomic, assign) MQPlayMode playMode;
+
+/**
+ 设置显示聊天界面的时候，自动发送给客服的消息, 可以包括图片和文字
+ */
+@property (nonatomic, strong) NSArray *preSendMessages;
 
 /**
  * 在一个ViewController中Push出一个客服聊天界面
@@ -47,7 +79,7 @@
  *
  *  @param enable YES 自定义 NO 不自定义
  */
-- (void)enableCustomChatViewFrame:(BOOL)enable;
+//- (void)enableCustomChatViewFrame:(BOOL)enable;
 
 /**
  * 是否显示导航栏右键'评价'按钮，默认显示；
@@ -106,6 +138,7 @@
  * @param soundFileName 声音文件；如果要自定义声音，请将声音文件放在 MQChatViewAsset.bundle 中
  * @warning 若文件名设置为空，则代表不播放声音
  */
+
 - (void)setIncomingMessageSoundFileName:(NSString *)soundFileName;
 
 /**
@@ -138,14 +171,14 @@
  * 是否支持对方头像的显示；默认支持
  * @param enable YES:支持 NO:不支持
  */
-- (void)enableIncomingAvatar:(BOOL)enable;
+- (void)enableIncomingAvatar:(BOOL)enable style_deprecated;
 
 /**
  *  是否支持当前用户头像的显示；默认不支持
  *
  * @param enable YES:支持 NO:不支持
  */
-- (void)enableOutgoingAvatar:(BOOL)enable;
+- (void)enableOutgoingAvatar:(BOOL)enable style_deprecated;
 
 /**
  * 是否开启接受/发送消息的声音；默认开启
@@ -181,7 +214,7 @@
  *
  * @param enable YES:支持 NO:不支持
  */
-- (void)enableRoundAvatar:(BOOL)enable;
+- (void)enableRoundAvatar:(BOOL)enable style_deprecated;
 
 /**
  *  是否支持欢迎语；默认不支持
@@ -201,27 +234,27 @@
  * 设置发送过来的message的文字颜色；
  * @param textColor 文字颜色
  */
-- (void)setIncomingMessageTextColor:(UIColor *)textColor;
+- (void)setIncomingMessageTextColor:(UIColor *)textColor style_deprecated;
 
 /**
  *  设置发送过来的message气泡颜色
  *
  *  @param bubbleColor 气泡颜色
  */
-- (void)setIncomingBubbleColor:(UIColor *)bubbleColor;
+- (void)setIncomingBubbleColor:(UIColor *)bubbleColor style_deprecated;
 
 /**
  * 设置发送出去的message的文字颜色；
  * @param textColor 文字颜色
  */
-- (void)setOutgoingMessageTextColor:(UIColor *)textColor;
+- (void)setOutgoingMessageTextColor:(UIColor *)textColor style_deprecated;
 
 /**
  *  设置发送的message气泡颜色
  *
  *  @param bubbleColor 气泡颜色
  */
-- (void)setOutgoingBubbleColor:(UIColor *)bubbleColor;
+- (void)setOutgoingBubbleColor:(UIColor *)bubbleColor style_deprecated;
 
 /**
  * 开启图片消息的无边框遮罩效果。无边框遮罩效果更加美观，但是更消耗资源，存在图片的聊天界面下，转屏会出现卡顿，所以可能不适用没有锁定转屏的app
@@ -231,36 +264,36 @@
 - (void)enableMessageImageMask:(BOOL)enable;
 
 /**
- * 设置导航栏标题文字的元素颜色；
- * @param titleColor 导航栏标题文字颜色
- */
-- (void)setNavTitleColor:(UIColor *)titleColor;
-
-/**
  * 设置导航栏上的元素颜色；
  * @param tintColor 导航栏上的元素颜色
  */
-- (void)setNavigationBarTintColor:(UIColor *)tintColor;
+- (void)setNavigationBarTintColor:(UIColor *)tintColor style_deprecated;
+
+/**
+ * 设置导航栏标题颜色；
+ * @param tintColor 导航栏标题颜色
+ */
+- (void)setNavigationBarTitleColor:(UIColor *)tintColor style_deprecated;
 
 /**
  * 设置导航栏的背景色；
  * @param barColor 导航栏背景颜色
  */
-- (void)setNavigationBarColor:(UIColor *)barColor;
+- (void)setNavigationBarColor:(UIColor *)barColor style_deprecated;
 
 /**
  *  设置导航栏右键的图片
  *
  *  @param rightButtonImage 右键图片
  */
-- (void)setNavRightButton:(UIButton *)rightButton;
+- (void)setNavRightButton:(UIButton *)rightButton style_deprecated;
 
 /**
  *  设置导航栏左键的图片
  *
  *  @param leftButton 左键图片
  */
-- (void)setNavLeftButton:(UIButton *)leftButton;
+- (void)setNavLeftButton:(UIButton *)leftButton style_deprecated;
 
 /**
  *  设置导航栏标题
@@ -274,7 +307,7 @@
  *
  *  @param pullRefreshColor 颜色
  */
-- (void)setPullRefreshColor:(UIColor *)pullRefreshColor;
+- (void)setPullRefreshColor:(UIColor *)pullRefreshColor style_deprecated;
 
 /**
  * 设置客服的缺省头像图片；
@@ -293,14 +326,14 @@
  *  @param image 图片发送按钮image
  *  @param highlightedImage 图片发送按钮选中image
  */
-- (void)setPhotoSenderImage:(UIImage *)image highlightedImage:(UIImage *)highlightedImage;
+- (void)setPhotoSenderImage:(UIImage *)image highlightedImage:(UIImage *)highlightedImage style_deprecated;
 
 /**
  *  设置底部自定义发送语音的按钮图片；
  *  @param image 语音发送按钮image
  *  @param highlightedImage 语音发送按钮选中image
  */
-- (void)setVoiceSenderImage:(UIImage *)image highlightedImage:(UIImage *)highlightedImage;
+- (void)setVoiceSenderImage:(UIImage *)image highlightedImage:(UIImage *)highlightedImage style_deprecated;
 
 /**
  *  设置底部自定义发送文字的按钮图片
@@ -308,7 +341,7 @@
  *  @param image            文字发送按钮image
  *  @param highlightedImage 文字发送按钮选中image
  */
-- (void)setTextSenderImage:(UIImage *)image highlightedImage:(UIImage *)highlightedImage;
+- (void)setTextSenderImage:(UIImage *)image highlightedImage:(UIImage *)highlightedImage style_deprecated;
 
 /**
  *  设置底部自定义取消键盘的按钮图片
@@ -316,26 +349,26 @@
  *  @param image            取消键盘按钮image
  *  @param highlightedImage 取消键盘按钮选中image
  */
-- (void)setResignKeyboardImage:(UIImage *)image highlightedImage:(UIImage *)highlightedImage;
+- (void)setResignKeyboardImage:(UIImage *)image highlightedImage:(UIImage *)highlightedImage style_deprecated;
 
 /**
  * 设置自定义客服的消息气泡（发送过来的消息气泡）的背景图片；
  * @param bubbleImage 气泡图片
  */
-- (void)setIncomingBubbleImage:(UIImage *)bubbleImage;
+- (void)setIncomingBubbleImage:(UIImage *)bubbleImage style_deprecated;
 
 /**
  * 设置自定义顾客的消息气泡（发送出去的消息气泡）的背景图片；
  * @param bubbleImage 气泡图片
  */
-- (void)setOutgoingBubbleImage:(UIImage *)bubbleImage;
+- (void)setOutgoingBubbleImage:(UIImage *)bubbleImage style_deprecated;
 
 /**
  *  设置消息气泡的拉伸insets
  *
  *  @param stretchInsets 拉伸insets
  */
-- (void)setBubbleImageStretchInsets:(UIEdgeInsets)stretchInsets;
+- (void)setBubbleImageStretchInsets:(UIEdgeInsets)stretchInsets style_deprecated;
 
 /**
  *  设置录音的最大时长；默认60秒；
@@ -347,7 +380,7 @@
 /**
  *  设置导航栏时间条的颜色
  */
-- (void)setStatusBarStyle:(UIStatusBarStyle)statusBarStyle;
+- (void)setStatusBarStyle:(UIStatusBarStyle)statusBarStyle style_deprecated;
 
 #pragma 以下配置是美洽SDK用户所用到的配置
 #ifdef INCLUDE_MEIQIA_SDK

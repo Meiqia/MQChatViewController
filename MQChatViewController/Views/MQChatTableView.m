@@ -44,7 +44,7 @@ static CGFloat const kMQChatScrollBottomDistanceThreshold = 128.0;
 - (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style {
     self = [super initWithFrame:frame style:style];
     if (self) {
-        self.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
+        self.backgroundColor = [UIColor clearColor];
         self.separatorStyle = UITableViewCellSeparatorStyleNone;
         UITapGestureRecognizer *tapViewGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapChatTableView:)];
         tapViewGesture.cancelsTouchesInView = false;

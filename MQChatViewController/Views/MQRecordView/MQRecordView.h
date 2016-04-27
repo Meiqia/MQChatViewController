@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MQChatAudioTypes.h"
 
 @protocol MQRecordViewDelegate <NSObject>
 
@@ -29,6 +30,11 @@
 @property(nonatomic, assign) float marginBottom;
 /** 是否显示撤回语音 */
 @property(nonatomic,assign) BOOL revoke;
+
+///如果应用中有其他地方正在播放声音，比如游戏，需要将此设置为 YES，防止其他声音在录音播放完之后无法继续播放, 默认为 NO
+@property (nonatomic, assign) BOOL keepSessionActive;
+
+@property (nonatomic, assign) MQRecordMode recordMode;
 
 -(instancetype)initWithFrame:(CGRect)frame maxRecordDuration:(NSTimeInterval)duration;
 

@@ -75,6 +75,22 @@ static NSInteger const kMQMaxRecordVoiceDurationDeviation = 2;
     return self;
 }
 
+- (void)setRecordMode:(MQRecordMode)recordMode {
+    audioRecorder.recordMode = recordMode;
+}
+
+- (MQRecordMode)recordMode {
+    return audioRecorder.recordMode;
+}
+
+- (void)setKeepSessionActive:(BOOL)keepSessionActive {
+    audioRecorder.keepSessionActive = keepSessionActive;
+}
+
+- (BOOL)keepSessionActive {
+    return audioRecorder.keepSessionActive;
+}
+
 -(void)setRevoke:(BOOL)revoke
 {
     if (revoke != self.revoke) {
