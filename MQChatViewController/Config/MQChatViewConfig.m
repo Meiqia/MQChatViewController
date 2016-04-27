@@ -37,7 +37,7 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
 
 - (void)setConfigToDefault {
     
-    self.chatViewStyle = [MQChatViewStyle createWithStyle:MQChatViewStyleTypeDefault];
+    self.chatViewStyle = [MQChatViewStyle defaultStyle];
     
     self.hidesBottomBarWhenPushed   = true;
 //    self.isCustomizedChatViewFrame  = false;
@@ -74,6 +74,9 @@ NSString * const MQChatTableViewShouldRefresh = @"MQChatTableViewShouldRefresh";
     self.enableEvaluationButton    = true;
     
     self.maxVoiceDuration               = 60;
+    
+    self.incomingMsgSoundFileName       = @"MQNewMessageRing.mp3";
+    self.outgoingMsgSoundFileName       = @"MQSendMessageRing.mp3";
     
 #pragma 以下配置是美洽SDK用户所用到的配置
 #ifdef INCLUDE_MEIQIA_SDK

@@ -62,4 +62,9 @@
 + (UIImage *)agentOffDutyImage;
 + (UIImage *)agentOfflineImage;
 
++ (UIImage *)fileIcon;
++ (UIImage *)fileCancel;
++ (UIImage *)fileDonwload;
++ (UIImage *)backArrow;
+
 @end

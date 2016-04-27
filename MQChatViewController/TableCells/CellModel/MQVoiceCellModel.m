@@ -141,6 +141,11 @@ static CGFloat const kMQCellVoiceNotPlayPointViewDiameter = 8.0;
     NSTimeInterval voiceTimeInterval;
 }
 
+- (void)setVoiceHasPlayed {
+    self.isPlayed = YES;
+    [MQVoiceMessage setVoiceHasPlayedToDBWithMessageId:self.messageId];
+}
+
 #pragma initialize
 /**
  *  根据MQMessage内容来生成cell model

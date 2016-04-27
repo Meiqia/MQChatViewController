@@ -9,7 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "MQChatViewController.h"
 #import "MQChatViewConfig.h"
-#import <MeiQiaSDK/MQDefinition.h>
+#import "MQDefinition.h"
+#import "MQCustomizedUIText.h"
 
 #define style_deprecated __attribute__((deprecated("修改 MQChatViewStyleType 中的对应属性代替")))
 
@@ -22,6 +23,32 @@
 
 ///chatViewStyle 预设的聊天界面样式
 @property (nonatomic, strong) MQChatViewStyle *chatViewStyle;
+
+///如果应用中有其他地方正在播放声音，比如游戏，需要将此设置为 YES，防止其他声音在录音播放完之后无法继续播放
+@property (nonatomic, assign) BOOL keepAudioSessionActive;
+
+/**
+ typedef NS_ENUM(NSUInteger, MQRecordMode) {
+ MQRecordModePauseOther = 0, //暂停其他音频
+ MQRecordModeMixWithOther = AVAudioSessionCategoryOptionMixWithOthers, //和其他音频同时播放
+ MQRecordModeDuckOther = AVAudioSessionCategoryOptionDuckOthers //降低其他音频的声音
+ };
+*/
+@property (nonatomic, assign) MQRecordMode recordMode;
+
+/**
+ typedef NS_ENUM(NSUInteger, MQPlayMode) {
+ MQPlayModePauseOther = 0, //暂停其他音频
+ MQPlayModeMixWithOther = AVAudioSessionCategoryOptionMixWithOthers, //和其他音频同时播放
+ MQPlayModeDuckOther = AVAudioSessionCategoryOptionDuckOthers //降低其他音频的声音
+ };
+*/
+@property (nonatomic, assign) MQPlayMode playMode;
+
+/**
+ 设置显示聊天界面的时候，自动发送给客服的消息, 可以包括图片和文字
+ */
+@property (nonatomic, strong) NSArray *preSendMessages;
 
 /**
  * 在一个ViewController中Push出一个客服聊天界面
@@ -112,14 +139,14 @@
  * @warning 若文件名设置为空，则代表不播放声音
  */
 
-- (void)setIncomingMessageSoundFileName:(NSString *)soundFileName style_deprecated;
+- (void)setIncomingMessageSoundFileName:(NSString *)soundFileName;
 
 /**
  * 设置发送的声音；
  * @param soundFileName 声音文件；如果要自定义声音，请将声音文件放在 MQChatViewAsset.bundle 中
  * @warning 若文件名设置为空，则代表不播放声音
  */
-- (void)setOutgoingMessageSoundFileName:(NSString *)soundFileName style_deprecated;
+- (void)setOutgoingMessageSoundFileName:(NSString *)soundFileName;
 
 /**
  * 是否支持发送语音消息；默认支持
@@ -241,6 +268,12 @@
  * @param tintColor 导航栏上的元素颜色
  */
 - (void)setNavigationBarTintColor:(UIColor *)tintColor style_deprecated;
+
+/**
+ * 设置导航栏标题颜色；
+ * @param tintColor 导航栏标题颜色
+ */
+- (void)setNavigationBarTitleColor:(UIColor *)tintColor style_deprecated;
 
 /**
  * 设置导航栏的背景色；

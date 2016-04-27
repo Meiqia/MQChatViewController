@@ -23,7 +23,7 @@
 @property (nonatomic, retain) UIView *dialogView;    // Dialog's container view
 @property (nonatomic, retain) UIView *containerView; // Container within the dialog (place your ui elements here)
 
-@property (nonatomic, assign) id<CustomIOSAlertViewDelegate> delegate;
+@property (nonatomic, weak) id<CustomIOSAlertViewDelegate> delegate;
 @property (nonatomic, retain) NSArray *buttonTitles;
 @property (nonatomic, assign) BOOL useMotionEffects;
 

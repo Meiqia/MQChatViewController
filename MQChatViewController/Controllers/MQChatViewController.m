@@ -17,13 +17,13 @@
 #import "MQRecordView.h"
 #import "MQBundleUtil.h"
 #import "MQImageUtil.h"
-#import <MeiQiaSDK/MQDefinition.h>
+#import "MQDefinition.h"
 #import "MQEvaluationView.h"
 #import "MQAssetUtil.h"
 #import "MQStringSizeUtil.h"
 #import "MQTransitioningAnimation.h"
-#import "UIViewController+BackButtonHandler.h"
-#import <MeiQiaSDK/MQManager.h>
+#import "UIView+Layout.h"
+#import "MQCustomizedUIText.h"
 
 static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
@@ -34,6 +34,12 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 
 @end
 
+@interface MQChatViewController()
+
+@property (nonatomic, strong) id evaluateBarButtonItem;//保存隐藏的barButtonItem
+
+@end
+
 @implementation MQChatViewController {
     MQChatViewConfig *chatViewConfig;
     MQChatViewTableDataSource *tableDataSource;
@@ -41,11 +47,9 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     MQInputBar *chatInputBar;
     MQRecordView *recordView;
     MQEvaluationView *evaluationView;
-    CGSize viewSize;
     BOOL isMQCommunicationFailed;  //判断是否通信没有连接上
     UIStatusBarStyle previousStatusBarStyle;//当前statusBar样式
     BOOL previousStatusBarHidden;   //调出聊天视图界面前是否隐藏 statusBar
-//    BOOL previousStatusBarTranslucent; //调出聊天视图前的导航栏是否是半透明
 }
 
 - (void)dealloc {
@@ -56,6 +60,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 #ifdef INCLUDE_MEIQIA_SDK
     [self closeMeiqiaChatView];
 #endif
+    [MQCustomizedUIText reset];
 }
 
 - (instancetype)initWithChatViewManager:(MQChatViewConfig *)config {
@@ -68,26 +73,25 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.automaticallyAdjustsScrollViewInsets = true;
     previousStatusBarStyle = [UIApplication sharedApplication].statusBarStyle;
     previousStatusBarHidden = [UIApplication sharedApplication].statusBarHidden;
-//    previousStatusBarTranslucent = self.navigationController.navigationBar.translucent;
-    [[UIApplication sharedApplication] setStatusBarHidden:false];
-    self.navigationController.navigationBar.translucent = true;
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    [[UIApplication sharedApplication] setStatusBarStyle:[MQChatViewConfig sharedConfig].chatViewStyle.statusBarStyle];
+    [self setNeedsStatusBarAppearanceUpdate];
+    
     self.view.backgroundColor = [MQChatViewConfig sharedConfig].chatViewStyle.backgroundColor ?: [UIColor colorWithWhite:0.95 alpha:1];
-    viewSize = [UIScreen mainScreen].bounds.size;
     [self setNavBar];
     [self initChatTableView];
     [self initchatViewService];
     [self initEvaluationView];
-    [self initInputBar];
     [self initTableViewDataSource];
+    [self initInputBar];
     chatViewService.chatViewWidth = self.chatTableView.frame.size.width;
     [chatViewService sendLocalWelcomeChatMessage];
     
 #ifdef INCLUDE_MEIQIA_SDK
     [self updateNavBarTitle:[MQBundleUtil localizedStringForKey:@"wait_agent"]];
-    isMQCommunicationFailed = false;
+    isMQCommunicationFailed = NO;
     [self addObserver];
 #endif
 }
@@ -96,32 +100,29 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     [super viewDidDisappear:animated];
     [[NSNotificationCenter defaultCenter] postNotificationName:MQAudioPlayerDidInterruptNotification object:nil];
 //    //当横屏时，恢复原来的 statusBar 是否 hidden
-    if (viewSize.height < viewSize.width) {
-        [[UIApplication sharedApplication] setStatusBarHidden:previousStatusBarHidden];
-    }
+//    if (viewSize.height < viewSize.width) {
+//        [[UIApplication sharedApplication] setStatusBarHidden:previousStatusBarHidden];
+//    }
 //    //恢复原来的导航栏透明模式
 //    self.navigationController.navigationBar.translucent = previousStatusBarTranslucent;
 //    //恢复原来的导航栏时间条
     [UIApplication sharedApplication].statusBarStyle = previousStatusBarStyle;
-    
-    [MQServiceToViewInterface updateReadMessageToken];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     //更新view frame
-    viewSize = self.view.frame.size;
     [self updateContentViewsFrame];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [self.view endEditing:true];
+    [self.view endEditing:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [UIView setAnimationsEnabled:true];
+    [UIView setAnimationsEnabled:YES];
     [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
 }
 
@@ -130,22 +131,17 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     // Dispose of any resources that can be recreated.
 }
 
-- (BOOL)navigationShouldPopOnBackButton {
-    if ([MQChatViewConfig sharedConfig].presentingAnimation == TransiteAnimationTypePush) {
+- (void)dismissChatViewController {
+    if ([MQChatViewConfig sharedConfig].presentingAnimation == MQTransiteAnimationTypePush) {
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
             [self dismissViewControllerAnimated:YES completion:nil];
         } else {
-            [self.view.window.layer addAnimation:[[MQTransitioningAnimation sharedInstance] createDismissingTransiteAnimation:[MQChatViewConfig sharedConfig].presentingAnimation] forKey:nil];
+            [self.view.window.layer addAnimation:[MQTransitioningAnimation createDismissingTransiteAnimation:[MQChatViewConfig sharedConfig].presentingAnimation] forKey:nil];
             [self dismissViewControllerAnimated:NO completion:nil];
         }
-        return NO;
     } else {
-        return YES;
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
-}
-
-- (void)dismissChatViewController {
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)addObserver {
@@ -192,6 +188,7 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 - (void)initChatTableView {
     [self setChatTableViewFrame];
     self.chatTableView = [[MQChatTableView alloc] initWithFrame:chatViewConfig.chatViewFrame style:UITableViewStylePlain];
+    self.chatTableView.contentInset = UIEdgeInsetsMake(0, 0, kMQChatViewInputBarHeight, 0);
     self.chatTableView.chatTableViewDelegate = self;
     self.chatTableView.delegate = self;
     [self.view addSubview:self.chatTableView];
@@ -332,12 +329,21 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     if ([MQChatViewConfig sharedConfig].navBarRightButton) {
         return;
     }
-    self.navigationItem.rightBarButtonItem.customView.hidden = enabled;
+    
+    if (enabled) {
+        self.evaluateBarButtonItem = self.navigationItem.rightBarButtonItem;
+        self.navigationItem.rightBarButtonItem = nil;
+    } else {
+        if (self.evaluateBarButtonItem) {
+            self.navigationItem.rightBarButtonItem = self.evaluateBarButtonItem;
+        }
+    }
 }
 
 - (void)didGetHistoryMessagesWithCellNumber:(NSInteger)cellNumber isLoadOver:(BOOL)isLoadOver{
     [self.chatTableView finishLoadingTopRefreshViewWithCellNumber:cellNumber isLoadOver:isLoadOver];
-    [self.chatTableView reloadData];
+//    [self.chatTableView reloadData];
+    [self reloadChatTableView];
 }
 
 - (void)didUpdateCellModelWithIndexPath:(NSIndexPath *)indexPath {
@@ -345,7 +351,11 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 - (void)reloadChatTableView {
+    CGSize preContentSize = self.chatTableView.contentSize;
     [self.chatTableView reloadData];
+    if (!CGSizeEqualToSize(preContentSize, self.chatTableView.contentSize)) {
+        [self scrollTableViewToBottom];
+    }
 }
 
 - (void)scrollTableViewToBottom {
@@ -461,8 +471,10 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
         recordView = [[MQRecordView alloc] initWithFrame:CGRectMake(0,
                                                                     0,
                                                                     self.chatTableView.frame.size.width,
-                                                                    viewSize.height - chatInputBar.frame.size.height)
+                                                                    /*viewSize.height*/[UIScreen mainScreen].bounds.size.height - chatInputBar.frame.size.height)
                                        maxRecordDuration:[MQChatViewConfig sharedConfig].maxVoiceDuration];
+        recordView.recordMode = [MQChatViewConfig sharedConfig].recordMode;
+        recordView.keepSessionActive = [MQChatViewConfig sharedConfig].keepAudioSessionActive;
         recordView.recordViewDelegate = self;
         [self.view addSubview:recordView];
     }
@@ -560,66 +572,51 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
 }
 
 #pragma ios7以下系统的横屏的事件
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    NSLog(@"willAnimateRotationToInterfaceOrientation");
-    viewSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height);
-}
+//- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+//{
+//    NSLog(@"willAnimateRotationToInterfaceOrientation");
+//    viewSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height);
+//}
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     [self updateContentViewsFrame];
+    [self.view endEditing:YES];
 }
 
 #pragma ios8以上系统的横屏的事件
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
-     {
-     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
-     {
-         [self updateContentViewsFrame];
-     }];
-    viewSize = size;
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+    } completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+        [self updateContentViewsFrame];
+    }];
+    [self.view endEditing:YES];
 }
 
 //更新viewConroller中所有的view的frame
 - (void)updateContentViewsFrame {
-    //更新view
-    CGFloat delta = 0;
-    //    if (!self.navigationController.navigationBar.translucent) {
-    //        //如果导航栏不透明，则view的起始位置应该是导航栏下方
-    //        delta = self.navigationController.navigationBar.frame.size.height;
-    //        if (![UIApplication sharedApplication].statusBarHidden) {
-    //            delta += 20;
-    //        }
-    //    }
-    self.view.frame = CGRectMake([MQChatViewConfig sharedConfig].chatViewControllerPoint.x, [MQChatViewConfig sharedConfig].chatViewControllerPoint.y + delta, viewSize.width, viewSize.height);
     //更新tableView的frame
     [self setChatTableViewFrame];
     //更新cellModel的frame
     chatViewService.chatViewWidth = self.chatTableView.frame.size.width;
     [chatViewService updateCellModelsFrame];
-    [self.chatTableView reloadData];
+    [self reloadChatTableView];
     //更新inputBar的frame
-    CGRect inputBarFrame = CGRectMake(self.chatTableView.frame.origin.x, self.chatTableView.frame.origin.y+self.chatTableView.frame.size.height, self.chatTableView.frame.size.width, kMQChatViewInputBarHeight);
+    CGRect inputBarFrame = CGRectMake(self.chatTableView.frame.origin.x, self.chatTableView.frame.origin.y+self.chatTableView.frame.size.height - kMQChatViewInputBarHeight, self.chatTableView.frame.size.width, kMQChatViewInputBarHeight);
     [chatInputBar updateFrame:inputBarFrame];
     //更新recordView的frame
     CGRect recordViewFrame = CGRectMake(0,
                                         0,
                                         self.chatTableView.frame.size.width,
-                                        viewSize.height - chatInputBar.frame.size.height);
+                                        self.view.viewHeight);
     [recordView updateFrame:recordViewFrame];
 }
 
 - (void)setChatTableViewFrame {
     //更新tableView的frame
-//    if (!chatViewConfig.isCustomizedChatViewFrame) {
-        chatViewConfig.chatViewFrame = CGRectMake(0, 0, viewSize.width, viewSize.height - kMQChatViewInputBarHeight);
-        [self.chatTableView updateFrame:chatViewConfig.chatViewFrame];
-//    } else {
-//        //开发者如果自定义了TableView的frame，在这里重新处理横屏后的tableView的frame
-//    }
+    chatViewConfig.chatViewFrame = self.view.bounds;
+    [self.chatTableView updateFrame:chatViewConfig.chatViewFrame];
 }
 
 #ifdef INCLUDE_MEIQIA_SDK
@@ -669,6 +666,11 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
         default:
             break;
     }
+    
+    if ([titleLabel.text isEqualToString:[MQBundleUtil localizedStringForKey:@"no_agent_title"]]) {
+        statusImageView.image = nil;
+    }
+    
     statusImageView.frame = CGRectMake(0, titleHeight/2 - statusImageView.image.size.height/2, statusImageView.image.size.width, statusImageView.image.size.height);
     titleLabel.frame = CGRectMake(statusImageView.frame.size.width + 8, 0, titleWidth, titleHeight);
     titleView.frame = CGRectMake(0, 0, titleLabel.frame.origin.x + titleLabel.frame.size.width, titleHeight);

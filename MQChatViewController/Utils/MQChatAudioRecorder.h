@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MQChatAudioTypes.h"
 
 @protocol MQChatAudioRecorderDelegate <NSObject>
 
@@ -34,9 +35,13 @@
 
 @end
 
+
 @interface MQChatAudioRecorder : NSObject
 
 @property (nonatomic ,weak) id<MQChatAudioRecorderDelegate> delegate;
+///如果应用中有其他地方正在播放声音，比如游戏，需要将此设置为 YES，防止其他声音在录音播放完之后无法继续播放
+@property (nonatomic, assign) BOOL keepSessionActive;
+@property (nonatomic, assign) MQRecordMode recordMode;
 
 - (void)beginRecording;
 

@@ -23,6 +23,9 @@
 #import "MQEventCellModel.h"
 #import "MQAssetUtil.h"
 #import "MQBundleUtil.h"
+#import "MQFileDownloadCellModel.h"
+#import "MQServiceToViewInterface.h"
+#import "MQDefinition.h"
 
 static NSInteger const kMQChatMessageMaxTimeInterval = 60;
 
@@ -41,6 +44,7 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
 @interface MQChatViewService() <MQServiceToViewInterfaceDelegate, MQCellModelDelegate>
 
 @property (nonatomic, assign) MQClientStatus clientStatus;
+@property (nonatomic, strong) MQServiceToViewInterface *serviceToViewInterface;
 
 @end
 #else
@@ -51,7 +55,6 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
 
 @implementation MQChatViewService {
 #ifdef INCLUDE_MEIQIA_SDK
-    MQServiceToViewInterface *serviceToViewInterface;
     BOOL isThereNoAgent;   //用来判断当前是否没有客服
     BOOL addedNoAgentTip;  //是否已经说明了没有客服标记
     BOOL didSetOnline;     //用来判断顾客是否尝试登陆了
@@ -76,17 +79,21 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
     return self;
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#ifdef INCLUDE_MEIQIA_SDK
 - (void)socketStatusChanged:(NSNotification *)notification {
-    static BOOL shouldHandleSocketConnectNotification = NO; //当第一次进入的时候，会受到 socket 连上的消息，但是这个时候并不应该执行重新上线的逻辑，重新上线的逻辑必须是 socket 断开之后才有必要去执行的，这个标志的作用就是在 socket 有过断开的情况才去执行。
-    if ([[notification.userInfo objectForKey:MQ_NOTIFICATION_SOCKET_STATUS_CHANGE] isEqualToString:SOCKET_STATUS_CONNECTED]) {
-        if (shouldHandleSocketConnectNotification) {
-            [self setClientOnline];
-            shouldHandleSocketConnectNotification = NO;
-        }
-    } else {
+    static BOOL shouldHandleSocketConnectNotification = NO; //当第一次进入的时候，会收到 socket 连上的消息，但是这个时候并不应该执行重新上线的逻辑，重新上线的逻辑必须是 socket 断开之后才有必要去执行的，这个标志的作用就是在 socket 有过断开的情况才去执行。
+    if ([[notification.userInfo objectForKey:MQ_NOTIFICATION_SOCKET_STATUS_CHANGE] isEqualToString:SOCKET_STATUS_CONNECTED] && shouldHandleSocketConnectNotification) {
+        [self setClientOnline];
+        shouldHandleSocketConnectNotification = NO;
+    } else if([[notification.userInfo objectForKey:MQ_NOTIFICATION_SOCKET_STATUS_CHANGE] isEqualToString:SOCKET_STATUS_DISCONNECTED]){
         shouldHandleSocketConnectNotification = YES;
     }
 }
+#endif
 
 #pragma 增加cellModel并刷新tableView
 - (void)addCellModelAndReloadTableViewWithModel:(id<MQCellModelProtocol>)cellModel {
@@ -118,7 +125,9 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
         if ([cellModel isKindOfClass:[MQTextCellModel class]] ||
             [cellModel isKindOfClass:[MQImageCellModel class]] ||
             [cellModel isKindOfClass:[MQVoiceCellModel class]] ||
-            [cellModel isKindOfClass:[MQEventCellModel class]]) {
+            [cellModel isKindOfClass:[MQEventCellModel class]] ||
+            [cellModel isKindOfClass:[MQFileDownloadCellModel class]])
+        {
             return [cellModel getCellDate];
         }
     }
@@ -214,10 +223,20 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
     if (index < 0 || self.cellModels.count <= index-1) {
         return;
     }
+    
     id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index-1];
     if (cellModel && [cellModel isKindOfClass:[MQMessageDateCellModel class]]) {
         [self.cellModels removeObjectAtIndex:index-1];
+        index --;
     }
+    
+    if (self.cellModels.count > index) {
+        id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index];
+        if (cellModel && [cellModel isKindOfClass:[MQTipsCellModel class]]) {
+            [self.cellModels removeObjectAtIndex:index];
+        }
+    }
+    
     //重新发送
     if (resendData[@"text"]) {
         [self sendTextMessageWithContent:resendData[@"text"]];
@@ -449,10 +468,10 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
     id<MQCellModelProtocol> cellModel = [self.cellModels objectAtIndex:index];
     if ([cellModel isKindOfClass:[MQVoiceCellModel class]]) {
         MQVoiceCellModel *voiceCellModel = (MQVoiceCellModel *)cellModel;
-        voiceCellModel.isPlayed = true;
-#ifdef INCLUDE_MEIQIA_SDK
-        [MQServiceToViewInterface didTapMessageWithMessageId:[cellModel getCellMessageId]];
-#endif
+        [voiceCellModel setVoiceHasPlayed];
+//        #ifdef INCLUDE_MEIQIA_SDK
+//        [MQServiceToViewInterface didTapMessageWithMessageId:[cellModel getCellMessageId]];
+//#endif
     }
 }
 
@@ -526,7 +545,10 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
         for (MQBaseMessage *message in messages) {
             [historyMessages insertObject:message atIndex:0];
         }
+    } else {
+        [MQServiceToViewInterface updateMessageIds:[historyMessages valueForKey:@"messageId"] toReadStatus:YES];
     }
+    
     for (MQBaseMessage *message in historyMessages) {
         id<MQCellModelProtocol> cellModel;
         if ([message isKindOfClass:[MQTextMessage class]]) {
@@ -535,6 +557,8 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
             cellModel = [[MQImageCellModel alloc] initCellModelWithMessage:(MQImageMessage *)message cellWidth:self.chatViewWidth delegate:self];
         } else if ([message isKindOfClass:[MQVoiceMessage class]]) {
             cellModel = [[MQVoiceCellModel alloc] initCellModelWithMessage:(MQVoiceMessage *)message cellWidth:self.chatViewWidth delegate:self];
+        } else if ([message isKindOfClass:[MQFileDownloadMessage class]]) {
+            cellModel = [[MQFileDownloadCellModel alloc] initCellModelWithMessage:(MQFileDownloadMessage *)message cellWidth:self.chatViewWidth delegate:self];
         } else if ([message isKindOfClass:[MQEventMessage class]]) {
             MQEventMessage *eventMessage = (MQEventMessage *)message;
             if (eventMessage.eventType == MQChatEventTypeInviteEvaluation) {
@@ -646,87 +670,104 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
     MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initCellModelWithTips:tips cellWidth:self.chatViewWidth enableLinesDisplay:enableLinesDisplay];
     [self.cellModels addObject:cellModel];
     [self reloadChatTableView];
+    
+    if (self.delegate) {
+        if ([self.delegate respondsToSelector:@selector(scrollTableViewToBottom)]) {
+            [self.delegate scrollTableViewToBottom];
+        }
+    }
 }
 
 #ifdef INCLUDE_MEIQIA_SDK
 
 #pragma 顾客上线的逻辑
+//上线
 - (void)setClientOnline {
-    //上线
-
     if (self.clientStatus == MQClientStatusOnlining) {
         return;
     }
     
     self.clientStatus = MQClientStatusOnlining;
     
-    __weak __typeof(self) weakSelf = self;
-    serviceToViewInterface = [[MQServiceToViewInterface alloc] init];
     [MQServiceToViewInterface setScheduledAgentWithAgentId:[MQChatViewConfig sharedConfig].scheduledAgentId agentGroupId:[MQChatViewConfig sharedConfig].scheduledGroupId scheduleRule:[MQChatViewConfig sharedConfig].scheduleRule];
     if ([MQChatViewConfig sharedConfig].MQClientId.length == 0 && [MQChatViewConfig sharedConfig].customizedId.length > 0) {
-        [serviceToViewInterface setClientOnlineWithCustomizedId:[MQChatViewConfig sharedConfig].customizedId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
-            
-            __strong typeof (weakSelf) strongSelf = weakSelf;
-            
-            didSetOnline = true;
-            strongSelf.clientStatus = MQClientStatusOnline;
-            
-            MQChatAgentStatus agentStatus = [MQServiceToViewInterface getCurrentAgentStatus];
-            if (!completion) {
-                //没有分配到客服
-                agentName = [MQBundleUtil localizedStringForKey: agentName && agentName.length>0 ? agentName : @"no_agent_title"];
-                agentStatus = MQChatAgentStatusOffLine;
-            }
-            //上传顾客信息
-            [weakSelf setCurrentClientInfoWithCompletion:^(BOOL success) {
-                //获取顾客信息
-                [weakSelf getClientInfo];
-            }];
-            //更新客服聊天界面标题
-            [weakSelf updateChatTitleWithAgentName:agentName agentStatus:agentStatus];
-            if (receivedMessages) {
-                [weakSelf saveToCellModelsWithMessages:receivedMessages isInsertAtFirstIndex:false];
-                if (weakSelf.delegate) {
-                    if ([weakSelf.delegate respondsToSelector:@selector(scrollTableViewToBottom)]) {
-                        [weakSelf.delegate scrollTableViewToBottom];
-                    }
-                }
-            }
-        } receiveMessageDelegate:self];
-        return;
+        [self onlineWithCustomizedId];
+    } else {
+        [self onlineWithClientId];
     }
-    [serviceToViewInterface setClientOnlineWithClientId:[MQChatViewConfig sharedConfig].MQClientId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
-        
+}
+
+- (void)onlineWithClientId {
+    __weak typeof(self) weakSelf = self;
+    [self.serviceToViewInterface setClientOnlineWithClientId:[MQChatViewConfig sharedConfig].MQClientId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
         __strong typeof (weakSelf) strongSelf = weakSelf;
-        
-        didSetOnline = true;
-        strongSelf.clientStatus = MQClientStatusOnline;
-        
-        MQChatAgentStatus agentStatus = [MQServiceToViewInterface getCurrentAgentStatus];
-        if (!completion) {
-            //没有分配到客服
-            agentName = [MQBundleUtil localizedStringForKey: agentName && agentName.length>0 ? agentName : @"no_agent_title"];
-            [weakSelf.delegate hideRightBarButtonItem:YES];
-            agentStatus = MQChatAgentStatusOffLine;
-        }else{
-            [weakSelf.delegate hideRightBarButtonItem:NO];
-        }
-        //上传顾客信息
-        [weakSelf setCurrentClientInfoWithCompletion:^(BOOL success) {
-            //获取顾客信息
-            [weakSelf getClientInfo];
-        }];
-        //更新客服聊天界面标题
-        [weakSelf updateChatTitleWithAgentName:agentName agentStatus:agentStatus];
-        if (receivedMessages) {
-            [weakSelf saveToCellModelsWithMessages:receivedMessages isInsertAtFirstIndex:false];
-            if (weakSelf.delegate) {
-                if ([weakSelf.delegate respondsToSelector:@selector(scrollTableViewToBottom)]) {
-                    [weakSelf.delegate scrollTableViewToBottom];
-                }
+        [strongSelf handleClientOnlineWithAgentName:agentName receivedMessages:receivedMessages completeStatus:completion];
+    } receiveMessageDelegate:self];
+}
+
+- (void)onlineWithCustomizedId {
+    __weak typeof(self) weakSelf = self;
+    [self.serviceToViewInterface setClientOnlineWithCustomizedId:[MQChatViewConfig sharedConfig].customizedId success:^(BOOL completion, NSString *agentName, NSArray *receivedMessages) {
+        __strong typeof (weakSelf) strongSelf = weakSelf;
+        [strongSelf handleClientOnlineWithAgentName:agentName receivedMessages:receivedMessages completeStatus:completion];
+    } receiveMessageDelegate:self];
+}
+
+- (void)handleClientOnlineWithAgentName:(NSString *)agentName receivedMessages:(NSArray *)receivedMessages completeStatus:(BOOL)completion {
+    didSetOnline = true;
+    
+    self.clientStatus = MQClientStatusOnline;
+    
+    MQChatAgentStatus agentStatus = [MQServiceToViewInterface getCurrentAgentStatus];
+    if (!completion) {
+        //没有分配到客服
+        agentName = [MQBundleUtil localizedStringForKey: agentName && agentName.length > 0 ? agentName : @"no_agent_title"];
+        agentStatus = MQChatAgentStatusOffLine;
+    }
+    
+    dispatch_group_t clientOnlineGroup = dispatch_group_create();
+    dispatch_group_enter(clientOnlineGroup);
+    
+    //更新客服聊天界面标题
+    [self updateChatTitleWithAgentName:agentName agentStatus:agentStatus];
+    if (receivedMessages) {
+        [self saveToCellModelsWithMessages:receivedMessages isInsertAtFirstIndex:false];
+        if (self.delegate) {
+            if ([self.delegate respondsToSelector:@selector(scrollTableViewToBottom)]) {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{ //确保 tableView 的 contentInsect 生效，tableView 能够正确滑动到底部
+                    [self.delegate scrollTableViewToBottom];
+                    dispatch_group_leave(clientOnlineGroup);
+                });
             }
         }
-    } receiveMessageDelegate:self];
+    }
+    
+    __weak typeof(self) weakSelf = self;
+    //上传顾客信息
+    [self setCurrentClientInfoWithCompletion:^(BOOL success) {
+        //获取顾客信息
+        __strong typeof (weakSelf) strongSelf = weakSelf;
+        [strongSelf getClientInfo];
+    }];
+    
+    dispatch_group_notify(clientOnlineGroup, dispatch_get_main_queue(), ^{
+        __strong typeof (weakSelf) strongSelf = weakSelf;
+        [strongSelf afterClientOnline];
+    });
+}
+
+- (void)afterClientOnline {
+    [self sendPreSendMessages];
+}
+
+- (void)sendPreSendMessages {
+    for (id messageContent in [MQChatViewConfig sharedConfig].preSendMessages) {
+        if ([messageContent isKindOfClass:NSString.class]) {
+            [self sendTextMessageWithContent:messageContent];
+        } else if ([messageContent isKindOfClass:UIImage.class]) {
+            [self sendImageMessageWithImage:messageContent];
+        }
+    }
 }
 
 //获取顾客信息
@@ -777,10 +818,14 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
         if ([self.delegate respondsToSelector:@selector(didScheduleClientWithViewTitle:agentStatus:)]) {
             [self.delegate didScheduleClientWithViewTitle:viewTitle agentStatus:agentStatus];
         }
+        
+        if ([self.delegate respondsToSelector:@selector(hideRightBarButtonItem:)]) {
+            [self.delegate hideRightBarButtonItem:agentName.length == 0];
+        }
     }
 }
 
-- (void)addSystemTips{
+- (void)addNoAgentTip{
     if (!isThereNoAgent) {
         return;
     }
@@ -846,7 +891,11 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
 }
 
 - (void)didReceiveTipsContent:(NSString *)tipsContent {
-    MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initCellModelWithTips:tipsContent cellWidth:self.chatViewWidth enableLinesDisplay:true];
+    [self didReceiveTipsContent:tipsContent showLines:YES];
+}
+
+- (void)didReceiveTipsContent:(NSString *)tipsContent showLines:(BOOL)show {
+    MQTipsCellModel *cellModel = [[MQTipsCellModel alloc] initCellModelWithTips:tipsContent cellWidth:self.chatViewWidth enableLinesDisplay:show];
     [self addCellModelAfterReceivedWithCellModel:cellModel];
 }
 
@@ -885,9 +934,8 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
     } else {
         isThereNoAgent = true;
     }
-    if (isThereNoAgent) {
-        [self.delegate hideRightBarButtonItem:YES];
-        [self addSystemTips];
+    if (isThereNoAgent && ![MQServiceToViewInterface isBlacklisted]) {
+        [self addNoAgentTip];
         [self updateChatTitleWithAgentName:[MQBundleUtil localizedStringForKey:@"no_agent_title"] agentStatus:MQChatAgentStatusOffLine];
     }else{
         //显示评价按钮
@@ -945,4 +993,13 @@ typedef NS_ENUM(NSUInteger, MQClientStatus) {
 }
 
 
+#pragma mark - lazyload
+#ifdef INCLUDE_MEIQIA_SDK
+- (MQServiceToViewInterface *)serviceToViewInterface {
+    if (!_serviceToViewInterface) {
+        _serviceToViewInterface = [MQServiceToViewInterface new];
+    }
+    return _serviceToViewInterface;
+}
+#endif
 @end

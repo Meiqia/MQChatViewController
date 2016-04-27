@@ -102,7 +102,7 @@ static const CGFloat kMinImageScale = 1.0f;
     if(!__imageView){
         __imageView = [[UIImageView alloc]init];
         [__scrollView addSubview:__imageView];
-        __imageView.contentMode = UIViewContentModeScaleAspectFill;
+        __imageView.contentMode = UIViewContentModeScaleAspectFit;
     }
     
     [__scrollView setZoomScale:1.0f animated:YES];
@@ -503,6 +503,7 @@ didFinishSavingWithError:(NSError *)error
     _tableView.delaysContentTouches = YES;
     [_tableView setShowsVerticalScrollIndicator:NO];
     [_tableView setContentOffset:CGPointMake(0, _initialIndex * windowBounds.size.width)];
+    _tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
     _blackMask = [[UIView alloc] initWithFrame:windowBounds];
     _blackMask.backgroundColor = [UIColor blackColor];

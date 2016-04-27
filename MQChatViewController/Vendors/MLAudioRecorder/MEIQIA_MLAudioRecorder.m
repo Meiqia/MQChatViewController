@@ -118,7 +118,7 @@ void inputBufferHandler(void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRe
     
     NSError *error = nil;
     //设置audio session的category
-    BOOL ret = [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:&error];
+    BOOL ret = [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:(AVAudioSessionCategoryOptions)self.recordMode error:&error];
     if (!ret) {
         [self postAErrorWithErrorCode:MLAudioRecorderErrorCodeAboutSession andDescription:@"为AVAudioSession设置Category失败"];
         return;
@@ -194,7 +194,10 @@ void inputBufferHandler(void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRe
         //停止录音队列和移除缓冲区,以及关闭session，这里无需考虑成功与否
         AudioQueueStop(_audioQueue, true);
         AudioQueueDispose(_audioQueue, true);
-        [[AVAudioSession sharedInstance] setActive:NO error:nil];
+        
+        if (!self.keepSessionActive) {
+            [[AVAudioSession sharedInstance] setActive:NO withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:nil];
+        }
         
         //这里直接做同步
         __block BOOL isContinue = YES;
@@ -259,7 +262,10 @@ void inputBufferHandler(void *inUserData, AudioQueueRef inAQ, AudioQueueBufferRe
     
     AudioQueueStop(_audioQueue, true);
     AudioQueueDispose(_audioQueue, true);
-    [[AVAudioSession sharedInstance] setActive:NO error:nil];
+    
+    if (!self.keepSessionActive) {
+        [[AVAudioSession sharedInstance] setActive:NO withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:nil];
+    }
     
     if(self.fileWriterDelegate){
         dispatch_sync(self.writeFileQueue, ^{

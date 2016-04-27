@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#define DIR_RECEIVED_FILE [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingString:@"/received_files/"]
+
 @interface MQChatFileUtil : NSObject
 
 //判断文件是否存在
@@ -27,5 +29,9 @@
  *  @param fileName 声音文件名字
  */
 + (void)playSoundWithSoundFile:(NSString *)fileName;
+
++ (BOOL)saveFileWithName:(NSString *)fileName data:(NSData *)data;
+
++ (id)getFileWithName:(NSString *)fileName;
 
 @end

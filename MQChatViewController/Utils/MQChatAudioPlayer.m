@@ -65,7 +65,7 @@
 -(void)setupPlaySound{
     UIApplication *app = [UIApplication sharedApplication];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(stopSound) name:UIApplicationDidEnterBackgroundNotification object:app];
-    [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: nil];
+    [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback withOptions:(AVAudioSessionCategoryOptions)self.playMode error: nil];
     [[AVAudioSession sharedInstance] setActive:YES error:nil];
     
     //接收关闭声音的通知
@@ -120,7 +120,10 @@
     }
     [self removeAudioObserver];
     [self.delegate MQAudioPlayerDidFinishPlay];
-    [[AVAudioSession sharedInstance] setActive:NO withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:nil];
+    
+    if (!self.keepSessionActive) {
+        [[AVAudioSession sharedInstance] setActive:NO withOptions:AVAudioSessionSetActiveOptionNotifyOthersOnDeactivation error:nil];
+    }
 }
 
 //处理监听触发事件

@@ -77,3 +77,14 @@
 "meiqia_communication_failed" = "Sorry, cannot access communication server, please change your network and retry.";
 
 "meiqia_evaluation_sheet"     = "Evaluate";
+
+"file_download_file_is_expired" = "File is overdue";
+"file_download_canceld" = "Download canceled";
+"file_download_failed" = "Download fail";
+"file_download_downloading" = "Downloading...";
+"file_download_complete" = "Download complete";
+"file_download_ %@ ∙ %@overdue" = "%@ ∙ overdue in %@ hours";
+
+"message_tips_send_message_fail_listed_in_black_list" = "your message has been blocked";
+
+"message_tips_online_failed_listed_in_black_list" = "You are blacklisted";

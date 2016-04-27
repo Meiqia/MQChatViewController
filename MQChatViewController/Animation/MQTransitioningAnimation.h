@@ -13,12 +13,10 @@
 
 @interface MQTransitioningAnimation : NSObject
 
-@property (nonatomic, readonly, strong) MQShareTransitioningDelegateImpl *transitioningDelegateImpl;
++ (id <UIViewControllerTransitioningDelegate>)transitioningDelegateImpl;
 
-+ (instancetype)sharedInstance;
++ (CATransition *)createPresentingTransiteAnimation:(MQTransiteAnimationType)animation;
 
-- (CATransition *)createPresentingTransiteAnimation:(TransiteAnimationType)animation;
-
-- (CATransition *)createDismissingTransiteAnimation:(TransiteAnimationType)animation;
++ (CATransition *)createDismissingTransiteAnimation:(MQTransiteAnimationType)animation;
 
 @end

@@ -9,9 +9,10 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "MQChatViewStyle.h"
+#import "MQChatAudioTypes.h"
 
 //是否引入美洽SDK
-#define INCLUDE_MEIQIA_SDK
+//#define INCLUDE_MEIQIA_SDK
 
 /** 关闭键盘的通知 */
 extern NSString * const MQChatViewKeyboardResignFirstResponderNotification;
@@ -41,9 +42,9 @@ typedef enum : NSUInteger {
 /*
  显示聊天窗口的动画
  */
-typedef NS_ENUM(NSUInteger, TransiteAnimationType) {
-    TransiteAnimationTypeDefault = 0,
-    TransiteAnimationTypePush
+typedef NS_ENUM(NSUInteger, MQTransiteAnimationType) {
+    MQTransiteAnimationTypeDefault = 0,
+    MQTransiteAnimationTypePush
 };
 
 /**
@@ -61,7 +62,7 @@ typedef NS_ENUM(NSUInteger, TransiteAnimationType) {
 @property (nonatomic, strong) NSMutableArray *numberRegexs;
 @property (nonatomic, strong) NSMutableArray *linkRegexs;
 @property (nonatomic, strong) NSMutableArray *emailRegexs;
-@property (nonatomic, assign) TransiteAnimationType presentingAnimation;
+@property (nonatomic, assign) MQTransiteAnimationType presentingAnimation;
 
 @property (nonatomic, copy  ) NSString *chatWelcomeText;
 @property (nonatomic, copy  ) NSString *agentName;
@@ -92,6 +93,14 @@ typedef NS_ENUM(NSUInteger, TransiteAnimationType) {
 
 
 @property (nonatomic, assign) NSTimeInterval maxVoiceDuration;
+
+///如果应用中有其他地方正在播放声音，比如游戏，需要将此设置为 YES，防止其他声音在录音或者播放完之后无法继续播放
+@property (nonatomic, assign) BOOL keepAudioSessionActive;
+@property (nonatomic, assign) MQRecordMode recordMode;
+@property (nonatomic, assign) MQPlayMode playMode;
+
+@property (nonatomic, strong) NSArray *preSendMessages;
+
 
 #pragma 以下配置是美洽SDK用户所用到的配置
 #ifdef INCLUDE_MEIQIA_SDK

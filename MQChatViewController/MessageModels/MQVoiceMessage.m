@@ -7,6 +7,7 @@
 //
 
 #import "MQVoiceMessage.h"
+#import "MQServiceToViewInterface.h"
 
 @implementation MQVoiceMessage
 
@@ -27,6 +28,17 @@
     self = [self init];
     self.voiceData = voiceDate;
     return self;
+}
+
++ (void)setVoiceHasPlayedToDBWithMessageId:(NSString *)messageId {
+    [MQServiceToViewInterface updateMessageWithId:messageId forAccessoryData:@{@"isPlayed":@(YES)}];
+}
+
+- (void)handleAccessoryData:(NSDictionary *)accessoryData {
+    NSNumber *isPlayed = [accessoryData objectForKey:@"isPlayed"];
+    if (isPlayed) {
+        self.isPlayed = isPlayed.boolValue;
+    }
 }
 
 @end

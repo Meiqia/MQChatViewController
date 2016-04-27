@@ -226,4 +226,19 @@
     return [MQAssetUtil imageFromBundleWithName:@"MQAgentStatusOffline"];
 }
 
++ (UIImage *)fileIcon {
+    return [MQAssetUtil imageFromBundleWithName:@"fileIcon"];
+}
+
++ (UIImage *)fileCancel {
+    return [MQAssetUtil imageFromBundleWithName:@"MQFileCancel"];
+}
+
++ (UIImage *)fileDonwload {
+    return [MQAssetUtil imageFromBundleWithName:@"MQFileDownload"];
+}
+
++ (UIImage *)backArrow {
+    return [[MQAssetUtil imageFromBundleWithName:@"backArrow"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+}
 @end
