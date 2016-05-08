@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3142C8361CDCACF400FBC0E0 /* MQMessageFormInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3142C82F1CDCACF400FBC0E0 /* MQMessageFormInputView.m */; };
+		3142C8371CDCACF400FBC0E0 /* MQMessageFormImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3142C8321CDCACF400FBC0E0 /* MQMessageFormImageView.m */; };
+		3142C83C1CDCAD4500FBC0E0 /* MQMessageFormInputModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3142C83B1CDCAD4500FBC0E0 /* MQMessageFormInputModel.m */; };
+		3142C83F1CDCAD7000FBC0E0 /* MQMessageFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3142C83E1CDCAD7000FBC0E0 /* MQMessageFormViewController.m */; };
+		31EB19A41CDF30C00081309D /* MQMessageFormViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31EB19A31CDF30BF0081309D /* MQMessageFormViewManager.m */; };
+		31EB19A71CDF33210081309D /* MQMessageFormConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 31EB19A61CDF33210081309D /* MQMessageFormConfig.m */; };
+		31EB19AA1CE068A20081309D /* MQMessageFormViewService.m in Sources */ = {isa = PBXBuildFile; fileRef = 31EB19A91CE068A20081309D /* MQMessageFormViewService.m */; };
+		31EB1B1A1CE1E4790081309D /* MQMessageFormTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31EB1B191CE1E4790081309D /* MQMessageFormTextView.m */; };
+		31EB1C8D1CE300790081309D /* MQMessageFormViewStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 31EB1C8C1CE300790081309D /* MQMessageFormViewStyle.m */; };
 		CC45FCEF1BE36B1900DE0BFB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FCEE1BE36B1900DE0BFB /* main.m */; };
 		CC45FCF21BE36B1900DE0BFB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FCF11BE36B1900DE0BFB /* AppDelegate.m */; };
 		CC45FCF51BE36B1900DE0BFB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC45FCF41BE36B1900DE0BFB /* ViewController.m */; };
@@ -137,6 +146,24 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3142C82E1CDCACF400FBC0E0 /* MQMessageFormInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessageFormInputView.h; sourceTree = "<group>"; };
+		3142C82F1CDCACF400FBC0E0 /* MQMessageFormInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageFormInputView.m; sourceTree = "<group>"; };
+		3142C8311CDCACF400FBC0E0 /* MQMessageFormImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessageFormImageView.h; sourceTree = "<group>"; };
+		3142C8321CDCACF400FBC0E0 /* MQMessageFormImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageFormImageView.m; sourceTree = "<group>"; };
+		3142C83A1CDCAD4500FBC0E0 /* MQMessageFormInputModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessageFormInputModel.h; sourceTree = "<group>"; };
+		3142C83B1CDCAD4500FBC0E0 /* MQMessageFormInputModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageFormInputModel.m; sourceTree = "<group>"; };
+		3142C83D1CDCAD7000FBC0E0 /* MQMessageFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessageFormViewController.h; sourceTree = "<group>"; };
+		3142C83E1CDCAD7000FBC0E0 /* MQMessageFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageFormViewController.m; sourceTree = "<group>"; };
+		31EB19A21CDF30BF0081309D /* MQMessageFormViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessageFormViewManager.h; sourceTree = "<group>"; };
+		31EB19A31CDF30BF0081309D /* MQMessageFormViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageFormViewManager.m; sourceTree = "<group>"; };
+		31EB19A51CDF33210081309D /* MQMessageFormConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessageFormConfig.h; sourceTree = "<group>"; };
+		31EB19A61CDF33210081309D /* MQMessageFormConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageFormConfig.m; sourceTree = "<group>"; };
+		31EB19A81CE068A20081309D /* MQMessageFormViewService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessageFormViewService.h; sourceTree = "<group>"; };
+		31EB19A91CE068A20081309D /* MQMessageFormViewService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageFormViewService.m; sourceTree = "<group>"; };
+		31EB1B181CE1E4790081309D /* MQMessageFormTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessageFormTextView.h; sourceTree = "<group>"; };
+		31EB1B191CE1E4790081309D /* MQMessageFormTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageFormTextView.m; sourceTree = "<group>"; };
+		31EB1C8B1CE300790081309D /* MQMessageFormViewStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MQMessageFormViewStyle.h; sourceTree = "<group>"; };
+		31EB1C8C1CE300790081309D /* MQMessageFormViewStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MQMessageFormViewStyle.m; sourceTree = "<group>"; };
 		CC45FCEA1BE36B1900DE0BFB /* MQChatViewControllerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MQChatViewControllerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC45FCEE1BE36B1900DE0BFB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CC45FCF01BE36B1900DE0BFB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -393,6 +420,42 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3142C82D1CDCACF400FBC0E0 /* MQMessageFormInputView */ = {
+			isa = PBXGroup;
+			children = (
+				3142C82E1CDCACF400FBC0E0 /* MQMessageFormInputView.h */,
+				3142C82F1CDCACF400FBC0E0 /* MQMessageFormInputView.m */,
+			);
+			path = MQMessageFormInputView;
+			sourceTree = "<group>";
+		};
+		3142C8301CDCACF400FBC0E0 /* MQMessageFromImageView */ = {
+			isa = PBXGroup;
+			children = (
+				3142C8311CDCACF400FBC0E0 /* MQMessageFormImageView.h */,
+				3142C8321CDCACF400FBC0E0 /* MQMessageFormImageView.m */,
+			);
+			path = MQMessageFromImageView;
+			sourceTree = "<group>";
+		};
+		3142C8391CDCAD4500FBC0E0 /* MessageFormInputModel */ = {
+			isa = PBXGroup;
+			children = (
+				3142C83A1CDCAD4500FBC0E0 /* MQMessageFormInputModel.h */,
+				3142C83B1CDCAD4500FBC0E0 /* MQMessageFormInputModel.m */,
+			);
+			path = MessageFormInputModel;
+			sourceTree = "<group>";
+		};
+		31EB1B171CE1E4790081309D /* MQMessageFormTextView */ = {
+			isa = PBXGroup;
+			children = (
+				31EB1B181CE1E4790081309D /* MQMessageFormTextView.h */,
+				31EB1B191CE1E4790081309D /* MQMessageFormTextView.m */,
+			);
+			path = MQMessageFormTextView;
+			sourceTree = "<group>";
+		};
 		CC45FCE11BE36B1900DE0BFB = {
 			isa = PBXGroup;
 			children = (
@@ -514,12 +577,17 @@
 		E418646A1CD05851009FB370 /* Config */ = {
 			isa = PBXGroup;
 			children = (
+				3142C8391CDCAD4500FBC0E0 /* MessageFormInputModel */,
 				E418646B1CD05851009FB370 /* CustomizedText */,
 				E418646E1CD05851009FB370 /* MQChatViewConfig.h */,
 				E418646F1CD05851009FB370 /* MQChatViewConfig.m */,
 				E41864701CD05851009FB370 /* MQChatViewManager.h */,
 				E41864711CD05851009FB370 /* MQChatViewManager.m */,
 				E41864721CD05851009FB370 /* Style */,
+				31EB19A21CDF30BF0081309D /* MQMessageFormViewManager.h */,
+				31EB19A31CDF30BF0081309D /* MQMessageFormViewManager.m */,
+				31EB19A51CDF33210081309D /* MQMessageFormConfig.h */,
+				31EB19A61CDF33210081309D /* MQMessageFormConfig.m */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -538,6 +606,8 @@
 			children = (
 				E41864731CD05851009FB370 /* MQChatViewStyle.h */,
 				E41864741CD05851009FB370 /* MQChatViewStyle.m */,
+				31EB1C8B1CE300790081309D /* MQMessageFormViewStyle.h */,
+				31EB1C8C1CE300790081309D /* MQMessageFormViewStyle.m */,
 				E41864751CD05851009FB370 /* PreDefined */,
 			);
 			path = Style;
@@ -565,6 +635,10 @@
 				E41864801CD05851009FB370 /* MQChatViewService.m */,
 				E41864811CD05851009FB370 /* MQChatViewTableDataSource.h */,
 				E41864821CD05851009FB370 /* MQChatViewTableDataSource.m */,
+				3142C83D1CDCAD7000FBC0E0 /* MQMessageFormViewController.h */,
+				3142C83E1CDCAD7000FBC0E0 /* MQMessageFormViewController.m */,
+				31EB19A81CE068A20081309D /* MQMessageFormViewService.h */,
+				31EB19A91CE068A20081309D /* MQMessageFormViewService.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -841,6 +915,9 @@
 		E418650E1CD05851009FB370 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				31EB1B171CE1E4790081309D /* MQMessageFormTextView */,
+				3142C82D1CDCACF400FBC0E0 /* MQMessageFormInputView */,
+				3142C8301CDCACF400FBC0E0 /* MQMessageFromImageView */,
 				E418650F1CD05851009FB370 /* MQChatTableView.h */,
 				E41865101CD05851009FB370 /* MQChatTableView.m */,
 				E41865111CD05851009FB370 /* MQEvaluationView */,
@@ -1088,6 +1165,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3142C83C1CDCAD4500FBC0E0 /* MQMessageFormInputModel.m in Sources */,
 				E41865A91CD05C13009FB370 /* SDWebImageDownloader.m in Sources */,
 				E41865A81CD05C13009FB370 /* SDWebImageDecoder.m in Sources */,
 				E41865631CD05851009FB370 /* MEIQIA_AmrRecordWriter.m in Sources */,
@@ -1104,13 +1182,17 @@
 				E41865481CD05851009FB370 /* MQTipsCell.m in Sources */,
 				E41865531CD05851009FB370 /* MQImageUtil.m in Sources */,
 				E41865AB1CD05C13009FB370 /* SDWebImageManager.m in Sources */,
+				3142C8371CDCACF400FBC0E0 /* MQMessageFormImageView.m in Sources */,
 				E41865A51CD05C13009FB370 /* NSData+ImageContentType.m in Sources */,
 				E418656B1CD05851009FB370 /* MQChatTableView.m in Sources */,
+				31EB19A71CDF33210081309D /* MQMessageFormConfig.m in Sources */,
 				E41865201CD05851009FB370 /* MQAnimatorPush.m in Sources */,
+				3142C8361CDCACF400FBC0E0 /* MQMessageFormInputView.m in Sources */,
 				E41865B11CD05C13009FB370 /* UIImageView+HighlightedWebCache.m in Sources */,
 				E41865641CD05851009FB370 /* MEIQIA_CafRecordWriter.m in Sources */,
 				E418655B1CD05851009FB370 /* MEIQIA_FBSquareFont.m in Sources */,
 				E418653C1CD05851009FB370 /* MQMessageDateCellModel.m in Sources */,
+				3142C83F1CDCAD7000FBC0E0 /* MQMessageFormViewController.m in Sources */,
 				E41865361CD05851009FB370 /* MQTextMessage.m in Sources */,
 				E41865701CD05851009FB370 /* MQToast.m in Sources */,
 				CC45FCF51BE36B1900DE0BFB /* ViewController.m in Sources */,
@@ -1130,6 +1212,7 @@
 				E418652E1CD05851009FB370 /* MQChatViewStyleGreen.m in Sources */,
 				E41865451CD05851009FB370 /* MQImageMessageCell.m in Sources */,
 				E41865371CD05851009FB370 /* MQVoiceMessage.m in Sources */,
+				31EB19A41CDF30C00081309D /* MQMessageFormViewManager.m in Sources */,
 				E41865AD1CD05C13009FB370 /* UIButton+WebCache.m in Sources */,
 				CC45FCF21BE36B1900DE0BFB /* AppDelegate.m in Sources */,
 				E41865321CD05851009FB370 /* MQBaseMessage.m in Sources */,
@@ -1148,6 +1231,7 @@
 				CC45FCEF1BE36B1900DE0BFB /* main.m in Sources */,
 				E41865781CD05858009FB370 /* MQServiceToViewInterface.m in Sources */,
 				E418653A1CD05851009FB370 /* MQFileDownloadCellModel.m in Sources */,
+				31EB19AA1CE068A20081309D /* MQMessageFormViewService.m in Sources */,
 				E41865651CD05851009FB370 /* MEIQIA_MLAudioMeterObserver.m in Sources */,
 				E41865421CD05851009FB370 /* MQEvaluationResultCell.m in Sources */,
 				E41865331CD05851009FB370 /* MQEventMessage.m in Sources */,
@@ -1160,8 +1244,10 @@
 				E41865511CD05851009FB370 /* MQChatRegexUtil.m in Sources */,
 				E41865661CD05851009FB370 /* MEIQIA_MLAudioRecorder.m in Sources */,
 				E41865281CD05851009FB370 /* MQCustomizedUIText.m in Sources */,
+				31EB1B1A1CE1E4790081309D /* MQMessageFormTextView.m in Sources */,
 				E41865811CD05B63009FB370 /* MQRegex.m in Sources */,
 				E418656E1CD05851009FB370 /* MQPullRefreshView.m in Sources */,
+				31EB1C8D1CE300790081309D /* MQMessageFormViewStyle.m in Sources */,
 				E41865261CD05851009FB370 /* UIView+Layout.m in Sources */,
 				E41865291CD05851009FB370 /* MQChatViewConfig.m in Sources */,
 				E41865311CD05851009FB370 /* MQChatViewTableDataSource.m in Sources */,

@@ -88,3 +88,14 @@
 "message_tips_send_message_fail_listed_in_black_list" = "对方已经拒绝接收你的消息";
 
 "message_tips_online_failed_listed_in_black_list" = "抱歉，你已被加入黑名单";
+
+"leave_a_message" = "留言";
+"submit" = "提交";
+"leave_a_message_placeholder" = "请输入你的留言";
+"param_not_allow_null" = "%@ 不允许为空";
+"submit_failure" = "提交失败";
+"add_picture" = "添加图片";
+"tel" = "电话";
+"tel_placeholder" = "请输入你的电话";
+"email" = "邮箱";
+"email_placeholder" = "请输入你的邮箱";

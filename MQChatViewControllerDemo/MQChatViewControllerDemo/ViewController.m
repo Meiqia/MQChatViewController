@@ -9,6 +9,8 @@
 #import "ViewController.h"
 #import "MQChatViewManager.h"
 #import "MQAssetUtil.h"
+#import "MQMessageFormViewController.h"
+#import "MQMessageFormViewManager.h"
 
 static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
 
@@ -34,7 +36,8 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
                      @"chatViewStyle3",
                      @"chatViewStyle4",
                      @"chatViewStyle5",
-                     @"chatViewStyle6"
+                     @"chatViewStyle6",
+                     @"MessageForm"
                      ];
     
     self.navigationController.navigationBar.translucent = NO;
@@ -94,6 +97,9 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
             break;
         case 8:
             [self chatViewStyle6];
+            break;
+        case 9:
+            [self messageForm];
             break;
         default:
             break;
@@ -214,6 +220,48 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
     [chatViewManager.chatViewStyle setNavBarRightButton:rightButton];
     [chatViewManager enableMessageImageMask:false];
     [chatViewManager pushMQChatViewControllerInViewController:self];
+}
+
+- (void)messageForm {
+    // 导航栏和动画沿用聊天界面的配置
+    MQChatViewManager *chatViewManager = [[MQChatViewManager alloc] init];
+    chatViewManager.chatViewStyle = [MQChatViewStyle greenStyle];
+    
+    
+    
+    MQMessageFormInputModel *phoneMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
+    phoneMessageFormInputModel.tip = @"手机";
+    phoneMessageFormInputModel.key = @"tel";
+    phoneMessageFormInputModel.isSingleLine = YES;
+    phoneMessageFormInputModel.placeholder = @"请输入你的手机号";
+    phoneMessageFormInputModel.isRequired = YES;
+    phoneMessageFormInputModel.keyboardType = UIKeyboardTypePhonePad;
+    
+    MQMessageFormInputModel *emailMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
+    emailMessageFormInputModel.tip = @"邮箱";
+    emailMessageFormInputModel.key = @"email";
+    emailMessageFormInputModel.isSingleLine = YES;
+    emailMessageFormInputModel.placeholder = @"请输入你的邮箱";
+    emailMessageFormInputModel.isRequired = NO;
+    emailMessageFormInputModel.keyboardType = UIKeyboardTypeEmailAddress;
+    
+    MQMessageFormInputModel *weixinMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
+    weixinMessageFormInputModel.tip = @"微信";
+    weixinMessageFormInputModel.key = @"weixin";
+    weixinMessageFormInputModel.isSingleLine = YES;
+    weixinMessageFormInputModel.placeholder = @"请输入你的微信";
+    weixinMessageFormInputModel.isRequired = NO;
+    
+    NSMutableArray *customMessageFormInputModelArray = [NSMutableArray array];
+    [customMessageFormInputModelArray addObject:phoneMessageFormInputModel];
+    [customMessageFormInputModelArray addObject:emailMessageFormInputModel];
+    [customMessageFormInputModelArray addObject:weixinMessageFormInputModel];
+    
+    MQMessageFormViewManager *messageFormViewManager = [[MQMessageFormViewManager alloc] init];
+//    [messageFormViewManager setLeaveMessageIntro:@"我们的在线时间是周一至周五 08:30 ~ 19:30, 如果你有任何需要，请给我们留言，我们会第一时间回复你"];
+//    [messageFormViewManager setCustomMessageFormInputModelArray:customMessageFormInputModelArray];
+    
+    [messageFormViewManager pushMQMessageFormViewControllerInViewController:self];
 }
 
 @end

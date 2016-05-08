@@ -88,3 +88,14 @@
 "message_tips_send_message_fail_listed_in_black_list" = "your message has been blocked";
 
 "message_tips_online_failed_listed_in_black_list" = "You are blacklisted";
+
+"leave_a_message" = "Leave a message";
+"submit" = "submit";
+"leave_a_message_placeholder" = "Please enter your message";
+"param_not_allow_null" = "%@ can not be empty";
+"submit_failure" = "Submit failed";
+"add_picture" = "Add picture";
+"tel" = "Phone";
+"tel_placeholder" = "Please enter your phone number";
+"email" = "Email";
+"email_placeholder" = "Please enter your email";
