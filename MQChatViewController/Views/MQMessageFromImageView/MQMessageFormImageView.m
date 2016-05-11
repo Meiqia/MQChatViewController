@@ -270,6 +270,9 @@ static CGFloat const kMQMessageFormMaxPictureItemLength = 116;
 }
 
 - (void)showChoosePictureActionSheet {
+    // 先关闭键盘，否则会被键盘遮住
+    [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
+    
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:(id)self cancelButtonTitle:[MQBundleUtil localizedStringForKey:@"cancel"] destructiveButtonTitle:nil otherButtonTitles:[MQBundleUtil localizedStringForKey:@"select_gallery"], [MQBundleUtil localizedStringForKey:@"select_camera"], nil];
     [sheet showInView:self.superview];
 }

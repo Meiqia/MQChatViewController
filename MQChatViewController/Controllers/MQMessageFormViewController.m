@@ -68,10 +68,12 @@ static NSString * const kMessageFormMessageKey = @"message";
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
     [self.view addGestureRecognizer:tap];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
 }
 
 - (void)dismissKeyboard {
-    [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
+    [self.view endEditing:YES];
 }
 
 - (void)setNavBar {
@@ -284,9 +286,23 @@ static NSString * const kMessageFormMessageKey = @"message";
 }
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     if (translucentView) {
         [translucentView removeFromSuperview];
     }
+}
+
+- (void)keyboardWillChangeFrame:(NSNotification *)note {
+    // 获取虚拟键盘弹出时长
+    CGFloat duration = [note.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    // 工具条平移的距离 == 屏幕的高度 - 键盘最终的y值
+    CGFloat keyboard = viewSize.height - [note.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].origin.y;
+    [UIView animateWithDuration:duration animations:^{
+        UIEdgeInsets inset = scrollView.contentInset;
+        inset.bottom = keyboard;
+        scrollView.contentInset = inset;
+    }];
 }
 
 #pragma MQMessageFormImageViewDelegate

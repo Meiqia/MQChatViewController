@@ -245,6 +245,13 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
     emailMessageFormInputModel.isRequired = NO;
     emailMessageFormInputModel.keyboardType = UIKeyboardTypeEmailAddress;
     
+    MQMessageFormInputModel *nameMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
+    nameMessageFormInputModel.tip = @"姓名";
+    nameMessageFormInputModel.key = @"name";
+    nameMessageFormInputModel.isSingleLine = YES;
+    nameMessageFormInputModel.placeholder = @"请输入你的姓名";
+    nameMessageFormInputModel.isRequired = NO;
+    
     MQMessageFormInputModel *weixinMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
     weixinMessageFormInputModel.tip = @"微信";
     weixinMessageFormInputModel.key = @"weixin";
@@ -252,14 +259,23 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
     weixinMessageFormInputModel.placeholder = @"请输入你的微信";
     weixinMessageFormInputModel.isRequired = NO;
     
+    MQMessageFormInputModel *weiboMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
+    weiboMessageFormInputModel.tip = @"微博";
+    weiboMessageFormInputModel.key = @"weibo";
+    weiboMessageFormInputModel.isSingleLine = YES;
+    weiboMessageFormInputModel.placeholder = @"请输入你的微博";
+    weiboMessageFormInputModel.isRequired = NO;
+    
     NSMutableArray *customMessageFormInputModelArray = [NSMutableArray array];
     [customMessageFormInputModelArray addObject:phoneMessageFormInputModel];
     [customMessageFormInputModelArray addObject:emailMessageFormInputModel];
+    [customMessageFormInputModelArray addObject:nameMessageFormInputModel];
     [customMessageFormInputModelArray addObject:weixinMessageFormInputModel];
+    [customMessageFormInputModelArray addObject:weiboMessageFormInputModel];
     
     MQMessageFormViewManager *messageFormViewManager = [[MQMessageFormViewManager alloc] init];
-//    [messageFormViewManager setLeaveMessageIntro:@"我们的在线时间是周一至周五 08:30 ~ 19:30, 如果你有任何需要，请给我们留言，我们会第一时间回复你"];
-//    [messageFormViewManager setCustomMessageFormInputModelArray:customMessageFormInputModelArray];
+    [messageFormViewManager setLeaveMessageIntro:@"我们的在线时间是周一至周五 08:30 ~ 19:30, 如果你有任何需要，请给我们留言，我们会第一时间回复你"];
+    [messageFormViewManager setCustomMessageFormInputModelArray:customMessageFormInputModelArray];
     
     [messageFormViewManager pushMQMessageFormViewControllerInViewController:self];
 }
