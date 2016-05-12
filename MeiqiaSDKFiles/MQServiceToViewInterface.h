@@ -314,4 +314,32 @@
  */
 + (void)cancelDownloadForUrl:(NSString *)urlString;
 
+/**
+ 获取客服邀请评价显示的文案
+ */
++ (void)getEvaluationPromtTextComplete:(void(^)(NSString *, NSError *))action;
+
+/**
+ 获取是否显示强制转接人工按钮
+ */
++ (void)getIsShowRedirectHumanButtonComplete:(void(^)(BOOL, NSError *))action;
+
+/**
+ 获取留言表单引导文案
+ */
++ (void)getMessageFormIntroComplete:(void(^)(NSString *, NSError *))action;
+
+/**
+ *  提交留言表单
+ *
+ *  @param message 留言消息
+ *  @param images 图片数组
+ *  @param clientInfo 顾客的信息
+ *  @param completion  提交留言表单的回调
+ */
++ (void)submitMessageFormWithMessage:(NSString *)message
+                              images:(NSArray *)images
+                          clientInfo:(NSDictionary<NSString *, NSString *>*)clientInfo
+                          completion:(void (^)(BOOL success, NSError *error))completion;
+
 @end

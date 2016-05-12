@@ -703,7 +703,6 @@ static CGFloat const kMQChatViewInputBarHeight = 50.0;
     }
 }
 
-
 #endif
 
 

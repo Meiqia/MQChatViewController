@@ -63,12 +63,6 @@ typedef NS_ENUM(NSUInteger, MQChatViewStyleType) {
     MQChatViewStyleTypeDark,
 };
 
-@protocol MQChatViewStyleCustomized <NSObject>
-
-- (void)setupCustomizedStyle;
-
-@end
-
 @interface MQChatViewStyle : NSObject
 
 /**
