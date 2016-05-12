@@ -252,12 +252,12 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
     nameMessageFormInputModel.placeholder = @"请输入你的姓名";
     nameMessageFormInputModel.isRequired = NO;
     
-    MQMessageFormInputModel *weixinMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
-    weixinMessageFormInputModel.tip = @"微信";
-    weixinMessageFormInputModel.key = @"weixin";
-    weixinMessageFormInputModel.isSingleLine = YES;
-    weixinMessageFormInputModel.placeholder = @"请输入你的微信";
-    weixinMessageFormInputModel.isRequired = NO;
+    MQMessageFormInputModel *commentMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
+    commentMessageFormInputModel.tip = @"备注";
+    commentMessageFormInputModel.key = @"comment";
+    commentMessageFormInputModel.isSingleLine = NO;
+    commentMessageFormInputModel.placeholder = @"请输入你的备注";
+    commentMessageFormInputModel.isRequired = NO;
     
     MQMessageFormInputModel *weiboMessageFormInputModel = [[MQMessageFormInputModel alloc] init];
     weiboMessageFormInputModel.tip = @"微博";
@@ -270,7 +270,7 @@ static CGFloat   const kMQChatViewDemoTableCellHeight = 56.0;
     [customMessageFormInputModelArray addObject:phoneMessageFormInputModel];
     [customMessageFormInputModelArray addObject:emailMessageFormInputModel];
     [customMessageFormInputModelArray addObject:nameMessageFormInputModel];
-    [customMessageFormInputModelArray addObject:weixinMessageFormInputModel];
+    [customMessageFormInputModelArray addObject:commentMessageFormInputModel];
     [customMessageFormInputModelArray addObject:weiboMessageFormInputModel];
     
     MQMessageFormViewManager *messageFormViewManager = [[MQMessageFormViewManager alloc] init];

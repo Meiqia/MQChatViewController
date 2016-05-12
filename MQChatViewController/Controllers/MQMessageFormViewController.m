@@ -294,15 +294,58 @@ static NSString * const kMessageFormMessageKey = @"message";
 }
 
 - (void)keyboardWillChangeFrame:(NSNotification *)note {
-    // 获取虚拟键盘弹出时长
+    CGFloat screenHeight = [[UIScreen mainScreen] bounds].size.height;
+    
     CGFloat duration = [note.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    // 工具条平移的距离 == 屏幕的高度 - 键盘最终的y值
-    CGFloat keyboard = viewSize.height - [note.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].origin.y;
+    CGFloat keyboardMinY = [note.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].origin.y;
+    CGFloat keyboardHeight = screenHeight - keyboardMinY;
+    
+    UIView *responderView = [self findFirstResponderForParentView:formContainer];
+    // UITextView单独处理
+    if (responderView && keyboardHeight > 0 && [responderView isKindOfClass:[UITextView class]]) {
+        CGRect rect = [responderView.superview convertRect:responderView.frame toView:[[[UIApplication sharedApplication] delegate] window]];
+        
+        CGFloat responderMinY = rect.origin.y;
+        CGFloat responderMaxY = CGRectGetMaxY(rect);
+        
+        CGFloat offsetY = 0;
+        // 处理UITextView被键盘遮挡的情况
+        if (responderMaxY > keyboardMinY) {
+            offsetY = keyboardHeight + responderView.frame.size.height - (screenHeight - responderMinY);
+        }
+        // 处理UITextView被导航栏遮挡的情况
+        if (responderMinY < 64) {
+            offsetY = responderMinY - 64;
+        }
+        if (offsetY != 0) {
+            [UIView animateWithDuration:duration animations:^{
+                CGPoint offset = scrollView.contentOffset;
+                scrollView.contentOffset = CGPointMake(offset.x, offset.y + offsetY);
+            }];
+        }
+    }
+    
     [UIView animateWithDuration:duration animations:^{
         UIEdgeInsets inset = scrollView.contentInset;
-        inset.bottom = keyboard;
+        inset.bottom = keyboardHeight;
         scrollView.contentInset = inset;
     }];
+}
+
+- (UIView *)findFirstResponderForParentView:(UIView *)parentView {
+    for (UIView *view1 in parentView.subviews) {
+        if ([view1 isFirstResponder]) {
+            return view1;
+        }
+        
+        if ([view1.subviews count] > 0) {
+            UIView *view2 = [self findFirstResponderForParentView:view1];
+            if (view2) {
+                return view2;
+            }
+        }
+    }
+    return nil;
 }
 
 #pragma MQMessageFormImageViewDelegate
